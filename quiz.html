@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WGU D322 - Introduction to IT Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #1a1a2e;
+            color: #eaeaea;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #4fc3f7;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #16213e;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            background: #0f3460;
+            color: #eaeaea;
+            border: none;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .btn:hover {
+            background: #1a4a7a;
+            transform: translateX(5px);
+        }
+
+        .btn-primary {
+            background: #4fc3f7;
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background: #81d4fa;
+        }
+
+        .btn-danger {
+            background: #e94560;
+        }
+
+        .btn-danger:hover {
+            background: #ff6b6b;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #2ecc71;
+        }
+
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+
+        .quiz-card {
+            background: #16213e;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: #0f3460;
+            color: #4fc3f7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .answer-text {
+            background: #0f3460;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .choice-btn {
+            background: #0f3460;
+            color: #eaeaea;
+            border: 2px solid transparent;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .choice-btn:hover {
+            border-color: #4fc3f7;
+        }
+
+        .choice-btn.correct {
+            background: #27ae60;
+            border-color: #2ecc71;
+        }
+
+        .choice-btn.incorrect {
+            background: #e94560;
+            border-color: #ff6b6b;
+        }
+
+        .choice-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #0f3460;
+            border-radius: 10px;
+        }
+
+        .checkbox-container input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-container label {
+            cursor: pointer;
+            color: #888;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #0f3460;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #27ae60);
+            transition: width 0.3s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .result-card {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #4fc3f7;
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+        }
+
+        .pass {
+            color: #27ae60;
+        }
+
+        .fail {
+            color: #e94560;
+        }
+
+        .streak-indicator {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .question-counter {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            color: #4fc3f7;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>WGU D322 - Introduction to IT</h1>
+            <p class="subtitle">Spaced Repetition Quiz System</p>
+        </header>
+
+        <div id="stats-bar" class="stats-bar">
+            <div class="stat">
+                <div class="stat-value" id="total-count">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="mastered-count">0</div>
+                <div class="stat-label">Mastered</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="remaining-count">0</div>
+                <div class="stat-label">Remaining</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="accuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="menu-screen" class="menu">
+            <button class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
+            <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
+            <button class="btn" onclick="showProgress()">View Progress</button>
+            <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <a href="#" class="back-link" onclick="backToMenu(); return false;">&larr; Back to Menu</a>
+            <div class="quiz-card">
+                <div class="question-counter" id="question-counter"></div>
+                <span class="category-badge" id="category-badge"></span>
+                <span class="streak-indicator hidden" id="streak-indicator"></span>
+                <p class="question-text" id="question-text"></p>
+
+                <!-- Know It Phase -->
+                <div id="know-it-phase">
+                    <p style="color: #888; margin-bottom: 15px;">Do you know the answer?</p>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="showAnswer(true)">Yes, I Know It</button>
+                        <button class="btn" onclick="showAnswer(false)">No, Show Me</button>
+                    </div>
+                </div>
+
+                <!-- Answer Reveal Phase -->
+                <div id="answer-phase" class="hidden">
+                    <div class="answer-text" id="answer-text"></div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="recordAnswer(true)">I Got It Right</button>
+                        <button class="btn btn-danger" onclick="recordAnswer(false)">I Got It Wrong</button>
+                    </div>
+                </div>
+
+                <!-- Multiple Choice Phase -->
+                <div id="choice-phase" class="hidden">
+                    <div class="choices" id="choices-container"></div>
+                </div>
+
+                <!-- Always Know Checkbox -->
+                <div class="checkbox-container" id="always-know-container">
+                    <input type="checkbox" id="always-know" onchange="markAlwaysKnow()">
+                    <label for="always-know">I always know this - don't quiz me again</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Exam Screen -->
+        <div id="exam-screen" class="hidden">
+            <a href="#" class="back-link" onclick="backToMenu(); return false;">&larr; Back to Menu</a>
+            <div class="progress-bar">
+                <div class="progress-fill" id="exam-progress"></div>
+            </div>
+            <div class="quiz-card">
+                <div class="question-counter" id="exam-counter"></div>
+                <span class="category-badge" id="exam-category"></span>
+                <p class="question-text" id="exam-question"></p>
+                <div class="choices" id="exam-choices"></div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div class="quiz-card result-card">
+                <h2 id="result-title">Final Exam Results</h2>
+                <div class="result-score" id="result-score">0%</div>
+                <p class="result-message" id="result-message"></p>
+                <div class="btn-group" style="justify-content: center;">
+                    <button class="btn btn-primary" onclick="backToMenu()">Back to Menu</button>
+                    <button class="btn" id="retry-btn" onclick="startFinalExam()">Retry Exam</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Screen -->
+        <div id="progress-screen" class="hidden">
+            <a href="#" class="back-link" onclick="backToMenu(); return false;">&larr; Back to Menu</a>
+            <div class="quiz-card">
+                <h2 style="margin-bottom: 20px;">Your Progress</h2>
+                <div id="progress-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Question Bank - 200+ questions from WGU D322 course
+        const questions = [
+            // IT Roles & Functions
+            { id: 1, category: "IT Roles", q: "What does Computer Engineering (CE) focus on?", a: "The design of hardware systems and the software that makes them work, including drivers for peripheral devices and embedded systems", choices: ["The design of hardware systems and the software that makes them work", "Only software development", "Network administration", "Database management"], correct: 0 },
+            { id: 2, category: "IT Roles", q: "What does Computer Science (CS) address?", a: "The design and implementation of software with emphasis on developing effective ways to solve computing problems, including robotics, AI, and algorithms", choices: ["Hardware repair", "Network setup", "Design and implementation of software to solve computing problems", "Database administration"], correct: 2 },
+            { id: 3, category: "IT Roles", q: "What is the focus of Software Engineering (SE)?", a: "The development and maintenance of reliable and efficient software systems for enterprises", choices: ["Hardware design", "Development and maintenance of reliable software systems", "Network security", "Data entry"], correct: 1 },
+            { id: 4, category: "IT Roles", q: "What is the focus of Information Systems (IS)?", a: "Integrating IT solutions to meet organizational business goals, addressing systems that generate, process, and distribute information", choices: ["Hardware manufacturing", "Integrating IT solutions to meet organizational business goals", "Programming languages", "Computer repair"], correct: 1 },
+            { id: 5, category: "IT Roles", q: "What does Information Technology (IT) focus on?", a: "The technology supporting information systems in an organization, responding to practical needs including reliable and secure solutions", choices: ["Only programming", "Technology supporting information systems in organizations", "Hardware manufacturing", "Graphic design"], correct: 1 },
+            { id: 6, category: "IT Roles", q: "What is a System Administrator responsible for?", a: "Providing technical support for hardware and software issues, including log-in issues, and understanding network vulnerabilities", choices: ["Designing websites", "Providing technical support for hardware and software issues", "Writing code", "Marketing"], correct: 1 },
+            { id: 7, category: "IT Roles", q: "What is a Network Administrator responsible for?", a: "Designing, planning, setting up, and maintaining an organization's network", choices: ["Writing software", "Designing, planning, setting up, and maintaining networks", "Customer service", "Accounting"], correct: 1 },
+            { id: 8, category: "IT Roles", q: "What is a Database Administrator responsible for?", a: "Installing and configuring databases, fixing database errors, and creating user accounts", choices: ["Network setup", "Installing and configuring databases", "Web design", "Hardware repair"], correct: 1 },
+            { id: 9, category: "IT Roles", q: "What is a Security Administrator responsible for?", a: "Installing, administering, and troubleshooting network security issues", choices: ["Web development", "Installing and troubleshooting network security issues", "Data entry", "Graphic design"], correct: 1 },
+            { id: 10, category: "IT Roles", q: "What is a Web Administrator responsible for?", a: "Troubleshooting website errors, tracking and analyzing website usage data, and reporting security breaches", choices: ["Hardware repair", "Troubleshooting website errors and analyzing usage data", "Network setup", "Database design"], correct: 1 },
+            { id: 11, category: "IT Roles", q: "What is a Cloud Architect responsible for?", a: "Overseeing a company's cloud computing systems", choices: ["Building physical servers", "Overseeing cloud computing systems", "Writing documentation", "Customer support"], correct: 1 },
+            { id: 12, category: "IT Roles", q: "What is a Network Architect responsible for?", a: "Designing networks, monitoring traffic, installing routers and modems, and upgrading hardware and software", choices: ["Writing software", "Designing networks and monitoring traffic", "Database management", "User training"], correct: 1 },
+            { id: 13, category: "IT Roles", q: "What is a Cybersecurity Architect responsible for?", a: "Designing, building, testing, and implementing security systems within an organization's IT network", choices: ["Web design", "Designing and implementing security systems", "Data entry", "Marketing"], correct: 1 },
+            { id: 14, category: "IT Roles", q: "What does a Machine Learning Engineer do?", a: "Allows an organization to take full control of its data using Python, R, or Java with machine learning frameworks", choices: ["Hardware repair", "Enables organizations to leverage data using ML frameworks", "Network administration", "Web design"], correct: 1 },
+            { id: 15, category: "IT Roles", q: "What do Software Engineers design and develop?", a: "Software that makes hardware and software systems work, including operating systems, database systems, and embedded systems", choices: ["Only websites", "Software for hardware and software systems including OS and databases", "Only mobile apps", "Only games"], correct: 1 },
+            { id: 16, category: "IT Roles", q: "What is the primary duty of a Computer Support Specialist?", a: "Supporting, monitoring, and maintaining workplace technology and responding to user requests for help", choices: ["Programming", "Supporting and maintaining workplace technology", "Network design", "Database administration"], correct: 1 },
+            { id: 17, category: "IT Roles", q: "What does a Systems Analyst do?", a: "Investigates business problems and creates information systems to provide solutions", choices: ["Hardware repair", "Investigates business problems and creates IS solutions", "Network setup", "Data entry"], correct: 1 },
+            { id: 18, category: "IT Roles", q: "What does a Data Analyst do?", a: "Uses statistical and quantitative methods to gain insights that support organizational decision-making", choices: ["Network setup", "Uses statistics to gain insights for decision-making", "Hardware repair", "Web design"], correct: 1 },
+            { id: 19, category: "IT Roles", q: "What does a Security Analyst do?", a: "Monitors an organization's network for security breaches", choices: ["Web development", "Monitors networks for security breaches", "Database design", "User training"], correct: 1 },
+            { id: 20, category: "IT Roles", q: "What does a Project Manager do in IT?", a: "Organizes people, time, and resources to ensure projects meet requirements and are completed on time and within budget", choices: ["Writing code", "Organizes resources to complete projects on time and budget", "Network setup", "Hardware repair"], correct: 1 },
+
+            // Data & Information
+            { id: 21, category: "Data & Information", q: "What is the difference between data and information?", a: "Data includes raw facts or observations; information is data given context that makes it meaningful", choices: ["They are the same thing", "Data is raw facts; information is data with context", "Information is raw; data is processed", "Neither has meaning"], correct: 1 },
+            { id: 22, category: "Data & Information", q: "What are the four levels of the DIKW pyramid from bottom to top?", a: "Data, Information, Knowledge, Wisdom", choices: ["Wisdom, Knowledge, Information, Data", "Data, Information, Knowledge, Wisdom", "Knowledge, Data, Wisdom, Information", "Information, Data, Knowledge, Wisdom"], correct: 1 },
+            { id: 23, category: "Data & Information", q: "What is knowledge according to the DIKW pyramid?", a: "A dynamic combination of experience, values, contextual information, expert insight, and grounded intuition", choices: ["Just raw data", "Processed data", "A combination of experience, values, and contextual information", "Random facts"], correct: 2 },
+            { id: 24, category: "Data & Information", q: "What is wisdom in the context of DIKW?", a: "Knowing the right thing to do", choices: ["Having lots of data", "Memorizing facts", "Knowing the right thing to do", "Processing information"], correct: 2 },
+            { id: 25, category: "Data & Information", q: "What is structured data?", a: "Data coded in a way that makes it easy to convert into a form usable for analysis, such as names, dates, and phone numbers", choices: ["Video files", "Data easily converted for analysis like names and dates", "Audio recordings", "Social media posts"], correct: 1 },
+            { id: 26, category: "Data & Information", q: "What is unstructured data?", a: "Data that is more complex and possibly stored in a format not easily decoded, such as text, videos, and audio", choices: ["Spreadsheet data", "Complex data not easily decoded like text and videos", "Database tables", "Phone numbers"], correct: 1 },
+            { id: 27, category: "Data & Information", q: "What is Big Data?", a: "A large collection of data that is incapable of being processed by previous generations of analytical tools", choices: ["A small database", "Large data collections requiring advanced analytical tools", "Any spreadsheet", "Email archives"], correct: 1 },
+            { id: 28, category: "Data & Information", q: "What is data hygiene?", a: "The processes of ensuring the cleanliness of data - that it is relatively error-free", choices: ["Cleaning computers", "Processes ensuring data is error-free", "Virus scanning", "Network maintenance"], correct: 1 },
+            { id: 29, category: "Data & Information", q: "What is data scrubbing?", a: "The process of amending or removing data that is incorrect, incomplete, improperly formatted, or duplicated", choices: ["Deleting all data", "Amending or removing incorrect/incomplete data", "Backing up data", "Encrypting data"], correct: 1 },
+            { id: 30, category: "Data & Information", q: "What are the five quality data attributes?", a: "Precise, valid, reliable, timely, and complete", choices: ["Fast, cheap, easy, simple, quick", "Precise, valid, reliable, timely, complete", "Large, small, medium, big, tiny", "Red, blue, green, yellow, purple"], correct: 1 },
+            { id: 31, category: "Data & Information", q: "What is IaaS (Infrastructure as a Service)?", a: "A cloud model providing access in a virtualized environment with computing resources like network connections and virtual server space", choices: ["Physical hardware sales", "Virtualized computing resources in the cloud", "Software installation service", "Data entry service"], correct: 1 },
+            { id: 32, category: "Data & Information", q: "What is PaaS (Platform as a Service)?", a: "A cloud model where customers access a platform supporting development and management of web applications", choices: ["Physical server rental", "Platform for web application development", "Personal computer sales", "Printer services"], correct: 1 },
+            { id: 33, category: "Data & Information", q: "What is SaaS (Software as a Service)?", a: "A model where software is licensed to customers with subscriptions and central hosting, like Gmail or Office 365", choices: ["Selling software on discs", "Software licensed via subscription with central hosting", "Free open-source software", "Hardware leasing"], correct: 1 },
+            { id: 34, category: "Data & Information", q: "What is personally identifiable information (PII)?", a: "Sensitive data including social security numbers, names, and telephone numbers that could identify an individual", choices: ["Public company data", "Sensitive data that could identify an individual", "Weather data", "Stock prices"], correct: 1 },
+
+            // Computer Hardware
+            { id: 35, category: "Hardware", q: "What are the four functions of a computer system according to IPOS?", a: "Input, Process, Output, Storage", choices: ["Input, Print, Output, Save", "Input, Process, Output, Storage", "Install, Program, Open, Send", "Import, Process, Output, Store"], correct: 1 },
+            { id: 36, category: "Hardware", q: "What is the CPU responsible for?", a: "Processing all information from programs and executing computer program instructions", choices: ["Storing data permanently", "Processing information and executing instructions", "Displaying graphics", "Connecting to networks"], correct: 1 },
+            { id: 37, category: "Hardware", q: "What are the three parts of a CPU?", a: "Arithmetic Logic Unit (ALU), Control Unit, and Processor Registers", choices: ["Monitor, Keyboard, Mouse", "ALU, Control Unit, Processor Registers", "RAM, ROM, Cache", "Input, Output, Storage"], correct: 1 },
+            { id: 38, category: "Hardware", q: "What does RAM stand for and what does it do?", a: "Random Access Memory - temporarily stores information created by programs for immediate access", choices: ["Read All Memory - permanent storage", "Random Access Memory - temporary storage for immediate access", "Run All Machines - processing", "Remote Access Module - networking"], correct: 1 },
+            { id: 39, category: "Hardware", q: "What is the difference between RAM and ROM?", a: "RAM is volatile (loses data when powered off) while ROM is non-volatile (retains data when powered off)", choices: ["They are the same", "RAM is volatile; ROM is non-volatile", "ROM is faster than RAM", "RAM is permanent; ROM is temporary"], correct: 1 },
+            { id: 40, category: "Hardware", q: "What is the motherboard?", a: "The main circuit board containing both soldered components and sockets for removable components like CPU and RAM", choices: ["A type of processor", "The main circuit board holding CPU, RAM, and other components", "A storage device", "A type of memory"], correct: 1 },
+            { id: 41, category: "Hardware", q: "What is a GPU (Graphics Processing Unit)?", a: "A processor that handles graphic data processing, especially important for 3D rendering", choices: ["General Processing Unit", "A processor for handling graphic data and 3D rendering", "A type of RAM", "A network card"], correct: 1 },
+            { id: 42, category: "Hardware", q: "What is the difference between HDD and SSD?", a: "HDD uses spinning magnetic disks (platters) while SSD uses static flash memory chips with no moving parts", choices: ["They are the same", "HDD uses magnetic platters; SSD uses flash memory", "SSD has moving parts; HDD doesn't", "HDD is faster than SSD"], correct: 1 },
+            { id: 43, category: "Hardware", q: "What is a bit?", a: "The smallest unit of storage, set to either 0 or 1", choices: ["8 bytes", "The smallest storage unit (0 or 1)", "1024 kilobytes", "A type of processor"], correct: 1 },
+            { id: 44, category: "Hardware", q: "What is a byte?", a: "A group of 8 bits, containing enough information to store a single character", choices: ["1 bit", "8 bits - enough to store one character", "1024 bits", "1 megabyte"], correct: 1 },
+            { id: 45, category: "Hardware", q: "How many bytes are in a kilobyte (KB)?", a: "1,024 bytes (2^10)", choices: ["1,000 bytes", "1,024 bytes", "100 bytes", "10,000 bytes"], correct: 1 },
+            { id: 46, category: "Hardware", q: "How many megabytes are in a gigabyte (GB)?", a: "1,024 MB", choices: ["1,000 MB", "1,024 MB", "100 MB", "10,000 MB"], correct: 1 },
+            { id: 47, category: "Hardware", q: "What characterized first-generation computers (1946-1959)?", a: "Vacuum tubes for circuitry and magnetic drums for memory; large, expensive, generated excessive heat", choices: ["Microprocessors", "Vacuum tubes and magnetic drums", "Integrated circuits", "Transistors"], correct: 1 },
+            { id: 48, category: "Hardware", q: "What characterized second-generation computers (1959-1965)?", a: "Transistors replaced vacuum tubes; smaller, more reliable, used assembly and high-level languages", choices: ["Vacuum tubes", "Transistors replacing vacuum tubes", "Microprocessors", "Cloud computing"], correct: 1 },
+            { id: 49, category: "Hardware", q: "What characterized third-generation computers (1965-1971)?", a: "Integrated circuits on silicon chips; cheaper, faster, smaller; could run multiple applications", choices: ["Vacuum tubes", "Transistors", "Integrated circuits on silicon chips", "Quantum computing"], correct: 2 },
+            { id: 50, category: "Hardware", q: "What characterized fourth-generation computers (1971-present)?", a: "Microprocessors with thousands of integrated circuits on a single chip; personal computers emerged", choices: ["Vacuum tubes", "Transistors", "Basic integrated circuits", "Microprocessors on single chips"], correct: 3 },
+            { id: 51, category: "Hardware", q: "What are the three types of buses in a computer?", a: "Address bus, Data bus, and Control bus", choices: ["Input bus, Output bus, Storage bus", "Address bus, Data bus, Control bus", "Fast bus, Slow bus, Medium bus", "Internal bus, External bus, System bus"], correct: 1 },
+            { id: 52, category: "Hardware", q: "What does the system clock do?", a: "Sends out pulses of electricity at regular intervals that electronic components need to operate; measured in MHz or GHz", choices: ["Displays the time", "Sends electrical pulses for component operation", "Stores the date", "Controls the monitor"], correct: 1 },
+            { id: 53, category: "Hardware", q: "What is an expansion slot?", a: "A socket on the motherboard where expansion cards (graphics, sound, network) can be installed", choices: ["A type of memory", "A socket for installing expansion cards", "A processor type", "A storage device"], correct: 1 },
+            { id: 54, category: "Hardware", q: "What is the keyboard classified as?", a: "An input device - it translates data into a form the computer can understand", choices: ["Output device", "Input device", "Storage device", "Processing device"], correct: 1 },
+            { id: 55, category: "Hardware", q: "What are monitors and printers classified as?", a: "Output devices - they translate information into a form humans can understand", choices: ["Input devices", "Output devices", "Storage devices", "Processing devices"], correct: 1 },
+            { id: 56, category: "Hardware", q: "What is a supercomputer?", a: "The biggest and fastest computers, designed to process huge amounts of data using thousands of interconnected processors", choices: ["A personal computer", "The biggest/fastest computers for processing huge data", "A laptop", "A tablet"], correct: 1 },
+            { id: 57, category: "Hardware", q: "What is a mainframe computer?", a: "A computer designed to support hundreds or thousands of users simultaneously and multiple programs at once", choices: ["A personal laptop", "A computer supporting hundreds/thousands of users simultaneously", "A smartphone", "A tablet"], correct: 1 },
+            { id: 58, category: "Hardware", q: "What is a workstation?", a: "A single-user computer designed for technical or scientific applications with faster processors and more RAM", choices: ["A mainframe", "A single-user computer for technical/scientific work", "A smartphone", "A server"], correct: 1 },
+
+            // Networking
+            { id: 59, category: "Networking", q: "What is a LAN (Local Area Network)?", a: "A network spanning a single building or building complex, connecting devices within the same location", choices: ["A worldwide network", "A network within a single building or complex", "A personal network", "A satellite network"], correct: 1 },
+            { id: 60, category: "Networking", q: "What is a WAN (Wide Area Network)?", a: "A network that reaches across cities, states, or even across the world; the internet is the largest WAN", choices: ["A single room network", "A network spanning cities, states, or worldwide", "A personal network", "A home network"], correct: 1 },
+            { id: 61, category: "Networking", q: "What is a PAN (Personal Area Network)?", a: "A network used for short-range communications within a few feet, like wireless headphones to a smartphone", choices: ["A city-wide network", "A short-range network within a few feet", "A country-wide network", "A building-wide network"], correct: 1 },
+            { id: 62, category: "Networking", q: "What is a bus network topology?", a: "A topology where machines are connected to a common communication line called a bus", choices: ["Machines in a circle", "Machines connected to a common bus line", "One central machine", "Every machine connected to every other"], correct: 1 },
+            { id: 63, category: "Networking", q: "What is a star network topology?", a: "A topology with a single machine serving as a central point to which all others are connected", choices: ["Machines in a line", "One central machine connecting all others", "Machines in a circle", "Random connections"], correct: 1 },
+            { id: 64, category: "Networking", q: "What is a ring network topology?", a: "A topology where devices connect directly to each other as peers in a circular arrangement", choices: ["One central hub", "Devices connected in a circle as peers", "Random connections", "A single line"], correct: 1 },
+            { id: 65, category: "Networking", q: "What is a mesh network topology?", a: "A topology connecting every device to every other device, enabling redundancy", choices: ["One central hub", "Devices in a line", "Every device connected to every other", "A single ring"], correct: 2 },
+            { id: 66, category: "Networking", q: "What is the client/server model?", a: "A model where clients make requests and servers satisfy those requests", choices: ["All devices are equal", "Clients make requests; servers satisfy them", "Only one computer", "No communication between devices"], correct: 1 },
+            { id: 67, category: "Networking", q: "What is peer-to-peer (P2P) networking?", a: "A model where processes both request and provide services to each other, like instant messaging", choices: ["One server, many clients", "Processes both request and provide services", "No communication", "Only servers"], correct: 1 },
+            { id: 68, category: "Networking", q: "What is TCP/IP?", a: "The most popular protocol for network communication, commonly found on the internet and home networks", choices: ["A hardware component", "The most popular network communication protocol", "A type of cable", "A storage format"], correct: 1 },
+            { id: 69, category: "Networking", q: "What is twisted pair cable?", a: "The most widely used transmission media; two insulated copper wires wound around each other", choices: ["A wireless technology", "Two insulated copper wires wound together", "Fiber optic cable", "Coaxial cable"], correct: 1 },
+            { id: 70, category: "Networking", q: "What is the maximum segment length for twisted pair cable?", a: "100 meters (328 feet)", choices: ["50 meters", "100 meters (328 feet)", "500 meters", "1000 meters"], correct: 1 },
+            { id: 71, category: "Networking", q: "What minimum cable category is required for 1 Gbps?", a: "CAT5e", choices: ["CAT3", "CAT5", "CAT5e", "CAT2"], correct: 2 },
+            { id: 72, category: "Networking", q: "What is fiber-optic cable?", a: "Cable using light reflection through a glass or plastic core; can provide up to 26,000 times the bandwidth of twisted pair", choices: ["Copper wire cable", "Cable using light through glass/plastic core", "Wireless transmission", "Coaxial cable"], correct: 1 },
+            { id: 73, category: "Networking", q: "What does a repeater do?", a: "Extends the range of cabling by increasing the strength of the network signal", choices: ["Blocks signals", "Extends cable range by increasing signal strength", "Creates new data", "Deletes network traffic"], correct: 1 },
+            { id: 74, category: "Networking", q: "What does a bridge do in networking?", a: "Connects different types of networks and only bridges messages addressed to devices on the other side", choices: ["Blocks all traffic", "Connects different network types intelligently", "Creates wireless signals", "Stores data"], correct: 1 },
+            { id: 75, category: "Networking", q: "What does a switch do?", a: "Reduces network traffic on LANs by sending messages only to the destination device instead of all devices", choices: ["Increases traffic", "Reduces traffic by sending to destination only", "Creates wireless networks", "Stores files"], correct: 1 },
+            { id: 76, category: "Networking", q: "What does a router do?", a: "Makes the internet possible by forwarding messages between networks using routing tables", choices: ["Stores data", "Forwards messages between networks using routing tables", "Creates cables", "Displays graphics"], correct: 1 },
+            { id: 77, category: "Networking", q: "What are the three tiers of ISPs?", a: "Tier 1 (backbone), Tier 2 (regional), Tier 3 (access ISPs for homes/businesses)", choices: ["Fast, Medium, Slow", "Tier 1 backbone, Tier 2 regional, Tier 3 access", "Big, Medium, Small", "1G, 2G, 3G"], correct: 1 },
+            { id: 78, category: "Networking", q: "What is cluster computing?", a: "Using many independent computers to provide computation comparable to a larger machine", choices: ["One big computer", "Many independent computers working together", "Cloud storage", "Mobile computing"], correct: 1 },
+            { id: 79, category: "Networking", q: "What is grid computing?", a: "A distributed system more loosely coupled than clusters, working together to complete large tasks", choices: ["A single computer", "Loosely coupled systems completing large tasks together", "A type of cable", "A storage system"], correct: 1 },
+            { id: 80, category: "Networking", q: "What is cloud computing?", a: "Large pools of shared computers allocated to clients as needed, like Amazon's EC2", choices: ["Weather prediction", "Shared computers allocated to clients as needed", "Physical servers only", "Personal computers"], correct: 1 },
+
+            // Internet & Web
+            { id: 81, category: "Internet", q: "What does DNS stand for and what does it do?", a: "Domain Name System - translates human-readable domain names into IP addresses", choices: ["Data Network System", "Domain Name System - translates names to IP addresses", "Digital Network Service", "Data Number System"], correct: 1 },
+            { id: 82, category: "Internet", q: "What is an IP address?", a: "A unique identifier assigned to each machine on a network; IPv4 uses 32-bit, IPv6 uses 128-bit", choices: ["A website name", "A unique network identifier for machines", "A password", "A username"], correct: 1 },
+            { id: 83, category: "Internet", q: "How are IPv4 addresses written?", a: "In dotted decimal notation with bytes separated by periods (e.g., 192.207.177.103)", choices: ["In words", "In dotted decimal notation like 192.207.177.103", "In binary only", "In hexadecimal only"], correct: 1 },
+            { id: 84, category: "Internet", q: "What is a URL?", a: "Uniform Resource Locator - the unique address of a web document including protocol, domain, and path", choices: ["A type of virus", "Uniform Resource Locator - unique web address", "A programming language", "A hardware component"], correct: 1 },
+            { id: 85, category: "Internet", q: "What does HTTP stand for?", a: "HyperText Transfer Protocol - the protocol for transferring hypertext over networks", choices: ["High Tech Transfer Protocol", "HyperText Transfer Protocol", "Home Text Transfer Program", "Hardware Transfer Protocol"], correct: 1 },
+            { id: 86, category: "Internet", q: "What is HTML?", a: "HyperText Markup Language - a way of encoding documents with tags describing appearance and links", choices: ["A programming language", "HyperText Markup Language for encoding web documents", "A database system", "A network protocol"], correct: 1 },
+            { id: 87, category: "Internet", q: "Who invented the World Wide Web?", a: "Tim Berners-Lee in the late 1980s", choices: ["Bill Gates", "Steve Jobs", "Tim Berners-Lee", "Mark Zuckerberg"], correct: 2 },
+            { id: 88, category: "Internet", q: "What is VoIP?", a: "Voice over Internet Protocol - used for voice communication over the internet", choices: ["Video over IP", "Voice over Internet Protocol", "Virtual Office IP", "Visual Output Internet Protocol"], correct: 1 },
+            { id: 89, category: "Internet", q: "What is streaming?", a: "Transporting audio and video data across the internet in near real-time", choices: ["Downloading files", "Transporting audio/video in near real-time", "Sending emails", "Writing code"], correct: 1 },
+            { id: 90, category: "Internet", q: "What is ICANN responsible for?", a: "Internet Corporation for Assigned Names and Numbers - coordinates internet operations and awards IP address blocks to ISPs", choices: ["Building hardware", "Coordinating internet operations and IP addresses", "Creating websites", "Selling computers"], correct: 1 },
+            { id: 91, category: "Internet", q: "What does the TLD '.edu' indicate?", a: "An educational institution", choices: ["A commercial business", "An educational institution", "A government agency", "A nonprofit organization"], correct: 1 },
+            { id: 92, category: "Internet", q: "What does the TLD '.gov' indicate?", a: "A government agency", choices: ["An educational institution", "A commercial business", "A government agency", "A nonprofit organization"], correct: 2 },
+
+            // Security
+            { id: 93, category: "Security", q: "What is malware?", a: "Malicious software intentionally designed to cause damage to a computer, server, client, or network", choices: ["Helpful software", "Malicious software designed to cause damage", "Hardware components", "Network cables"], correct: 1 },
+            { id: 94, category: "Security", q: "What is a computer virus?", a: "Software that infects a computer by inserting itself into existing programs and executes when the host program runs", choices: ["A helpful update", "Software that inserts itself into programs to cause harm", "A type of hardware", "A network connection"], correct: 1 },
+            { id: 95, category: "Security", q: "What is a worm?", a: "An autonomous program that forwards copies of itself to other machines in a network", choices: ["A helpful program", "An autonomous self-replicating program", "A type of cable", "A storage device"], correct: 1 },
+            { id: 96, category: "Security", q: "What is spyware?", a: "Malicious software that resides on a computer, collecting information and reporting back to its creator", choices: ["Antivirus software", "Software that collects and reports information secretly", "A firewall", "A helpful tool"], correct: 1 },
+            { id: 97, category: "Security", q: "What is phishing?", a: "A technique to obtain private information by posing as a legitimate business and asking for it", choices: ["Fishing for fun", "Posing as legitimate to obtain private information", "Network troubleshooting", "Hardware repair"], correct: 1 },
+            { id: 98, category: "Security", q: "What is a denial-of-service (DoS) attack?", a: "The process of overloading a computer with messages, suffocating network resources", choices: ["A helpful service", "Overloading a computer to suffocate resources", "A software update", "A backup process"], correct: 1 },
+            { id: 99, category: "Security", q: "What is a man-in-the-middle (MITM) attack?", a: "An attack where the attacker intercepts data traveling to or from a victim's device", choices: ["A helpful feature", "Intercepting data between victim and destination", "A software update", "A backup method"], correct: 1 },
+            { id: 100, category: "Security", q: "What is a brute force attack?", a: "An attack using all possible character combinations to learn a user's password", choices: ["A quick login", "Trying all possible combinations to crack a password", "A helpful tool", "A backup method"], correct: 1 },
+            { id: 101, category: "Security", q: "What is a dictionary attack?", a: "An attack trying hundreds or thousands of words from a dictionary file to identify passwords", choices: ["Reading a dictionary", "Using dictionary words to crack passwords", "Writing definitions", "Learning vocabulary"], correct: 1 },
+            { id: 102, category: "Security", q: "What is a firewall?", a: "A program that filters traffic passing through a point in the network, blocking suspicious messages", choices: ["A physical wall", "Software that filters and blocks suspicious network traffic", "A type of virus", "A storage device"], correct: 1 },
+            { id: 103, category: "Security", q: "What is a proxy server?", a: "Software that acts as an intermediary between client and server to shield the client from adverse actions", choices: ["A storage server", "An intermediary protecting clients from server threats", "A gaming server", "A mail server"], correct: 1 },
+            { id: 104, category: "Security", q: "What is encryption?", a: "Encoding information to keep it confidential even if stolen", choices: ["Deleting data", "Encoding information to keep it confidential", "Copying files", "Sending emails"], correct: 1 },
+            { id: 105, category: "Security", q: "What is network auditing software?", a: "Software that monitors network behaviors looking for anomalies to proactively mitigate unwanted occurrences", choices: ["Game software", "Software monitoring networks for anomalies", "Word processing", "Spreadsheet software"], correct: 1 },
+
+            // Operating Systems
+            { id: 106, category: "Operating Systems", q: "What is an operating system?", a: "Software that manages computer hardware and software resources and provides common services for programs", choices: ["A type of hardware", "Software managing hardware/software resources", "A network cable", "A storage device"], correct: 1 },
+            { id: 107, category: "Operating Systems", q: "What are the four categories of operating systems?", a: "Network OS, Server OS, Mobile OS, and Personal Computer OS", choices: ["Fast, Slow, Medium, Quick", "Network, Server, Mobile, Personal Computer", "Big, Small, Medium, Tiny", "Red, Blue, Green, Yellow"], correct: 1 },
+            { id: 108, category: "Operating Systems", q: "What is Windows?", a: "A closed-source operating system developed by Microsoft with the largest market share for servers and PCs", choices: ["Open-source OS", "Closed-source OS by Microsoft with largest market share", "A Linux distribution", "A mobile-only OS"], correct: 1 },
+            { id: 109, category: "Operating Systems", q: "What is macOS?", a: "A closed-source operating system developed by Apple, designed to run only on Apple hardware", choices: ["Open-source OS", "Closed-source OS by Apple for Apple hardware", "A Linux distribution", "A Windows variant"], correct: 1 },
+            { id: 110, category: "Operating Systems", q: "What is Linux?", a: "An open-source operating system that can be modified and distributed by anyone; has many distributions (flavors)", choices: ["Closed-source OS", "Open-source OS with many distributions", "Only for servers", "Made by Microsoft"], correct: 1 },
+            { id: 111, category: "Operating Systems", q: "What is Android?", a: "An open-source mobile operating system allowing OEMs to customize it; has the largest mobile user base", choices: ["A desktop OS", "Open-source mobile OS with largest user base", "A server OS", "Made by Apple"], correct: 1 },
+            { id: 112, category: "Operating Systems", q: "What is iOS?", a: "Apple's proprietary mobile operating system designed for Apple hardware only", choices: ["An open-source OS", "Apple's proprietary mobile OS for Apple devices", "A desktop OS", "Made by Google"], correct: 1 },
+            { id: 113, category: "Operating Systems", q: "What is the kernel?", a: "The internal part of an operating system containing components that perform basic functions", choices: ["A type of corn", "The internal core of an OS performing basic functions", "A network cable", "A storage device"], correct: 1 },
+            { id: 114, category: "Operating Systems", q: "What is a file manager?", a: "An OS component that coordinates storage, maintains file records, controls access, and manages available space", choices: ["A game", "An OS component managing files and storage", "A browser", "A media player"], correct: 1 },
+            { id: 115, category: "Operating Systems", q: "What is utility software?", a: "Software that extends the capabilities of an operating system, like compression or network communication tools", choices: ["Games", "Software extending OS capabilities", "Word processors", "Spreadsheets"], correct: 1 },
+            { id: 116, category: "Operating Systems", q: "What is the difference between CLI and GUI?", a: "CLI (Command Line Interface) uses text commands; GUI (Graphical User Interface) uses visual elements and input devices", choices: ["They are the same", "CLI uses text; GUI uses visual elements", "GUI uses text; CLI uses graphics", "Neither works"], correct: 1 },
+            { id: 117, category: "Operating Systems", q: "What is a device driver?", a: "Software that communicates with controllers or peripheral devices, translating generic requests into technical steps", choices: ["A steering wheel", "Software enabling communication with peripherals", "A type of cable", "A network port"], correct: 1 },
+            { id: 118, category: "Operating Systems", q: "What is virtual memory?", a: "Additional memory space created in secondary memory by paging when more main memory is needed", choices: ["Physical RAM", "Additional memory created by paging to secondary storage", "A hard drive", "A USB drive"], correct: 1 },
+            { id: 119, category: "Operating Systems", q: "What is paging?", a: "A technique where the OS rotates programs and data between primary and secondary memory", choices: ["Reading pages", "Rotating programs between primary and secondary memory", "Printing documents", "Sending emails"], correct: 1 },
+            { id: 120, category: "Operating Systems", q: "In Windows, what character separates directory paths?", a: "Backward slash (\\)", choices: ["Forward slash (/)", "Backward slash (\\)", "Colon (:)", "Period (.)"], correct: 1 },
+            { id: 121, category: "Operating Systems", q: "In Linux, what character separates directory paths?", a: "Forward slash (/)", choices: ["Backward slash (\\)", "Forward slash (/)", "Colon (:)", "Period (.)"], correct: 1 },
+            { id: 122, category: "Operating Systems", q: "Is Linux case-sensitive for file names?", a: "Yes, Linux is case-sensitive", choices: ["No", "Yes, Linux is case-sensitive", "Sometimes", "Only for folders"], correct: 1 },
+
+            // Programming
+            { id: 123, category: "Programming", q: "What is source code?", a: "Computer programs written in high-level language that humans can understand", choices: ["Binary code", "Human-readable code in high-level languages", "Machine language", "Hardware instructions"], correct: 1 },
+            { id: 124, category: "Programming", q: "What is machine code?", a: "Programs written in binary (0s and 1s) that computers can directly execute", choices: ["Human-readable code", "Binary code (0s and 1s) computers execute directly", "High-level language", "Natural language"], correct: 1 },
+            { id: 125, category: "Programming", q: "What does a compiler do?", a: "Translates entire source code into machine language at once, checking for errors before translation", choices: ["Runs code line by line", "Translates entire source code to machine language at once", "Only finds errors", "Only runs programs"], correct: 1 },
+            { id: 126, category: "Programming", q: "What does an interpreter do?", a: "Translates and executes source code into machine language one line at a time", choices: ["Translates all at once", "Translates and executes code one line at a time", "Only finds errors", "Only stores code"], correct: 1 },
+            { id: 127, category: "Programming", q: "Which languages use compilers?", a: "C, C++, C#, Java, Go/GoLang, Visual Basic .NET", choices: ["Python, JavaScript, PHP", "C, C++, C#, Java, Go", "Only JavaScript", "Only Python"], correct: 1 },
+            { id: 128, category: "Programming", q: "Which languages use interpreters?", a: "Python, Perl, JavaScript, PHP, TCL, Ruby", choices: ["C, C++, Java", "Python, Perl, JavaScript, PHP", "Only C", "Only Java"], correct: 1 },
+            { id: 129, category: "Programming", q: "What is an algorithm?", a: "A step-by-step formula or set of instructions outlining how to execute a task", choices: ["A type of computer", "Step-by-step instructions for executing a task", "A programming language", "A hardware component"], correct: 1 },
+            { id: 130, category: "Programming", q: "What is debugging?", a: "The process of finding and fixing errors in code", choices: ["Adding bugs", "Finding and fixing code errors", "Writing new code", "Deleting files"], correct: 1 },
+
+            // Licensing & IP
+            { id: 131, category: "Licensing", q: "What is open-source software?", a: "Software that can be modified and distributed by anyone, with accessible source code", choices: ["Software you can't modify", "Software anyone can modify and distribute", "Paid software only", "Hardware only"], correct: 1 },
+            { id: 132, category: "Licensing", q: "What is closed-source (proprietary) software?", a: "Software where only the owning company can modify the code", choices: ["Free software", "Software only the owner can modify", "Open-source", "Public domain"], correct: 1 },
+            { id: 133, category: "Licensing", q: "What is shareware?", a: "An application installed as a trial limited by time and/or functionality", choices: ["Free software", "Trial software with time/feature limits", "Open-source", "Malware"], correct: 1 },
+            { id: 134, category: "Licensing", q: "What is freeware?", a: "Free software protected by EULA and copyright laws", choices: ["Paid software", "Free software with EULA protection", "Malware", "Hardware"], correct: 1 },
+            { id: 135, category: "Licensing", q: "What is public domain software?", a: "Software with no EULA and no intellectual property protections, available for anyone to use", choices: ["Protected software", "Software with no EULA or IP protections", "Paid software", "Illegal software"], correct: 1 },
+            { id: 136, category: "Licensing", q: "What is a EULA?", a: "End-User License Agreement - defines terms and conditions for legally using software", choices: ["A virus", "End-User License Agreement defining usage terms", "A hardware component", "A programming language"], correct: 1 },
+            { id: 137, category: "Licensing", q: "What is copyright?", a: "Legal protection giving an author the ability to prevent unauthorized duplication for at least 35 years", choices: ["Permission to copy", "Legal protection against unauthorized duplication", "A type of software", "A network protocol"], correct: 1 },
+            { id: 138, category: "Licensing", q: "What does a patent protect in software?", a: "Unique methods, algorithms, or processes embedded within software applications", choices: ["All code", "Unique methods, algorithms, or processes", "All ideas", "Hardware only"], correct: 1 },
+            { id: 139, category: "Licensing", q: "What is bespoke software?", a: "Custom-made software specifically designed and developed for an organization", choices: ["Off-the-shelf software", "Custom software made for a specific organization", "Free software", "Malware"], correct: 1 },
+            { id: 140, category: "Licensing", q: "What is off-the-shelf software?", a: "Software providing general features useful to a broad range of users, not customizable", choices: ["Custom software", "General software for broad use, not customizable", "Free software", "Malware"], correct: 1 },
+
+            // Databases
+            { id: 141, category: "Databases", q: "What is a database?", a: "An organized collection of data stored and maintained by an organization, integrated across systems", choices: ["A single file", "An organized collection of integrated data", "A programming language", "A type of cable"], correct: 1 },
+            { id: 142, category: "Databases", q: "What is a DBMS?", a: "Database Management System - software that manages the database and handles queries from applications", choices: ["A type of database", "Software managing databases and handling queries", "A programming language", "A network protocol"], correct: 1 },
+            { id: 143, category: "Databases", q: "What is a record in a database?", a: "A row in a table containing related information about a single entity", choices: ["A column", "A row containing related information", "A table", "A database"], correct: 1 },
+            { id: 144, category: "Databases", q: "What is a field in a database?", a: "A column containing a single piece of data about the subject of a record", choices: ["A row", "A column with a single piece of data", "A table", "A database"], correct: 1 },
+            { id: 145, category: "Databases", q: "What is a primary key?", a: "A unique identifier for each record in a table that creates relationships among tables", choices: ["Any field", "A unique identifier creating table relationships", "A foreign key", "A password"], correct: 1 },
+            { id: 146, category: "Databases", q: "What is a foreign key?", a: "A field in one table that refers to the primary key in another table, creating a relationship", choices: ["The main key", "A field referencing another table's primary key", "A password", "An encryption key"], correct: 1 },
+            { id: 147, category: "Databases", q: "What is a flat-file database?", a: "A database storing data in a plain text file with one record per line, using delimiters", choices: ["A complex database", "A plain text database with one record per line", "A 3D database", "A multimedia database"], correct: 1 },
+            { id: 148, category: "Databases", q: "What is a hierarchical database?", a: "A database with data organized in a tree structure with parent-child relationships", choices: ["A flat database", "A tree-structured database with parent-child relationships", "A random database", "A network database"], correct: 1 },
+            { id: 149, category: "Databases", q: "What is a relational database?", a: "A database containing tables that can be joined together using primary and foreign keys", choices: ["A flat file", "Tables joined using primary and foreign keys", "A tree structure", "Random data"], correct: 1 },
+            { id: 150, category: "Databases", q: "What is SQL?", a: "Structured Query Language - code used to query, manipulate, and manage relational databases", choices: ["A programming language for apps", "Language for querying and managing databases", "A network protocol", "A type of cable"], correct: 1 },
+            { id: 151, category: "Databases", q: "What does SELECT * FROM Patient mean in SQL?", a: "Retrieve all fields from all records in the Patient table", choices: ["Delete all patients", "Retrieve all data from Patient table", "Add a new patient", "Update patients"], correct: 1 },
+            { id: 152, category: "Databases", q: "What does the WHERE clause do in SQL?", a: "Specifies conditions for filtering which records to return", choices: ["Deletes records", "Filters records based on conditions", "Creates tables", "Joins tables"], correct: 1 },
+            { id: 153, category: "Databases", q: "What is NoSQL?", a: "Not Only SQL - databases accommodating various data models including key-value, document, and graph formats", choices: ["No databases", "Databases with various models beyond traditional SQL", "A type of SQL", "A programming error"], correct: 1 },
+            { id: 154, category: "Databases", q: "What is a cloud database?", a: "A database optimized for cloud environments with scalability and high availability", choices: ["A weather database", "A database optimized for cloud with scalability", "A local database", "A personal database"], correct: 1 },
+            { id: 155, category: "Databases", q: "What is a data lake?", a: "A system storing data in raw format, including both structured and unstructured enterprise data", choices: ["A swimming pool", "Storage for raw structured and unstructured data", "A small database", "A backup system"], correct: 1 },
+            { id: 156, category: "Databases", q: "What are DBA responsibilities?", a: "Database security, tuning, high availability, business continuity, backup/recovery, reporting, and development", choices: ["Only backups", "Security, tuning, availability, backup, reporting, development", "Only security", "Only reporting"], correct: 1 },
+
+            // Project Management
+            { id: 157, category: "Project Management", q: "What is a project?", a: "A purpose-driven event with a defined start and finish", choices: ["Ongoing work", "A purpose-driven event with defined start and finish", "Daily tasks", "Routine maintenance"], correct: 1 },
+            { id: 158, category: "Project Management", q: "What are the four phases of the project management life cycle?", a: "Initiation, Planning, Execution, and Closure", choices: ["Start, Middle, End, Review", "Initiation, Planning, Execution, Closure", "Think, Do, Check, Done", "Plan, Build, Test, Deploy"], correct: 1 },
+            { id: 159, category: "Project Management", q: "What happens during project initiation?", a: "The project is broadly defined with a business case, feasibility study, and project charter", choices: ["Coding begins", "Project is defined with business case and charter", "Testing starts", "Project ends"], correct: 1 },
+            { id: 160, category: "Project Management", q: "What happens during project planning?", a: "Goals are set, scope defined, and project management plan created with resources, cost, and time estimates", choices: ["Coding", "Goals, scope, and plan created with estimates", "Testing", "Deployment"], correct: 1 },
+            { id: 161, category: "Project Management", q: "What does SMART stand for in goal setting?", a: "Specific, Measurable, Attainable, Realistic, Timely", choices: ["Simple, Medium, Average, Regular, Typical", "Specific, Measurable, Attainable, Realistic, Timely", "Start, Manage, Act, Review, Test", "Strong, Modern, Advanced, Robust, Technical"], correct: 1 },
+            { id: 162, category: "Project Management", q: "What is scope creep?", a: "Uncontrolled change of a project's scope, typically adding tasks and unplanned costs", choices: ["A good thing", "Uncontrolled scope changes adding tasks and costs", "Project completion", "Budget savings"], correct: 1 },
+            { id: 163, category: "Project Management", q: "What is a work breakdown structure (WBS)?", a: "A document breaking the project into manageable segments for the team", choices: ["A budget", "Breaking project into manageable segments", "A schedule", "A team roster"], correct: 1 },
+            { id: 164, category: "Project Management", q: "What are key performance indicators (KPIs)?", a: "Metrics used to monitor project progress and determine if milestones are being met", choices: ["Random numbers", "Metrics monitoring project progress", "Employee ratings", "Sales figures only"], correct: 1 },
+
+            // SDLC
+            { id: 165, category: "SDLC", q: "What is SDLC?", a: "Software Development Life Cycle - a framework for developing software through defined phases", choices: ["A programming language", "Software Development Life Cycle framework", "A database system", "A network protocol"], correct: 1 },
+            { id: 166, category: "SDLC", q: "What is the waterfall model?", a: "A sequential development process where each phase must be completed before moving to the next", choices: ["Iterative development", "Sequential development completing phases in order", "Random development", "No planning"], correct: 1 },
+            { id: 167, category: "SDLC", q: "What is the incremental model?", a: "A model where the system is constructed in increments, with each version adding more features", choices: ["All at once", "System built in increments adding features", "No development", "Random coding"], correct: 1 },
+            { id: 168, category: "SDLC", q: "What is prototyping?", a: "Building and evaluating basic versions of a proposed system before full development", choices: ["Final production", "Building and evaluating basic versions first", "No testing", "Random coding"], correct: 1 },
+            { id: 169, category: "SDLC", q: "What is Agile methodology?", a: "System development with incremental implementations, responding to rapidly changing requirements", choices: ["Slow development", "Incremental development responding to changing requirements", "No documentation", "Waterfall only"], correct: 1 },
+            { id: 170, category: "SDLC", q: "What is Scrum?", a: "An Agile methodology using sprints, daily scrums, and prioritized wish lists", choices: ["Waterfall", "Agile method with sprints and daily scrums", "No planning", "Random development"], correct: 1 },
+            { id: 171, category: "SDLC", q: "What is requirements analysis?", a: "Determining what services the system will provide and how users will interact with it", choices: ["Writing code", "Determining system services and user interaction", "Testing", "Deployment"], correct: 1 },
+            { id: 172, category: "SDLC", q: "What is the SRS?", a: "System Requirement Specification - a written agreement recording system requirements to guide development", choices: ["A programming language", "System Requirement Specification document", "A testing tool", "A database"], correct: 1 },
+
+            // Testing
+            { id: 173, category: "Testing", q: "What is alpha testing?", a: "First stage testing where developers and/or internal UX team test a preliminary version", choices: ["Final testing", "First stage internal testing", "User testing", "No testing"], correct: 1 },
+            { id: 174, category: "Testing", q: "What is beta testing?", a: "Second stage where end users test the system before final release, also called pilot testing", choices: ["First testing", "End user testing before final release", "Internal testing", "No testing"], correct: 1 },
+            { id: 175, category: "Testing", q: "What is user acceptance testing?", a: "Final stage where users test the system in an operational setting to ensure business objectives are met", choices: ["First testing", "Final operational testing for business objectives", "Developer testing", "No testing"], correct: 1 },
+            { id: 176, category: "Testing", q: "What is white-box testing?", a: "Testing based on knowledge of a system's internal components, also called glass-box testing", choices: ["No knowledge needed", "Testing based on internal component knowledge", "User testing only", "Random testing"], correct: 1 },
+            { id: 177, category: "Testing", q: "What is black-box testing?", a: "Testing focused on user experience without knowledge of the system's internal structure", choices: ["Internal testing", "Testing focused on UX without internal knowledge", "Developer testing", "Code review"], correct: 1 },
+            { id: 178, category: "Testing", q: "What is the Pareto principle in testing?", a: "The theory that 80% of errors come from 20% of the system", choices: ["All code has bugs", "80% of errors come from 20% of the system", "No bugs exist", "Testing is unnecessary"], correct: 1 },
+
+            // System Maintenance
+            { id: 179, category: "Maintenance", q: "What is corrective maintenance?", a: "Maintenance to remove errors and ensure system functionality", choices: ["Adding features", "Removing errors for functionality", "Updating looks", "No changes"], correct: 1 },
+            { id: 180, category: "Maintenance", q: "What is adaptive maintenance?", a: "Maintenance performed when organizational changes affect system requirements", choices: ["Fixing bugs", "Changes due to organizational requirement changes", "Adding features", "Removing features"], correct: 1 },
+            { id: 181, category: "Maintenance", q: "What is perfective maintenance?", a: "Maintenance when new components are added or existing components improved for better performance", choices: ["Fixing bugs", "Adding or improving components for performance", "Removing features", "No changes"], correct: 1 },
+            { id: 182, category: "Maintenance", q: "What is preventive maintenance?", a: "Changes to increase system life span, including restructuring, optimizing code, and updating documentation", choices: ["Fixing bugs", "Changes to increase system life span", "Adding features", "Emergency fixes"], correct: 1 },
+
+            // IT Governance & Organization
+            { id: 183, category: "IT Governance", q: "What is IT governance?", a: "The system of processes ensuring effective and efficient IT use to achieve business goals", choices: ["Government regulations", "Processes ensuring effective IT use for business goals", "IT laws", "Programming rules"], correct: 1 },
+            { id: 184, category: "IT Governance", q: "What are the five IT function domains?", a: "Communication, data collection/management, information security, customer relationship management, process improvement", choices: ["Only security", "Communication, data, security, CRM, process improvement", "Only communication", "Only data"], correct: 1 },
+            { id: 185, category: "IT Governance", q: "What is outsourcing?", a: "Using resources and skills from an external organization for IT functions", choices: ["Internal work", "Using external organization resources", "No work done", "Only coding"], correct: 1 },
+            { id: 186, category: "IT Governance", q: "What is insourcing?", a: "Assigning a project to employees within the organization", choices: ["External work", "Assigning projects to internal employees", "No work done", "Contracting"], correct: 1 },
+            { id: 187, category: "IT Governance", q: "What is offshoring?", a: "Outsourcing outside country lines", choices: ["Local outsourcing", "Outsourcing outside the country", "Internal work", "No outsourcing"], correct: 1 },
+            { id: 188, category: "IT Governance", q: "What is nearshoring?", a: "Offshoring to countries in a closer time zone or with similar economic structure", choices: ["Far outsourcing", "Offshoring to nearby countries", "Internal work", "No outsourcing"], correct: 1 },
+
+            // Software Types
+            { id: 189, category: "Software", q: "What is system software?", a: "General-purpose software used to operate computer hardware and provide a platform for application software", choices: ["Games", "Software to operate hardware and support applications", "Word processors", "Spreadsheets"], correct: 1 },
+            { id: 190, category: "Software", q: "What is application software?", a: "Specific-purpose software used to perform specific tasks like word processing or email", choices: ["Operating systems", "Software for specific tasks like word processing", "Drivers", "BIOS"], correct: 1 },
+            { id: 191, category: "Software", q: "What is productivity software?", a: "Software used to complete daily tasks such as writing documents, presentations, and managing data", choices: ["Games", "Software for documents, presentations, data management", "Viruses", "System tools"], correct: 1 },
+            { id: 192, category: "Software", q: "What is collaboration software?", a: "Software helping people communicate and work together, and computers share information", choices: ["Games", "Software for communication and collaboration", "Viruses", "System tools"], correct: 1 },
+            { id: 193, category: "Software", q: "Give examples of word processing software.", a: "Microsoft Word, Google Docs, OpenOffice Writer", choices: ["Excel, Sheets", "Word, Google Docs, OpenOffice Writer", "PowerPoint, Slides", "Access, MySQL"], correct: 1 },
+            { id: 194, category: "Software", q: "Give examples of spreadsheet software.", a: "Microsoft Excel, Google Sheets, OpenOffice Calc", choices: ["Word, Docs", "Excel, Google Sheets, OpenOffice Calc", "PowerPoint, Slides", "Access, MySQL"], correct: 1 },
+            { id: 195, category: "Software", q: "Give examples of presentation software.", a: "Microsoft PowerPoint, Google Slides, OpenOffice Impress", choices: ["Word, Docs", "Excel, Sheets", "PowerPoint, Google Slides, OpenOffice Impress", "Access, MySQL"], correct: 2 },
+
+            // More questions from embedded quizzes
+            { id: 196, category: "IT Roles", q: "Which role is responsible for maintaining websites?", a: "Web Administrator", choices: ["Data analyst", "Network engineer", "Cloud architect", "Web administrator"], correct: 3 },
+            { id: 197, category: "Databases", q: "What is the collection of names, addresses, and account balances called?", a: "A database", choices: ["A file", "A key field", "A database", "A record"], correct: 2 },
+            { id: 198, category: "Databases", q: "What is a tree-like structure of records in a database called?", a: "Hierarchical database structure", choices: ["Hierarchical database structure", "Flat file", "Field", "Relational database structure"], correct: 0 },
+            { id: 199, category: "Hardware", q: "What is the role of the CPU in a computing system?", a: "Performing instructions of computer programs", choices: ["Permanently storing all data", "Performing instructions of computer programs", "Distributing signals", "Temporary storage"], correct: 1 },
+            { id: 200, category: "Networking", q: "Which network topology best handles downed links without losing connectivity?", a: "Mesh", choices: ["Bus", "Ring", "Mesh", "Star"], correct: 2 },
+            { id: 201, category: "Networking", q: "Which type of network interconnects devices in a single office or building?", a: "LAN (Local Area Network)", choices: ["WAN", "PAN", "SAN", "LAN"], correct: 3 },
+            { id: 202, category: "Internet", q: "IP addresses are traditionally written in what notation?", a: "Dotted decimal notation", choices: ["Encrypted", "Binary", "Mnemonic", "Dotted decimal"], correct: 3 },
+            { id: 203, category: "Internet", q: "What tool is used to encode a document while focusing on appearance?", a: "HTML", choices: ["HTML", "HTTP", "DNS", "URL"], correct: 0 },
+            { id: 204, category: "Internet", q: "What is the primary function of a DNS server?", a: "Translating domain names to IP addresses", choices: ["Translating domain names to IP addresses", "Ensuring secure data transmission", "Managing email communication", "Directing network traffic"], correct: 0 },
+            { id: 205, category: "Security", q: "Which technique obtains sensitive information by pretending to be trustworthy?", a: "Phishing", choices: ["Buffer overflow", "Black hat", "Packet sniffing", "Phishing"], correct: 3 },
+            { id: 206, category: "Security", q: "What role does a firewall play?", a: "Filtering incoming and outgoing network traffic for security purposes", choices: ["Managing local network traffic", "Filtering network traffic for security", "Directing data packets", "Converting signals"], correct: 1 },
+            { id: 207, category: "Hardware", q: "Which component converts analog signals to digital signals?", a: "Modem", choices: ["Modem", "Router", "Switch", "Firewall"], correct: 0 },
+            { id: 208, category: "Operating Systems", q: "Where are the basic functions of the operating system located?", a: "Kernel", choices: ["Applications", "Kernel", "Utility software", "File manager"], correct: 1 },
+            { id: 209, category: "Operating Systems", q: "Which OS is known for open-source nature and server use?", a: "Linux", choices: ["Windows", "Linux", "macOS", "Android"], correct: 1 },
+            { id: 210, category: "Programming", q: "What is the main difference between compiler and interpreter?", a: "Compiler translates all at once; interpreter translates line by line", choices: ["Compiler to machine code, interpreter to high-level", "Interpreter line by line, compiler all at once to executable", "Compiler for web, interpreter for software", "Compiler is faster"], correct: 1 },
+            { id: 211, category: "Programming", q: "What is the function of a compiler?", a: "To convert high-level language code into machine code for execution", choices: ["Convert high-level to machine code", "Execute source code directly", "Debug and test code", "Interpret code line-by-line"], correct: 0 },
+            { id: 212, category: "Licensing", q: "What purpose does a EULA serve?", a: "To grant permission for software use and define terms of use", choices: ["Guide installation steps", "Troubleshoot issues", "Grant permission and define usage terms", "Offer technical support"], correct: 2 },
+            { id: 213, category: "Databases", q: "What fundamental structure organizes data in a relational database?", a: "Tables", choices: ["Tables", "Arrays", "Loops", "Pointers"], correct: 0 },
+            { id: 214, category: "Databases", q: "What characterizes NoSQL database organization?", a: "Flexibility in handling unstructured and semi-structured data", choices: ["Strict fixed schema", "Flexibility with unstructured data", "SQL queries only", "Relational models only"], correct: 1 },
+            { id: 215, category: "SDLC", q: "Which phase organizes project scope, objectives, and deliverables?", a: "Planning", choices: ["Initiating", "Planning", "Execution", "Closing"], correct: 1 },
+            { id: 216, category: "Data & Information", q: "Most stored data today is what type?", a: "Unstructured (text, blogs, tweets, audio)", choices: ["Structured", "Unstructured", "Semi-structured", "Organized"], correct: 1 },
+            { id: 217, category: "Hardware", q: "What defines output in computing?", a: "Processed or generated information produced by a system", choices: ["Data awaiting processing", "Information stored for later", "Processed information produced by system", "Data input into system"], correct: 2 },
+            { id: 218, category: "Hardware", q: "Which category do monitors and printers belong to?", a: "Output", choices: ["Input", "Output", "Temporary memory", "Storage"], correct: 1 },
+            { id: 219, category: "Hardware", q: "Which category do barcode scanners and webcams belong to?", a: "Input", choices: ["Input", "Output", "Temporary memory", "Storage"], correct: 0 },
+            { id: 220, category: "Software", q: "Which software category performs system maintenance like disk cleaning?", a: "Utility Software", choices: ["Utility Software", "Security Software", "Firmware", "System Software"], correct: 0 }
+        ];
+
+        // State management
+        let state = {
+            mastered: [],
+            streaks: {},
+            totalCorrect: 0,
+            totalAnswered: 0,
+            currentQuestion: null,
+            currentMode: 'menu', // menu, practice, exam
+            examQuestions: [],
+            examIndex: 0,
+            examCorrect: 0,
+            claimedKnowledge: false
+        };
+
+        // Load state from localStorage
+        function loadState() {
+            const saved = localStorage.getItem('wgu-quiz-state');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state.mastered = parsed.mastered || [];
+                state.streaks = parsed.streaks || {};
+                state.totalCorrect = parsed.totalCorrect || 0;
+                state.totalAnswered = parsed.totalAnswered || 0;
+            }
+            updateStats();
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            localStorage.setItem('wgu-quiz-state', JSON.stringify({
+                mastered: state.mastered,
+                streaks: state.streaks,
+                totalCorrect: state.totalCorrect,
+                totalAnswered: state.totalAnswered
+            }));
+        }
+
+        // Update stats display
+        function updateStats() {
+            document.getElementById('total-count').textContent = questions.length;
+            document.getElementById('mastered-count').textContent = state.mastered.length;
+            document.getElementById('remaining-count').textContent = questions.length - state.mastered.length;
+            const accuracy = state.totalAnswered > 0
+                ? Math.round((state.totalCorrect / state.totalAnswered) * 100)
+                : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        // Show/hide screens
+        function showScreen(screenId) {
+            ['menu-screen', 'quiz-screen', 'exam-screen', 'result-screen', 'progress-screen'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // Back to menu
+        function backToMenu() {
+            state.currentMode = 'menu';
+            showScreen('menu-screen');
+            updateStats();
+        }
+
+        // Get random unmastered question
+        function getRandomQuestion() {
+            const unmastered = questions.filter(q => !state.mastered.includes(q.id));
+            if (unmastered.length === 0) return null;
+            return unmastered[Math.floor(Math.random() * unmastered.length)];
+        }
+
+        // Start practice mode
+        function startPractice() {
+            const remaining = questions.filter(q => !state.mastered.includes(q.id));
+            if (remaining.length === 0) {
+                alert('Congratulations! You have mastered all questions!');
+                return;
+            }
+            state.currentMode = 'practice';
+            showScreen('quiz-screen');
+            loadNextQuestion();
+        }
+
+        // Load next question
+        function loadNextQuestion() {
+            state.currentQuestion = getRandomQuestion();
+            state.claimedKnowledge = false;
+
+            if (!state.currentQuestion) {
+                alert('All questions mastered!');
+                backToMenu();
+                return;
+            }
+
+            const q = state.currentQuestion;
+            const remaining = questions.filter(qn => !state.mastered.includes(qn.id)).length;
+
+            document.getElementById('question-counter').textContent = `${remaining} questions remaining`;
+            document.getElementById('category-badge').textContent = q.category;
+            document.getElementById('question-text').textContent = q.q;
+            document.getElementById('answer-text').textContent = q.a;
+
+            // Show streak if applicable
+            const streak = state.streaks[q.id] || 0;
+            const streakEl = document.getElementById('streak-indicator');
+            if (streak > 0) {
+                streakEl.textContent = `${streak}/10 streak`;
+                streakEl.classList.remove('hidden');
+            } else {
+                streakEl.classList.add('hidden');
+            }
+
+            // Reset phases
+            document.getElementById('know-it-phase').classList.remove('hidden');
+            document.getElementById('answer-phase').classList.add('hidden');
+            document.getElementById('choice-phase').classList.add('hidden');
+            document.getElementById('always-know').checked = false;
+        }
+
+        // Show answer
+        function showAnswer(claimedKnowledge) {
+            state.claimedKnowledge = claimedKnowledge;
+            document.getElementById('know-it-phase').classList.add('hidden');
+
+            if (claimedKnowledge) {
+                // Show answer for self-verification
+                document.getElementById('answer-phase').classList.remove('hidden');
+            } else {
+                // Show multiple choice
+                document.getElementById('choice-phase').classList.remove('hidden');
+                renderChoices();
+            }
+        }
+
+        // Render multiple choice
+        function renderChoices() {
+            const q = state.currentQuestion;
+            const container = document.getElementById('choices-container');
+            container.innerHTML = '';
+
+            q.choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice;
+                btn.onclick = () => selectChoice(index);
+                container.appendChild(btn);
+            });
+        }
+
+        // Select choice
+        function selectChoice(index) {
+            const q = state.currentQuestion;
+            const buttons = document.querySelectorAll('#choices-container .choice-btn');
+
+            buttons.forEach((btn, i) => {
+                btn.classList.add('disabled');
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index && index !== q.correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const correct = index === q.correct;
+            setTimeout(() => recordAnswer(correct), 1000);
+        }
+
+        // Record answer
+        function recordAnswer(correct) {
+            const q = state.currentQuestion;
+
+            state.totalAnswered++;
+            if (correct) {
+                state.totalCorrect++;
+                state.streaks[q.id] = (state.streaks[q.id] || 0) + 1;
+
+                // Check for mastery (10 correct in a row)
+                if (state.streaks[q.id] >= 10 && !state.mastered.includes(q.id)) {
+                    state.mastered.push(q.id);
+                    alert('Mastered! This question won\'t appear again.');
+                }
+            } else {
+                state.streaks[q.id] = 0;
+            }
+
+            saveState();
+            updateStats();
+            loadNextQuestion();
+        }
+
+        // Mark as always know
+        function markAlwaysKnow() {
+            const checked = document.getElementById('always-know').checked;
+            if (checked && state.currentQuestion) {
+                const q = state.currentQuestion;
+                if (!state.mastered.includes(q.id)) {
+                    state.mastered.push(q.id);
+                    state.totalAnswered++;
+                    state.totalCorrect++;
+                    saveState();
+                    updateStats();
+                    loadNextQuestion();
+                }
+            }
+        }
+
+        // Start final exam
+        function startFinalExam() {
+            // Shuffle all questions
+            state.examQuestions = [...questions].sort(() => Math.random() - 0.5);
+            state.examIndex = 0;
+            state.examCorrect = 0;
+            state.currentMode = 'exam';
+
+            showScreen('exam-screen');
+            loadExamQuestion();
+        }
+
+        // Load exam question
+        function loadExamQuestion() {
+            if (state.examIndex >= state.examQuestions.length) {
+                showExamResults();
+                return;
+            }
+
+            const q = state.examQuestions[state.examIndex];
+            const progress = ((state.examIndex) / state.examQuestions.length) * 100;
+
+            document.getElementById('exam-progress').style.width = progress + '%';
+            document.getElementById('exam-counter').textContent =
+                `Question ${state.examIndex + 1} of ${state.examQuestions.length}`;
+            document.getElementById('exam-category').textContent = q.category;
+            document.getElementById('exam-question').textContent = q.q;
+
+            const container = document.getElementById('exam-choices');
+            container.innerHTML = '';
+
+            q.choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice;
+                btn.onclick = () => selectExamChoice(index);
+                container.appendChild(btn);
+            });
+        }
+
+        // Select exam choice
+        function selectExamChoice(index) {
+            const q = state.examQuestions[state.examIndex];
+            const buttons = document.querySelectorAll('#exam-choices .choice-btn');
+
+            buttons.forEach((btn, i) => {
+                btn.classList.add('disabled');
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index && index !== q.correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            if (index === q.correct) {
+                state.examCorrect++;
+            }
+
+            state.examIndex++;
+            setTimeout(loadExamQuestion, 800);
+        }
+
+        // Show exam results
+        function showExamResults() {
+            const percentage = Math.round((state.examCorrect / state.examQuestions.length) * 100);
+            const passed = percentage === 100;
+
+            showScreen('result-screen');
+            document.getElementById('result-score').textContent = percentage + '%';
+            document.getElementById('result-score').className = 'result-score ' + (passed ? 'pass' : 'fail');
+
+            if (passed) {
+                document.getElementById('result-message').innerHTML =
+                    '<span class="pass">PERFECT SCORE! You\'re ready for the exam!</span>';
+                document.getElementById('retry-btn').classList.add('hidden');
+            } else {
+                document.getElementById('result-message').innerHTML =
+                    `<span class="fail">You got ${state.examCorrect} out of ${state.examQuestions.length} correct.<br>You need 100% to pass. Keep practicing!</span>`;
+                document.getElementById('retry-btn').classList.remove('hidden');
+            }
+        }
+
+        // Show progress
+        function showProgress() {
+            showScreen('progress-screen');
+
+            const categories = {};
+            questions.forEach(q => {
+                if (!categories[q.category]) {
+                    categories[q.category] = { total: 0, mastered: 0 };
+                }
+                categories[q.category].total++;
+                if (state.mastered.includes(q.id)) {
+                    categories[q.category].mastered++;
+                }
+            });
+
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <strong>Overall Progress:</strong> ${state.mastered.length} / ${questions.length} mastered (${Math.round((state.mastered.length/questions.length)*100)}%)
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <strong>Accuracy:</strong> ${state.totalAnswered > 0 ? Math.round((state.totalCorrect/state.totalAnswered)*100) : 0}% (${state.totalCorrect}/${state.totalAnswered})
+                </div>
+                <h3 style="margin: 20px 0 10px;">By Category:</h3>
+            `;
+
+            Object.entries(categories).sort((a,b) => a[0].localeCompare(b[0])).forEach(([cat, data]) => {
+                const pct = Math.round((data.mastered / data.total) * 100);
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>${cat}</span>
+                            <span>${data.mastered}/${data.total} (${pct}%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('progress-details').innerHTML = html;
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                state.mastered = [];
+                state.streaks = {};
+                state.totalCorrect = 0;
+                state.totalAnswered = 0;
+                saveState();
+                updateStats();
+                alert('Progress has been reset.');
+            }
+        }
+
+        // Initialize
+        loadState();
+    </script>
+</body>
+</html>
