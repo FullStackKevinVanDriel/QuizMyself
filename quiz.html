@@ -454,12 +454,27 @@
             </div>
         </div>
 
+        <!-- Keyword Entry Screen -->
+        <div id="keyword-screen" class="menu">
+            <div class="quiz-card" style="text-align: center;">
+                <h2 style="margin-bottom: 10px;">Enter Your Keyword</h2>
+                <p style="color: #888; margin-bottom: 20px; font-size: 14px;">Your progress will be saved under this keyword.<br>Use the same keyword to continue where you left off.</p>
+                <input type="text" id="keyword-input" placeholder="e.g., kevin, student1, my-quiz"
+                    style="width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 2px solid #4fc3f7; background: #1a2332; color: white; margin-bottom: 15px; box-sizing: border-box;"
+                    onkeypress="if(event.key==='Enter')submitKeyword()">
+                <p id="keyword-error" style="color: #ef5350; margin-bottom: 10px; display: none;"></p>
+                <button class="btn btn-primary" onclick="submitKeyword()" style="width: 100%;">Start Quiz</button>
+            </div>
+        </div>
+
         <!-- Main Menu -->
-        <div id="menu-screen" class="menu">
+        <div id="menu-screen" class="menu hidden">
+            <div id="current-keyword" style="text-align: center; margin-bottom: 15px; color: #888; font-size: 14px;"></div>
             <button class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
             <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
             <button class="btn" onclick="showProgress()">View Progress</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
+            <button class="btn btn-small" onclick="changeKeyword()" style="margin-top: 10px; opacity: 0.7;">Change Keyword</button>
         </div>
 
         <!-- Quiz Screen -->
@@ -817,11 +832,67 @@
         };
 
         const STORAGE_URL = 'https://quiz-storage.kvquiz.workers.dev';
+        let currentKeyword = '';
+
+        // Submit keyword and load progress
+        async function submitKeyword() {
+            const input = document.getElementById('keyword-input');
+            const error = document.getElementById('keyword-error');
+            let keyword = input.value.trim().toLowerCase();
+
+            // Validate keyword
+            if (!keyword) {
+                error.textContent = 'Please enter a keyword';
+                error.style.display = 'block';
+                return;
+            }
+
+            // Sanitize - only allow letters, numbers, hyphens
+            const sanitized = keyword.replace(/[^a-z0-9-]/g, '');
+            if (sanitized !== keyword) {
+                error.textContent = 'Use only letters, numbers, and hyphens';
+                error.style.display = 'block';
+                return;
+            }
+
+            error.style.display = 'none';
+            currentKeyword = sanitized;
+
+            // Show loading state
+            input.disabled = true;
+
+            // Load progress for this keyword
+            await loadState();
+
+            // Show menu
+            document.getElementById('keyword-screen').classList.add('hidden');
+            document.getElementById('menu-screen').classList.remove('hidden');
+            document.getElementById('stats-bar').style.display = 'flex';
+            document.getElementById('current-keyword').textContent = `Progress saved as: ${currentKeyword}`;
+
+            input.disabled = false;
+        }
+
+        // Change to different keyword
+        function changeKeyword() {
+            currentKeyword = '';
+            state.mastered = [];
+            state.answerCounts = {};
+            state.totalCorrect = 0;
+            state.totalAnswered = 0;
+
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('keyword-screen').classList.remove('hidden');
+            document.getElementById('stats-bar').style.display = 'none';
+            document.getElementById('keyword-input').value = '';
+            updateStats();
+        }
 
         // Load state from server
         async function loadState() {
+            if (!currentKeyword) return;
             try {
-                const res = await fetch(STORAGE_URL);
+                const res = await fetch(`${STORAGE_URL}/${currentKeyword}`);
                 if (res.ok) {
                     const data = await res.json();
                     state.mastered = data.mastered || [];
@@ -838,10 +909,11 @@
         // Save state to server
         let saveTimeout = null;
         function saveState() {
+            if (!currentKeyword) return;
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(async () => {
                 try {
-                    await fetch(STORAGE_URL, {
+                    await fetch(`${STORAGE_URL}/${currentKeyword}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -870,7 +942,7 @@
 
         // Show/hide screens
         function showScreen(screenId) {
-            ['menu-screen', 'quiz-screen', 'exam-screen', 'result-screen', 'progress-screen'].forEach(id => {
+            ['keyword-screen', 'menu-screen', 'quiz-screen', 'exam-screen', 'result-screen', 'progress-screen'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
@@ -1596,8 +1668,9 @@
             }
         });
 
-        // Initialize
-        loadState();
+        // Initialize - hide stats until keyword entered
+        document.getElementById('stats-bar').style.display = 'none';
+        document.getElementById('keyword-input').focus();
     </script>
 </body>
 </html>
