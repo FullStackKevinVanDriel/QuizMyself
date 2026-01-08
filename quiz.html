@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="deployed-sha" content="__COMMIT_SHA__">
     <title>WGU D322 - Introduction to IT Quiz</title>
     <style>
         * {
@@ -288,6 +289,28 @@
             text-decoration: underline;
         }
 
+        .deploy-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f39c12;
+            color: #1a1a2e;
+            text-align: center;
+            padding: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        .deploy-banner.hidden {
+            display: none;
+        }
+
+        body.has-banner {
+            padding-top: 40px;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -429,6 +452,7 @@
     </style>
 </head>
 <body>
+    <div id="deploy-banner" class="deploy-banner hidden">Deploying update...</div>
     <div class="container">
         <header>
             <h1>WGU D322 - Introduction to IT</h1>
@@ -1671,6 +1695,45 @@
         // Initialize - hide stats until keyword entered
         document.getElementById('stats-bar').style.display = 'none';
         document.getElementById('keyword-input').focus();
+        checkDeploymentStatus();
+
+        // Check if there's a newer version being deployed
+        async function checkDeploymentStatus() {
+            const REPO = 'FullStackKevinVanDriel/quizlet';
+            const deployedSha = document.querySelector('meta[name="deployed-sha"]')?.content;
+
+            try {
+                // Get latest commit SHA
+                const commitRes = await fetch(`https://api.github.com/repos/${REPO}/commits/main`);
+                if (!commitRes.ok) return;
+                const commitData = await commitRes.json();
+                const latestSha = commitData.sha;
+
+                // If deployed SHA doesn't match latest, check build status
+                if (deployedSha && deployedSha !== '__COMMIT_SHA__' && deployedSha !== latestSha) {
+                    showDeployBanner('New version merged, deploying...');
+                    return;
+                }
+
+                // Also check if Pages is currently building
+                const pagesRes = await fetch(`https://api.github.com/repos/${REPO}/pages/builds`);
+                if (!pagesRes.ok) return;
+                const builds = await pagesRes.json();
+
+                if (builds[0]?.status === 'building' || builds[0]?.status === 'queued') {
+                    showDeployBanner('Deploying update...');
+                }
+            } catch (e) {
+                // Silently fail - don't disrupt the quiz
+            }
+        }
+
+        function showDeployBanner(message) {
+            const banner = document.getElementById('deploy-banner');
+            banner.textContent = message;
+            banner.classList.remove('hidden');
+            document.body.classList.add('has-banner');
+        }
     </script>
 </body>
 </html>
