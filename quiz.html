@@ -1062,8 +1062,8 @@
 
         // Start final exam
         function startFinalExam() {
-            // Shuffle all questions
-            state.examQuestions = [...questions].sort(() => Math.random() - 0.5);
+            // Shuffle all questions using Fisher-Yates
+            state.examQuestions = shuffleArray([...questions]);
             state.examIndex = 0;
             state.examCorrect = 0;
             state.currentMode = 'exam';
