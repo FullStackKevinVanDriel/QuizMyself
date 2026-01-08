@@ -144,13 +144,6 @@
             line-height: 1.7;
         }
 
-        .answer-text {
-            background: #0f3460;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 4px solid #4fc3f7;
-        }
 
         .choices {
             display: flex;
@@ -926,7 +919,6 @@
             document.getElementById('question-counter').textContent = `${remaining} questions remaining`;
             document.getElementById('category-badge').textContent = q.category;
             document.getElementById('question-text').textContent = q.q;
-            document.getElementById('answer-text').textContent = q.a;
 
             // Show answer count
             const count = state.answerCounts[q.id] || 0;
