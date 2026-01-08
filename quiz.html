@@ -316,6 +316,123 @@
                 width: 100%;
             }
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #16213e;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-header h2 {
+            color: #4fc3f7;
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #e94560;
+        }
+
+        .modal-body {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-body h3 {
+            color: #4fc3f7;
+            margin: 20px 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .modal-body p, .modal-body li {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .modal-body ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal-body .key-term {
+            color: #81d4fa;
+            font-weight: bold;
+        }
+
+        .help-btn {
+            background: none;
+            border: 2px solid #4fc3f7;
+            color: #4fc3f7;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-btn:hover {
+            background: #4fc3f7;
+            color: #1a1a2e;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-header .category-badge {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -357,8 +474,11 @@
             <a href="#" class="back-link" onclick="backToMenu(); return false;">&larr; Back to Menu</a>
             <div class="quiz-card">
                 <div class="question-counter" id="question-counter"></div>
-                <span class="category-badge" id="category-badge"></span>
-                <span class="streak-indicator hidden" id="streak-indicator"></span>
+                <div class="question-header">
+                    <span class="category-badge" id="category-badge"></span>
+                    <button class="help-btn" onclick="openStudyMaterial()">?</button>
+                    <span class="streak-indicator hidden" id="streak-indicator"></span>
+                </div>
                 <p class="question-text" id="question-text"></p>
 
                 <!-- Know It Phase -->
@@ -403,7 +523,10 @@
             </div>
             <div class="quiz-card">
                 <div class="question-counter" id="exam-counter"></div>
-                <span class="category-badge" id="exam-category"></span>
+                <div class="question-header">
+                    <span class="category-badge" id="exam-category"></span>
+                    <button class="help-btn" onclick="openStudyMaterial()">?</button>
+                </div>
                 <p class="question-text" id="exam-question"></p>
                 <div class="choices" id="exam-choices"></div>
                 <div id="exam-next-btn" class="btn-group hidden" style="margin-top: 20px;">
@@ -431,6 +554,18 @@
             <div class="quiz-card">
                 <h2 style="margin-bottom: 20px;">Your Progress</h2>
                 <div id="progress-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Material Modal -->
+    <div id="study-modal" class="modal-overlay hidden" onclick="closeModalOnOverlay(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">Study Material</h2>
+                <button class="modal-close" onclick="closeStudyMaterial()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
             </div>
         </div>
     </div>
@@ -827,16 +962,31 @@
             }
         }
 
+        // Shuffle array helper
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
         // Render multiple choice
         function renderChoices() {
             const q = state.currentQuestion;
             const container = document.getElementById('choices-container');
             container.innerHTML = '';
 
-            q.choices.forEach((choice, index) => {
+            // Create array with original indices and shuffle
+            const choicesWithIndices = q.choices.map((choice, index) => ({ choice, originalIndex: index }));
+            const shuffled = shuffleArray(choicesWithIndices);
+            state.shuffledChoices = shuffled;
+
+            shuffled.forEach((item, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'choice-btn';
-                btn.textContent = choice;
+                btn.textContent = item.choice;
                 btn.onclick = () => selectChoice(index);
                 container.appendChild(btn);
             });
@@ -846,18 +996,22 @@
         function selectChoice(index) {
             const q = state.currentQuestion;
             const buttons = document.querySelectorAll('#choices-container .choice-btn');
+            const shuffled = state.shuffledChoices;
+
+            // Find which shuffled index contains the correct answer
+            const correctShuffledIndex = shuffled.findIndex(item => item.originalIndex === q.correct);
 
             buttons.forEach((btn, i) => {
                 btn.classList.add('disabled');
-                if (i === q.correct) {
+                if (i === correctShuffledIndex) {
                     btn.classList.add('correct');
-                } else if (i === index && index !== q.correct) {
+                } else if (i === index && index !== correctShuffledIndex) {
                     btn.classList.add('incorrect');
                 }
             });
 
             // Store whether the answer was correct and show Next button
-            state.lastAnswerCorrect = index === q.correct;
+            state.lastAnswerCorrect = index === correctShuffledIndex;
             document.getElementById('practice-next-btn').classList.remove('hidden');
         }
 
@@ -940,10 +1094,15 @@
             const container = document.getElementById('exam-choices');
             container.innerHTML = '';
 
-            q.choices.forEach((choice, index) => {
+            // Shuffle choices for exam
+            const choicesWithIndices = q.choices.map((choice, index) => ({ choice, originalIndex: index }));
+            const shuffled = shuffleArray(choicesWithIndices);
+            state.examShuffledChoices = shuffled;
+
+            shuffled.forEach((item, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'choice-btn';
-                btn.textContent = choice;
+                btn.textContent = item.choice;
                 btn.onclick = () => selectExamChoice(index);
                 container.appendChild(btn);
             });
@@ -953,17 +1112,21 @@
         function selectExamChoice(index) {
             const q = state.examQuestions[state.examIndex];
             const buttons = document.querySelectorAll('#exam-choices .choice-btn');
+            const shuffled = state.examShuffledChoices;
+
+            // Find which shuffled index contains the correct answer
+            const correctShuffledIndex = shuffled.findIndex(item => item.originalIndex === q.correct);
 
             buttons.forEach((btn, i) => {
                 btn.classList.add('disabled');
-                if (i === q.correct) {
+                if (i === correctShuffledIndex) {
                     btn.classList.add('correct');
-                } else if (i === index && index !== q.correct) {
+                } else if (i === index && index !== correctShuffledIndex) {
                     btn.classList.add('incorrect');
                 }
             });
 
-            if (index === q.correct) {
+            if (index === correctShuffledIndex) {
                 state.examCorrect++;
             }
 
@@ -1053,6 +1216,421 @@
                 alert('Progress has been reset.');
             }
         }
+
+        // Study Material Content by Category
+        const studyMaterials = {
+            "IT Roles": `
+                <h3>IT Disciplines Overview</h3>
+                <ul>
+                    <li><span class="key-term">Computer Engineering (CE)</span> - Focuses on design of hardware systems and software that makes them work (drivers, embedded systems)</li>
+                    <li><span class="key-term">Computer Science (CS)</span> - Design and implementation of software, solving computing problems (AI, robotics, algorithms)</li>
+                    <li><span class="key-term">Software Engineering (SE)</span> - Development and maintenance of reliable, efficient software systems</li>
+                    <li><span class="key-term">Information Systems (IS)</span> - Integrating IT solutions to meet business goals</li>
+                    <li><span class="key-term">Information Technology (IT)</span> - Technology supporting information systems, practical solutions</li>
+                </ul>
+                <h3>Administrator Roles</h3>
+                <ul>
+                    <li><span class="key-term">System Administrator</span> - Technical support for hardware/software, login issues, network vulnerabilities</li>
+                    <li><span class="key-term">Network Administrator</span> - Design, plan, setup, and maintain networks</li>
+                    <li><span class="key-term">Database Administrator</span> - Install/configure databases, fix errors, create user accounts</li>
+                    <li><span class="key-term">Security Administrator</span> - Install and troubleshoot network security</li>
+                    <li><span class="key-term">Web Administrator</span> - Troubleshoot websites, analyze usage data, report breaches</li>
+                </ul>
+                <h3>Architect & Engineer Roles</h3>
+                <ul>
+                    <li><span class="key-term">Cloud Architect</span> - Oversees cloud computing systems</li>
+                    <li><span class="key-term">Network Architect</span> - Designs networks, monitors traffic, installs routers/modems</li>
+                    <li><span class="key-term">Cybersecurity Architect</span> - Designs, builds, tests security systems</li>
+                    <li><span class="key-term">Machine Learning Engineer</span> - Uses Python, R, Java with ML frameworks</li>
+                    <li><span class="key-term">Software Engineer</span> - Develops OS, database systems, embedded systems</li>
+                </ul>
+                <h3>Analyst & Support Roles</h3>
+                <ul>
+                    <li><span class="key-term">Systems Analyst</span> - Investigates business problems, creates IS solutions</li>
+                    <li><span class="key-term">Data Analyst</span> - Uses statistics for organizational decision-making</li>
+                    <li><span class="key-term">Security Analyst</span> - Monitors networks for security breaches</li>
+                    <li><span class="key-term">Computer Support Specialist</span> - Supports and maintains workplace technology</li>
+                    <li><span class="key-term">Project Manager</span> - Organizes people, time, resources to meet requirements on time/budget</li>
+                </ul>`,
+            "Data & Information": `
+                <h3>DIKW Pyramid (Bottom to Top)</h3>
+                <ul>
+                    <li><span class="key-term">Data</span> - Raw facts or observations with no context</li>
+                    <li><span class="key-term">Information</span> - Data given context that makes it meaningful</li>
+                    <li><span class="key-term">Knowledge</span> - Combination of experience, values, contextual information, expert insight</li>
+                    <li><span class="key-term">Wisdom</span> - Knowing the right thing to do</li>
+                </ul>
+                <h3>Data Types</h3>
+                <ul>
+                    <li><span class="key-term">Structured Data</span> - Easily converted for analysis (names, dates, phone numbers)</li>
+                    <li><span class="key-term">Unstructured Data</span> - Complex, not easily decoded (text, videos, audio)</li>
+                    <li><span class="key-term">Big Data</span> - Large collections requiring advanced analytical tools</li>
+                </ul>
+                <h3>Data Quality</h3>
+                <ul>
+                    <li><span class="key-term">Data Hygiene</span> - Processes ensuring data is error-free</li>
+                    <li><span class="key-term">Data Scrubbing</span> - Amending/removing incorrect, incomplete, or duplicate data</li>
+                    <li><span class="key-term">Five Quality Attributes</span> - Precise, Valid, Reliable, Timely, Complete</li>
+                </ul>
+                <h3>Cloud Service Models</h3>
+                <ul>
+                    <li><span class="key-term">IaaS</span> - Infrastructure as a Service (virtual servers, network connections)</li>
+                    <li><span class="key-term">PaaS</span> - Platform as a Service (web application development platform)</li>
+                    <li><span class="key-term">SaaS</span> - Software as a Service (Gmail, Office 365 - subscription based)</li>
+                </ul>
+                <p><span class="key-term">PII (Personally Identifiable Information)</span> - SSN, names, phone numbers that could identify someone</p>`,
+            "Hardware": `
+                <h3>IPOS - Four Functions of a Computer</h3>
+                <ul>
+                    <li><span class="key-term">Input</span> - Data entered into the system</li>
+                    <li><span class="key-term">Process</span> - CPU executes instructions</li>
+                    <li><span class="key-term">Output</span> - Processed information produced</li>
+                    <li><span class="key-term">Storage</span> - Data saved for later use</li>
+                </ul>
+                <h3>CPU Components</h3>
+                <ul>
+                    <li><span class="key-term">ALU (Arithmetic Logic Unit)</span> - Performs calculations</li>
+                    <li><span class="key-term">Control Unit</span> - Directs operations</li>
+                    <li><span class="key-term">Processor Registers</span> - Temporary storage</li>
+                </ul>
+                <h3>Memory Types</h3>
+                <ul>
+                    <li><span class="key-term">RAM</span> - Random Access Memory, volatile (loses data when powered off)</li>
+                    <li><span class="key-term">ROM</span> - Read Only Memory, non-volatile (retains data)</li>
+                    <li><span class="key-term">Cache</span> - Fast temporary storage</li>
+                </ul>
+                <h3>Storage</h3>
+                <ul>
+                    <li><span class="key-term">HDD</span> - Hard Disk Drive, magnetic spinning platters</li>
+                    <li><span class="key-term">SSD</span> - Solid State Drive, flash memory, no moving parts, faster</li>
+                </ul>
+                <h3>Data Measurement</h3>
+                <ul>
+                    <li><span class="key-term">Bit</span> - Smallest unit (0 or 1)</li>
+                    <li><span class="key-term">Byte</span> - 8 bits (one character)</li>
+                    <li><span class="key-term">Kilobyte (KB)</span> - 1,024 bytes</li>
+                    <li><span class="key-term">Megabyte (MB)</span> - 1,024 KB</li>
+                    <li><span class="key-term">Gigabyte (GB)</span> - 1,024 MB</li>
+                </ul>
+                <h3>Computer Generations</h3>
+                <ul>
+                    <li><span class="key-term">1st Gen (1946-1959)</span> - Vacuum tubes, magnetic drums</li>
+                    <li><span class="key-term">2nd Gen (1959-1965)</span> - Transistors</li>
+                    <li><span class="key-term">3rd Gen (1965-1971)</span> - Integrated circuits on silicon chips</li>
+                    <li><span class="key-term">4th Gen (1971-present)</span> - Microprocessors</li>
+                </ul>`,
+            "Networking": `
+                <h3>Network Types by Size</h3>
+                <ul>
+                    <li><span class="key-term">PAN</span> - Personal Area Network (few feet, like Bluetooth)</li>
+                    <li><span class="key-term">LAN</span> - Local Area Network (single building)</li>
+                    <li><span class="key-term">WAN</span> - Wide Area Network (cities, states, worldwide - Internet is largest)</li>
+                </ul>
+                <h3>Network Topologies</h3>
+                <ul>
+                    <li><span class="key-term">Bus</span> - Machines connected to a common line</li>
+                    <li><span class="key-term">Star</span> - Central machine connects all others</li>
+                    <li><span class="key-term">Ring</span> - Devices in circular arrangement as peers</li>
+                    <li><span class="key-term">Mesh</span> - Every device connected to every other (redundancy)</li>
+                </ul>
+                <h3>Network Models</h3>
+                <ul>
+                    <li><span class="key-term">Client/Server</span> - Clients request, servers satisfy requests</li>
+                    <li><span class="key-term">Peer-to-Peer (P2P)</span> - Processes both request and provide services</li>
+                </ul>
+                <h3>Cabling</h3>
+                <ul>
+                    <li><span class="key-term">Twisted Pair</span> - Two copper wires wound together, max 100m, CAT5e for 1Gbps</li>
+                    <li><span class="key-term">Fiber Optic</span> - Light through glass/plastic, 26,000x bandwidth of twisted pair</li>
+                </ul>
+                <h3>Network Devices</h3>
+                <ul>
+                    <li><span class="key-term">Repeater</span> - Extends range by boosting signal</li>
+                    <li><span class="key-term">Bridge</span> - Connects different network types intelligently</li>
+                    <li><span class="key-term">Switch</span> - Reduces traffic by sending to destination only</li>
+                    <li><span class="key-term">Router</span> - Forwards messages between networks using routing tables</li>
+                    <li><span class="key-term">Modem</span> - Converts analog to digital signals</li>
+                </ul>
+                <h3>ISP Tiers</h3>
+                <ul>
+                    <li><span class="key-term">Tier 1</span> - Backbone providers</li>
+                    <li><span class="key-term">Tier 2</span> - Regional providers</li>
+                    <li><span class="key-term">Tier 3</span> - Access ISPs (homes/businesses)</li>
+                </ul>`,
+            "Internet": `
+                <h3>Key Protocols & Systems</h3>
+                <ul>
+                    <li><span class="key-term">TCP/IP</span> - Most popular network protocol</li>
+                    <li><span class="key-term">DNS</span> - Domain Name System, translates domain names to IP addresses</li>
+                    <li><span class="key-term">HTTP</span> - HyperText Transfer Protocol</li>
+                    <li><span class="key-term">VoIP</span> - Voice over Internet Protocol</li>
+                </ul>
+                <h3>IP Addresses</h3>
+                <ul>
+                    <li><span class="key-term">IPv4</span> - 32-bit, dotted decimal notation (192.207.177.103)</li>
+                    <li><span class="key-term">IPv6</span> - 128-bit addresses</li>
+                </ul>
+                <h3>Web Concepts</h3>
+                <ul>
+                    <li><span class="key-term">URL</span> - Uniform Resource Locator (unique web address)</li>
+                    <li><span class="key-term">HTML</span> - HyperText Markup Language (encodes web documents)</li>
+                    <li><span class="key-term">Streaming</span> - Audio/video transport in near real-time</li>
+                </ul>
+                <h3>Domain TLDs</h3>
+                <ul>
+                    <li><span class="key-term">.edu</span> - Educational institution</li>
+                    <li><span class="key-term">.gov</span> - Government agency</li>
+                    <li><span class="key-term">.com</span> - Commercial</li>
+                    <li><span class="key-term">.org</span> - Organization</li>
+                </ul>
+                <p><span class="key-term">Tim Berners-Lee</span> invented the World Wide Web in the late 1980s</p>
+                <p><span class="key-term">ICANN</span> coordinates internet operations and awards IP address blocks</p>`,
+            "Security": `
+                <h3>Types of Malware</h3>
+                <ul>
+                    <li><span class="key-term">Virus</span> - Inserts into programs, executes when host runs</li>
+                    <li><span class="key-term">Worm</span> - Autonomous, self-replicating across networks</li>
+                    <li><span class="key-term">Spyware</span> - Collects info and reports to creator</li>
+                </ul>
+                <h3>Attack Types</h3>
+                <ul>
+                    <li><span class="key-term">Phishing</span> - Posing as legitimate to obtain private info</li>
+                    <li><span class="key-term">DoS (Denial of Service)</span> - Overloading computer with messages</li>
+                    <li><span class="key-term">MITM (Man-in-the-Middle)</span> - Intercepting data in transit</li>
+                    <li><span class="key-term">Brute Force</span> - Trying all possible combinations</li>
+                    <li><span class="key-term">Dictionary Attack</span> - Using dictionary words to crack passwords</li>
+                </ul>
+                <h3>Security Measures</h3>
+                <ul>
+                    <li><span class="key-term">Firewall</span> - Filters and blocks suspicious network traffic</li>
+                    <li><span class="key-term">Proxy Server</span> - Intermediary protecting clients</li>
+                    <li><span class="key-term">Encryption</span> - Encoding information to keep it confidential</li>
+                    <li><span class="key-term">Network Auditing</span> - Monitors for anomalies</li>
+                </ul>`,
+            "Operating Systems": `
+                <h3>OS Categories</h3>
+                <ul>
+                    <li><span class="key-term">Network OS</span></li>
+                    <li><span class="key-term">Server OS</span></li>
+                    <li><span class="key-term">Mobile OS</span></li>
+                    <li><span class="key-term">Personal Computer OS</span></li>
+                </ul>
+                <h3>Major Operating Systems</h3>
+                <ul>
+                    <li><span class="key-term">Windows</span> - Closed-source by Microsoft, largest market share</li>
+                    <li><span class="key-term">macOS</span> - Closed-source by Apple, Apple hardware only</li>
+                    <li><span class="key-term">Linux</span> - Open-source, many distributions</li>
+                    <li><span class="key-term">Android</span> - Open-source mobile, largest mobile user base</li>
+                    <li><span class="key-term">iOS</span> - Apple's proprietary mobile OS</li>
+                </ul>
+                <h3>OS Components</h3>
+                <ul>
+                    <li><span class="key-term">Kernel</span> - Core performing basic functions</li>
+                    <li><span class="key-term">File Manager</span> - Coordinates storage, maintains records</li>
+                    <li><span class="key-term">Device Driver</span> - Enables communication with peripherals</li>
+                    <li><span class="key-term">Utility Software</span> - Extends OS capabilities</li>
+                </ul>
+                <h3>Interfaces</h3>
+                <ul>
+                    <li><span class="key-term">CLI</span> - Command Line Interface (text commands)</li>
+                    <li><span class="key-term">GUI</span> - Graphical User Interface (visual elements)</li>
+                </ul>
+                <h3>Path Separators</h3>
+                <ul>
+                    <li><span class="key-term">Windows</span> - Backslash (\\)</li>
+                    <li><span class="key-term">Linux</span> - Forward slash (/), case-sensitive</li>
+                </ul>`,
+            "Programming": `
+                <h3>Code Types</h3>
+                <ul>
+                    <li><span class="key-term">Source Code</span> - Human-readable high-level language</li>
+                    <li><span class="key-term">Machine Code</span> - Binary (0s and 1s) computers execute directly</li>
+                </ul>
+                <h3>Translators</h3>
+                <ul>
+                    <li><span class="key-term">Compiler</span> - Translates entire source code at once (C, C++, Java, Go)</li>
+                    <li><span class="key-term">Interpreter</span> - Translates line by line (Python, JavaScript, PHP, Ruby)</li>
+                </ul>
+                <h3>Key Concepts</h3>
+                <ul>
+                    <li><span class="key-term">Algorithm</span> - Step-by-step instructions for a task</li>
+                    <li><span class="key-term">Debugging</span> - Finding and fixing code errors</li>
+                </ul>`,
+            "Licensing": `
+                <h3>Software Types</h3>
+                <ul>
+                    <li><span class="key-term">Open-Source</span> - Anyone can modify and distribute, accessible source code</li>
+                    <li><span class="key-term">Closed-Source/Proprietary</span> - Only owner can modify</li>
+                    <li><span class="key-term">Shareware</span> - Trial with time/feature limits</li>
+                    <li><span class="key-term">Freeware</span> - Free but protected by EULA/copyright</li>
+                    <li><span class="key-term">Public Domain</span> - No EULA, no IP protections</li>
+                </ul>
+                <h3>Legal Protections</h3>
+                <ul>
+                    <li><span class="key-term">EULA</span> - End-User License Agreement, defines usage terms</li>
+                    <li><span class="key-term">Copyright</span> - Prevents unauthorized duplication (35+ years)</li>
+                    <li><span class="key-term">Patent</span> - Protects unique methods, algorithms, processes</li>
+                </ul>
+                <h3>Software Development Types</h3>
+                <ul>
+                    <li><span class="key-term">Bespoke</span> - Custom-made for specific organization</li>
+                    <li><span class="key-term">Off-the-Shelf</span> - General features for broad use</li>
+                </ul>`,
+            "Databases": `
+                <h3>Database Fundamentals</h3>
+                <ul>
+                    <li><span class="key-term">Database</span> - Organized collection of integrated data</li>
+                    <li><span class="key-term">DBMS</span> - Database Management System, manages and handles queries</li>
+                    <li><span class="key-term">Record</span> - A row containing related information</li>
+                    <li><span class="key-term">Field</span> - A column with single piece of data</li>
+                </ul>
+                <h3>Keys</h3>
+                <ul>
+                    <li><span class="key-term">Primary Key</span> - Unique identifier for each record</li>
+                    <li><span class="key-term">Foreign Key</span> - References another table's primary key</li>
+                </ul>
+                <h3>Database Types</h3>
+                <ul>
+                    <li><span class="key-term">Flat-File</span> - Plain text, one record per line</li>
+                    <li><span class="key-term">Hierarchical</span> - Tree structure, parent-child relationships</li>
+                    <li><span class="key-term">Relational</span> - Tables joined using keys</li>
+                    <li><span class="key-term">NoSQL</span> - Various models (key-value, document, graph)</li>
+                </ul>
+                <h3>SQL Basics</h3>
+                <ul>
+                    <li><span class="key-term">SELECT * FROM table</span> - Retrieve all fields from all records</li>
+                    <li><span class="key-term">WHERE</span> - Filters records based on conditions</li>
+                </ul>`,
+            "Project Management": `
+                <h3>Project Definition</h3>
+                <p>A <span class="key-term">Project</span> is a purpose-driven event with a defined start and finish</p>
+                <h3>Project Life Cycle Phases</h3>
+                <ul>
+                    <li><span class="key-term">Initiation</span> - Business case, feasibility study, project charter</li>
+                    <li><span class="key-term">Planning</span> - Goals, scope, project management plan with estimates</li>
+                    <li><span class="key-term">Execution</span> - Actual work performed</li>
+                    <li><span class="key-term">Closure</span> - Project completion and handoff</li>
+                </ul>
+                <h3>SMART Goals</h3>
+                <ul>
+                    <li><span class="key-term">S</span> - Specific</li>
+                    <li><span class="key-term">M</span> - Measurable</li>
+                    <li><span class="key-term">A</span> - Attainable</li>
+                    <li><span class="key-term">R</span> - Realistic</li>
+                    <li><span class="key-term">T</span> - Timely</li>
+                </ul>
+                <h3>Key Concepts</h3>
+                <ul>
+                    <li><span class="key-term">Scope Creep</span> - Uncontrolled changes adding tasks and costs</li>
+                    <li><span class="key-term">WBS</span> - Work Breakdown Structure, breaks project into segments</li>
+                    <li><span class="key-term">KPIs</span> - Key Performance Indicators, metrics for progress</li>
+                </ul>`,
+            "SDLC": `
+                <h3>SDLC (Software Development Life Cycle)</h3>
+                <p>A framework for developing software through defined phases</p>
+                <h3>Development Models</h3>
+                <ul>
+                    <li><span class="key-term">Waterfall</span> - Sequential, complete each phase before next</li>
+                    <li><span class="key-term">Incremental</span> - Built in increments, adding features</li>
+                    <li><span class="key-term">Prototyping</span> - Build and evaluate basic versions first</li>
+                    <li><span class="key-term">Agile</span> - Incremental, responds to changing requirements</li>
+                    <li><span class="key-term">Scrum</span> - Agile method with sprints and daily scrums</li>
+                </ul>
+                <h3>Key Documents</h3>
+                <ul>
+                    <li><span class="key-term">Requirements Analysis</span> - Determines services and user interaction</li>
+                    <li><span class="key-term">SRS</span> - System Requirement Specification document</li>
+                </ul>`,
+            "Testing": `
+                <h3>Testing Stages</h3>
+                <ul>
+                    <li><span class="key-term">Alpha Testing</span> - First stage, internal team tests</li>
+                    <li><span class="key-term">Beta Testing</span> - End users test before release (pilot testing)</li>
+                    <li><span class="key-term">User Acceptance Testing</span> - Final operational testing for business objectives</li>
+                </ul>
+                <h3>Testing Approaches</h3>
+                <ul>
+                    <li><span class="key-term">White-Box Testing</span> - Based on internal component knowledge (glass-box)</li>
+                    <li><span class="key-term">Black-Box Testing</span> - Focused on UX without internal knowledge</li>
+                </ul>
+                <p><span class="key-term">Pareto Principle</span> - 80% of errors come from 20% of the system</p>`,
+            "Maintenance": `
+                <h3>Maintenance Types</h3>
+                <ul>
+                    <li><span class="key-term">Corrective</span> - Removes errors, ensures functionality</li>
+                    <li><span class="key-term">Adaptive</span> - Changes due to organizational requirement changes</li>
+                    <li><span class="key-term">Perfective</span> - Adding/improving components for performance</li>
+                    <li><span class="key-term">Preventive</span> - Increases system lifespan (restructuring, optimizing)</li>
+                </ul>`,
+            "IT Governance": `
+                <h3>IT Governance</h3>
+                <p>Processes ensuring effective IT use to achieve business goals</p>
+                <h3>Five IT Function Domains</h3>
+                <ul>
+                    <li>Communication</li>
+                    <li>Data Collection/Management</li>
+                    <li>Information Security</li>
+                    <li>Customer Relationship Management</li>
+                    <li>Process Improvement</li>
+                </ul>
+                <h3>Sourcing Options</h3>
+                <ul>
+                    <li><span class="key-term">Outsourcing</span> - Using external organization resources</li>
+                    <li><span class="key-term">Insourcing</span> - Assigning to internal employees</li>
+                    <li><span class="key-term">Offshoring</span> - Outsourcing outside the country</li>
+                    <li><span class="key-term">Nearshoring</span> - Offshoring to nearby countries/similar time zones</li>
+                </ul>`,
+            "Software": `
+                <h3>Software Categories</h3>
+                <ul>
+                    <li><span class="key-term">System Software</span> - Operates hardware, platform for applications</li>
+                    <li><span class="key-term">Application Software</span> - Specific tasks (word processing, email)</li>
+                    <li><span class="key-term">Productivity Software</span> - Documents, presentations, data management</li>
+                    <li><span class="key-term">Collaboration Software</span> - Communication and teamwork</li>
+                    <li><span class="key-term">Utility Software</span> - System maintenance (disk cleaning)</li>
+                </ul>
+                <h3>Common Applications</h3>
+                <ul>
+                    <li><span class="key-term">Word Processing</span> - Word, Google Docs, OpenOffice Writer</li>
+                    <li><span class="key-term">Spreadsheets</span> - Excel, Google Sheets, OpenOffice Calc</li>
+                    <li><span class="key-term">Presentations</span> - PowerPoint, Google Slides, OpenOffice Impress</li>
+                </ul>`
+        };
+
+        // Modal Functions
+        function openStudyMaterial() {
+            let category;
+            if (state.currentMode === 'practice' && state.currentQuestion) {
+                category = state.currentQuestion.category;
+            } else if (state.currentMode === 'exam' && state.examQuestions[state.examIndex - 1]) {
+                category = state.examQuestions[state.examIndex - 1].category;
+            } else if (state.currentMode === 'exam' && state.examQuestions[state.examIndex]) {
+                category = state.examQuestions[state.examIndex].category;
+            }
+            if (category && studyMaterials[category]) {
+                document.getElementById('modal-title').textContent = category + ' - Study Material';
+                document.getElementById('modal-body').innerHTML = studyMaterials[category];
+                document.getElementById('study-modal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeStudyMaterial() {
+            document.getElementById('study-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target === document.getElementById('study-modal')) {
+                closeStudyMaterial();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeStudyMaterial();
+            }
+        });
 
         // Initialize
         loadState();
