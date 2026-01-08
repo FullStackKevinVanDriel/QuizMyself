@@ -1,0 +1,7 @@
+name = "quiz-storage"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "PROGRESS"
+id = "a4c72e54d0c448feae651095719e5095"

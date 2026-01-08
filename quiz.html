@@ -842,27 +842,45 @@
             claimedKnowledge: false
         };
 
-        // Load state from localStorage
-        function loadState() {
-            const saved = localStorage.getItem('wgu-quiz-state');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                state.mastered = parsed.mastered || [];
-                state.streaks = parsed.streaks || {};
-                state.totalCorrect = parsed.totalCorrect || 0;
-                state.totalAnswered = parsed.totalAnswered || 0;
+        const STORAGE_URL = 'https://quiz-storage.kvquiz.workers.dev';
+
+        // Load state from server
+        async function loadState() {
+            try {
+                const res = await fetch(STORAGE_URL);
+                if (res.ok) {
+                    const data = await res.json();
+                    state.mastered = data.mastered || [];
+                    state.streaks = data.streaks || {};
+                    state.totalCorrect = data.totalCorrect || 0;
+                    state.totalAnswered = data.totalAnswered || 0;
+                }
+            } catch (e) {
+                console.log('Could not load from server');
             }
             updateStats();
         }
 
-        // Save state to localStorage
+        // Save state to server
+        let saveTimeout = null;
         function saveState() {
-            localStorage.setItem('wgu-quiz-state', JSON.stringify({
-                mastered: state.mastered,
-                streaks: state.streaks,
-                totalCorrect: state.totalCorrect,
-                totalAnswered: state.totalAnswered
-            }));
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(async () => {
+                try {
+                    await fetch(STORAGE_URL, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            mastered: state.mastered,
+                            streaks: state.streaks,
+                            totalCorrect: state.totalCorrect,
+                            totalAnswered: state.totalAnswered
+                        })
+                    });
+                } catch (e) {
+                    console.log('Could not save to server');
+                }
+            }, 500);
         }
 
         // Update stats display
