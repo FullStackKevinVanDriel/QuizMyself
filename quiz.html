@@ -546,6 +546,7 @@
         <div id="menu-screen" class="menu hidden">
             <div id="current-keyword" style="text-align: center; margin-bottom: 15px; color: #888; font-size: 14px;"></div>
             <button class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
+            <button id="resume-exam-btn" class="btn hidden" onclick="resumeExam()" style="background: #ff9800; color: #1a1a2e; font-weight: bold;">Resume Exam</button>
             <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
             <button class="btn" onclick="showProgress()">View Progress</button>
             <button class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
@@ -966,12 +967,16 @@
             state.answerCounts = {};
             state.totalCorrect = 0;
             state.totalAnswered = 0;
+            state.examQuestions = [];
+            state.examIndex = 0;
+            state.examCorrect = 0;
 
             document.getElementById('menu-screen').classList.add('hidden');
             document.getElementById('keyword-screen').classList.remove('hidden');
             document.getElementById('stats-bar').style.display = 'none';
             document.getElementById('keyword-input').value = '';
             updateStats();
+            updateResumeExamButton(false);
         }
 
         // Load state from server
@@ -985,11 +990,39 @@
                     state.answerCounts = data.answerCounts || {};
                     state.totalCorrect = data.totalCorrect || 0;
                     state.totalAnswered = data.totalAnswered || 0;
+
+                    // Restore exam progress if exists
+                    if (data.examInProgress && data.examQuestionIds && data.examQuestionIds.length > 0) {
+                        // Rebuild examQuestions from IDs
+                        state.examQuestions = data.examQuestionIds.map(id => questions.find(q => q.id === id)).filter(q => q);
+                        state.examIndex = data.examIndex || 0;
+                        state.examCorrect = data.examCorrect || 0;
+                        // Show resume button
+                        updateResumeExamButton(true);
+                    } else {
+                        state.examQuestions = [];
+                        state.examIndex = 0;
+                        state.examCorrect = 0;
+                        updateResumeExamButton(false);
+                    }
                 }
             } catch (e) {
                 console.log('Could not load from server');
             }
             updateStats();
+        }
+
+        // Update resume exam button visibility
+        function updateResumeExamButton(show) {
+            const btn = document.getElementById('resume-exam-btn');
+            if (btn) {
+                if (show && state.examQuestions.length > 0 && state.examIndex < state.examQuestions.length) {
+                    btn.classList.remove('hidden');
+                    btn.textContent = `Resume Exam (${state.examIndex}/${state.examQuestions.length})`;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
         }
 
         // Save state to server
@@ -999,15 +1032,25 @@
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(async () => {
                 try {
+                    const payload = {
+                        mastered: state.mastered,
+                        answerCounts: state.answerCounts,
+                        totalCorrect: state.totalCorrect,
+                        totalAnswered: state.totalAnswered
+                    };
+                    // Save exam progress if in exam mode
+                    if (state.currentMode === 'exam' && state.examQuestions.length > 0) {
+                        payload.examInProgress = true;
+                        payload.examQuestionIds = state.examQuestions.map(q => q.id);
+                        payload.examIndex = state.examIndex;
+                        payload.examCorrect = state.examCorrect;
+                    } else {
+                        payload.examInProgress = false;
+                    }
                     await fetch(`${STORAGE_URL}/${currentKeyword}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            mastered: state.mastered,
-                            answerCounts: state.answerCounts,
-                            totalCorrect: state.totalCorrect,
-                            totalAnswered: state.totalAnswered
-                        })
+                        body: JSON.stringify(payload)
                     });
                 } catch (e) {
                     console.log('Could not save to server');
@@ -1192,6 +1235,18 @@
 
             showScreen('exam-screen');
             loadExamQuestion();
+            saveState(); // Save immediately so exam can be resumed
+        }
+
+        // Resume in-progress exam
+        function resumeExam() {
+            if (state.examQuestions.length === 0 || state.examIndex >= state.examQuestions.length) {
+                alert('No exam in progress');
+                return;
+            }
+            state.currentMode = 'exam';
+            showScreen('exam-screen');
+            loadExamQuestion();
         }
 
         // Load exam question
@@ -1253,6 +1308,7 @@
             }
 
             state.examIndex++;
+            saveState(); // Save progress after each answer
             // Show Next Question button instead of auto-advancing
             document.getElementById('exam-next-btn').classList.remove('hidden');
         }
@@ -1281,6 +1337,14 @@
                     `<span class="fail">You got ${state.examCorrect} out of ${state.examQuestions.length} correct.<br>You need 100% to pass. Keep practicing!</span>`;
                 document.getElementById('retry-btn').classList.remove('hidden');
             }
+
+            // Clear exam progress since exam is complete
+            state.currentMode = 'menu';
+            state.examQuestions = [];
+            state.examIndex = 0;
+            state.examCorrect = 0;
+            saveState(); // Clear saved exam progress
+            updateResumeExamButton(false);
         }
 
         // Show progress
@@ -1380,8 +1444,12 @@
                 state.answerCounts = {};
                 state.totalCorrect = 0;
                 state.totalAnswered = 0;
+                state.examQuestions = [];
+                state.examIndex = 0;
+                state.examCorrect = 0;
                 saveState();
                 updateStats();
+                updateResumeExamButton(false);
                 alert('Progress has been reset.');
             }
         }
