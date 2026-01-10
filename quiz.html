@@ -884,7 +884,6 @@
             { id: 201, category: "Networking", q: "Which type of network interconnects devices in a single office or building?", a: "LAN (Local Area Network)", choices: ["LAN", "PAN", "SAN", "WAN"], correct: 0 },
             { id: 202, category: "Internet", q: "IP addresses are traditionally written in what notation?", a: "Dotted decimal notation", choices: ["Encrypted", "Dotted decimal", "Mnemonic", "Binary"], correct: 1 },
             { id: 203, category: "Internet", q: "What tool is used to encode a document while focusing on appearance?", a: "HTML", choices: ["DNS", "HTTP", "HTML", "URL"], correct: 2 },
-            { id: 204, category: "Internet", q: "What is the primary function of a DNS server?", a: "Translating domain names to IP addresses", choices: ["Directing network traffic", "Ensuring secure data transmission", "Managing email communication", "Translating domain names to IP addresses"], correct: 3 },
             { id: 205, category: "Security", q: "Which technique obtains sensitive information by pretending to be trustworthy?", a: "Phishing", choices: ["Phishing", "Black hat", "Packet sniffing", "Buffer overflow"], correct: 0 },
             { id: 206, category: "Security", q: "What role does a firewall play?", a: "Filtering incoming and outgoing network traffic for security purposes", choices: ["Managing local network traffic", "Filtering network traffic for security", "Directing data packets", "Converting signals"], correct: 1 },
             { id: 207, category: "Hardware", q: "Which component converts analog signals to digital signals?", a: "Modem", choices: ["Switch", "Router", "Modem", "Firewall"], correct: 2 },
@@ -892,15 +891,52 @@
             { id: 209, category: "Operating Systems", q: "Which OS is known for open-source nature and server use?", a: "Linux", choices: ["Linux", "Windows", "macOS", "Android"], correct: 0 },
             { id: 210, category: "Programming", q: "What is the main difference between compiler and interpreter?", a: "Compiler translates all at once; interpreter translates line by line", choices: ["Compiler to machine code, interpreter to high-level", "Interpreter line by line, compiler all at once to executable", "Compiler for web, interpreter for software", "Compiler is faster"], correct: 1 },
             { id: 211, category: "Programming", q: "What is the function of a compiler?", a: "To convert high-level language code into machine code for execution", choices: ["Debug and test code", "Execute source code directly", "Convert high-level to machine code", "Interpret code line-by-line"], correct: 2 },
-            { id: 212, category: "Licensing", q: "What purpose does a EULA serve?", a: "To grant permission for software use and define terms of use", choices: ["Guide installation steps", "Troubleshoot issues", "Offer technical support", "Grant permission and define usage terms"], correct: 3 },
             { id: 213, category: "Databases", q: "What fundamental structure organizes data in a relational database?", a: "Tables", choices: ["Tables", "Arrays", "Loops", "Pointers"], correct: 0 },
             { id: 214, category: "Databases", q: "What characterizes NoSQL database organization?", a: "Flexibility in handling unstructured and semi-structured data", choices: ["Strict fixed schema", "Flexibility with unstructured data", "SQL queries only", "Relational models only"], correct: 1 },
             { id: 215, category: "SDLC", q: "Which phase organizes project scope, objectives, and deliverables?", a: "Planning", choices: ["Initiating", "Execution", "Planning", "Closing"], correct: 2 },
             { id: 216, category: "Data & Information", q: "Most stored data today is what type?", a: "Unstructured (text, blogs, tweets, audio)", choices: ["Structured", "Organized", "Semi-structured", "Unstructured"], correct: 3 },
             { id: 217, category: "Hardware", q: "What defines output in computing?", a: "Processed or generated information produced by a system", choices: ["Processed information produced by system", "Information stored for later", "Data awaiting processing", "Data input into system"], correct: 0 },
-            { id: 218, category: "Hardware", q: "Which category do monitors and printers belong to?", a: "Output", choices: ["Input", "Output", "Temporary memory", "Storage"], correct: 1 },
             { id: 219, category: "Hardware", q: "Which category do barcode scanners and webcams belong to?", a: "Input", choices: ["Temporary memory", "Output", "Input", "Storage"], correct: 2 },
-            { id: 220, category: "Software", q: "Which software category performs system maintenance like disk cleaning?", a: "Utility Software", choices: ["System Software", "Security Software", "Firmware", "Utility Software"], correct: 3 }
+            { id: 220, category: "Software", q: "Which software category performs system maintenance like disk cleaning?", a: "Utility Software", choices: ["System Software", "Security Software", "Firmware", "Utility Software"], correct: 3 },
+
+            // CIA Triad
+            { id: 221, category: "Security", q: "What does CIA stand for in cybersecurity?", a: "Confidentiality, Integrity, Availability", choices: ["Central Intelligence Agency", "Confidentiality, Integrity, Availability", "Cybersecurity, Internet, Accessibility", "Confidentiality, Information, Authorization"], correct: 1 },
+            { id: 222, category: "Security", q: "Which element of the CIA triad ensures data is not modified by unauthorized users?", a: "Integrity", choices: ["Confidentiality", "Integrity", "Availability", "Authentication"], correct: 1 },
+            { id: 223, category: "Security", q: "Which element of the CIA triad ensures authorized users can access data when needed?", a: "Availability", choices: ["Confidentiality", "Integrity", "Availability", "Authorization"], correct: 2 },
+            { id: 224, category: "Security", q: "Which element of the CIA triad restricts access to only those who need to know?", a: "Confidentiality", choices: ["Confidentiality", "Integrity", "Availability", "Accountability"], correct: 0 },
+
+            // Ethics & Professional Codes
+            { id: 225, category: "Ethics", q: "What is the difference between ethics and regulations?", a: "Regulations are requirements from governing bodies with penalties; ethics are personal/organizational morals", choices: ["Ethics have legal penalties; regulations are optional", "Regulations are requirements with penalties; ethics are morals", "They are the same thing", "Ethics apply only to IT; regulations apply everywhere"], correct: 1 },
+            { id: 226, category: "Ethics", q: "What is a conflict of interest?", a: "A situation where a person has two relationships that might be incompatible with each other", choices: ["A disagreement between colleagues", "When a person has incompatible loyalties or relationships", "A software licensing dispute", "A data privacy violation"], correct: 1 },
+            { id: 227, category: "Ethics", q: "What is an Acceptable Use Policy (AUP)?", a: "A policy detailing how computer systems owned by an organization can be used", choices: ["A software license agreement", "A data backup policy", "A policy for acceptable use of organizational computer systems", "A network security protocol"], correct: 2 },
+            { id: 228, category: "Ethics", q: "Which organization developed the Ten Commandments of Computer Ethics?", a: "Computer Ethics Institute", choices: ["IEEE", "ACM", "Computer Ethics Institute", "AITP"], correct: 2 },
+            { id: 229, category: "Ethics", q: "What does ACM stand for?", a: "Association for Computing Machinery", choices: ["American Computer Manufacturers", "Association for Computing Machinery", "Automated Computing Management", "Advanced Computer Methods"], correct: 1 },
+            { id: 230, category: "Ethics", q: "What does IEEE stand for?", a: "Institute of Electrical and Electronics Engineers", choices: ["International Electronics Engineering Entity", "Institute of Electrical and Electronics Engineers", "Information Engineering and Ethics Experts", "Internet Engineering Excellence Establishment"], correct: 1 },
+
+            // Business Continuity & Disaster Recovery
+            { id: 231, category: "IT Governance", q: "What is a disaster recovery plan (DRP)?", a: "A plan that ensures systems can recover from catastrophic events with minimal data loss", choices: ["A plan for daily backups", "A plan for recovering from catastrophic events", "An insurance policy for IT equipment", "A network monitoring strategy"], correct: 1 },
+            { id: 232, category: "IT Governance", q: "What is a business continuity plan?", a: "A plan defining how to resume services and vital business operations during disruptions", choices: ["A marketing strategy", "A plan for resuming services during disruptions", "An employee training program", "A software development plan"], correct: 1 },
+            { id: 233, category: "IT Governance", q: "What is hot storage in disaster recovery?", a: "Storage allowing quickest access to restore critical data after a disaster", choices: ["Storage in warm locations", "Fastest storage for quick disaster recovery", "Storage that runs continuously", "Overheated storage devices"], correct: 1 },
+            { id: 234, category: "IT Governance", q: "What is cold storage in disaster recovery?", a: "Less expensive storage with less frequent access and slower recovery times", choices: ["Refrigerated storage for servers", "Less expensive storage with slower recovery", "Storage in cold climates", "Frozen backup tapes"], correct: 1 },
+            { id: 235, category: "IT Governance", q: "What does 'five nines' mean for system uptime?", a: "99.999% availability, approximately 5 minutes of downtime per year", choices: ["Five backup copies", "99.999% uptime availability", "Five data centers", "Five security levels"], correct: 1 },
+
+            // IoT & Emerging Tech
+            { id: 236, category: "Networking", q: "What is the Internet of Things (IoT)?", a: "A system of interconnected devices with unique identifiers that can transfer data via a network without human interaction", choices: ["The World Wide Web", "Interconnected devices transferring data automatically", "A social media network", "A cloud computing platform"], correct: 1 },
+            { id: 237, category: "IT Governance", q: "What is globalization in the context of IT?", a: "The growing interdependence of world economies and cultures brought about by trade and the flow of information", choices: ["Using global IP addresses", "Growing interdependence of economies through trade and information", "Having servers worldwide", "Using international domain names"], correct: 1 },
+
+            // Computer History
+            { id: 238, category: "Hardware", q: "What was the abacus used for?", a: "One of the earliest computing devices for performing calculations using beads on rods", choices: ["Storing written documents", "Performing calculations using beads", "Sending messages", "Keeping time"], correct: 1 },
+            { id: 239, category: "Hardware", q: "Who is considered the world's first computer programmer?", a: "Ada Lovelace", choices: ["Charles Babbage", "Ada Lovelace", "Alan Turing", "Grace Hopper"], correct: 1 },
+            { id: 240, category: "Hardware", q: "What was ENIAC?", a: "Electronic Numerical Integrator and Calculator - an early electronic computer from the 1940s", choices: ["A programming language", "An early electronic computer", "A type of vacuum tube", "A network protocol"], correct: 1 },
+            { id: 241, category: "Internet", q: "Who invented the World Wide Web?", a: "Tim Berners-Lee in the late 1980s", choices: ["Bill Gates", "Steve Jobs", "Tim Berners-Lee", "Vint Cerf"], correct: 2 },
+
+            // Technical Details
+            { id: 242, category: "Networking", q: "What is baseband transmission?", a: "A signal at a narrow frequency range on which data is transmitted, like Ethernet LANs", choices: ["High-speed wireless transmission", "Narrow frequency signal transmission like Ethernet", "Satellite communication", "Fiber optic transmission"], correct: 1 },
+            { id: 243, category: "Networking", q: "What is broadband transmission?", a: "High-capacity transmission technologies for data, voice, and video across long distances", choices: ["Low-speed local transmission", "High-capacity transmission for data/voice/video", "Wireless Bluetooth transmission", "Near-field communication"], correct: 1 },
+            { id: 244, category: "Hardware", q: "What is a petabyte (PB)?", a: "1,024 terabytes", choices: ["1,000 gigabytes", "1,024 gigabytes", "1,024 terabytes", "1,024 megabytes"], correct: 2 },
+            { id: 245, category: "Operating Systems", q: "What is a superuser or root account?", a: "An administrator account that can alter settings, modify software, and perform maintenance activities", choices: ["A regular user with limited access", "An administrator account with full system access", "A guest account", "An automated system account"], correct: 1 },
+            { id: 246, category: "Networking", q: "What is a CDN (Content Delivery Network)?", a: "A distributed network of servers that delivers web content based on user geographic location", choices: ["A central database network", "A distributed network delivering content by location", "A computer data network", "A cable distribution node"], correct: 1 },
+            { id: 247, category: "Internet", q: "What is VoIP?", a: "Voice over Internet Protocol - technology for delivering voice communications over IP networks", choices: ["Video over Internet Protocol", "Voice over Internet Protocol", "Virtual online IP", "Verified online identity protocol"], correct: 1 }
         ];
 
         // State management
@@ -1763,6 +1799,28 @@
                     <li><span class="key-term">Word Processing</span> - Word, Google Docs, OpenOffice Writer</li>
                     <li><span class="key-term">Spreadsheets</span> - Excel, Google Sheets, OpenOffice Calc</li>
                     <li><span class="key-term">Presentations</span> - PowerPoint, Google Slides, OpenOffice Impress</li>
+                </ul>`,
+            "Ethics": `
+                <h3>Ethics vs Regulations</h3>
+                <ul>
+                    <li><span class="key-term">Ethics</span> - Personal or organizational morals guiding behavior</li>
+                    <li><span class="key-term">Regulations</span> - Requirements from governing bodies with penalties for violations</li>
+                    <li><span class="key-term">Conflict of Interest</span> - When a person has incompatible loyalties or relationships</li>
+                </ul>
+                <h3>Professional Organizations</h3>
+                <ul>
+                    <li><span class="key-term">ACM</span> - Association for Computing Machinery</li>
+                    <li><span class="key-term">IEEE</span> - Institute of Electrical and Electronics Engineers</li>
+                    <li><span class="key-term">AITP</span> - Association of Information Technology Professionals</li>
+                    <li><span class="key-term">Computer Ethics Institute</span> - Created Ten Commandments of Computer Ethics</li>
+                </ul>
+                <h3>Policies & Standards</h3>
+                <ul>
+                    <li><span class="key-term">Acceptable Use Policy (AUP)</span> - Details how organizational computer systems can be used</li>
+                    <li><span class="key-term">CIA Triad</span> - Confidentiality, Integrity, Availability</li>
+                    <li><span class="key-term">Confidentiality</span> - Restricting access to those who need to know</li>
+                    <li><span class="key-term">Integrity</span> - Ensuring data is not modified by unauthorized users</li>
+                    <li><span class="key-term">Availability</span> - Ensuring authorized users can access data when needed</li>
                 </ul>`
         };
 
