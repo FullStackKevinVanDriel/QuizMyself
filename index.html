@@ -1325,6 +1325,9 @@ question,answer,choice1,choice2,choice3,choice4,correct
             error.style.display = 'none';
             currentKeyword = sanitized;
 
+            // Save keyword to localStorage for auto-load
+            localStorage.setItem('quizmyself_keyword', currentKeyword);
+
             // Show loading state
             input.disabled = true;
 
@@ -2639,15 +2642,21 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
 
             try {
+                const baseUrl = window.location.origin + window.location.pathname;
                 const response = await fetch(`${VANDROMEDA_API}/payments/create-checkout.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         price_id: priceId,
                         product: 'quizmyself',
-                        email: email,
-                        success_url: window.location.href + '?payment=success',
-                        cancel_url: window.location.href + '?payment=cancelled'
+                        customer_email: email,
+                        success_url: baseUrl + '?payment=success&session_id={CHECKOUT_SESSION_ID}',
+                        cancel_url: baseUrl + '?payment=cancelled',
+                        metadata: {
+                            product: 'quizmyself',
+                            tier: 'pro',
+                            max_domains: '3'
+                        }
                     })
                 });
 
@@ -2701,6 +2710,41 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         }
 
+        async function fetchLicenseFromSession(sessionId) {
+            // Try to fetch license created by webhook
+            let attempts = 0;
+            const maxAttempts = 5;
+
+            while (attempts < maxAttempts) {
+                try {
+                    const response = await fetch(`${VANDROMEDA_API}/license/by-session.php?session_id=${encodeURIComponent(sessionId)}`);
+                    const data = await response.json();
+
+                    if (data.status === 'ok' && data.license_key) {
+                        // License found - auto-activate
+                        document.getElementById('license-key-input').value = data.license_key;
+                        await activateLicense();
+                        alert(`Pro activated! Your license key: ${data.license_key}`);
+                        return;
+                    } else if (data.status === 'pending') {
+                        // Webhook hasn't processed yet - wait and retry
+                        attempts++;
+                        await new Promise(r => setTimeout(r, 2000));
+                        continue;
+                    } else {
+                        break;
+                    }
+                } catch (error) {
+                    console.error('License fetch error:', error);
+                    break;
+                }
+            }
+
+            // Fallback - show manual entry
+            alert('Payment successful! Enter your license key below to activate Pro.');
+            showUpgradeModal();
+        }
+
         async function checkProStatus() {
             // Check for stored license
             const storedLicense = localStorage.getItem('quizmyself_license');
@@ -2737,10 +2781,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
             // Check URL for payment success
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('payment') === 'success') {
-                alert('Payment successful! Your license key will be emailed to you shortly. Enter it below to activate Pro.');
-                showUpgradeModal();
-                // Clean up URL
+                const sessionId = urlParams.get('session_id');
+                // Clean up URL immediately
                 window.history.replaceState({}, document.title, window.location.pathname);
+
+                if (sessionId) {
+                    // Auto-fetch license from session
+                    await fetchLicenseFromSession(sessionId);
+                } else {
+                    alert('Payment successful! Enter your license key below to activate Pro.');
+                    showUpgradeModal();
+                }
             }
 
             updateProUI();
@@ -2783,7 +2834,16 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Initialize - hide stats until keyword entered
         document.getElementById('stats-bar').style.display = 'none';
-        document.getElementById('keyword-input').focus();
+
+        // Auto-load saved keyword if available
+        const savedKeyword = localStorage.getItem('quizmyself_keyword');
+        if (savedKeyword) {
+            document.getElementById('keyword-input').value = savedKeyword;
+            submitKeyword();
+        } else {
+            document.getElementById('keyword-input').focus();
+        }
+
         checkProStatus();
         checkDeploymentStatus();
 
