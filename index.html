@@ -2653,7 +2653,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                 const data = await response.json();
 
-                if (data.success && data.checkout_url) {
+                if (data.status === 'ok' && data.checkout_url) {
                     // Redirect to Stripe Checkout
                     window.location.href = data.checkout_url;
                 } else {
