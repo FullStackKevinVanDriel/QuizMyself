@@ -523,6 +523,118 @@
             color: #1a1a2e;
         }
 
+        /* Pro Badge & Upgrade */
+        .pro-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .upgrade-banner {
+            background: linear-gradient(135deg, #0f3460, #1a4a7a);
+            border: 1px solid #4fc3f7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .upgrade-banner h3 {
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+
+        .upgrade-banner p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .btn-upgrade {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            font-weight: bold;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-upgrade:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .pricing-card {
+            background: #0f3460;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #ffd700;
+            position: relative;
+        }
+
+        .pricing-card.featured::before {
+            content: 'BEST VALUE';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffd700;
+            color: #1a1a2e;
+            padding: 3px 12px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .pricing-price {
+            font-size: 2rem;
+            color: #4fc3f7;
+            font-weight: bold;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin: 15px 0;
+            color: #aaa;
+        }
+
+        .pricing-features li {
+            padding: 5px 0;
+            list-style: none;
+        }
+
+        .pricing-features li::before {
+            content: '✓ ';
+            color: #27ae60;
+        }
+
+        .free-limit-warning {
+            background: #2d1f1f;
+            border: 1px solid #e94560;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            color: #e94560;
+            font-size: 0.9rem;
+        }
+
         .help-btn {
             background: none;
             border: 2px solid #4fc3f7;
@@ -650,6 +762,18 @@
         <!-- Main Menu -->
         <div id="menu-screen" class="menu hidden">
             <div id="current-keyword" style="text-align: center; margin-bottom: 15px; color: #888; font-size: 14px;"></div>
+
+            <!-- Pro Status Banner -->
+            <div id="upgrade-banner" class="upgrade-banner">
+                <h3>Upgrade to Pro</h3>
+                <p>Unlimited imports, cloud sync, and more!</p>
+                <button class="btn-upgrade" onclick="showUpgradeModal()">Get Pro - $4.99/mo</button>
+            </div>
+            <div id="pro-status-banner" class="upgrade-banner hidden" style="border-color: #ffd700;">
+                <h3 style="color: #27ae60;">Pro Member <span class="pro-badge">PRO</span></h3>
+                <p>Thank you for supporting QuizMyself!</p>
+            </div>
+
             <button class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
             <button id="resume-exam-btn" class="btn hidden" onclick="resumeExam()" style="background: #ff9800; color: #1a1a2e; font-weight: bold;">Resume Exam</button>
             <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
@@ -808,6 +932,51 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         Replace existing questions (instead of adding to them)
                     </label>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrade Modal -->
+    <div id="upgrade-modal" class="modal-overlay hidden" onclick="closeUpgradeModalOnOverlay(event)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Upgrade to Pro</h2>
+                <button class="modal-close" onclick="closeUpgradeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="pricing-card featured">
+                    <h3 style="color: #ffd700; margin-bottom: 10px;">Pro Monthly</h3>
+                    <div class="pricing-price">$4.99<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Unlimited imported questions</li>
+                        <li>Cloud sync across devices</li>
+                        <li>Priority support</li>
+                        <li>Early access to new features</li>
+                    </ul>
+                    <button class="btn-upgrade" onclick="startCheckout('monthly')" style="width: 100%;">Subscribe Monthly</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3 style="color: #4fc3f7; margin-bottom: 10px;">Pro Yearly</h3>
+                    <div class="pricing-price">$29.99<span>/yr</span></div>
+                    <p style="color: #27ae60; font-size: 0.85rem; margin-bottom: 10px;">Save 50%!</p>
+                    <ul class="pricing-features">
+                        <li>Everything in Pro Monthly</li>
+                        <li>2 months free</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="startCheckout('yearly')" style="width: 100%;">Subscribe Yearly</button>
+                </div>
+
+                <!-- License Key Entry -->
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333;">
+                    <p style="color: #888; font-size: 0.9rem; margin-bottom: 10px;">Already have a license key?</p>
+                    <input type="text" id="license-key-input" placeholder="XXXX-XXXX-XXXX-XXXX"
+                        style="width: 100%; padding: 10px; font-size: 14px; border-radius: 6px; border: 1px solid #333; background: #0f3460; color: white; margin-bottom: 10px; box-sizing: border-box;">
+                    <button class="btn btn-small" onclick="activateLicense()" style="width: 100%;">Activate License</button>
+                </div>
+
+                <p id="upgrade-error" style="color: #e94560; margin-top: 10px; display: none;"></p>
+                <p id="upgrade-success" style="color: #27ae60; margin-top: 10px; display: none;"></p>
             </div>
         </div>
     </div>
@@ -1117,10 +1286,19 @@ question,answer,choice1,choice2,choice3,choice4,correct
             examQuestions: [],
             examIndex: 0,
             examCorrect: 0,
-            claimedKnowledge: false
+            claimedKnowledge: false,
+            isPro: false,
+            licenseKey: null,
+            importedQuestionCount: 0
         };
 
         const STORAGE_URL = 'https://quiz-storage.kvquiz.workers.dev';
+        const VANDROMEDA_API = 'https://www.vandromeda.com/api';
+        const FREE_IMPORT_LIMIT = 50;
+        const STRIPE_PRICES = {
+            monthly: 'price_1SosTEE0LClU4PH9magrG0Bo',
+            yearly: 'price_1SosUDE0LClU4PH9ycCWqpQ5'
+        };
         let currentKeyword = '';
 
         // Submit keyword and load progress
@@ -2381,6 +2559,19 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
             const replaceMode = document.getElementById('import-replace').checked;
 
+            // Check free limit for non-Pro users
+            if (!state.isPro && !replaceMode) {
+                const currentImported = state.importedQuestionCount || 0;
+                const newTotal = currentImported + parsedImportData.length;
+                if (newTotal > FREE_IMPORT_LIMIT) {
+                    const remaining = FREE_IMPORT_LIMIT - currentImported;
+                    alert(`Free accounts can import up to ${FREE_IMPORT_LIMIT} questions. You have ${remaining} imports remaining.\n\nUpgrade to Pro for unlimited imports!`);
+                    closeImportModal();
+                    showUpgradeModal();
+                    return;
+                }
+            }
+
             if (replaceMode) {
                 // Replace all questions
                 questions.length = 0;
@@ -2393,6 +2584,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 state.answerCounts = {};
                 state.totalCorrect = 0;
                 state.totalAnswered = 0;
+                state.importedQuestionCount = parsedImportData.length;
             } else {
                 // Add to existing questions
                 const startId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
@@ -2400,6 +2592,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     q.id = startId + idx;
                     questions.push(q);
                 });
+                state.importedQuestionCount = (state.importedQuestionCount || 0) + parsedImportData.length;
             }
 
             // Update UI
@@ -2410,16 +2603,188 @@ question,answer,choice1,choice2,choice3,choice4,correct
             alert(`Successfully imported ${parsedImportData.length} questions!${replaceMode ? ' Progress has been reset.' : ''}`);
         }
 
+        // ========== UPGRADE/PAYMENT FUNCTIONALITY ==========
+
+        function showUpgradeModal() {
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('upgrade-error').style.display = 'none';
+            document.getElementById('upgrade-success').style.display = 'none';
+            document.getElementById('license-key-input').value = '';
+        }
+
+        function closeUpgradeModal() {
+            document.getElementById('upgrade-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeUpgradeModalOnOverlay(event) {
+            if (event.target === document.getElementById('upgrade-modal')) {
+                closeUpgradeModal();
+            }
+        }
+
+        async function startCheckout(plan) {
+            const priceId = STRIPE_PRICES[plan];
+            if (!priceId || priceId.includes('TODO')) {
+                alert('Payment is not yet configured. Please check back later or contact support.');
+                return;
+            }
+
+            // Get user email
+            const email = prompt('Enter your email address for the subscription:');
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${VANDROMEDA_API}/payments/create-checkout.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        price_id: priceId,
+                        product: 'quizmyself',
+                        email: email,
+                        success_url: window.location.href + '?payment=success',
+                        cancel_url: window.location.href + '?payment=cancelled'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.checkout_url) {
+                    // Redirect to Stripe Checkout
+                    window.location.href = data.checkout_url;
+                } else {
+                    showUpgradeError(data.error || 'Failed to create checkout session');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                showUpgradeError('Network error. Please try again.');
+            }
+        }
+
+        async function activateLicense() {
+            const licenseKey = document.getElementById('license-key-input').value.trim();
+            if (!licenseKey) {
+                showUpgradeError('Please enter a license key.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${VANDROMEDA_API}/license/validate.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        license_key: licenseKey,
+                        domain: window.location.hostname || 'localhost'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.valid) {
+                    // License is valid - activate Pro
+                    state.isPro = true;
+                    state.licenseKey = licenseKey;
+                    localStorage.setItem('quizmyself_license', licenseKey);
+                    updateProUI();
+                    showUpgradeSuccess('License activated! Welcome to Pro!');
+                    setTimeout(() => closeUpgradeModal(), 2000);
+                } else {
+                    showUpgradeError(data.reason || 'Invalid license key.');
+                }
+            } catch (error) {
+                console.error('License validation error:', error);
+                showUpgradeError('Network error. Please try again.');
+            }
+        }
+
+        async function checkProStatus() {
+            // Check for stored license
+            const storedLicense = localStorage.getItem('quizmyself_license');
+            if (storedLicense) {
+                try {
+                    const response = await fetch(`${VANDROMEDA_API}/license/validate.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            license_key: storedLicense,
+                            domain: window.location.hostname || 'localhost'
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.valid) {
+                        state.isPro = true;
+                        state.licenseKey = storedLicense;
+                    } else {
+                        // License expired or invalid - remove it
+                        localStorage.removeItem('quizmyself_license');
+                        state.isPro = false;
+                        state.licenseKey = null;
+                    }
+                } catch (error) {
+                    console.error('Pro status check failed:', error);
+                    // On network error, trust the stored license temporarily
+                    state.isPro = true;
+                    state.licenseKey = storedLicense;
+                }
+            }
+
+            // Check URL for payment success
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('payment') === 'success') {
+                alert('Payment successful! Your license key will be emailed to you shortly. Enter it below to activate Pro.');
+                showUpgradeModal();
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            updateProUI();
+        }
+
+        function updateProUI() {
+            const upgradeBanner = document.getElementById('upgrade-banner');
+            const proStatusBanner = document.getElementById('pro-status-banner');
+
+            if (state.isPro) {
+                upgradeBanner.classList.add('hidden');
+                proStatusBanner.classList.remove('hidden');
+            } else {
+                upgradeBanner.classList.remove('hidden');
+                proStatusBanner.classList.add('hidden');
+            }
+        }
+
+        function showUpgradeError(message) {
+            const errorEl = document.getElementById('upgrade-error');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            document.getElementById('upgrade-success').style.display = 'none';
+        }
+
+        function showUpgradeSuccess(message) {
+            const successEl = document.getElementById('upgrade-success');
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+            document.getElementById('upgrade-error').style.display = 'none';
+        }
+
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeStudyMaterial();
                 closeImportModal();
+                closeUpgradeModal();
             }
         });
 
         // Initialize - hide stats until keyword entered
         document.getElementById('stats-bar').style.display = 'none';
         document.getElementById('keyword-input').focus();
+        checkProStatus();
         checkDeploymentStatus();
 
         // Check if there's a newer version being deployed
