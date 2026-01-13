@@ -1,106 +1,72 @@
-# WGU D322 - Introduction to IT Quiz
+# QuizMyself
 
-A study tool for Western Governors University's Introduction to IT course (D322).
+A flexible quiz tool where you can import your own study material and test yourself.
 
 ## Features
 
-- **244 quiz questions** covering all course topics
-- **138 lessons** of course content for reference
-- **Progress tracking** synced across devices via cloud storage
-- **Practice mode** with spaced repetition - master questions by answering correctly
-- **Final exam mode** requiring 100% to pass
-- **Exam persistence** - resume exams after closing browser
-- **Study materials** accessible via ? button during quizzes
+- **Import your own quizzes** - Drag & drop files (CSV, JSON, text) or paste directly
+- **Multiple formats supported** - Q&A pairs, flashcards, CSV, JSON
+- **Progress tracking** - Synced across devices via cloud storage
+- **Practice mode** - Spaced repetition, master questions by answering correctly
+- **Final exam mode** - 100% required to pass
+- **Pro features** - Unlimited imports, cloud sync
 
 ## Live Demo
 
-https://fullstackkevinvandriel.github.io/quizlet/quiz.html
-
-## Topics Covered
-
-| Category | Questions |
-|----------|-----------|
-| IT Roles & Functions | 20 |
-| Data & Information | 14 |
-| Hardware | 28 |
-| Networking | 25 |
-| Internet | 13 |
-| Security | 17 |
-| Operating Systems | 17 |
-| Programming | 8 |
-| Licensing | 10 |
-| Databases | 16 |
-| Project Management | 8 |
-| SDLC | 8 |
-| Testing | 6 |
-| IT Governance | 11 |
-| Software | 7 |
-| Ethics | 6 |
+https://fullstackkevinvandriel.github.io/QuizMyself/
 
 ## How It Works
 
-### Progress Sync
+### Getting Started
 
-Enter a keyword when you start - your progress saves to the cloud under that keyword. Use the same keyword on any device to continue where you left off.
+1. Enter a keyword to save your progress
+2. Import quiz data or use the built-in questions
+3. Start practicing!
+
+### Import Formats
+
+**JSON:**
+```json
+[
+  {"question": "What is 2+2?", "answer": "4"},
+  {"question": "Capital of France?", "answer": "Paris"}
+]
+```
+
+**CSV:**
+```
+question,answer
+What is 2+2?,4
+Capital of France?,Paris
+```
+
+**Q&A Text:**
+```
+Q: What is 2+2?
+A: 4
+
+Q: Capital of France?
+A: Paris
+```
 
 ### Practice Mode
 
 - Questions appear randomly from your unmastered pool
 - Answer correctly 3 times to master a question
 - Mastered questions are removed from rotation
-- Track your accuracy and remaining questions
 
 ### Final Exam
 
-- All 244 questions in random order
+- All questions in random order
 - Must score 100% to pass
-- Progress saves after each answer - resume if interrupted
-- Review correct answers after each question
-
-## Architecture
-
-```
-quizlet/
-├── index.html          # Course content (138 lessons)
-├── quiz.html           # Interactive quiz application
-├── README.md           # This file
-├── PLAN.md             # Development roadmap
-├── worker/
-│   ├── worker.js       # Cloudflare Worker for progress sync
-│   └── wrangler.toml   # Worker configuration
-└── .github/
-    └── workflows/
-        └── deploy.yml  # GitHub Pages deployment
-```
+- Progress saves after each answer
 
 ## Tech Stack
 
 - **Frontend**: Vanilla HTML/CSS/JavaScript
 - **Storage**: Cloudflare Workers KV
+- **Payments**: Stripe via Vandromeda API
 - **Hosting**: GitHub Pages
-- **CI/CD**: GitHub Actions
-
-## Local Development
-
-1. Clone the repository
-2. Open `quiz.html` in a browser
-3. Progress sync requires the Cloudflare Worker (or use without sync)
-
-### Deploy Worker (optional)
-
-```bash
-cd worker
-npm install -g wrangler
-wrangler login
-wrangler deploy
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make changes
-4. Submit a pull request
 
 ## License
 
