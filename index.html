@@ -321,6 +321,93 @@
             padding-top: 40px;
         }
 
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+        }
+
+        .hamburger-btn {
+            background: #1a1a2e;
+            border: 2px solid #4fc3f7;
+            color: #4fc3f7;
+            font-size: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger-btn:hover {
+            background: #4fc3f7;
+            color: #1a1a2e;
+        }
+
+        .hamburger-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #1a1a2e;
+            border: 2px solid #4fc3f7;
+            border-radius: 8px;
+            min-width: 220px;
+            padding: 10px 0;
+            display: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .hamburger-dropdown.show {
+            display: block;
+        }
+
+        .hamburger-dropdown .menu-item {
+            padding: 12px 20px;
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hamburger-dropdown .menu-item:hover {
+            background: rgba(79, 195, 247, 0.1);
+        }
+
+        .hamburger-dropdown .menu-divider {
+            border-top: 1px solid #333;
+            margin: 8px 0;
+        }
+
+        .hamburger-dropdown .menu-label {
+            padding: 8px 20px;
+            color: #666;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hamburger-dropdown .menu-value {
+            padding: 4px 20px 12px;
+            color: #4fc3f7;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .hamburger-dropdown .pro-indicator {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -753,10 +840,32 @@
 </head>
 <body>
     <div id="deploy-banner" class="deploy-banner hidden">Deploying update...</div>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" id="hamburger-menu">
+        <button class="hamburger-btn" onclick="toggleHamburgerMenu()">☰</button>
+        <div class="hamburger-dropdown" id="hamburger-dropdown">
+            <div class="menu-label">Account</div>
+            <div class="menu-value" id="menu-keyword">Not signed in</div>
+            <div id="menu-email-section" style="display: none;">
+                <div class="menu-label">Email</div>
+                <div class="menu-value" id="menu-email">-</div>
+            </div>
+            <div id="menu-pro-section" style="display: none;">
+                <div class="menu-label">Status</div>
+                <div class="menu-value"><span class="pro-indicator">PRO</span></div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-item" id="menu-signout" onclick="changeKeyword(); toggleHamburgerMenu();">
+                Sign Out
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
-            <h1>WGU D322 - Introduction to IT</h1>
-            <p class="subtitle">Spaced Repetition Quiz System</p>
+            <h1>QuizMyself</h1>
+            <p class="subtitle">Quiz Yourself on Anything</p>
         </header>
 
         <div id="stats-bar" class="stats-bar">
@@ -793,11 +902,6 @@
 
         <!-- Main Menu -->
         <div id="menu-screen" class="menu hidden">
-            <div id="current-keyword-bar" style="display: flex; justify-content: space-between; align-items: center; background: #1a1a2e; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px;">
-                <span id="current-keyword" style="color: #888; font-size: 14px;"></span>
-                <button onclick="changeKeyword()" style="background: none; border: 1px solid #666; color: #888; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Sign Out</button>
-            </div>
-
             <!-- Pro Status Banner -->
             <div id="upgrade-banner" class="upgrade-banner">
                 <h3>Upgrade to Pro</h3>
@@ -1324,6 +1428,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             claimedKnowledge: false,
             isPro: false,
             licenseKey: null,
+            email: null,
             importedQuestionCount: 0
         };
 
@@ -1376,7 +1481,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('keyword-screen').classList.add('hidden');
             document.getElementById('menu-screen').classList.remove('hidden');
             document.getElementById('stats-bar').style.display = 'flex';
-            document.getElementById('current-keyword').textContent = `Progress saved as: ${currentKeyword}`;
+            updateHamburgerMenu();
 
             input.disabled = false;
         }
@@ -1394,6 +1499,9 @@ question,answer,choice1,choice2,choice3,choice4,correct
             state.examQuestions = [];
             state.examIndex = 0;
             state.examCorrect = 0;
+            state.isPro = false;
+            state.licenseKey = null;
+            state.email = null;
 
             document.getElementById('menu-screen').classList.add('hidden');
             document.getElementById('keyword-screen').classList.remove('hidden');
@@ -1402,7 +1510,51 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('keyword-input').focus();
             updateStats();
             updateResumeExamButton(false);
+            updateHamburgerMenu();
         }
+
+        // Hamburger menu functions
+        function toggleHamburgerMenu() {
+            const dropdown = document.getElementById('hamburger-dropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function updateHamburgerMenu() {
+            const keywordEl = document.getElementById('menu-keyword');
+            const emailSection = document.getElementById('menu-email-section');
+            const emailEl = document.getElementById('menu-email');
+            const proSection = document.getElementById('menu-pro-section');
+            const signoutEl = document.getElementById('menu-signout');
+
+            if (currentKeyword) {
+                keywordEl.textContent = currentKeyword;
+                signoutEl.style.display = 'block';
+            } else {
+                keywordEl.textContent = 'Not signed in';
+                signoutEl.style.display = 'none';
+            }
+
+            if (state.email) {
+                emailSection.style.display = 'block';
+                emailEl.textContent = state.email;
+            } else {
+                emailSection.style.display = 'none';
+            }
+
+            if (state.isPro) {
+                proSection.style.display = 'block';
+            } else {
+                proSection.style.display = 'none';
+            }
+        }
+
+        // Close hamburger menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('hamburger-menu');
+            if (menu && !menu.contains(e.target)) {
+                document.getElementById('hamburger-dropdown').classList.remove('show');
+            }
+        });
 
         // Load state from server
         async function loadState() {
@@ -2750,11 +2902,18 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     // License is valid - activate Pro
                     state.isPro = true;
                     state.licenseKey = licenseKey;
+                    if (data.email) {
+                        state.email = data.email;
+                    }
                     // Store license per-keyword
                     if (currentKeyword) {
                         localStorage.setItem(`quizmyself_license_${currentKeyword}`, licenseKey);
+                        if (data.email) {
+                            localStorage.setItem(`quizmyself_email_${currentKeyword}`, data.email);
+                        }
                     }
                     updateProUI();
+                    updateHamburgerMenu();
                     showUpgradeSuccess('License activated! Welcome to Pro!');
                     setTimeout(() => closeUpgradeModal(), 2000);
                 } else {
@@ -2777,7 +2936,12 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     const data = await response.json();
 
                     if (data.status === 'ok' && data.license_key) {
-                        // License found - auto-activate
+                        // License found - capture email if available
+                        if (data.email && currentKeyword) {
+                            state.email = data.email;
+                            localStorage.setItem(`quizmyself_email_${currentKeyword}`, data.email);
+                        }
+                        // Auto-activate
                         document.getElementById('license-key-input').value = data.license_key;
                         await activateLicense();
                         alert(`Pro activated! Your license key: ${data.license_key}`);
@@ -2805,11 +2969,19 @@ question,answer,choice1,choice2,choice3,choice4,correct
             // Reset pro status
             state.isPro = false;
             state.licenseKey = null;
+            state.email = null;
 
             // Need keyword to check per-user license
             if (!currentKeyword) {
                 updateProUI();
+                updateHamburgerMenu();
                 return;
+            }
+
+            // Check for stored email (per-keyword)
+            const storedEmail = localStorage.getItem(`quizmyself_email_${currentKeyword}`);
+            if (storedEmail) {
+                state.email = storedEmail;
             }
 
             // Check for stored license (per-keyword)
@@ -2830,11 +3002,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     if (data.valid) {
                         state.isPro = true;
                         state.licenseKey = storedLicense;
+                        if (data.email) {
+                            state.email = data.email;
+                            localStorage.setItem(`quizmyself_email_${currentKeyword}`, data.email);
+                        }
                     } else {
                         // License expired or invalid - remove it
                         localStorage.removeItem(`quizmyself_license_${currentKeyword}`);
+                        localStorage.removeItem(`quizmyself_email_${currentKeyword}`);
                         state.isPro = false;
                         state.licenseKey = null;
+                        state.email = null;
                     }
                 } catch (error) {
                     console.error('Pro status check failed:', error);
@@ -2861,6 +3039,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
 
             updateProUI();
+            updateHamburgerMenu();
         }
 
         function updateProUI() {
