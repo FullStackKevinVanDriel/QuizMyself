@@ -1314,6 +1314,21 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     <button class="btn btn-primary" onclick="startCheckout('yearly')" style="width: 100%;">Subscribe Yearly</button>
                 </div>
 
+                <!-- License Status (shown after payment) -->
+                <div id="license-status-section" style="display: none; margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #1a472a, #2d5a3d); border-radius: 8px; border: 1px solid #ffd700;">
+                    <div id="license-pending" style="display: none;">
+                        <p style="color: #ffd700; font-weight: bold; margin-bottom: 10px;">⏳ Payment Received!</p>
+                        <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 15px;">Your license is being processed. This usually takes a few seconds. Check your email for the license key, or click below to check again.</p>
+                        <button class="btn btn-primary" onclick="checkForLicense()" id="check-license-btn" style="width: 100%;">Check for License</button>
+                    </div>
+                    <div id="license-found" style="display: none;">
+                        <p style="color: #27ae60; font-weight: bold; margin-bottom: 10px;">✓ License Found!</p>
+                        <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 10px;">Your license key:</p>
+                        <div style="background: #0f3460; padding: 12px; border-radius: 6px; font-family: monospace; color: #ffd700; font-size: 14px; word-break: break-all; margin-bottom: 10px;" id="license-display"></div>
+                        <button class="btn btn-small" onclick="copyLicenseKey()" style="width: 100%;">Copy License Key</button>
+                    </div>
+                </div>
+
                 <!-- License Key Entry -->
                 <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333;">
                     <p style="color: #888; font-size: 0.9rem; margin-bottom: 10px;">Already have a license key?</p>
@@ -1913,9 +1928,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         if (sessionId && currentKeyword) {
                             await fetchLicenseFromSession(sessionId);
                         } else if (sessionId) {
-                            // No keyword yet - store session for later
-                            alert('Payment successful! Enter your license key below to activate Pro.');
-                            showUpgradeModal();
+                            // No keyword yet - show modal with pending status
+                            showUpgradeModal({ pendingSessionId: sessionId });
                         }
                     }
                     updateHamburgerMenu();
@@ -3578,12 +3592,40 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // ========== UPGRADE/PAYMENT FUNCTIONALITY ==========
 
-        function showUpgradeModal() {
+        // Store pending session ID for license lookup
+        let pendingLicenseSessionId = null;
+
+        function showUpgradeModal(options = {}) {
             document.getElementById('upgrade-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             document.getElementById('upgrade-error').style.display = 'none';
             document.getElementById('upgrade-success').style.display = 'none';
             document.getElementById('license-key-input').value = '';
+
+            // Handle license status display
+            const licenseStatusSection = document.getElementById('license-status-section');
+            const licensePending = document.getElementById('license-pending');
+            const licenseFound = document.getElementById('license-found');
+
+            if (options.pendingSessionId) {
+                // Payment succeeded but license not yet captured
+                pendingLicenseSessionId = options.pendingSessionId;
+                licenseStatusSection.style.display = 'block';
+                licensePending.style.display = 'block';
+                licenseFound.style.display = 'none';
+            } else if (options.licenseKey) {
+                // License was found - display it
+                pendingLicenseSessionId = null;
+                licenseStatusSection.style.display = 'block';
+                licensePending.style.display = 'none';
+                licenseFound.style.display = 'block';
+                document.getElementById('license-display').textContent = options.licenseKey;
+            } else {
+                // Normal modal open - hide license status
+                licenseStatusSection.style.display = 'none';
+                licensePending.style.display = 'none';
+                licenseFound.style.display = 'none';
+            }
 
             // Show login required message if not signed in with Firebase
             const loginRequired = document.getElementById('upgrade-login-required');
@@ -3605,6 +3647,71 @@ question,answer,choice1,choice2,choice3,choice4,correct
         function closeUpgradeModalOnOverlay(event) {
             if (event.target === document.getElementById('upgrade-modal')) {
                 closeUpgradeModal();
+            }
+        }
+
+        async function checkForLicense() {
+            if (!pendingLicenseSessionId) {
+                showUpgradeError('No pending license to check.');
+                return;
+            }
+
+            const btn = document.getElementById('check-license-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Checking...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${VANDROMEDA_API}/license/by-session.php?session_id=${encodeURIComponent(pendingLicenseSessionId)}`);
+                const data = await response.json();
+
+                if (data.status === 'ok' && data.license_key) {
+                    // License found!
+                    state.isPro = true;
+                    state.licenseKey = data.license_key;
+                    if (data.email) {
+                        state.email = data.email;
+                    }
+
+                    // For keyword-only users, store in localStorage
+                    if (!currentUser && currentKeyword) {
+                        localStorage.setItem(`quizmyself_license_${currentKeyword}`, data.license_key);
+                        if (data.email) {
+                            localStorage.setItem(`quizmyself_email_${currentKeyword}`, data.email);
+                        }
+                    }
+
+                    updateProUI();
+                    updateHamburgerMenu();
+
+                    // Update modal to show the license
+                    document.getElementById('license-pending').style.display = 'none';
+                    document.getElementById('license-found').style.display = 'block';
+                    document.getElementById('license-display').textContent = data.license_key;
+                    pendingLicenseSessionId = null;
+                } else if (data.status === 'pending') {
+                    showUpgradeError('License still processing. Please wait a moment and try again, or check your email.');
+                } else {
+                    showUpgradeError('Could not find license. Please check your email for the license key.');
+                }
+            } catch (error) {
+                console.error('License check error:', error);
+                showUpgradeError('Network error. Please try again.');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function copyLicenseKey() {
+            const licenseKey = document.getElementById('license-display').textContent;
+            if (licenseKey) {
+                navigator.clipboard.writeText(licenseKey).then(() => {
+                    alert('License key copied to clipboard!');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    prompt('Copy your license key:', licenseKey);
+                });
             }
         }
 
@@ -3740,7 +3847,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                         updateProUI();
                         updateHamburgerMenu();
-                        alert(`Pro activated! Your license key: ${data.license_key}`);
+                        // Show modal with license key so user can copy it
+                        showUpgradeModal({ licenseKey: data.license_key });
                         return true; // Success - license captured
                     } else if (data.status === 'pending') {
                         // Webhook hasn't processed yet - wait and retry
@@ -3756,9 +3864,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 }
             }
 
-            // Fallback - show manual entry
-            alert('Payment successful! Enter your license key below to activate Pro.');
-            showUpgradeModal();
+            // Fallback - show modal with pending status
+            showUpgradeModal({ pendingSessionId: sessionId });
             return false; // Failed to capture license
         }
 
