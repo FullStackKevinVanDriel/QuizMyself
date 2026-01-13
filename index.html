@@ -922,7 +922,101 @@
             color: #888;
             padding: 30px;
         }
+        /* Auth tabs */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 8px;
+            background: #0f3460;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .auth-tab.active {
+            background: #1a4a7a;
+            color: #4fc3f7;
+        }
+
+        .auth-tab:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+
+        .auth-tab:last-child {
+            border-radius: 0 5px 5px 0;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #0f3460;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: #eaeaea;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .auth-error {
+            color: #e94560;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(233, 69, 96, 0.1);
+            border-radius: 5px;
+        }
+
+        .menu-link-btn {
+            background: none;
+            border: none;
+            color: #4fc3f7;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 5px 20px;
+            text-decoration: underline;
+        }
+
+        .keyword-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #0f3460;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .keyword-item-info {
+            flex: 1;
+        }
+
+        .keyword-item-name {
+            font-weight: bold;
+        }
+
+        .keyword-item-name.active {
+            color: #4fc3f7;
+        }
+
+        .keyword-item-date {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .keyword-item-actions {
+            display: flex;
+            gap: 8px;
+        }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div id="deploy-banner" class="deploy-banner hidden">Deploying update...</div>
@@ -938,29 +1032,45 @@
             <div class="hamburger-dropdown" id="hamburger-dropdown">
                 <!-- Signed Out State -->
                 <div id="menu-signin-section">
-                    <div class="menu-label">Sign In</div>
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" onclick="showAuthTab('login')">Login</button>
+                        <button class="auth-tab" onclick="showAuthTab('register')">Register</button>
+                    </div>
+                    <div id="auth-login-form" class="auth-form">
+                        <input type="email" id="login-email" placeholder="Email" onkeypress="if(event.key==='Enter')handleLogin()">
+                        <input type="password" id="login-password" placeholder="Password" onkeypress="if(event.key==='Enter')handleLogin()">
+                        <button class="menu-signin-btn" onclick="handleLogin()" style="width:100%">Sign In</button>
+                    </div>
+                    <div id="auth-register-form" class="auth-form" style="display: none;">
+                        <input type="email" id="register-email" placeholder="Email">
+                        <input type="password" id="register-password" placeholder="Password (6+ chars)">
+                        <input type="password" id="register-confirm" placeholder="Confirm Password" onkeypress="if(event.key==='Enter')handleRegister()">
+                        <button class="menu-signin-btn" onclick="handleRegister()" style="width:100%">Create Account</button>
+                    </div>
+                    <div id="auth-error" class="auth-error" style="display: none;"></div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-hint">Or use quick access (limited features):</div>
                     <div class="menu-signin-form">
-                        <input type="text" id="menu-keyword-input" placeholder="Enter keyword"
+                        <input type="text" id="menu-keyword-input" placeholder="Keyword only"
                             onkeypress="if(event.key==='Enter')submitKeywordFromMenu()">
                         <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
                     </div>
-                    <div class="menu-hint">Your progress is saved under this keyword</div>
                 </div>
                 <!-- Signed In State -->
                 <div id="menu-account-section" style="display: none;">
-                    <div class="menu-label">Account</div>
-                    <div class="menu-value" id="menu-keyword">-</div>
-                    <div id="menu-email-section" style="display: none;">
-                        <div class="menu-label">Email</div>
+                    <div id="menu-email-section">
+                        <div class="menu-label">Account</div>
                         <div class="menu-value" id="menu-email">-</div>
+                        <div class="menu-divider"></div>
                     </div>
+                    <div class="menu-label">Active Keyword</div>
+                    <div class="menu-value" id="menu-keyword">None selected</div>
+                    <button id="manage-keywords-btn" class="menu-link-btn" onclick="showKeywordManager()">Manage Keywords</button>
                     <div class="menu-divider"></div>
                     <div class="menu-label">Status</div>
                     <div class="menu-value" id="menu-license-status">Free Account</div>
                     <div class="menu-divider"></div>
-                    <div class="menu-item" id="menu-signout" onclick="signOut();">
-                        Sign Out
-                    </div>
+                    <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
                 </div>
             </div>
         </div>
@@ -1234,6 +1344,43 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     <div style="color: #4fc3f7; font-family: monospace; font-size: 14px;" id="pro-license-display">-</div>
                 </div>
                 <p style="text-align: center; color: #27ae60; margin-top: 15px;">Thank you for supporting QuizMyself!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyword Manager Modal -->
+    <div id="keyword-modal" class="modal-overlay hidden" onclick="closeKeywordModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Manage Keywords</h2>
+                <button class="modal-close" onclick="closeKeywordModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Add New Keyword</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="new-keyword-input" placeholder="Enter keyword" style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 5px; color: white;">
+                        <button class="btn btn-primary btn-small" onclick="handleAddKeyword()">Add</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Claim Existing Progress</h3>
+                    <p style="color: #888; font-size: 0.85rem; margin-bottom: 10px;">
+                        Have progress from before creating an account? Claim it here.
+                    </p>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="claim-keyword-input" placeholder="Keyword to claim" style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 5px; color: white;">
+                        <button class="btn btn-small" onclick="handleClaimKeyword()">Claim</button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Your Keywords</h3>
+                    <div id="keyword-list" style="max-height: 300px; overflow-y: auto;"></div>
+                </div>
+
+                <div id="keyword-modal-message" style="margin-top: 15px; display: none; padding: 10px; border-radius: 5px;"></div>
             </div>
         </div>
     </div>
@@ -1558,6 +1705,430 @@ question,answer,choice1,choice2,choice3,choice4,correct
             yearly: 'price_1SosUDE0LClU4PH9ycCWqpQ5'
         };
         let currentKeyword = '';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC76Oepi1KPfHImPt51kTlgUT3X1iPWTY",
+            authDomain: "quizmyself-f7c1b.firebaseapp.com",
+            projectId: "quizmyself-f7c1b",
+            storageBucket: "quizmyself-f7c1b.firebasestorage.app",
+            messagingSenderId: "1038445985794",
+            appId: "1:1038445985794:web:550af5efff1020679f671b",
+            measurementId: "G-MY6LJ1Y3FS"
+        };
+
+        // Initialize Firebase
+        let firebaseApp = null;
+        let auth = null;
+        let currentUser = null;
+        let authToken = null;
+        let userKeywords = [];
+
+        try {
+            firebaseApp = firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+        } catch (e) {
+            console.log('Firebase not configured yet');
+        }
+
+        // ========== AUTH FUNCTIONS ==========
+
+        async function getAuthToken() {
+            if (currentUser) {
+                try {
+                    authToken = await currentUser.getIdToken();
+                    return authToken;
+                } catch (e) {
+                    console.error('Failed to get auth token:', e);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        function showAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('auth-login-form').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('auth-register-form').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('auth-error').style.display = 'none';
+        }
+
+        function showAuthError(message) {
+            const el = document.getElementById('auth-error');
+            el.textContent = message;
+            el.style.display = 'block';
+        }
+
+        async function handleLogin() {
+            if (!auth) {
+                showAuthError('Auth not configured. Use keyword access.');
+                return;
+            }
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                showAuthError('Please enter email and password');
+                return;
+            }
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                document.getElementById('hamburger-dropdown').classList.remove('show');
+                document.getElementById('login-email').value = '';
+                document.getElementById('login-password').value = '';
+            } catch (error) {
+                showAuthError(error.message);
+            }
+        }
+
+        async function handleRegister() {
+            if (!auth) {
+                showAuthError('Auth not configured. Use keyword access.');
+                return;
+            }
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+
+            if (!email || !password) {
+                showAuthError('Please fill in all fields');
+                return;
+            }
+
+            if (password !== confirm) {
+                showAuthError('Passwords do not match');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAuthError('Password must be at least 6 characters');
+                return;
+            }
+
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                document.getElementById('hamburger-dropdown').classList.remove('show');
+                document.getElementById('register-email').value = '';
+                document.getElementById('register-password').value = '';
+                document.getElementById('register-confirm').value = '';
+            } catch (error) {
+                showAuthError(error.message);
+            }
+        }
+
+        async function handleSignOut() {
+            if (auth && currentUser) {
+                try {
+                    await auth.signOut();
+                } catch (e) {
+                    console.error('Sign out error:', e);
+                }
+            }
+            // Also clear local state
+            currentUser = null;
+            authToken = null;
+            userKeywords = [];
+            currentKeyword = '';
+            state.isPro = false;
+            state.licenseKey = null;
+            state.email = null;
+            localStorage.removeItem('quizmyself_active_keyword');
+            document.getElementById('stats-bar').style.display = 'none';
+            document.getElementById('hamburger-dropdown').classList.remove('show');
+            updateHamburgerMenu();
+            updateProUI();
+            showScreen('menu-screen');
+        }
+
+        // Auth state listener
+        if (auth) {
+            auth.onAuthStateChanged(async (user) => {
+                currentUser = user;
+                if (user) {
+                    authToken = await user.getIdToken();
+                    state.email = user.email;
+
+                    // Load user's keywords from server
+                    await loadUserKeywords();
+
+                    // Check license status (tied to account)
+                    await checkProStatusForAccount();
+
+                    // Restore last active keyword
+                    const lastKeyword = localStorage.getItem('quizmyself_active_keyword');
+                    if (lastKeyword && userKeywords.find(k => k.keyword === lastKeyword)) {
+                        await selectKeyword(lastKeyword);
+                    } else if (userKeywords.length > 0) {
+                        await selectKeyword(userKeywords[0].keyword);
+                    }
+
+                    updateHamburgerMenu();
+                    document.getElementById('stats-bar').style.display = currentKeyword ? 'flex' : 'none';
+                } else {
+                    updateHamburgerMenu();
+                }
+            });
+        }
+
+        // ========== KEYWORD MANAGEMENT ==========
+
+        async function loadUserKeywords() {
+            if (!currentUser) return;
+
+            try {
+                const token = await getAuthToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/keywords.php`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    userKeywords = data.keywords || [];
+                }
+            } catch (error) {
+                console.error('Failed to load keywords:', error);
+            }
+        }
+
+        async function selectKeyword(keyword) {
+            currentKeyword = keyword;
+            localStorage.setItem('quizmyself_active_keyword', keyword);
+
+            // Load progress for this keyword
+            await loadState();
+
+            // Update UI
+            document.getElementById('menu-keyword').textContent = keyword;
+            document.getElementById('stats-bar').style.display = 'flex';
+            updateStats();
+            updateHamburgerMenu();
+        }
+
+        async function addKeywordToAccount(keyword) {
+            if (!currentUser) return { success: false, error: 'Not signed in' };
+
+            try {
+                const token = await getAuthToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/add-keyword.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ keyword })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    await loadUserKeywords();
+                    await selectKeyword(keyword);
+                }
+
+                return data;
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function deleteKeywordFromAccount(keyword) {
+            if (!currentUser) return { success: false, error: 'Not signed in' };
+
+            try {
+                const token = await getAuthToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/delete-keyword.php`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ keyword })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    await loadUserKeywords();
+
+                    if (currentKeyword === keyword) {
+                        if (userKeywords.length > 0) {
+                            await selectKeyword(userKeywords[0].keyword);
+                        } else {
+                            currentKeyword = '';
+                            document.getElementById('stats-bar').style.display = 'none';
+                            updateHamburgerMenu();
+                        }
+                    }
+                }
+
+                return data;
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function claimKeyword(keyword) {
+            if (!currentUser) return { success: false, error: 'Not signed in' };
+
+            try {
+                const token = await getAuthToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/claim-keyword.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ keyword })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    await loadUserKeywords();
+                    await selectKeyword(keyword);
+                }
+
+                return data;
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function checkProStatusForAccount() {
+            if (!currentUser) {
+                state.isPro = false;
+                state.licenseKey = null;
+                updateProUI();
+                return;
+            }
+
+            try {
+                const token = await getAuthToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/account.php`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.license && data.license.status === 'active') {
+                        state.isPro = true;
+                        state.licenseKey = data.license.license_key;
+                    } else {
+                        state.isPro = false;
+                        state.licenseKey = null;
+                    }
+                }
+            } catch (error) {
+                console.error('Pro status check failed:', error);
+            }
+
+            updateProUI();
+        }
+
+        // ========== KEYWORD MODAL ==========
+
+        function showKeywordManager() {
+            document.getElementById('keyword-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            renderKeywordList();
+            document.getElementById('hamburger-dropdown').classList.remove('show');
+        }
+
+        function closeKeywordModal() {
+            document.getElementById('keyword-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function renderKeywordList() {
+            const list = document.getElementById('keyword-list');
+
+            if (userKeywords.length === 0) {
+                list.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No keywords yet. Add one above.</p>';
+                return;
+            }
+
+            list.innerHTML = userKeywords.map(kw => `
+                <div class="keyword-item">
+                    <div class="keyword-item-info">
+                        <div class="keyword-item-name ${currentKeyword === kw.keyword ? 'active' : ''}">${kw.keyword}</div>
+                        <div class="keyword-item-date">Created: ${new Date(kw.created_at).toLocaleDateString()}${kw.is_migrated ? ' (Claimed)' : ''}</div>
+                    </div>
+                    <div class="keyword-item-actions">
+                        ${currentKeyword !== kw.keyword ?
+                            `<button class="btn btn-small btn-primary" onclick="selectKeyword('${kw.keyword}'); renderKeywordList();">Use</button>` :
+                            '<span style="color: #4fc3f7; font-size: 0.8rem; padding: 5px 10px;">Active</span>'}
+                        <button class="btn btn-small btn-danger" onclick="confirmDeleteKeyword('${kw.keyword}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function handleAddKeyword() {
+            const input = document.getElementById('new-keyword-input');
+            const keyword = input.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+
+            if (!keyword || keyword.length < 3) {
+                showKeywordModalMessage('Keyword must be at least 3 characters', 'error');
+                return;
+            }
+
+            const result = await addKeywordToAccount(keyword);
+
+            if (result.success) {
+                input.value = '';
+                renderKeywordList();
+                showKeywordModalMessage('Keyword added!', 'success');
+            } else {
+                showKeywordModalMessage(result.message || result.error || 'Failed to add keyword', 'error');
+            }
+        }
+
+        async function handleClaimKeyword() {
+            const input = document.getElementById('claim-keyword-input');
+            const keyword = input.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+
+            if (!keyword) {
+                showKeywordModalMessage('Enter a keyword to claim', 'error');
+                return;
+            }
+
+            const result = await claimKeyword(keyword);
+
+            if (result.success) {
+                input.value = '';
+                renderKeywordList();
+                showKeywordModalMessage('Keyword claimed! Your progress has been linked.', 'success');
+            } else {
+                showKeywordModalMessage(result.message || result.error || 'Failed to claim keyword', 'error');
+            }
+        }
+
+        async function confirmDeleteKeyword(keyword) {
+            if (!confirm(`Delete keyword "${keyword}"? Your progress will remain but can be claimed by others.`)) {
+                return;
+            }
+
+            const result = await deleteKeywordFromAccount(keyword);
+
+            if (result.success) {
+                renderKeywordList();
+                showKeywordModalMessage('Keyword deleted', 'success');
+            } else {
+                showKeywordModalMessage(result.message || result.error || 'Failed to delete keyword', 'error');
+            }
+        }
+
+        function showKeywordModalMessage(message, type) {
+            const el = document.getElementById('keyword-modal-message');
+            el.textContent = message;
+            el.style.display = 'block';
+            el.style.background = type === 'success' ? 'rgba(39, 174, 96, 0.2)' : 'rgba(233, 69, 96, 0.2)';
+            el.style.color = type === 'success' ? '#27ae60' : '#e94560';
+            setTimeout(() => el.style.display = 'none', 3000);
+        }
+
         // Hamburger menu functions
         function toggleHamburgerMenu() {
             const dropdown = document.getElementById('hamburger-dropdown');
@@ -1571,18 +2142,38 @@ question,answer,choice1,choice2,choice3,choice4,correct
             const emailSection = document.getElementById('menu-email-section');
             const emailEl = document.getElementById('menu-email');
             const licenseStatusEl = document.getElementById('menu-license-status');
+            const manageKeywordsBtn = document.getElementById('manage-keywords-btn');
 
-            if (currentKeyword) {
+            // Check if user is signed in with Firebase or using keyword-only mode
+            const isSignedInWithFirebase = currentUser !== null;
+            const hasKeyword = currentKeyword && currentKeyword.length > 0;
+
+            if (isSignedInWithFirebase || hasKeyword) {
                 // Signed in - show account section
                 signinSection.style.display = 'none';
                 accountSection.style.display = 'block';
-                keywordEl.textContent = currentKeyword;
 
-                if (state.email) {
+                // Show keyword if set
+                if (hasKeyword) {
+                    keywordEl.textContent = currentKeyword;
+                } else {
+                    keywordEl.textContent = 'No keyword selected';
+                }
+
+                // Show email if Firebase user
+                if (isSignedInWithFirebase && currentUser.email) {
                     emailSection.style.display = 'block';
-                    emailEl.textContent = state.email;
+                    emailEl.textContent = currentUser.email;
+                    // Show manage keywords button for Firebase users
+                    if (manageKeywordsBtn) {
+                        manageKeywordsBtn.style.display = 'block';
+                    }
                 } else {
                     emailSection.style.display = 'none';
+                    // Hide manage keywords for keyword-only users
+                    if (manageKeywordsBtn) {
+                        manageKeywordsBtn.style.display = 'none';
+                    }
                 }
 
                 // Show license status
@@ -1625,11 +2216,23 @@ question,answer,choice1,choice2,choice3,choice4,correct
             input.value = '';
         }
 
-        function signOut() {
+        async function signOut() {
+            // Sign out from Firebase if signed in
+            if (currentUser) {
+                try {
+                    await firebase.auth().signOut();
+                } catch (e) {
+                    console.error('Firebase sign out error:', e);
+                }
+            }
+
             // Clear saved keyword
             localStorage.removeItem('quizmyself_keyword');
+            localStorage.removeItem('quizmyself_active_keyword');
 
             currentKeyword = '';
+            currentUser = null;
+            userKeywords = [];
             state.mastered = [];
             state.answerCounts = {};
             state.totalCorrect = 0;
