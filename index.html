@@ -1877,17 +1877,21 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                     // Check for payment success (user returning from Stripe)
                     const urlParams = new URLSearchParams(window.location.search);
+                    let licenseJustCaptured = false;
                     if (urlParams.get('payment') === 'success') {
                         const sessionId = urlParams.get('session_id');
                         // Clean up URL
                         window.history.replaceState({}, document.title, window.location.pathname);
                         if (sessionId) {
-                            await fetchLicenseFromSession(sessionId);
+                            licenseJustCaptured = await fetchLicenseFromSession(sessionId);
                         }
                     }
 
-                    // Check license status (tied to account)
-                    await checkProStatusForAccount();
+                    // Check license status (tied to account) - skip if we just captured a license
+                    // to avoid overwriting the freshly captured license with potentially stale account data
+                    if (!licenseJustCaptured) {
+                        await checkProStatusForAccount();
+                    }
 
                     // Restore last active keyword
                     const lastKeyword = localStorage.getItem('quizmyself_active_keyword');
@@ -3705,18 +3709,15 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     const data = await response.json();
 
                     if (data.status === 'ok' && data.license_key) {
-                        // License found
+                        // License found - set state immediately
                         state.isPro = true;
                         state.licenseKey = data.license_key;
                         if (data.email) {
                             state.email = data.email;
                         }
 
-                        // For Firebase users, refresh account status from backend
-                        if (currentUser) {
-                            await checkProStatusForAccount();
-                        } else if (currentKeyword) {
-                            // For keyword-only users, store in localStorage
+                        // For keyword-only users, store in localStorage
+                        if (!currentUser && currentKeyword) {
                             localStorage.setItem(`quizmyself_license_${currentKeyword}`, data.license_key);
                             if (data.email) {
                                 localStorage.setItem(`quizmyself_email_${currentKeyword}`, data.email);
@@ -3726,7 +3727,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         updateProUI();
                         updateHamburgerMenu();
                         alert(`Pro activated! Your license key: ${data.license_key}`);
-                        return;
+                        return true; // Success - license captured
                     } else if (data.status === 'pending') {
                         // Webhook hasn't processed yet - wait and retry
                         attempts++;
@@ -3744,6 +3745,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             // Fallback - show manual entry
             alert('Payment successful! Enter your license key below to activate Pro.');
             showUpgradeModal();
+            return false; // Failed to capture license
         }
 
         async function checkProStatus() {
