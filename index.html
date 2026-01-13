@@ -3597,10 +3597,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 return;
             }
 
-            // Get user email
-            const email = prompt('Enter your email address for the subscription:');
-            if (!email || !email.includes('@')) {
-                alert('Please enter a valid email address.');
+            // Use logged-in user's email (user must be signed in to upgrade)
+            const email = currentUser?.email;
+            if (!email) {
+                showUpgradeError('Please sign in to subscribe.');
                 return;
             }
 
