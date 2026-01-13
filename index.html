@@ -18,6 +18,7 @@
             color: #eaeaea;
             min-height: 100vh;
             line-height: 1.6;
+            padding-top: 64px;
         }
 
         .container {
@@ -321,12 +322,56 @@
             padding-top: 40px;
         }
 
+        /* Top Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 54px;
+            background: #0d1117;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 10px;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .top-bar-status {
+            display: flex;
+            align-items: center;
+            height: 44px;
+            padding: 0 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .top-bar-status.pro {
+            background: linear-gradient(135deg, #1a472a, #2d5a3d);
+            border: 2px solid #ffd700;
+            color: #ffd700;
+        }
+
+        .top-bar-status.free {
+            background: #1a1a2e;
+            border: 2px solid #666;
+            color: #888;
+        }
+
+        .top-bar-status .pro-badge {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
         /* Hamburger Menu */
         .hamburger-menu {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1001;
+            position: relative;
         }
 
         .hamburger-btn {
@@ -882,35 +927,37 @@
 <body>
     <div id="deploy-banner" class="deploy-banner hidden">Deploying update...</div>
 
-    <!-- Hamburger Menu -->
-    <div class="hamburger-menu" id="hamburger-menu">
-        <button class="hamburger-btn" onclick="toggleHamburgerMenu()">☰</button>
-        <div class="hamburger-dropdown" id="hamburger-dropdown">
-            <!-- Signed Out State -->
-            <div id="menu-signin-section">
-                <div class="menu-label">Sign In</div>
-                <div class="menu-signin-form">
-                    <input type="text" id="menu-keyword-input" placeholder="Enter keyword"
-                        onkeypress="if(event.key==='Enter')submitKeywordFromMenu()">
-                    <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-status free" id="top-bar-status" onclick="showUpgradeModal()">
+            <span id="top-bar-status-text">Free Account</span>
+        </div>
+        <!-- Hamburger Menu -->
+        <div class="hamburger-menu" id="hamburger-menu">
+            <button class="hamburger-btn" onclick="toggleHamburgerMenu()">☰</button>
+            <div class="hamburger-dropdown" id="hamburger-dropdown">
+                <!-- Signed Out State -->
+                <div id="menu-signin-section">
+                    <div class="menu-label">Sign In</div>
+                    <div class="menu-signin-form">
+                        <input type="text" id="menu-keyword-input" placeholder="Enter keyword"
+                            onkeypress="if(event.key==='Enter')submitKeywordFromMenu()">
+                        <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
+                    </div>
+                    <div class="menu-hint">Your progress is saved under this keyword</div>
                 </div>
-                <div class="menu-hint">Your progress is saved under this keyword</div>
-            </div>
-            <!-- Signed In State -->
-            <div id="menu-account-section" style="display: none;">
-                <div class="menu-label">Account</div>
-                <div class="menu-value" id="menu-keyword">-</div>
-                <div id="menu-email-section" style="display: none;">
-                    <div class="menu-label">Email</div>
-                    <div class="menu-value" id="menu-email">-</div>
-                </div>
-                <div id="menu-pro-section" style="display: none;">
-                    <div class="menu-label">Status</div>
-                    <div class="menu-value"><span class="pro-indicator">PRO</span></div>
-                </div>
-                <div class="menu-divider"></div>
-                <div class="menu-item" id="menu-signout" onclick="signOut();">
-                    Sign Out
+                <!-- Signed In State -->
+                <div id="menu-account-section" style="display: none;">
+                    <div class="menu-label">Account</div>
+                    <div class="menu-value" id="menu-keyword">-</div>
+                    <div id="menu-email-section" style="display: none;">
+                        <div class="menu-label">Email</div>
+                        <div class="menu-value" id="menu-email">-</div>
+                    </div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-item" id="menu-signout" onclick="signOut();">
+                        Sign Out
+                    </div>
                 </div>
             </div>
         </div>
@@ -943,17 +990,6 @@
 
         <!-- Main Menu -->
         <div id="menu-screen" class="menu">
-            <!-- Pro Status Banner -->
-            <div id="upgrade-banner" class="upgrade-banner">
-                <h3>Upgrade to Pro</h3>
-                <p>Unlimited imports, cloud sync, and more!</p>
-                <button class="btn-upgrade" onclick="showUpgradeModal()">Get Pro - $4.99/mo</button>
-            </div>
-            <div id="pro-status-banner" class="pro-member-banner hidden">
-                <h3>Pro Member <span class="pro-badge">PRO</span></h3>
-                <p>Thank you for supporting QuizMyself!</p>
-            </div>
-
             <button class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
             <button id="resume-exam-btn" class="btn hidden" onclick="resumeExam()" style="background: #ff9800; color: #1a1a2e; font-weight: bold;">Resume Exam</button>
             <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
@@ -3071,15 +3107,21 @@ question,answer,choice1,choice2,choice3,choice4,correct
         }
 
         function updateProUI() {
-            const upgradeBanner = document.getElementById('upgrade-banner');
-            const proStatusBanner = document.getElementById('pro-status-banner');
+            const topBarStatus = document.getElementById('top-bar-status');
+            const topBarText = document.getElementById('top-bar-status-text');
 
             if (state.isPro) {
-                upgradeBanner.classList.add('hidden');
-                proStatusBanner.classList.remove('hidden');
+                topBarStatus.classList.remove('free');
+                topBarStatus.classList.add('pro');
+                topBarStatus.onclick = null;
+                topBarStatus.style.cursor = 'default';
+                topBarText.innerHTML = 'Pro Member <span class="pro-badge">PRO</span>';
             } else {
-                upgradeBanner.classList.remove('hidden');
-                proStatusBanner.classList.add('hidden');
+                topBarStatus.classList.remove('pro');
+                topBarStatus.classList.add('free');
+                topBarStatus.onclick = showUpgradeModal;
+                topBarStatus.style.cursor = 'pointer';
+                topBarText.textContent = 'Free Account - Upgrade';
             }
         }
 
