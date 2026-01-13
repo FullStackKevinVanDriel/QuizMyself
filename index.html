@@ -792,6 +792,7 @@
             <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
             <button class="btn" onclick="showProgress()">View Progress</button>
             <button class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
+            <a href="course-content.html" class="btn" style="text-align: center; text-decoration: none;">View Course Content (138 Lessons)</a>
             <button class="btn btn-success btn-small" onclick="showImportModal()">Import Quiz Data</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
         </div>
@@ -2268,12 +2269,19 @@ question,answer,choice1,choice2,choice3,choice4,correct
             } else if (state.currentMode === 'exam' && state.examQuestions[state.examIndex]) {
                 category = state.examQuestions[state.examIndex].category;
             }
+
             if (category && studyMaterials[category]) {
                 document.getElementById('modal-title').textContent = category + ' - Study Material';
                 document.getElementById('modal-body').innerHTML = studyMaterials[category];
-                document.getElementById('study-modal').classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
+            } else {
+                document.getElementById('modal-title').textContent = 'Study Material';
+                document.getElementById('modal-body').innerHTML = `
+                    <p>No study material available for this category: <strong>${category || 'Unknown'}</strong></p>
+                    <p style="margin-top: 15px;">For the full course content, return to the menu and click "View Course Content".</p>
+                `;
             }
+            document.getElementById('study-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeStudyMaterial() {
