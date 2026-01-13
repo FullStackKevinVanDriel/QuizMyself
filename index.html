@@ -3686,7 +3686,15 @@ question,answer,choice1,choice2,choice3,choice4,correct
         }
 
         async function checkProStatus() {
-            // Reset pro status
+            // For Firebase users, license is tied to account (handled by checkProStatusForAccount)
+            // Don't override account-based pro status
+            if (currentUser) {
+                updateProUI();
+                updateHamburgerMenu();
+                return;
+            }
+
+            // Reset pro status for keyword-only users
             state.isPro = false;
             state.licenseKey = null;
             state.email = null;
