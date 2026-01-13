@@ -408,6 +408,47 @@
             font-weight: bold;
         }
 
+        .menu-signin-form {
+            display: flex;
+            gap: 8px;
+            padding: 8px 15px;
+        }
+
+        .menu-signin-form input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #4fc3f7;
+            border-radius: 6px;
+            background: #0d1117;
+            color: white;
+            font-size: 14px;
+            min-width: 0;
+        }
+
+        .menu-signin-form input::placeholder {
+            color: #666;
+        }
+
+        .menu-signin-btn {
+            padding: 8px 16px;
+            background: #4fc3f7;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .menu-signin-btn:hover {
+            background: #81d4fa;
+        }
+
+        .menu-hint {
+            padding: 4px 15px 12px;
+            color: #666;
+            font-size: 11px;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -845,19 +886,32 @@
     <div class="hamburger-menu" id="hamburger-menu">
         <button class="hamburger-btn" onclick="toggleHamburgerMenu()">☰</button>
         <div class="hamburger-dropdown" id="hamburger-dropdown">
-            <div class="menu-label">Account</div>
-            <div class="menu-value" id="menu-keyword">Not signed in</div>
-            <div id="menu-email-section" style="display: none;">
-                <div class="menu-label">Email</div>
-                <div class="menu-value" id="menu-email">-</div>
+            <!-- Signed Out State -->
+            <div id="menu-signin-section">
+                <div class="menu-label">Sign In</div>
+                <div class="menu-signin-form">
+                    <input type="text" id="menu-keyword-input" placeholder="Enter keyword"
+                        onkeypress="if(event.key==='Enter')submitKeywordFromMenu()">
+                    <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
+                </div>
+                <div class="menu-hint">Your progress is saved under this keyword</div>
             </div>
-            <div id="menu-pro-section" style="display: none;">
-                <div class="menu-label">Status</div>
-                <div class="menu-value"><span class="pro-indicator">PRO</span></div>
-            </div>
-            <div class="menu-divider"></div>
-            <div class="menu-item" id="menu-signout" onclick="changeKeyword(); toggleHamburgerMenu();">
-                Sign Out
+            <!-- Signed In State -->
+            <div id="menu-account-section" style="display: none;">
+                <div class="menu-label">Account</div>
+                <div class="menu-value" id="menu-keyword">-</div>
+                <div id="menu-email-section" style="display: none;">
+                    <div class="menu-label">Email</div>
+                    <div class="menu-value" id="menu-email">-</div>
+                </div>
+                <div id="menu-pro-section" style="display: none;">
+                    <div class="menu-label">Status</div>
+                    <div class="menu-value"><span class="pro-indicator">PRO</span></div>
+                </div>
+                <div class="menu-divider"></div>
+                <div class="menu-item" id="menu-signout" onclick="signOut();">
+                    Sign Out
+                </div>
             </div>
         </div>
     </div>
@@ -887,21 +941,8 @@
             </div>
         </div>
 
-        <!-- Keyword Entry Screen -->
-        <div id="keyword-screen" class="menu">
-            <div class="quiz-card" style="text-align: center;">
-                <h2 style="margin-bottom: 10px;">Enter Your Keyword</h2>
-                <p style="color: #888; margin-bottom: 20px; font-size: 14px;">Your progress will be saved under this keyword.<br>Use the same keyword to continue where you left off.</p>
-                <input type="text" id="keyword-input" placeholder="e.g., kevin, student1, my-quiz"
-                    style="width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 2px solid #4fc3f7; background: #1a2332; color: white; margin-bottom: 15px; box-sizing: border-box;"
-                    onkeypress="if(event.key==='Enter')submitKeyword()">
-                <p id="keyword-error" style="color: #ef5350; margin-bottom: 10px; display: none;"></p>
-                <button class="btn btn-primary" onclick="submitKeyword()" style="width: 100%;">Start Quiz</button>
-            </div>
-        </div>
-
         <!-- Main Menu -->
-        <div id="menu-screen" class="menu hidden">
+        <div id="menu-screen" class="menu">
             <!-- Pro Status Banner -->
             <div id="upgrade-banner" class="upgrade-banner">
                 <h3>Upgrade to Pro</h3>
@@ -1440,36 +1481,55 @@ question,answer,choice1,choice2,choice3,choice4,correct
             yearly: 'price_1SosUDE0LClU4PH9ycCWqpQ5'
         };
         let currentKeyword = '';
+        // Hamburger menu functions
+        function toggleHamburgerMenu() {
+            const dropdown = document.getElementById('hamburger-dropdown');
+            dropdown.classList.toggle('show');
+        }
 
-        // Submit keyword and load progress
-        async function submitKeyword() {
-            const input = document.getElementById('keyword-input');
-            const error = document.getElementById('keyword-error');
-            let keyword = input.value.trim().toLowerCase();
+        function updateHamburgerMenu() {
+            const signinSection = document.getElementById('menu-signin-section');
+            const accountSection = document.getElementById('menu-account-section');
+            const keywordEl = document.getElementById('menu-keyword');
+            const emailSection = document.getElementById('menu-email-section');
+            const emailEl = document.getElementById('menu-email');
+            const proSection = document.getElementById('menu-pro-section');
 
-            // Validate keyword
+            if (currentKeyword) {
+                // Signed in - show account section
+                signinSection.style.display = 'none';
+                accountSection.style.display = 'block';
+                keywordEl.textContent = currentKeyword;
+
+                if (state.email) {
+                    emailSection.style.display = 'block';
+                    emailEl.textContent = state.email;
+                } else {
+                    emailSection.style.display = 'none';
+                }
+
+                if (state.isPro) {
+                    proSection.style.display = 'block';
+                } else {
+                    proSection.style.display = 'none';
+                }
+            } else {
+                // Signed out - show signin section
+                signinSection.style.display = 'block';
+                accountSection.style.display = 'none';
+            }
+        }
+
+        async function submitKeywordFromMenu() {
+            const input = document.getElementById('menu-keyword-input');
+            const keyword = input.value.trim();
+
             if (!keyword) {
-                error.textContent = 'Please enter a keyword';
-                error.style.display = 'block';
                 return;
             }
 
-            // Sanitize - only allow letters, numbers, hyphens
-            const sanitized = keyword.replace(/[^a-z0-9-]/g, '');
-            if (sanitized !== keyword) {
-                error.textContent = 'Use only letters, numbers, and hyphens';
-                error.style.display = 'block';
-                return;
-            }
-
-            error.style.display = 'none';
-            currentKeyword = sanitized;
-
-            // Save keyword to localStorage for auto-load
-            localStorage.setItem('quizmyself_keyword', currentKeyword);
-
-            // Show loading state
-            input.disabled = true;
+            currentKeyword = keyword;
+            localStorage.setItem('quizmyself_keyword', keyword);
 
             // Load progress for this keyword
             await loadState();
@@ -1477,17 +1537,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
             // Check pro status for this keyword
             await checkProStatus();
 
-            // Show menu
-            document.getElementById('keyword-screen').classList.add('hidden');
-            document.getElementById('menu-screen').classList.remove('hidden');
+            // Show stats bar
             document.getElementById('stats-bar').style.display = 'flex';
-            updateHamburgerMenu();
 
-            input.disabled = false;
+            // Update hamburger menu and close dropdown
+            updateHamburgerMenu();
+            document.getElementById('hamburger-dropdown').classList.remove('show');
+
+            input.value = '';
         }
 
-        // Sign out - change to different keyword
-        function changeKeyword() {
+        function signOut() {
             // Clear saved keyword
             localStorage.removeItem('quizmyself_keyword');
 
@@ -1503,49 +1563,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
             state.licenseKey = null;
             state.email = null;
 
-            document.getElementById('menu-screen').classList.add('hidden');
-            document.getElementById('keyword-screen').classList.remove('hidden');
             document.getElementById('stats-bar').style.display = 'none';
-            document.getElementById('keyword-input').value = '';
-            document.getElementById('keyword-input').focus();
             updateStats();
             updateResumeExamButton(false);
             updateHamburgerMenu();
-        }
+            updateProUI();
 
-        // Hamburger menu functions
-        function toggleHamburgerMenu() {
-            const dropdown = document.getElementById('hamburger-dropdown');
-            dropdown.classList.toggle('show');
-        }
+            // Close dropdown
+            document.getElementById('hamburger-dropdown').classList.remove('show');
 
-        function updateHamburgerMenu() {
-            const keywordEl = document.getElementById('menu-keyword');
-            const emailSection = document.getElementById('menu-email-section');
-            const emailEl = document.getElementById('menu-email');
-            const proSection = document.getElementById('menu-pro-section');
-            const signoutEl = document.getElementById('menu-signout');
-
-            if (currentKeyword) {
-                keywordEl.textContent = currentKeyword;
-                signoutEl.style.display = 'block';
-            } else {
-                keywordEl.textContent = 'Not signed in';
-                signoutEl.style.display = 'none';
-            }
-
-            if (state.email) {
-                emailSection.style.display = 'block';
-                emailEl.textContent = state.email;
-            } else {
-                emailSection.style.display = 'none';
-            }
-
-            if (state.isPro) {
-                proSection.style.display = 'block';
-            } else {
-                proSection.style.display = 'none';
-            }
+            // Go back to menu if on another screen
+            showScreen('menu-screen');
         }
 
         // Close hamburger menu when clicking outside
@@ -3077,19 +3105,20 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         });
 
-        // Initialize - hide stats until keyword entered
-        document.getElementById('stats-bar').style.display = 'none';
-
-        // Auto-load saved keyword if available
-        const savedKeyword = localStorage.getItem('quizmyself_keyword');
-        if (savedKeyword) {
-            document.getElementById('keyword-input').value = savedKeyword;
-            submitKeyword();
-        } else {
-            document.getElementById('keyword-input').focus();
-        }
-
-        checkProStatus();
+        // Initialize
+        (async function() {
+            const savedKeyword = localStorage.getItem('quizmyself_keyword');
+            if (savedKeyword) {
+                currentKeyword = savedKeyword;
+                document.getElementById('stats-bar').style.display = 'flex';
+                await loadState();
+                await checkProStatus();
+            } else {
+                document.getElementById('stats-bar').style.display = 'none';
+            }
+            updateHamburgerMenu();
+            updateStats();
+        })();
         checkDeploymentStatus();
 
         // Check if there's a newer version being deployed
