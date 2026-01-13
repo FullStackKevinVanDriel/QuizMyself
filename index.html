@@ -1676,7 +1676,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Show/hide screens
         function showScreen(screenId) {
-            ['keyword-screen', 'menu-screen', 'quiz-screen', 'exam-screen', 'result-screen', 'progress-screen', 'mastered-screen'].forEach(id => {
+            ['menu-screen', 'quiz-screen', 'exam-screen', 'result-screen', 'progress-screen', 'mastered-screen'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
