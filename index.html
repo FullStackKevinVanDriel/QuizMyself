@@ -3559,8 +3559,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 return;
             }
 
-            // Get user email
-            const email = prompt('Enter your email address for the subscription:');
+            // Get user email - prefill with Firebase email if logged in
+            let email = currentUser?.email || '';
+            if (!email) {
+                email = prompt('Enter your email address for the subscription:');
+            } else {
+                email = prompt('Enter your email address for the subscription:', email);
+            }
             if (!email || !email.includes('@')) {
                 alert('Please enter a valid email address.');
                 return;
@@ -3568,6 +3573,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
             try {
                 const baseUrl = window.location.origin + window.location.pathname;
+
+                // Build metadata - include firebase_id if logged in
+                const metadata = {
+                    product: 'quizmyself',
+                    tier: 'pro',
+                    max_domains: '3'
+                };
+                if (currentUser) {
+                    metadata.firebase_id = currentUser.uid;
+                }
+
                 const response = await fetch(`${VANDROMEDA_API}/payments/create-checkout.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -3577,11 +3593,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         customer_email: email,
                         success_url: baseUrl + '?payment=success&session_id={CHECKOUT_SESSION_ID}',
                         cancel_url: baseUrl + '?payment=cancelled',
-                        metadata: {
-                            product: 'quizmyself',
-                            tier: 'pro',
-                            max_domains: '3'
-                        }
+                        metadata: metadata
                     })
                 });
 
@@ -3821,7 +3833,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Check if there's a newer version being deployed
         async function checkDeploymentStatus() {
-            const REPO = 'FullStackKevinVanDriel/quizlet';
+            const REPO = 'FullStackKevinVanDriel/QuizMyself';
             const deployedSha = document.querySelector('meta[name="deployed-sha"]')?.content;
 
             try {
