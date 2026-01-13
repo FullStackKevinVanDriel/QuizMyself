@@ -1875,6 +1875,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     // Load user's keywords from server
                     await loadUserKeywords();
 
+                    // Check for payment success (user returning from Stripe)
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('payment') === 'success') {
+                        const sessionId = urlParams.get('session_id');
+                        // Clean up URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        if (sessionId) {
+                            await fetchLicenseFromSession(sessionId);
+                        }
+                    }
+
                     // Check license status (tied to account)
                     await checkProStatusForAccount();
 
@@ -3694,14 +3705,26 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     const data = await response.json();
 
                     if (data.status === 'ok' && data.license_key) {
-                        // License found - capture email if available
-                        if (data.email && currentKeyword) {
+                        // License found
+                        state.isPro = true;
+                        state.licenseKey = data.license_key;
+                        if (data.email) {
                             state.email = data.email;
-                            localStorage.setItem(`quizmyself_email_${currentKeyword}`, data.email);
                         }
-                        // Auto-activate
-                        document.getElementById('license-key-input').value = data.license_key;
-                        await activateLicense();
+
+                        // For Firebase users, refresh account status from backend
+                        if (currentUser) {
+                            await checkProStatusForAccount();
+                        } else if (currentKeyword) {
+                            // For keyword-only users, store in localStorage
+                            localStorage.setItem(`quizmyself_license_${currentKeyword}`, data.license_key);
+                            if (data.email) {
+                                localStorage.setItem(`quizmyself_email_${currentKeyword}`, data.email);
+                            }
+                        }
+
+                        updateProUI();
+                        updateHamburgerMenu();
                         alert(`Pro activated! Your license key: ${data.license_key}`);
                         return;
                     } else if (data.status === 'pending') {
@@ -3788,19 +3811,21 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 }
             }
 
-            // Check URL for payment success
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('payment') === 'success') {
-                const sessionId = urlParams.get('session_id');
-                // Clean up URL immediately
-                window.history.replaceState({}, document.title, window.location.pathname);
+            // Check URL for payment success (only for keyword-only users, Firebase users handled in onAuthStateChanged)
+            if (!currentUser) {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('payment') === 'success') {
+                    const sessionId = urlParams.get('session_id');
+                    // Clean up URL immediately
+                    window.history.replaceState({}, document.title, window.location.pathname);
 
-                if (sessionId) {
-                    // Auto-fetch license from session
-                    await fetchLicenseFromSession(sessionId);
-                } else {
-                    alert('Payment successful! Enter your license key below to activate Pro.');
-                    showUpgradeModal();
+                    if (sessionId) {
+                        // Auto-fetch license from session
+                        await fetchLicenseFromSession(sessionId);
+                    } else {
+                        alert('Payment successful! Enter your license key below to activate Pro.');
+                        showUpgradeModal();
+                    }
                 }
             }
 
