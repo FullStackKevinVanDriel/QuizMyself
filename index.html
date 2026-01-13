@@ -3602,29 +3602,38 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('upgrade-success').style.display = 'none';
             document.getElementById('license-key-input').value = '';
 
-            // Handle license status display
+            // Handle license status display (with safety checks for DOM elements)
             const licenseStatusSection = document.getElementById('license-status-section');
             const licensePending = document.getElementById('license-pending');
             const licenseFound = document.getElementById('license-found');
+            const licenseDisplay = document.getElementById('license-display');
 
-            if (options.pendingSessionId) {
-                // Payment succeeded but license not yet captured
-                pendingLicenseSessionId = options.pendingSessionId;
-                licenseStatusSection.style.display = 'block';
-                licensePending.style.display = 'block';
-                licenseFound.style.display = 'none';
+            // Only try to show license status if the DOM elements exist
+            if (licenseStatusSection && licensePending && licenseFound) {
+                if (options.pendingSessionId) {
+                    // Payment succeeded but license not yet captured
+                    pendingLicenseSessionId = options.pendingSessionId;
+                    licenseStatusSection.style.display = 'block';
+                    licensePending.style.display = 'block';
+                    licenseFound.style.display = 'none';
+                } else if (options.licenseKey) {
+                    // License was found - display it
+                    pendingLicenseSessionId = null;
+                    licenseStatusSection.style.display = 'block';
+                    licensePending.style.display = 'none';
+                    licenseFound.style.display = 'block';
+                    if (licenseDisplay) {
+                        licenseDisplay.textContent = options.licenseKey;
+                    }
+                } else {
+                    // Normal modal open - hide license status
+                    licenseStatusSection.style.display = 'none';
+                    licensePending.style.display = 'none';
+                    licenseFound.style.display = 'none';
+                }
             } else if (options.licenseKey) {
-                // License was found - display it
-                pendingLicenseSessionId = null;
-                licenseStatusSection.style.display = 'block';
-                licensePending.style.display = 'none';
-                licenseFound.style.display = 'block';
-                document.getElementById('license-display').textContent = options.licenseKey;
-            } else {
-                // Normal modal open - hide license status
-                licenseStatusSection.style.display = 'none';
-                licensePending.style.display = 'none';
-                licenseFound.style.display = 'none';
+                // Fallback: show alert with license key if DOM elements don't exist
+                alert('Pro activated! Your license key: ' + options.licenseKey);
             }
 
             // Show login required message if not signed in with Firebase
