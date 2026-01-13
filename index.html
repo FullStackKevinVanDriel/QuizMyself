@@ -1529,7 +1529,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
             const keywordEl = document.getElementById('menu-keyword');
             const emailSection = document.getElementById('menu-email-section');
             const emailEl = document.getElementById('menu-email');
-            const proSection = document.getElementById('menu-pro-section');
 
             if (currentKeyword) {
                 // Signed in - show account section
@@ -1542,12 +1541,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     emailEl.textContent = state.email;
                 } else {
                     emailSection.style.display = 'none';
-                }
-
-                if (state.isPro) {
-                    proSection.style.display = 'block';
-                } else {
-                    proSection.style.display = 'none';
                 }
             } else {
                 // Signed out - show signin section
