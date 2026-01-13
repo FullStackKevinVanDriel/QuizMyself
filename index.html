@@ -1273,6 +1273,24 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 <button class="modal-close" onclick="closeUpgradeModal()">&times;</button>
             </div>
             <div class="modal-body">
+                <!-- Login Required Message -->
+                <div id="upgrade-login-required" style="display: none; text-align: center; padding: 20px 0;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🔐</div>
+                    <h3 style="color: #ffd700; margin-bottom: 10px;">Account Required</h3>
+                    <p style="color: #ccc; margin-bottom: 20px; line-height: 1.6;">
+                        To upgrade to Pro, you need to create an account first.<br>
+                        This ensures your license is securely tied to your account.
+                    </p>
+                    <button class="btn btn-primary" onclick="closeUpgradeModal(); openHamburgerMenu();" style="padding: 12px 30px; font-size: 16px;">
+                        Sign In / Create Account
+                    </button>
+                    <p style="color: #888; font-size: 0.85rem; margin-top: 15px;">
+                        Already have a license key? Sign in first to activate it.
+                    </p>
+                </div>
+
+                <!-- Upgrade Content (shown when logged in) -->
+                <div id="upgrade-content">
                 <div class="pricing-card featured">
                     <h3 style="color: #ffd700; margin-bottom: 10px;">Pro Monthly</h3>
                     <div class="pricing-price">$4.99<span>/mo</span></div>
@@ -1306,6 +1324,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                 <p id="upgrade-error" style="color: #e94560; margin-top: 10px; display: none;"></p>
                 <p id="upgrade-success" style="color: #27ae60; margin-top: 10px; display: none;"></p>
+                </div><!-- End upgrade-content -->
             </div>
         </div>
     </div>
@@ -2133,6 +2152,11 @@ question,answer,choice1,choice2,choice3,choice4,correct
         function toggleHamburgerMenu() {
             const dropdown = document.getElementById('hamburger-dropdown');
             dropdown.classList.toggle('show');
+        }
+
+        function openHamburgerMenu() {
+            const dropdown = document.getElementById('hamburger-dropdown');
+            dropdown.classList.add('show');
         }
 
         function updateHamburgerMenu() {
@@ -3528,6 +3552,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('upgrade-error').style.display = 'none';
             document.getElementById('upgrade-success').style.display = 'none';
             document.getElementById('license-key-input').value = '';
+
+            // Show login required message if not signed in with Firebase
+            const loginRequired = document.getElementById('upgrade-login-required');
+            const upgradeContent = document.getElementById('upgrade-content');
+            if (currentUser) {
+                loginRequired.style.display = 'none';
+                upgradeContent.style.display = 'block';
+            } else {
+                loginRequired.style.display = 'block';
+                upgradeContent.style.display = 'none';
+            }
         }
 
         function closeUpgradeModal() {
