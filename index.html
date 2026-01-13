@@ -955,6 +955,9 @@
                         <div class="menu-value" id="menu-email">-</div>
                     </div>
                     <div class="menu-divider"></div>
+                    <div class="menu-label">Status</div>
+                    <div class="menu-value" id="menu-license-status">Free Account</div>
+                    <div class="menu-divider"></div>
                     <div class="menu-item" id="menu-signout" onclick="signOut();">
                         Sign Out
                     </div>
@@ -1193,6 +1196,44 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                 <p id="upgrade-error" style="color: #e94560; margin-top: 10px; display: none;"></p>
                 <p id="upgrade-success" style="color: #27ae60; margin-top: 10px; display: none;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pro Features Modal -->
+    <div id="pro-features-modal" class="modal-overlay hidden" onclick="closeProFeaturesModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 450px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #1a472a, #2d5a3d); border-bottom: 2px solid #ffd700;">
+                <h2 style="color: #ffd700;">Pro Member Benefits</h2>
+                <button class="modal-close" onclick="closeProFeaturesModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <span style="background: linear-gradient(135deg, #ffd700, #ffaa00); color: #1a1a2e; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 18px;">PRO</span>
+                </div>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 12px 0; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px;">
+                        <span style="color: #27ae60; font-size: 20px;">✓</span>
+                        <span><strong>Unlimited imported questions</strong><br><span style="color: #888; font-size: 13px;">Import as many quizzes as you need</span></span>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px;">
+                        <span style="color: #27ae60; font-size: 20px;">✓</span>
+                        <span><strong>Cloud sync across devices</strong><br><span style="color: #888; font-size: 13px;">Your progress follows you everywhere</span></span>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px;">
+                        <span style="color: #27ae60; font-size: 20px;">✓</span>
+                        <span><strong>Priority support</strong><br><span style="color: #888; font-size: 13px;">Get help when you need it</span></span>
+                    </li>
+                    <li style="padding: 12px 0; display: flex; align-items: center; gap: 12px;">
+                        <span style="color: #27ae60; font-size: 20px;">✓</span>
+                        <span><strong>Early access to new features</strong><br><span style="color: #888; font-size: 13px;">Be the first to try new updates</span></span>
+                    </li>
+                </ul>
+                <div style="margin-top: 20px; padding: 15px; background: #0d1117; border-radius: 8px; text-align: center;">
+                    <div style="color: #888; font-size: 12px; margin-bottom: 5px;">License Key</div>
+                    <div style="color: #4fc3f7; font-family: monospace; font-size: 14px;" id="pro-license-display">-</div>
+                </div>
+                <p style="text-align: center; color: #27ae60; margin-top: 15px;">Thank you for supporting QuizMyself!</p>
             </div>
         </div>
     </div>
@@ -1529,6 +1570,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             const keywordEl = document.getElementById('menu-keyword');
             const emailSection = document.getElementById('menu-email-section');
             const emailEl = document.getElementById('menu-email');
+            const licenseStatusEl = document.getElementById('menu-license-status');
 
             if (currentKeyword) {
                 // Signed in - show account section
@@ -1541,6 +1583,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     emailEl.textContent = state.email;
                 } else {
                     emailSection.style.display = 'none';
+                }
+
+                // Show license status
+                if (state.isPro && state.licenseKey) {
+                    licenseStatusEl.innerHTML = '<span style="color: #ffd700;">PRO</span> - ' + state.licenseKey;
+                } else {
+                    licenseStatusEl.textContent = 'Free Account';
                 }
             } else {
                 // Signed out - show signin section
@@ -2889,6 +2938,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         }
 
+        function showProFeaturesModal() {
+            document.getElementById('pro-features-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('pro-license-display').textContent = state.licenseKey || '-';
+        }
+
+        function closeProFeaturesModal() {
+            document.getElementById('pro-features-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
         async function startCheckout(plan) {
             const priceId = STRIPE_PRICES[plan];
             if (!priceId || priceId.includes('TODO')) {
@@ -3106,8 +3166,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             if (state.isPro) {
                 topBarStatus.classList.remove('free');
                 topBarStatus.classList.add('pro');
-                topBarStatus.onclick = null;
-                topBarStatus.style.cursor = 'default';
+                topBarStatus.onclick = showProFeaturesModal;
+                topBarStatus.style.cursor = 'pointer';
                 topBarText.innerHTML = 'Pro Member <span class="pro-badge">PRO</span>';
             } else {
                 topBarStatus.classList.remove('pro');
