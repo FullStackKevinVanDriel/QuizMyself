@@ -3658,7 +3658,31 @@ question,answer,choice1,choice2,choice3,choice4,correct
         }
 
         async function fetchLicenseFromSession(sessionId) {
-            // Try to fetch license created by webhook
+            // For Firebase users, the license is automatically linked to their account
+            if (currentUser) {
+                // Wait a moment for webhook to process, then check account
+                let attempts = 0;
+                const maxAttempts = 5;
+
+                while (attempts < maxAttempts) {
+                    await new Promise(r => setTimeout(r, 2000));
+                    await checkProStatusForAccount();
+
+                    if (state.isPro) {
+                        alert('Payment successful! Your Pro membership is now active.');
+                        updateProUI();
+                        updateHamburgerMenu();
+                        return;
+                    }
+                    attempts++;
+                }
+
+                // Still not pro after retries - might be webhook delay
+                alert('Payment successful! Your Pro membership should activate shortly. If not, please refresh the page in a minute.');
+                return;
+            }
+
+            // For keyword-only users, try to fetch license from session
             let attempts = 0;
             const maxAttempts = 5;
 
@@ -3676,7 +3700,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         // Auto-activate
                         document.getElementById('license-key-input').value = data.license_key;
                         await activateLicense();
-                        alert(`Pro activated! Your license key: ${data.license_key}`);
+                        alert('Payment successful! Your Pro membership is now active.');
                         return;
                     } else if (data.status === 'pending') {
                         // Webhook hasn't processed yet - wait and retry
@@ -3693,7 +3717,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
 
             // Fallback - show manual entry
-            alert('Payment successful! Enter your license key below to activate Pro.');
+            alert('Payment successful! Your license key will be emailed to you. Enter it below to activate Pro.');
             showUpgradeModal();
         }
 
