@@ -1904,6 +1904,20 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     updateHamburgerMenu();
                     document.getElementById('stats-bar').style.display = currentKeyword ? 'flex' : 'none';
                 } else {
+                    // Not signed in - check for payment success for keyword-only users
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('payment') === 'success') {
+                        const sessionId = urlParams.get('session_id');
+                        // Clean up URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        if (sessionId && currentKeyword) {
+                            await fetchLicenseFromSession(sessionId);
+                        } else if (sessionId) {
+                            // No keyword yet - store session for later
+                            alert('Payment successful! Enter your license key below to activate Pro.');
+                            showUpgradeModal();
+                        }
+                    }
                     updateHamburgerMenu();
                 }
             });
@@ -3813,23 +3827,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 }
             }
 
-            // Check URL for payment success (only for keyword-only users, Firebase users handled in onAuthStateChanged)
-            if (!currentUser) {
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('payment') === 'success') {
-                    const sessionId = urlParams.get('session_id');
-                    // Clean up URL immediately
-                    window.history.replaceState({}, document.title, window.location.pathname);
-
-                    if (sessionId) {
-                        // Auto-fetch license from session
-                        await fetchLicenseFromSession(sessionId);
-                    } else {
-                        alert('Payment successful! Enter your license key below to activate Pro.');
-                        showUpgradeModal();
-                    }
-                }
-            }
+            // Note: Payment success handling is done in onAuthStateChanged to ensure
+            // we know the auth state before processing (Firebase user vs keyword-only)
 
             updateProUI();
             updateHamburgerMenu();
