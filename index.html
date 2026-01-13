@@ -1518,9 +1518,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Start practice mode
         function startPractice() {
-            const remaining = questions.filter(q => !state.mastered.includes(q.id));
-            if (remaining.length === 0) {
-                alert('Congratulations! You have mastered all questions!');
+            if (questions.length === 0) {
+                alert('No questions available. Import some questions first!');
                 return;
             }
             state.currentMode = 'practice';
@@ -1533,8 +1532,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
             state.currentQuestion = getRandomQuestion();
             state.claimedKnowledge = false;
 
+            // If all mastered, practice from all questions (review mode)
             if (!state.currentQuestion) {
-                alert('All questions mastered!');
+                state.currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+            }
+
+            if (!state.currentQuestion) {
+                alert('No questions available!');
                 backToMenu();
                 return;
             }
