@@ -1838,14 +1838,15 @@ question,answer,choice1,choice2,choice3,choice4,correct
         }
 
         async function handleSignOut() {
-            if (auth && currentUser) {
+            // Always try to sign out from Firebase
+            if (auth) {
                 try {
                     await auth.signOut();
                 } catch (e) {
                     console.error('Sign out error:', e);
                 }
             }
-            // Also clear local state
+            // Clear all local state
             currentUser = null;
             authToken = null;
             userKeywords = [];
@@ -1853,6 +1854,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             state.isPro = false;
             state.licenseKey = null;
             state.email = null;
+            // Clear all localStorage items
+            localStorage.removeItem('quizmyself_keyword');
             localStorage.removeItem('quizmyself_active_keyword');
             document.getElementById('stats-bar').style.display = 'none';
             document.getElementById('hamburger-dropdown').classList.remove('show');
