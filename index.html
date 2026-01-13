@@ -3692,12 +3692,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                     updateProUI();
                     updateHamburgerMenu();
-
-                    // Update modal to show the license
-                    document.getElementById('license-pending').style.display = 'none';
-                    document.getElementById('license-found').style.display = 'block';
-                    document.getElementById('license-display').textContent = data.license_key;
                     pendingLicenseSessionId = null;
+
+                    // Auto-close modal after brief delay - user is now Pro
+                    setTimeout(() => closeUpgradeModal(), 500);
                 } else if (data.status === 'pending') {
                     showUpgradeError('License still processing. Please wait a moment and try again, or check your email.');
                 } else {
@@ -3856,8 +3854,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                         updateProUI();
                         updateHamburgerMenu();
-                        // Show modal with license key so user can copy it
-                        showUpgradeModal({ licenseKey: data.license_key });
+                        // Close modal if open - user is now Pro
+                        closeUpgradeModal();
                         return true; // Success - license captured
                     } else if (data.status === 'pending') {
                         // Webhook hasn't processed yet - wait and retry
