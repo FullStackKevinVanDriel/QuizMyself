@@ -1,0 +1,10 @@
+{
+  "name": "quizmyself",
+  "version": "0.1.0",
+  "description": "Self-study quiz tool with custom content imports",
+  "private": true,
+  "scripts": {
+    "version:bump": "node tools/version-bump.mjs",
+    "version:check": "node tools/version-check.mjs"
+  }
+}
