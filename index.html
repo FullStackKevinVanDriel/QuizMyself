@@ -2447,7 +2447,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
         // Close hamburger menu when clicking outside
         document.addEventListener('click', function(e) {
             const menu = document.getElementById('hamburger-menu');
-            if (menu && !menu.contains(e.target)) {
+            const statusBtn = document.getElementById('top-bar-status');
+            if (menu && !menu.contains(e.target) && !statusBtn.contains(e.target)) {
                 document.getElementById('hamburger-dropdown').classList.remove('show');
             }
         });
