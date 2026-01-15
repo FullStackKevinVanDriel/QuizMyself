@@ -453,6 +453,25 @@
             font-weight: bold;
         }
 
+        .menu-upgrade-btn {
+            display: block;
+            width: calc(100% - 30px);
+            margin: 8px 15px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .menu-upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+        }
+
         .menu-signin-form {
             display: flex;
             gap: 8px;
@@ -1023,7 +1042,7 @@
 
     <!-- Top Bar -->
     <div class="top-bar">
-        <div class="top-bar-status free" id="top-bar-status" onclick="showUpgradeModal()">
+        <div class="top-bar-status free" id="top-bar-status" onclick="toggleHamburgerMenu()">
             <span id="top-bar-status-text">Free Account</span>
         </div>
         <!-- Hamburger Menu -->
@@ -1069,6 +1088,7 @@
                     <div class="menu-divider"></div>
                     <div class="menu-label">Status</div>
                     <div class="menu-value" id="menu-license-status">Free Account</div>
+                    <button id="menu-upgrade-btn" class="menu-upgrade-btn" onclick="showUpgradeModal()">Upgrade to Pro</button>
                     <div class="menu-divider"></div>
                     <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
                 </div>
@@ -2213,6 +2233,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             const emailEl = document.getElementById('menu-email');
             const licenseStatusEl = document.getElementById('menu-license-status');
             const manageKeywordsBtn = document.getElementById('manage-keywords-btn');
+            const upgradeBtn = document.getElementById('menu-upgrade-btn');
 
             // Check if user is signed in with Firebase or using keyword-only mode
             const isSignedInWithFirebase = currentUser !== null;
@@ -2246,11 +2267,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     }
                 }
 
-                // Show license status
+                // Show license status and upgrade button
                 if (state.isPro && state.licenseKey) {
                     licenseStatusEl.innerHTML = '<span style="color: #ffd700;">PRO</span> - ' + state.licenseKey;
+                    if (upgradeBtn) upgradeBtn.style.display = 'none';
                 } else {
                     licenseStatusEl.textContent = 'Free Account';
+                    if (upgradeBtn) upgradeBtn.style.display = 'block';
                 }
             } else {
                 // Signed out - show signin section
