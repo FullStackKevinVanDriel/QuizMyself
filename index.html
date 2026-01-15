@@ -1440,8 +1440,20 @@ question,answer,choice1,choice2,choice3,choice4,correct
     </div>
 
     <script>
-        // Question Bank - 200+ questions from WGU D322 course
-        const questions = [
+        // Owner account that can see all data
+        const OWNER_EMAIL = 'noxestyle@gmail.com';
+
+        // Demo questions for non-owner users
+        const demoQuestions = [
+            { id: 1, category: "Demo", q: "What technology powers most electric vehicles?", a: "Lithium-ion batteries store energy and power electric motors", choices: ["Hydrogen fuel cells", "Lithium-ion batteries", "Solar panels", "Nuclear reactors"], correct: 1 },
+            { id: 2, category: "Demo", q: "What is artificial intelligence (AI)?", a: "Computer systems designed to perform tasks that typically require human intelligence", choices: ["A type of computer virus", "Systems that perform tasks requiring human intelligence", "A social media platform", "A video game genre"], correct: 1 },
+            { id: 3, category: "Demo", q: "What does 'streaming' mean in digital media?", a: "Watching or listening to content in real-time over the internet without downloading", choices: ["Downloading files to your device", "Watching content in real-time over the internet", "Sharing files with friends", "Creating digital content"], correct: 1 },
+            { id: 4, category: "Demo", q: "What is a smartphone?", a: "A mobile phone with computer capabilities including internet access and apps", choices: ["A landline telephone", "A basic flip phone", "A mobile phone with computer capabilities", "A tablet computer"], correct: 2 },
+            { id: 5, category: "Demo", q: "What is cloud storage?", a: "Storing data on remote servers accessed via the internet instead of local devices", choices: ["Storing files on USB drives", "Keeping data in physical filing cabinets", "Storing data on remote internet servers", "Saving files only on your computer"], correct: 2 }
+        ];
+
+        // Question Bank - 200+ questions from WGU D322 course (owner only)
+        const wguQuestions = [
             // IT Roles & Functions
             { id: 1, category: "IT Roles", q: "Computer Engineering (CE) primarily focuses on:", a: "The design of hardware systems and the software that makes them work, including drivers for peripheral devices and embedded systems", choices: ["The design of hardware systems and the software that makes them work", "The theoretical study of algorithms and computational complexity", "Integrating IT solutions with organizational business processes", "Managing and securing enterprise network infrastructure"], correct: 0 },
             { id: 2, category: "IT Roles", q: "The discipline of Computer Science (CS) is characterized by:", a: "The design and implementation of software with emphasis on developing effective ways to solve computing problems, including robotics, AI, and algorithms", choices: ["Building and maintaining physical computing hardware", "Design and implementation of software to solve computing problems", "Managing database systems and data warehouses", "Configuring and troubleshooting network systems"], correct: 1 },
@@ -1733,6 +1745,29 @@ question,answer,choice1,choice2,choice3,choice4,correct
             { id: 247, category: "Internet", q: "What is VoIP?", a: "Voice over Internet Protocol - technology for delivering voice communications over IP networks", choices: ["Video over Internet Protocol - streams visual media online", "Voice over Internet Protocol - enables phone calls through internet", "Virtual Online Integration Platform - connects cloud services", "Verified Online Identity Protocol - authenticates users securely"], correct: 1 }
         ];
 
+        // Active questions array - switches based on logged-in user
+        let questions = [...demoQuestions];
+
+        // Check if user is the owner and switch question sets
+        function updateQuestionSet(email) {
+            const isOwner = email && email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+            if (isOwner) {
+                questions.length = 0;
+                wguQuestions.forEach(q => questions.push(q));
+            } else {
+                questions.length = 0;
+                demoQuestions.forEach(q => questions.push(q));
+            }
+            // Reset progress when switching question sets
+            state.mastered = [];
+            state.answerCounts = {};
+            state.totalCorrect = 0;
+            state.totalAnswered = 0;
+            state.examQuestions = [];
+            state.examIndex = 0;
+            state.examCorrect = 0;
+        }
+
         // State management
         let state = {
             mastered: [],
@@ -1907,6 +1942,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     authToken = await user.getIdToken();
                     state.email = user.email;
 
+                    // Switch question set based on user (owner gets full content)
+                    updateQuestionSet(user.email);
+                    updateStats();
+
                     // Load user's keywords from server
                     await loadUserKeywords();
 
@@ -1939,7 +1978,11 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     updateHamburgerMenu();
                     document.getElementById('stats-bar').style.display = currentKeyword ? 'flex' : 'none';
                 } else {
-                    // Not signed in - check for payment success for keyword-only users
+                    // Not signed in - show demo questions
+                    updateQuestionSet(null);
+                    updateStats();
+
+                    // Check for payment success for keyword-only users
                     const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams.get('payment') === 'success') {
                         const sessionId = urlParams.get('session_id');
