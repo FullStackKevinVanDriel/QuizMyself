@@ -1,0 +1,26 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  versioning:
+    runs-on: ubuntu-latest
+    name: Version + Changelog Policy
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch base branch
+        run: git fetch origin main:refs/remotes/origin/main --depth=1
+
+      - name: Enforce version bump + dated changelog
+        run: npm run version:check -- origin/main
