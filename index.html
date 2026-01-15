@@ -1928,10 +1928,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
         }
 
         async function handleForgotPassword() {
-            if (!auth) {
-                showAuthError('Auth not configured.');
-                return;
-            }
             const email = document.getElementById('forgot-email').value.trim();
 
             if (!email) {
@@ -1940,13 +1936,25 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
 
             try {
-                await auth.sendPasswordResetEmail(email);
-                document.getElementById('forgot-email').value = '';
-                showAuthError('Password reset email sent! Check your inbox.');
-                document.getElementById('auth-error').style.color = '#4caf50';
+                const response = await fetch(`${VANDROMEDA_API}/auth/password-reset.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, product: 'quizmyself' })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('forgot-email').value = '';
+                    showAuthError('Password reset email sent! Check your inbox.');
+                    document.getElementById('auth-error').style.color = '#4caf50';
+                } else {
+                    document.getElementById('auth-error').style.color = '#ff5252';
+                    showAuthError(data.error || 'Failed to send reset email');
+                }
             } catch (error) {
                 document.getElementById('auth-error').style.color = '#ff5252';
-                showAuthError(error.message);
+                showAuthError('Network error. Please try again.');
             }
         }
 
