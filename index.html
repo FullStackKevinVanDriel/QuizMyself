@@ -1059,6 +1059,13 @@
                         <input type="email" id="login-email" placeholder="Email" onkeypress="if(event.key==='Enter')handleLogin()">
                         <input type="password" id="login-password" placeholder="Password" onkeypress="if(event.key==='Enter')handleLogin()">
                         <button class="menu-signin-btn" onclick="handleLogin()" style="width:100%">Sign In</button>
+                        <a href="#" onclick="showForgotPassword(); return false;" style="display:block; text-align:center; margin-top:8px; color:#4fc3f7; font-size:13px;">Forgot password?</a>
+                    </div>
+                    <div id="auth-forgot-form" class="auth-form" style="display: none;">
+                        <p style="color:#888; font-size:13px; margin-bottom:10px;">Enter your email to receive a password reset link.</p>
+                        <input type="email" id="forgot-email" placeholder="Email" onkeypress="if(event.key==='Enter')handleForgotPassword()">
+                        <button class="menu-signin-btn" onclick="handleForgotPassword()" style="width:100%">Send Reset Link</button>
+                        <a href="#" onclick="hideForgotPassword(); return false;" style="display:block; text-align:center; margin-top:8px; color:#4fc3f7; font-size:13px;">Back to login</a>
                     </div>
                     <div id="auth-register-form" class="auth-form" style="display: none;">
                         <input type="email" id="register-email" placeholder="Email">
@@ -1840,6 +1847,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             event.target.classList.add('active');
             document.getElementById('auth-login-form').style.display = tab === 'login' ? 'block' : 'none';
             document.getElementById('auth-register-form').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('auth-forgot-form').style.display = 'none';
             document.getElementById('auth-error').style.display = 'none';
         }
 
@@ -1903,6 +1911,41 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 document.getElementById('register-password').value = '';
                 document.getElementById('register-confirm').value = '';
             } catch (error) {
+                showAuthError(error.message);
+            }
+        }
+
+        function showForgotPassword() {
+            document.getElementById('auth-login-form').style.display = 'none';
+            document.getElementById('auth-forgot-form').style.display = 'block';
+            document.getElementById('auth-error').style.display = 'none';
+        }
+
+        function hideForgotPassword() {
+            document.getElementById('auth-forgot-form').style.display = 'none';
+            document.getElementById('auth-login-form').style.display = 'block';
+            document.getElementById('auth-error').style.display = 'none';
+        }
+
+        async function handleForgotPassword() {
+            if (!auth) {
+                showAuthError('Auth not configured.');
+                return;
+            }
+            const email = document.getElementById('forgot-email').value.trim();
+
+            if (!email) {
+                showAuthError('Please enter your email');
+                return;
+            }
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                document.getElementById('forgot-email').value = '';
+                showAuthError('Password reset email sent! Check your inbox.');
+                document.getElementById('auth-error').style.color = '#4caf50';
+            } catch (error) {
+                document.getElementById('auth-error').style.color = '#ff5252';
                 showAuthError(error.message);
             }
         }
