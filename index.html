@@ -238,6 +238,107 @@
             display: none !important;
         }
 
+        /* Category Filter */
+        .category-filter {
+            background: #16213e;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .category-filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .category-filter-title {
+            color: #4fc3f7;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .category-filter-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .category-filter-actions button {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+
+        .category-filter-actions button:hover {
+            color: #4fc3f7;
+        }
+
+        .category-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-chip {
+            background: #0f3460;
+            color: #888;
+            border: 2px solid #333;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-chip:hover {
+            border-color: #4fc3f7;
+            color: #eaeaea;
+        }
+
+        .category-chip.active {
+            background: #1a4a7a;
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+
+        /* Course Content Items */
+        .course-item {
+            background: #0f3460;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .course-item-category {
+            display: inline-block;
+            background: #16213e;
+            color: #4fc3f7;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+
+        .course-item-question {
+            color: #eaeaea;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .course-item-answer {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            padding-left: 10px;
+            border-left: 3px solid #4fc3f7;
+        }
+
         .result-card {
             text-align: center;
             padding: 40px;
@@ -280,10 +381,7 @@
         }
 
         .back-link {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
+            display: inline-block;
             color: #4fc3f7;
             text-decoration: none;
             padding: 10px 18px;
@@ -292,6 +390,7 @@
             border-radius: 8px;
             font-size: 14px;
             font-weight: bold;
+            margin-bottom: 15px;
         }
 
         .back-link:hover {
@@ -1130,12 +1229,25 @@
 
         <!-- Main Menu -->
         <div id="menu-screen" class="menu">
+            <!-- Category Filter for Demo Questions -->
+            <div id="category-filter" class="category-filter">
+                <div class="category-filter-header">
+                    <span class="category-filter-title">Filter by Category</span>
+                    <div class="category-filter-actions">
+                        <button onclick="selectAllCategories()">All</button>
+                        <button onclick="clearAllCategories()">None</button>
+                    </div>
+                </div>
+                <div class="category-chips" id="category-chips">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
             <button class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
             <button id="resume-exam-btn" class="btn hidden" onclick="resumeExam()" style="background: #ff9800; color: #1a1a2e; font-weight: bold;">Resume Exam</button>
             <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
             <button class="btn" onclick="showProgress()">View Progress</button>
             <button class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
-            <a href="course-content.html" class="btn" style="text-align: center; text-decoration: none;">View Course Content (138 Lessons)</a>
+            <button id="course-content-btn" class="btn" onclick="showCourseContent()" style="text-align: center;">View Study Material</button>
             <button class="btn btn-success btn-small" onclick="showImportModal()">Import Quiz Data</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
         </div>
@@ -1216,6 +1328,24 @@
                 <h2 style="margin-bottom: 20px;">Mastered Questions</h2>
                 <p style="color: #888; margin-bottom: 15px;">Click "Remove" to add a question back to your practice queue.</p>
                 <div id="mastered-list" class="mastered-list"></div>
+            </div>
+        </div>
+
+        <!-- Course Content Screen -->
+        <div id="course-content-screen" class="hidden">
+            <a href="#" class="back-link" onclick="backToMenu(); return false;">&larr; Back to Menu</a>
+            <div class="quiz-card">
+                <h2 style="margin-bottom: 10px;">Study Material</h2>
+                <p style="color: #888; margin-bottom: 20px;">Learn from the quiz questions and their explanations.</p>
+                <div id="course-content-filter" class="category-filter" style="margin-bottom: 20px;">
+                    <div class="category-filter-header">
+                        <span class="category-filter-title">Filter by Category</span>
+                    </div>
+                    <div class="category-chips" id="course-category-chips">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                <div id="course-content-list"></div>
             </div>
         </div>
     </div>
@@ -1846,6 +1976,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             state.examQuestions = [];
             state.examIndex = 0;
             state.examCorrect = 0;
+            // Initialize category filter for new question set
+            initCategoryFilter();
         }
 
         // State management
@@ -1865,6 +1997,11 @@ question,answer,choice1,choice2,choice3,choice4,correct
             email: null,
             importedQuestionCount: 0
         };
+
+        // Category filter state
+        let selectedCategories = new Set();
+        let allCategories = [];
+        let courseContentCategory = null;
 
         const STORAGE_URL = 'https://quiz-storage.kvquiz.workers.dev';
         const VANDROMEDA_API = 'https://www.vandromeda.com/api';
@@ -2123,6 +2260,9 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 }
             });
         }
+
+        // Initialize category filter on page load (for demo questions)
+        initCategoryFilter();
 
         // ========== KEYWORD MANAGEMENT ==========
 
@@ -2607,18 +2747,136 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Update stats display
         function updateStats() {
-            document.getElementById('total-count').textContent = questions.length;
-            document.getElementById('mastered-count').textContent = state.mastered.length;
-            document.getElementById('remaining-count').textContent = questions.length - state.mastered.length;
+            const filteredQuestions = getFilteredQuestions();
+            document.getElementById('total-count').textContent = filteredQuestions.length;
+            const masteredInFilter = state.mastered.filter(id => filteredQuestions.some(q => q.id === id));
+            document.getElementById('mastered-count').textContent = masteredInFilter.length;
+            document.getElementById('remaining-count').textContent = filteredQuestions.length - masteredInFilter.length;
             const accuracy = state.totalAnswered > 0
                 ? Math.round((state.totalCorrect / state.totalAnswered) * 100)
                 : 0;
             document.getElementById('accuracy').textContent = accuracy + '%';
         }
 
+        // Get filtered questions based on selected categories
+        function getFilteredQuestions() {
+            if (selectedCategories.size === 0 || selectedCategories.size === allCategories.length) {
+                return questions;
+            }
+            return questions.filter(q => selectedCategories.has(q.category));
+        }
+
+        // Initialize category filter
+        function initCategoryFilter() {
+            // Get unique categories from questions
+            const categories = [...new Set(questions.map(q => q.category))];
+            allCategories = categories;
+
+            // Default: all categories selected
+            selectedCategories = new Set(categories);
+
+            // Render category chips
+            renderCategoryChips();
+        }
+
+        // Render category chips
+        function renderCategoryChips() {
+            const container = document.getElementById('category-chips');
+            if (!container) return;
+
+            container.innerHTML = allCategories.map(cat => {
+                const isActive = selectedCategories.has(cat);
+                const count = questions.filter(q => q.category === cat).length;
+                return `<button class="category-chip ${isActive ? 'active' : ''}"
+                    onclick="toggleCategory('${cat}')">${cat} (${count})</button>`;
+            }).join('');
+        }
+
+        // Toggle category selection
+        function toggleCategory(category) {
+            if (selectedCategories.has(category)) {
+                selectedCategories.delete(category);
+            } else {
+                selectedCategories.add(category);
+            }
+            renderCategoryChips();
+            updateStats();
+        }
+
+        // Select all categories
+        function selectAllCategories() {
+            selectedCategories = new Set(allCategories);
+            renderCategoryChips();
+            updateStats();
+        }
+
+        // Clear all categories
+        function clearAllCategories() {
+            selectedCategories.clear();
+            renderCategoryChips();
+            updateStats();
+        }
+
+        // Show course content (study material from quiz questions)
+        function showCourseContent() {
+            // Initialize course content category filter
+            renderCourseCategoryChips();
+            renderCourseContent();
+            showScreen('course-content-screen');
+        }
+
+        // Render category chips for course content screen
+        function renderCourseCategoryChips() {
+            const container = document.getElementById('course-category-chips');
+            if (!container) return;
+
+            // If no category selected for course content, show all
+            const showAll = courseContentCategory === null;
+
+            container.innerHTML = `<button class="category-chip ${showAll ? 'active' : ''}"
+                onclick="filterCourseContent(null)">All</button>` +
+                allCategories.map(cat => {
+                    const isActive = courseContentCategory === cat;
+                    const count = questions.filter(q => q.category === cat).length;
+                    return `<button class="category-chip ${isActive ? 'active' : ''}"
+                        onclick="filterCourseContent('${cat}')">${cat} (${count})</button>`;
+                }).join('');
+        }
+
+        // Filter course content by category
+        function filterCourseContent(category) {
+            courseContentCategory = category;
+            renderCourseCategoryChips();
+            renderCourseContent();
+        }
+
+        // Render course content items
+        function renderCourseContent() {
+            const container = document.getElementById('course-content-list');
+            if (!container) return;
+
+            let filteredQuestions = questions;
+            if (courseContentCategory !== null) {
+                filteredQuestions = questions.filter(q => q.category === courseContentCategory);
+            }
+
+            if (filteredQuestions.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center;">No content available for the selected category.</p>';
+                return;
+            }
+
+            container.innerHTML = filteredQuestions.map((q, index) => `
+                <div class="course-item">
+                    <span class="course-item-category">${q.category}</span>
+                    <div class="course-item-question">${index + 1}. ${q.q}</div>
+                    <div class="course-item-answer">${q.a}</div>
+                </div>
+            `).join('');
+        }
+
         // Show/hide screens
         function showScreen(screenId) {
-            ['menu-screen', 'quiz-screen', 'exam-screen', 'result-screen', 'progress-screen', 'mastered-screen'].forEach(id => {
+            ['menu-screen', 'quiz-screen', 'exam-screen', 'result-screen', 'progress-screen', 'mastered-screen', 'course-content-screen'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
@@ -2631,17 +2889,19 @@ question,answer,choice1,choice2,choice3,choice4,correct
             updateStats();
         }
 
-        // Get random unmastered question
+        // Get random unmastered question from filtered set
         function getRandomQuestion() {
-            const unmastered = questions.filter(q => !state.mastered.includes(q.id));
+            const filteredQuestions = getFilteredQuestions();
+            const unmastered = filteredQuestions.filter(q => !state.mastered.includes(q.id));
             if (unmastered.length === 0) return null;
             return unmastered[Math.floor(Math.random() * unmastered.length)];
         }
 
         // Start practice mode
         function startPractice() {
-            if (questions.length === 0) {
-                alert('No questions available. Import some questions first!');
+            const filteredQuestions = getFilteredQuestions();
+            if (filteredQuestions.length === 0) {
+                alert('No questions available. Select at least one category or import some questions!');
                 return;
             }
             state.currentMode = 'practice';
@@ -2651,12 +2911,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Load next question
         function loadNextQuestion() {
+            const filteredQuestions = getFilteredQuestions();
             state.currentQuestion = getRandomQuestion();
             state.claimedKnowledge = false;
 
-            // If all mastered, practice from all questions (review mode)
-            if (!state.currentQuestion) {
-                state.currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+            // If all mastered in filtered set, practice from all filtered questions (review mode)
+            if (!state.currentQuestion && filteredQuestions.length > 0) {
+                state.currentQuestion = filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
             }
 
             if (!state.currentQuestion) {
