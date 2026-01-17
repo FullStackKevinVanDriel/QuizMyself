@@ -1707,6 +1707,14 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     </div>
                 </div>
 
+                <!-- Upload Source File Button -->
+                <div style="margin-bottom: 15px;">
+                    <button class="btn" onclick="document.getElementById('source-file-upload').click()" style="width: 100%;">
+                        📁 Upload Source File (PDF, HTML, TXT)
+                    </button>
+                    <input type="file" id="source-file-upload" accept=".pdf,.html,.htm,.txt,.json,.csv" style="display: none;" onchange="handleSourceFileUpload(event)">
+                </div>
+
                 <!-- Sources List -->
                 <div id="sources-list" style="max-height: 300px; overflow-y: auto;">
                     <div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>
@@ -4851,6 +4859,38 @@ question,answer,choice1,choice2,choice3,choice4,correct
             if (event.target === event.currentTarget) {
                 closeSourcesModal();
             }
+        }
+
+        // Handle source file upload from Quiz Data modal
+        async function handleSourceFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!currentUser) {
+                alert('Please sign in to upload files.');
+                return;
+            }
+
+            try {
+                // Show loading state
+                document.getElementById('sources-list').innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">Uploading...</div>';
+
+                // Use the same upload function as Create Quiz modal
+                const sourceId = await uploadNewSource(file);
+
+                if (sourceId) {
+                    alert(`Uploaded "${file.name}" successfully!`);
+                    loadSources(); // Refresh the list
+                } else {
+                    throw new Error('Upload failed');
+                }
+            } catch (err) {
+                alert(`Upload failed: ${err.message}`);
+                loadSources(); // Refresh to show current state
+            }
+
+            // Reset file input
+            event.target.value = '';
         }
 
         // Toggle import section visibility
