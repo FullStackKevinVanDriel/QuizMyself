@@ -2719,13 +2719,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
             updateKeywordDropdown();
             initCategoryFilter(); // Show/hide category filter based on questions
 
-            // Show/hide raw source links based on keyword
-            // Only "noxestyle" has the raw course content
+            // Show/hide raw source links based on whether keyword has a linked source
             const rawLink = document.getElementById('raw-content-link');
             const courseBtn = document.getElementById('course-content-btn');
-            const hasRawSource = keyword === 'noxestyle';
-            if (rawLink) rawLink.classList.toggle('hidden', !hasRawSource);
-            if (courseBtn) courseBtn.classList.toggle('hidden', !hasRawSource);
+            const keywordInfo = userKeywords.find(kw => kw.keyword === keyword);
+            const hasLinkedSource = keywordInfo && keywordInfo.source_id;
+            if (rawLink) rawLink.classList.toggle('hidden', !hasLinkedSource);
+            if (courseBtn) courseBtn.classList.toggle('hidden', !hasLinkedSource);
         }
 
         // Update keyword dropdown to reflect current selection
@@ -2750,8 +2750,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
             dropdown.innerHTML = '<option value="">Select a quiz...</option>' +
                 userKeywords.map(kw => {
                     const label = kw.display_name || kw.keyword;
-                    const info = kw.question_count ? ` (${kw.question_count} questions)` : '';
-                    return `<option value="${kw.keyword}" ${kw.keyword === currentKeyword ? 'selected' : ''}>${label}${info}</option>`;
+                    const keywordSuffix = kw.display_name ? ` [${kw.keyword}]` : '';
+                    const info = kw.question_count ? ` (${kw.question_count}q)` : '';
+                    const sourceIcon = kw.source_id ? ' 📎' : '';
+                    return `<option value="${kw.keyword}" ${kw.keyword === currentKeyword ? 'selected' : ''}>${label}${keywordSuffix}${info}${sourceIcon}</option>`;
                 }).join('');
         }
 
