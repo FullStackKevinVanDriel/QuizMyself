@@ -4338,7 +4338,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>';
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}`;
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}`;
                 const headers = {};
                 if (firebaseUser) {
                     const token = await firebaseUser.getIdToken();
@@ -4404,7 +4404,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('source-content-text').textContent = 'Loading...';
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}&id=${id}`;
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}&id=${id}`;
                 const headers = {};
                 if (firebaseUser) {
                     const token = await firebaseUser.getIdToken();
@@ -4449,7 +4449,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}&id=${id}`;
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}&id=${id}`;
                 const headers = {};
                 if (firebaseUser) {
                     const token = await firebaseUser.getIdToken();
@@ -4534,7 +4534,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         async function saveSourceMaterial(name, content, contentType, questionCount) {
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}`;
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}`;
                 const headers = { 'Content-Type': 'application/json' };
                 if (firebaseUser) {
                     const token = await firebaseUser.getIdToken();
