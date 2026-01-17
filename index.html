@@ -3578,7 +3578,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             console.log('[DEBUG showCourseContent] source_id:', keywordInfo?.source_id, 'source_name:', keywordInfo?.source_name, 'content_type:', keywordInfo?.source_content_type);
             if (keywordInfo && keywordInfo.source_id) {
                 // Show the linked source in the format-aware viewer
-                openDataModal();
+                showSourcesModal();
                 viewSourceContent(keywordInfo.source_id, keywordInfo.source_name || 'Study Material', keywordInfo.source_content_type || 'text/plain');
                 return;
             }
