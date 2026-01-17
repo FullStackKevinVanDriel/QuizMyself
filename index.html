@@ -1411,7 +1411,7 @@
                     <div class="menu-value" id="menu-license-status">Free Account</div>
                     <button id="menu-upgrade-btn" class="menu-upgrade-btn" onclick="showUpgradeModal()">Upgrade to Pro</button>
                     <div class="menu-divider"></div>
-                    <div class="menu-item" onclick="showSourcesModal(); closeHamburgerMenu();">View Imported Sources</div>
+                    <div class="menu-item" onclick="showSourcesModal(); closeHamburgerMenu();">Quiz Data</div>
                     <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
                 </div>
             </div>
@@ -1474,8 +1474,6 @@
             <button class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
             <button id="course-content-btn" class="btn" onclick="showCourseContent()" style="text-align: center;">View Study Material</button>
             <a id="raw-content-link" href="course-content.html" class="btn hidden" style="text-align: center; text-decoration: none;">View Raw Source (138 Lessons)</a>
-            <button class="btn btn-success btn-small" onclick="showImportModal()">Import Quiz Data</button>
-            <button class="btn btn-small" onclick="showSourcesModal()">View Imported Sources</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
         </div>
 
@@ -1653,10 +1651,15 @@ question,answer,choice1,choice2,choice3,choice4,correct
     <div id="sources-modal" class="modal-overlay hidden" onclick="closeSourcesModalOnOverlay(event)">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 700px;">
             <div class="modal-header">
-                <h2>Imported Sources</h2>
+                <h2>Quiz Data</h2>
                 <button class="modal-close" onclick="closeSourcesModal()">&times;</button>
             </div>
             <div class="modal-body">
+                <!-- Import Button -->
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="closeSourcesModal(); showImportModal();" style="width: 100%;">Import Quiz Data</button>
+                </div>
+
                 <!-- Storage Info -->
                 <div id="sources-storage-info" style="margin-bottom: 20px; padding: 15px; background: #2a2a2a; border-radius: 8px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
