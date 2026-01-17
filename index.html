@@ -1411,6 +1411,7 @@
                     <div class="menu-value" id="menu-license-status">Free Account</div>
                     <button id="menu-upgrade-btn" class="menu-upgrade-btn" onclick="showUpgradeModal()">Upgrade to Pro</button>
                     <div class="menu-divider"></div>
+                    <div class="menu-item" onclick="showSourcesModal(); closeHamburgerMenu();">View Imported Sources</div>
                     <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
                 </div>
             </div>
@@ -4409,12 +4410,11 @@ question,answer,choice1,choice2,choice3,choice4,correct
         async function loadSources() {
             const listEl = document.getElementById('sources-list');
 
-            // Check if keyword is selected
-            if (!currentKeyword) {
+            // Check if user is logged in
+            if (!currentUser) {
                 listEl.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #ff6b6b;">
-                        <p>No keyword selected. Please select a keyword first.</p>
-                        <p style="font-size: 0.85rem; color: #888; margin-top: 10px;">Go to Manage Keywords in the menu to select or create a keyword.</p>
+                        <p>Please sign in to view your imported sources.</p>
                     </div>
                 `;
                 return;
@@ -4423,13 +4423,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
             listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>';
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}`;
-                console.log('Loading sources for keyword:', currentKeyword, 'URL:', url);
-                const headers = {};
-                if (currentUser) {
-                    const token = await currentUser.getIdToken();
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
+                // Load ALL sources across all keywords for this user
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?all=1`;
+                const token = await currentUser.getIdToken();
+                const headers = { 'Authorization': `Bearer ${token}` };
 
                 const response = await fetch(url, { headers });
                 const data = await response.json();
@@ -4462,12 +4459,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         <div style="flex: 1;">
                             <div style="font-weight: bold; color: #fff; margin-bottom: 5px;">${escapeHtml(source.name)}</div>
                             <div style="font-size: 0.85rem; color: #888;">
+                                <span style="color: #4fc3f7;">${escapeHtml(source.keywordDisplay || source.keyword)}</span> |
                                 ${source.questionCount} questions | ${formatBytes(source.sizeBytes)} | ${formatDate(source.importedAt)}
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">View</button>
-                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Delete</button>
+                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}', '${escapeHtml(source.keyword)}')">View</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}', '${escapeHtml(source.keyword)}')">Delete</button>
                         </div>
                     </div>
                 `).join('');
@@ -4483,14 +4481,14 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         }
 
-        async function viewSourceContent(id, name) {
+        async function viewSourceContent(id, name, keyword) {
             document.getElementById('sources-list').style.display = 'none';
             document.getElementById('source-content-view').style.display = 'block';
             document.getElementById('source-content-title').textContent = name;
             document.getElementById('source-content-text').textContent = 'Loading...';
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}&id=${id}`;
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(keyword)}&id=${id}`;
                 const headers = {};
                 if (currentUser) {
                     const token = await currentUser.getIdToken();
@@ -4529,13 +4527,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('sources-list').style.display = 'block';
         }
 
-        async function deleteSource(id, name) {
+        async function deleteSource(id, name, keyword) {
             if (!confirm(`Delete "${name}"? This cannot be undone.`)) {
                 return;
             }
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}&id=${id}`;
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(keyword)}&id=${id}`;
                 const headers = {};
                 if (currentUser) {
                     const token = await currentUser.getIdToken();
