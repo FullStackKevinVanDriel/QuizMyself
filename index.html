@@ -5171,6 +5171,49 @@
 
         // Store pending session ID for license lookup
         let pendingLicenseSessionId = null;
+        let licensePollingInterval = null;
+
+        function startLicensePolling() {
+            // Clear any existing interval
+            if (licensePollingInterval) {
+                clearInterval(licensePollingInterval);
+            }
+
+            // Poll every 3 seconds for up to 60 seconds
+            let attempts = 0;
+            const maxAttempts = 20;
+
+            licensePollingInterval = setInterval(async () => {
+                attempts++;
+                if (attempts > maxAttempts || !pendingLicenseSessionId) {
+                    clearInterval(licensePollingInterval);
+                    licensePollingInterval = null;
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${VANDROMEDA_API}/license/by-session.php?session_id=${encodeURIComponent(pendingLicenseSessionId)}`);
+                    const data = await response.json();
+
+                    if (data.status === 'ok' && data.license_key) {
+                        // License found - activate Pro and close modal
+                        clearInterval(licensePollingInterval);
+                        licensePollingInterval = null;
+
+                        state.isPro = true;
+                        state.licenseKey = data.license_key;
+                        if (data.email) state.email = data.email;
+
+                        updateProUI();
+                        updateHamburgerMenu();
+                        pendingLicenseSessionId = null;
+                        closeUpgradeModal();
+                    }
+                } catch (e) {
+                    console.error('License poll error:', e);
+                }
+            }, 3000);
+        }
 
         function showUpgradeModal(options = {}) {
             document.getElementById('upgrade-modal').classList.remove('hidden');
@@ -5193,6 +5236,8 @@
                     licenseStatusSection.style.display = 'block';
                     licensePending.style.display = 'block';
                     licenseFound.style.display = 'none';
+                    // Auto-poll for license every 3 seconds
+                    startLicensePolling();
                 } else if (options.licenseKey) {
                     // License was found - display it
                     pendingLicenseSessionId = null;
@@ -5228,6 +5273,11 @@
         function closeUpgradeModal() {
             document.getElementById('upgrade-modal').classList.add('hidden');
             document.body.style.overflow = '';
+            // Stop license polling if active
+            if (licensePollingInterval) {
+                clearInterval(licensePollingInterval);
+                licensePollingInterval = null;
+            }
         }
 
         function closeUpgradeModalOnOverlay(event) {
