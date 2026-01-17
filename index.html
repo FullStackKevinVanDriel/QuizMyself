@@ -1647,7 +1647,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
         </div>
     </div>
 
-    <!-- Sources Modal -->
+    <!-- Quiz Data Modal (combined import + sources) -->
     <div id="sources-modal" class="modal-overlay hidden" onclick="closeSourcesModalOnOverlay(event)">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 700px;">
             <div class="modal-header">
@@ -1655,9 +1655,46 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 <button class="modal-close" onclick="closeSourcesModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <!-- Import Button -->
-                <div style="margin-bottom: 20px;">
-                    <button class="btn btn-success" onclick="closeSourcesModal(); showImportModal();" style="width: 100%;">Import Quiz Data</button>
+                <!-- Import Section (collapsible) -->
+                <div style="margin-bottom: 20px; background: #2a2a2a; border-radius: 8px; overflow: hidden;">
+                    <button onclick="toggleImportSection()" style="width: 100%; padding: 15px; background: #1a5a1a; border: none; color: white; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Import Quiz Data</span>
+                        <span id="import-toggle-icon">+</span>
+                    </button>
+                    <div id="import-section" style="display: none; padding: 15px;">
+                        <!-- Drop Zone -->
+                        <div class="drop-zone" id="drop-zone-modal" onclick="document.getElementById('file-input-modal').click()" style="padding: 20px; border: 2px dashed #444; border-radius: 8px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                            <div style="font-size: 32px; margin-bottom: 10px;">📁</div>
+                            <div style="color: #ccc;">Drop a file here or click to browse</div>
+                            <div style="color: #888; font-size: 0.85rem;">Supports JSON, CSV, or TXT files</div>
+                            <input type="file" id="file-input-modal" accept=".json,.csv,.txt" style="display: none;" onchange="handleFileSelectModal(event)">
+                        </div>
+
+                        <p style="text-align: center; color: #666; margin-bottom: 15px;">— or paste text directly —</p>
+
+                        <textarea id="import-textarea-modal" style="width: 100%; height: 120px; padding: 10px; background: #1a1a2e; border: 1px solid #333; border-radius: 6px; color: #fff; font-family: monospace; font-size: 13px; resize: vertical;" placeholder="Paste quiz data here (JSON, CSV, or Q&A format)..."></textarea>
+
+                        <!-- Preview Section -->
+                        <div id="import-preview-section-modal" style="display: none; margin-top: 15px; padding: 10px; background: #1a1a2e; border-radius: 6px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Questions found: <strong id="import-count-modal">0</strong></span>
+                                <span>Format: <strong id="import-format-modal">Unknown</strong></span>
+                            </div>
+                            <div id="import-preview-modal" style="max-height: 100px; overflow-y: auto; font-size: 0.85rem; color: #888;"></div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn" onclick="parseImportDataModal()">Preview</button>
+                            <button class="btn btn-primary" id="import-confirm-btn-modal" onclick="confirmImportModal()" disabled>Import Questions</button>
+                        </div>
+
+                        <!-- Import Options -->
+                        <label style="display: flex; align-items: center; gap: 10px; color: #888; cursor: pointer; margin-top: 10px; font-size: 0.9rem;">
+                            <input type="checkbox" id="import-replace-modal" style="width: 16px; height: 16px;">
+                            Replace existing questions
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Storage Info -->
@@ -1672,7 +1709,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 </div>
 
                 <!-- Sources List -->
-                <div id="sources-list" style="max-height: 400px; overflow-y: auto;">
+                <div id="sources-list" style="max-height: 300px; overflow-y: auto;">
                     <div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>
                 </div>
 
@@ -4413,6 +4450,129 @@ question,answer,choice1,choice2,choice3,choice4,correct
             if (event.target === event.currentTarget) {
                 closeSourcesModal();
             }
+        }
+
+        // Toggle import section visibility
+        function toggleImportSection() {
+            const section = document.getElementById('import-section');
+            const icon = document.getElementById('import-toggle-icon');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                icon.textContent = '−';
+            } else {
+                section.style.display = 'none';
+                icon.textContent = '+';
+            }
+        }
+
+        // Handle file select in modal
+        function handleFileSelectModal(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('import-textarea-modal').value = e.target.result;
+                parseImportDataModal();
+            };
+            reader.readAsText(file);
+        }
+
+        // Parse import data in modal
+        let parsedImportDataModal = [];
+        function parseImportDataModal() {
+            const text = document.getElementById('import-textarea-modal').value.trim();
+            if (!text) {
+                alert('Please enter or paste quiz data first.');
+                return;
+            }
+
+            // Try to parse using the same logic as the main import
+            const result = parseQuizData(text);
+            parsedImportDataModal = result.questions;
+
+            if (parsedImportDataModal.length === 0) {
+                alert('Could not parse any questions from the input.');
+                return;
+            }
+
+            // Show preview
+            document.getElementById('import-count-modal').textContent = parsedImportDataModal.length;
+            document.getElementById('import-format-modal').textContent = result.format;
+            document.getElementById('import-preview-modal').innerHTML = parsedImportDataModal.slice(0, 3).map(q =>
+                `<div style="margin-bottom: 5px;">Q: ${escapeHtml(q.question.substring(0, 60))}...</div>`
+            ).join('');
+            document.getElementById('import-preview-section-modal').style.display = 'block';
+            document.getElementById('import-confirm-btn-modal').disabled = false;
+        }
+
+        // Confirm import in modal
+        async function confirmImportModal() {
+            if (parsedImportDataModal.length === 0) {
+                alert('No questions to import.');
+                return;
+            }
+
+            const replaceMode = document.getElementById('import-replace-modal').checked;
+
+            // Check free limit for non-Pro users
+            if (!state.isPro && !replaceMode) {
+                const currentImported = state.importedQuestionCount || 0;
+                const newTotal = currentImported + parsedImportDataModal.length;
+                if (newTotal > FREE_IMPORT_LIMIT) {
+                    const remaining = FREE_IMPORT_LIMIT - currentImported;
+                    alert(`Free accounts can import up to ${FREE_IMPORT_LIMIT} questions. You have ${remaining} imports remaining.\n\nUpgrade to Pro for unlimited imports!`);
+                    showUpgradeModal();
+                    return;
+                }
+            }
+
+            // Save source material to API
+            const sourceContent = document.getElementById('import-textarea-modal').value;
+            const sourceName = 'Import ' + new Date().toLocaleString();
+            await saveSourceMaterial(sourceName, sourceContent, 'text', parsedImportDataModal.length);
+
+            const importCount = parsedImportDataModal.length;
+
+            if (replaceMode) {
+                // Replace all questions
+                questions.length = 0;
+                parsedImportDataModal.forEach((q, idx) => {
+                    q.id = idx + 1;
+                    questions.push(q);
+                });
+                // Reset progress since questions changed
+                state.mastered = [];
+                state.answerCounts = {};
+                state.totalCorrect = 0;
+                state.totalAnswered = 0;
+                state.importedQuestionCount = parsedImportDataModal.length;
+            } else {
+                // Add to existing questions
+                const startId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
+                parsedImportDataModal.forEach((q, idx) => {
+                    q.id = startId + idx;
+                    questions.push(q);
+                });
+                state.importedQuestionCount = (state.importedQuestionCount || 0) + parsedImportDataModal.length;
+            }
+
+            // Update UI and save immediately
+            updateStats();
+            saveState(true);
+
+            // Reset the form
+            document.getElementById('import-textarea-modal').value = '';
+            document.getElementById('import-preview-section-modal').style.display = 'none';
+            document.getElementById('import-confirm-btn-modal').disabled = true;
+            parsedImportDataModal = [];
+
+            // Collapse import section and reload sources
+            document.getElementById('import-section').style.display = 'none';
+            document.getElementById('import-toggle-icon').textContent = '+';
+            loadSources();
+
+            alert(`Successfully imported ${importCount} questions! They are now saved to your keyword "${currentKeyword}".${replaceMode ? ' Progress has been reset.' : ''}`);
         }
 
         async function loadSources() {
