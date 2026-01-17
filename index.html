@@ -4892,7 +4892,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('import-count-modal').textContent = parsedImportDataModal.length;
             document.getElementById('import-format-modal').textContent = result.format;
             document.getElementById('import-preview-modal').innerHTML = parsedImportDataModal.slice(0, 3).map(q =>
-                `<div style="margin-bottom: 5px;">Q: ${escapeHtml(q.question.substring(0, 60))}...</div>`
+                `<div style="margin-bottom: 5px;">Q: ${escapeHtml((q.q || q.question || '').substring(0, 60))}...</div>`
             ).join('');
             document.getElementById('import-preview-section-modal').style.display = 'block';
             document.getElementById('import-confirm-btn-modal').disabled = false;
