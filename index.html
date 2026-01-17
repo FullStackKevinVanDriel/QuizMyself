@@ -5310,13 +5310,7 @@
             document.body.style.overflow = '';
         }
 
-        async function startCheckout(plan) {
-            const priceId = STRIPE_PRICES[plan];
-            if (!priceId || priceId.includes('TODO')) {
-                alert('Payment is not yet configured. Please check back later or contact support.');
-                return;
-            }
-
+        function startCheckout(plan) {
             // Use logged-in user's email (user must be signed in to upgrade)
             const email = currentUser?.email;
             if (!email) {
@@ -5324,37 +5318,9 @@
                 return;
             }
 
-            try {
-                const baseUrl = window.location.origin + window.location.pathname;
-                const response = await fetch(`${VANDROMEDA_API}/payments/create-checkout.php`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        price_id: priceId,
-                        product: 'quizmyself',
-                        email: email,
-                        success_url: baseUrl + '?payment=success&session_id={CHECKOUT_SESSION_ID}',
-                        cancel_url: baseUrl + '?payment=cancelled',
-                        metadata: {
-                            product: 'quizmyself',
-                            tier: 'pro',
-                            max_domains: '3'
-                        }
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success && data.checkout_url) {
-                    // Redirect to Stripe Checkout
-                    window.location.href = data.checkout_url;
-                } else {
-                    showUpgradeError(data.error || 'Failed to create checkout session');
-                }
-            } catch (error) {
-                console.error('Checkout error:', error);
-                showUpgradeError('Network error. Please try again.');
-            }
+            // Redirect to checkout page (same pattern as Transit Route Planner)
+            const checkoutUrl = `https://www.vandromeda.com/checkout/quizmyself/?plan=${plan}&email=${encodeURIComponent(email)}`;
+            window.location.href = checkoutUrl;
         }
 
         async function activateLicense() {
