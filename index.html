@@ -45,6 +45,34 @@
             font-size: 0.95rem;
         }
 
+        .keyword-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #16213e;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .keyword-selector label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .keyword-selector select {
+            flex: 1;
+            padding: 8px 12px;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .keyword-selector select:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
         .stats-bar {
             display: flex;
             justify-content: space-around;
@@ -1378,9 +1406,6 @@
                         <div class="menu-value" id="menu-email">-</div>
                         <div class="menu-divider"></div>
                     </div>
-                    <div class="menu-label">Active Keyword</div>
-                    <div class="menu-value" id="menu-keyword">None selected</div>
-                    <button id="manage-keywords-btn" class="menu-link-btn" onclick="showKeywordManager()">Manage Keywords</button>
                     <div class="menu-divider"></div>
                     <div class="menu-label">Status</div>
                     <div class="menu-value" id="menu-license-status">Free Account</div>
@@ -1397,6 +1422,15 @@
             <h1>QuizMyself</h1>
             <p class="subtitle">Quiz Yourself on Anything</p>
         </header>
+
+        <!-- Keyword Selector -->
+        <div id="keyword-selector" class="keyword-selector" style="display: none;">
+            <label for="keyword-dropdown">Quiz:</label>
+            <select id="keyword-dropdown" onchange="onKeywordSelect(this.value)">
+                <option value="">Select a quiz...</option>
+            </select>
+            <button class="btn btn-small" onclick="showAddKeywordPrompt()" title="Create new quiz">+</button>
+        </div>
 
         <div id="stats-bar" class="stats-bar">
             <div class="stat">
@@ -2464,6 +2498,9 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         await selectKeyword(lastKeyword);
                     } else if (userKeywords.length > 0) {
                         await selectKeyword(userKeywords[0].keyword);
+                    } else {
+                        // No keywords yet - still show the keyword dropdown so user can create one
+                        updateKeywordDropdown();
                     }
 
                     updateHamburgerMenu();
@@ -2522,10 +2559,63 @@ question,answer,choice1,choice2,choice3,choice4,correct
             await loadState();
 
             // Update UI
-            document.getElementById('menu-keyword').textContent = keyword;
             document.getElementById('stats-bar').style.display = 'flex';
             updateStats();
             updateHamburgerMenu();
+            updateKeywordDropdown();
+        }
+
+        // Update keyword dropdown to reflect current selection
+        function updateKeywordDropdown() {
+            const dropdown = document.getElementById('keyword-dropdown');
+            const selector = document.getElementById('keyword-selector');
+
+            if (!currentUser) {
+                selector.style.display = 'none';
+                return;
+            }
+
+            // Show selector for logged-in users (even with no keywords, so they can create one)
+            selector.style.display = 'flex';
+
+            // Build options
+            if (userKeywords.length === 0) {
+                dropdown.innerHTML = '<option value="">No quizzes yet - click + to create</option>';
+                return;
+            }
+
+            dropdown.innerHTML = '<option value="">Select a quiz...</option>' +
+                userKeywords.map(kw => {
+                    const label = kw.display_name || kw.keyword;
+                    const info = kw.question_count ? ` (${kw.question_count} questions)` : '';
+                    return `<option value="${kw.keyword}" ${kw.keyword === currentKeyword ? 'selected' : ''}>${label}${info}</option>`;
+                }).join('');
+        }
+
+        // Handle keyword selection from dropdown
+        async function onKeywordSelect(keyword) {
+            if (!keyword) return;
+            await selectKeyword(keyword);
+        }
+
+        // Prompt to add new keyword
+        function showAddKeywordPrompt() {
+            const keyword = prompt('Enter a name for your new quiz (letters, numbers, dashes only):');
+            if (!keyword) return;
+
+            const sanitized = keyword.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+            if (sanitized.length < 3) {
+                alert('Quiz name must be at least 3 characters');
+                return;
+            }
+
+            addKeywordToAccount(sanitized).then(result => {
+                if (result.success) {
+                    alert('Quiz created! You can now import questions.');
+                } else {
+                    alert(result.error || 'Failed to create quiz');
+                }
+            });
         }
 
         async function addKeywordToAccount(keyword) {
@@ -2769,11 +2859,9 @@ question,answer,choice1,choice2,choice3,choice4,correct
         function updateHamburgerMenu() {
             const signinSection = document.getElementById('menu-signin-section');
             const accountSection = document.getElementById('menu-account-section');
-            const keywordEl = document.getElementById('menu-keyword');
             const emailSection = document.getElementById('menu-email-section');
             const emailEl = document.getElementById('menu-email');
             const licenseStatusEl = document.getElementById('menu-license-status');
-            const manageKeywordsBtn = document.getElementById('manage-keywords-btn');
             const upgradeBtn = document.getElementById('menu-upgrade-btn');
 
             // Check if user is signed in with Firebase or using keyword-only mode
@@ -2785,27 +2873,12 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 signinSection.style.display = 'none';
                 accountSection.style.display = 'block';
 
-                // Show keyword if set
-                if (hasKeyword) {
-                    keywordEl.textContent = currentKeyword;
-                } else {
-                    keywordEl.textContent = 'No keyword selected';
-                }
-
                 // Show email if Firebase user
                 if (isSignedInWithFirebase && currentUser.email) {
                     emailSection.style.display = 'block';
                     emailEl.textContent = currentUser.email;
-                    // Show manage keywords button for Firebase users
-                    if (manageKeywordsBtn) {
-                        manageKeywordsBtn.style.display = 'block';
-                    }
                 } else {
                     emailSection.style.display = 'none';
-                    // Hide manage keywords for keyword-only users
-                    if (manageKeywordsBtn) {
-                        manageKeywordsBtn.style.display = 'none';
-                    }
                 }
 
                 // Show license status and upgrade button
