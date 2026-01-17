@@ -2984,7 +2984,16 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
             // Read file content
             const content = await file.arrayBuffer();
-            const base64Content = btoa(String.fromCharCode(...new Uint8Array(content)));
+
+            // Convert ArrayBuffer to base64 (chunk-based to avoid stack overflow)
+            const bytes = new Uint8Array(content);
+            let binary = '';
+            const chunkSize = 8192;
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+                const chunk = bytes.subarray(i, i + chunkSize);
+                binary += String.fromCharCode.apply(null, chunk);
+            }
+            const base64Content = btoa(binary);
 
             // Detect content type
             const ext = file.name.split('.').pop().toLowerCase();
