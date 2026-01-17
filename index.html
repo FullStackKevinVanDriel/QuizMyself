@@ -1438,6 +1438,7 @@
             <button class="btn" onclick="showProgress()">View Progress</button>
             <button class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
             <button id="course-content-btn" class="btn" onclick="showCourseContent()" style="text-align: center;">View Study Material</button>
+            <a id="raw-content-link" href="course-content.html" class="btn hidden" style="text-align: center; text-decoration: none;">View Raw Source (138 Lessons)</a>
             <button class="btn btn-success btn-small" onclick="showImportModal()">Import Quiz Data</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
         </div>
@@ -2151,12 +2152,15 @@ question,answer,choice1,choice2,choice3,choice4,correct
         // Check if user is the owner and switch question sets
         function updateQuestionSet(email) {
             const isOwner = email && email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+            const rawLink = document.getElementById('raw-content-link');
             if (isOwner) {
                 questions.length = 0;
                 wguQuestions.forEach(q => questions.push(q));
+                if (rawLink) rawLink.classList.remove('hidden');
             } else {
                 questions.length = 0;
                 demoQuestions.forEach(q => questions.push(q));
+                if (rawLink) rawLink.classList.add('hidden');
             }
             // Reset progress when switching question sets
             state.mastered = [];
