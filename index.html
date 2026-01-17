@@ -3571,7 +3571,16 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Show course content (study material from quiz questions)
         function showCourseContent() {
-            // Initialize course content category filter
+            // Check if current keyword has a linked source - show that instead
+            const keywordInfo = userKeywords.find(kw => kw.keyword === currentKeyword);
+            if (keywordInfo && keywordInfo.source_id) {
+                // Show the linked source in the format-aware viewer
+                openDataModal();
+                viewSourceContent(keywordInfo.source_id, keywordInfo.source_name || 'Study Material', keywordInfo.source_content_type || 'text/plain');
+                return;
+            }
+
+            // Fall back to Q&A formatted content
             renderCourseCategoryChips();
             renderCourseContent();
             showScreen('course-content-screen');
