@@ -5114,7 +5114,20 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 console.log('[DEBUG viewSourceContent] using actualContentType:', actualContentType);
 
                 if (actualContentType.includes('pdf')) {
-                    await renderPDF(data.content, data.isBase64);
+                    // Simple approach: create blob and open in iframe
+                    const binary = atob(data.content);
+                    const bytes = new Uint8Array(binary.length);
+                    for (let i = 0; i < binary.length; i++) {
+                        bytes[i] = binary.charCodeAt(i);
+                    }
+                    const blob = new Blob([bytes], { type: 'application/pdf' });
+                    const url = URL.createObjectURL(blob);
+
+                    // Use iframe to display PDF
+                    const container = document.getElementById('source-viewer-pdf');
+                    container.innerHTML = `<iframe src="${url}" style="width:100%; height:70vh; border:none;"></iframe>`;
+                    container.style.display = 'block';
+                    return;
                 } else if (actualContentType.includes('html')) {
                     await renderHTML(data.content, data.isBase64, data.isCompressed);
                 } else {
