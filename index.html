@@ -5435,15 +5435,18 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     headers['Authorization'] = `Bearer ${token}`;
                 }
 
-                // Try to compress content
+                // Try to compress content (skip for binary types like PDF which are already compressed)
                 let storedContent = content;
                 let storedType = contentType;
-                const compressed = await compressContent(content);
-                if (compressed && compressed.length < content.length * 0.9) {
-                    // Only use compression if it saves at least 10%
-                    storedContent = compressed;
-                    storedType = contentType + '+gzip';
-                    console.log(`Compressed ${content.length} -> ${compressed.length} bytes (${Math.round(compressed.length/content.length*100)}%)`);
+                const isBinary = contentType.includes('pdf') || contentType.includes('image/');
+                if (!isBinary) {
+                    const compressed = await compressContent(content);
+                    if (compressed && compressed.length < content.length * 0.9) {
+                        // Only use compression if it saves at least 10%
+                        storedContent = compressed;
+                        storedType = contentType + '+gzip';
+                        console.log(`Compressed ${content.length} -> ${compressed.length} bytes (${Math.round(compressed.length/content.length*100)}%)`);
+                    }
                 }
 
                 const response = await fetch(url, {
