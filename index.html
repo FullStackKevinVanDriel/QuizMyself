@@ -2908,6 +2908,21 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     state.totalCorrect = data.totalCorrect || 0;
                     state.totalAnswered = data.totalAnswered || 0;
 
+                    // Load custom questions for this keyword
+                    const customQuestions = data.customQuestions || [];
+                    if (customQuestions.length > 0) {
+                        // Replace questions array with custom questions
+                        questions.length = 0;
+                        customQuestions.forEach(q => questions.push(q));
+                        state.importedQuestionCount = customQuestions.length;
+                        console.log(`Loaded ${customQuestions.length} custom questions for keyword: ${currentKeyword}`);
+                    } else {
+                        // No custom questions - use demo questions
+                        questions.length = 0;
+                        demoQuestions.forEach(q => questions.push(q));
+                        state.importedQuestionCount = 0;
+                    }
+
                     // Restore exam progress if exists
                     if (data.examInProgress && data.examQuestionIds && data.examQuestionIds.length > 0) {
                         // Rebuild examQuestions from IDs
@@ -2944,10 +2959,11 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Save state to server
         let saveTimeout = null;
-        function saveState() {
+        function saveState(immediate = false) {
             if (!currentKeyword) return;
             clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(async () => {
+
+            const doSave = async () => {
                 try {
                     const payload = {
                         mastered: state.mastered,
@@ -2955,6 +2971,12 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         totalCorrect: state.totalCorrect,
                         totalAnswered: state.totalAnswered
                     };
+
+                    // Save custom questions if we have imported ones
+                    if (state.importedQuestionCount > 0) {
+                        payload.customQuestions = questions;
+                    }
+
                     // Save exam progress if in exam mode
                     if (state.currentMode === 'exam' && state.examQuestions.length > 0) {
                         payload.examInProgress = true;
@@ -2972,7 +2994,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 } catch (e) {
                     console.log('Could not save to server');
                 }
-            }, 500);
+            };
+
+            if (immediate) {
+                doSave();
+            } else {
+                saveTimeout = setTimeout(doSave, 500);
+            }
         }
 
         // Update stats display
@@ -4276,12 +4304,12 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 state.importedQuestionCount = (state.importedQuestionCount || 0) + parsedImportData.length;
             }
 
-            // Update UI
+            // Update UI and save immediately (not debounced)
             updateStats();
-            saveState();
+            saveState(true);
             closeImportModal();
 
-            alert(`Successfully imported ${parsedImportData.length} questions!${replaceMode ? ' Progress has been reset.' : ''}`);
+            alert(`Successfully imported ${parsedImportData.length} questions! They are now saved to your keyword "${currentKeyword}".${replaceMode ? ' Progress has been reset.' : ''}`);
         }
 
         // ========== SOURCE MATERIAL VIEWER ==========
