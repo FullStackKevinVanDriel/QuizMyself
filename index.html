@@ -1430,7 +1430,7 @@
             <select id="keyword-dropdown" onchange="onKeywordSelect(this.value)">
                 <option value="">Select a quiz...</option>
             </select>
-            <button class="btn btn-small" onclick="showAddKeywordPrompt()" title="Create new quiz">+</button>
+            <button class="btn btn-small" onclick="showCreateQuizModal()" title="Create new quiz">+</button>
         </div>
 
         <div id="stats-bar" class="stats-bar">
@@ -1717,9 +1717,34 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 <div id="source-content-view" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3 id="source-content-title" style="margin: 0; color: #ffd700;"></h3>
-                        <button class="btn btn-small" onclick="hideSourceContent()">Back to List</button>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span id="source-content-type-badge" style="background: #0f3460; color: #4fc3f7; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem;"></span>
+                            <button class="btn btn-small" onclick="hideSourceContent()">Back to List</button>
+                        </div>
                     </div>
-                    <pre id="source-content-text" style="background: #1a1a1a; padding: 15px; border-radius: 8px; max-height: 350px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 13px; line-height: 1.5;"></pre>
+
+                    <!-- Text/JSON/CSV Viewer -->
+                    <pre id="source-viewer-text" style="display: none; background: #1a1a1a; padding: 15px; border-radius: 8px; max-height: 350px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 13px; line-height: 1.5;"></pre>
+
+                    <!-- HTML Viewer (sandboxed iframe) -->
+                    <iframe id="source-viewer-html" style="display: none; width: 100%; height: 350px; border: none; border-radius: 8px; background: #fff;" sandbox="allow-same-origin"></iframe>
+
+                    <!-- PDF Viewer -->
+                    <div id="source-viewer-pdf" style="display: none;">
+                        <div id="pdf-controls" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 10px; padding: 10px; background: #2a2a2a; border-radius: 8px;">
+                            <button class="btn btn-small" onclick="pdfPrevPage()" id="pdf-prev-btn">Previous</button>
+                            <span id="pdf-page-info" style="color: #ccc;">Page 1 of 1</span>
+                            <button class="btn btn-small" onclick="pdfNextPage()" id="pdf-next-btn">Next</button>
+                        </div>
+                        <div style="background: #2a2a2a; border-radius: 8px; padding: 15px; max-height: 400px; overflow: auto; text-align: center;">
+                            <canvas id="pdf-canvas" style="max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Loading/Error state -->
+                    <div id="source-viewer-loading" style="display: none; text-align: center; padding: 40px; color: #888;">
+                        <div style="font-size: 24px; margin-bottom: 10px;">Loading...</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1875,6 +1900,94 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 </div>
 
                 <div id="keyword-modal-message" style="margin-top: 15px; display: none; padding: 10px; border-radius: 5px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Quiz Modal -->
+    <div id="create-quiz-modal" class="modal-overlay hidden" onclick="closeCreateQuizModalOnOverlay(event)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 550px;">
+            <div class="modal-header">
+                <h2>Create New Quiz</h2>
+                <button class="modal-close" onclick="closeCreateQuizModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Quiz Name -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: #ccc; margin-bottom: 8px; font-size: 0.9rem;">Quiz Name</label>
+                    <input type="text" id="create-quiz-name" placeholder="my-quiz-name"
+                        style="width: 100%; padding: 12px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white; font-size: 1rem; box-sizing: border-box;">
+                    <div style="color: #888; font-size: 0.8rem; margin-top: 5px;">Letters, numbers, and dashes only (3-50 characters)</div>
+                </div>
+
+                <!-- Source Selection -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: #ccc; margin-bottom: 8px; font-size: 0.9rem;">Study Material (Optional)</label>
+
+                    <!-- Source Options -->
+                    <div id="create-quiz-source-options" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- No Source Option -->
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #2a2a2a; border-radius: 8px; cursor: pointer; border: 2px solid transparent;" class="source-option" data-option="none">
+                            <input type="radio" name="source-option" value="none" checked style="width: 18px; height: 18px;">
+                            <div>
+                                <div style="color: #fff;">Skip for now</div>
+                                <div style="color: #888; font-size: 0.85rem;">Create quiz without study material</div>
+                            </div>
+                        </label>
+
+                        <!-- Upload New Source -->
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #2a2a2a; border-radius: 8px; cursor: pointer; border: 2px solid transparent;" class="source-option" data-option="upload">
+                            <input type="radio" name="source-option" value="upload" style="width: 18px; height: 18px;">
+                            <div style="flex: 1;">
+                                <div style="color: #fff;">Upload new file</div>
+                                <div style="color: #888; font-size: 0.85rem;">PDF, HTML, or text file</div>
+                            </div>
+                        </label>
+
+                        <!-- Select Existing Source -->
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #2a2a2a; border-radius: 8px; cursor: pointer; border: 2px solid transparent;" class="source-option" data-option="existing">
+                            <input type="radio" name="source-option" value="existing" style="width: 18px; height: 18px;">
+                            <div style="flex: 1;">
+                                <div style="color: #fff;">Use existing source</div>
+                                <div style="color: #888; font-size: 0.85rem;" id="existing-source-count">Loading...</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Upload Section (hidden by default) -->
+                    <div id="create-quiz-upload-section" style="display: none; margin-top: 15px; padding: 15px; background: #1a1a2e; border-radius: 8px;">
+                        <div id="create-quiz-drop-zone" onclick="document.getElementById('create-quiz-file-input').click()"
+                            style="padding: 30px; border: 2px dashed #444; border-radius: 8px; text-align: center; cursor: pointer;">
+                            <div style="font-size: 32px; margin-bottom: 10px;">📁</div>
+                            <div style="color: #ccc;">Drop a file here or click to browse</div>
+                            <div style="color: #888; font-size: 0.85rem; margin-top: 5px;">PDF, HTML, TXT (max 5MB)</div>
+                            <input type="file" id="create-quiz-file-input" accept=".pdf,.html,.htm,.txt,.json,.csv" style="display: none;">
+                        </div>
+                        <div id="create-quiz-file-info" style="display: none; margin-top: 10px; padding: 10px; background: #0f3460; border-radius: 6px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span id="create-quiz-file-name" style="color: #4fc3f7;"></span>
+                                <button onclick="clearSelectedFile()" style="background: none; border: none; color: #888; cursor: pointer; font-size: 18px;">&times;</button>
+                            </div>
+                            <div id="create-quiz-file-size" style="color: #888; font-size: 0.85rem;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Existing Sources Picker (hidden by default) -->
+                    <div id="create-quiz-existing-section" style="display: none; margin-top: 15px;">
+                        <div id="create-quiz-sources-list" style="max-height: 200px; overflow-y: auto; background: #1a1a2e; border-radius: 8px; padding: 10px;">
+                            Loading sources...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="create-quiz-error" style="display: none; color: #e94560; margin-bottom: 15px; padding: 10px; background: rgba(233,69,96,0.1); border-radius: 6px;"></div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="closeCreateQuizModal()" style="flex: 1;">Cancel</button>
+                    <button class="btn btn-primary" onclick="createQuizWithSource()" id="create-quiz-submit" style="flex: 1;">Create Quiz</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2648,38 +2761,277 @@ question,answer,choice1,choice2,choice3,choice4,correct
             await selectKeyword(keyword);
         }
 
-        // Prompt to add new keyword
-        function showAddKeywordPrompt() {
-            const keyword = prompt('Enter a name for your new quiz (letters, numbers, dashes only):');
-            if (!keyword) return;
+        // ========== CREATE QUIZ MODAL ==========
 
-            const sanitized = keyword.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
-            if (sanitized.length < 3) {
-                alert('Quiz name must be at least 3 characters');
+        let createQuizUnlinkedSources = [];
+        let createQuizSelectedFile = null;
+        let createQuizSelectedSourceId = null;
+
+        function showCreateQuizModal() {
+            if (!currentUser) {
+                alert('Please sign in to create a quiz');
                 return;
             }
 
-            addKeywordToAccount(sanitized).then(result => {
-                if (result.success) {
-                    alert('Quiz created! You can now import questions.');
-                } else {
-                    alert(result.error || 'Failed to create quiz');
-                }
+            // Reset modal state
+            document.getElementById('create-quiz-name').value = '';
+            document.getElementById('create-quiz-error').style.display = 'none';
+            document.querySelector('input[name="source-option"][value="none"]').checked = true;
+            document.getElementById('create-quiz-upload-section').style.display = 'none';
+            document.getElementById('create-quiz-existing-section').style.display = 'none';
+            document.getElementById('create-quiz-file-info').style.display = 'none';
+            createQuizSelectedFile = null;
+            createQuizSelectedSourceId = null;
+
+            // Load unlinked sources
+            loadSourcesForPicker();
+
+            // Setup source option handlers
+            document.querySelectorAll('input[name="source-option"]').forEach(radio => {
+                radio.onchange = handleSourceOptionChange;
             });
+
+            // Setup file input handler
+            document.getElementById('create-quiz-file-input').onchange = handleCreateQuizFileSelect;
+
+            // Setup drag and drop
+            const dropZone = document.getElementById('create-quiz-drop-zone');
+            dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = '#4fc3f7'; };
+            dropZone.ondragleave = () => { dropZone.style.borderColor = '#444'; };
+            dropZone.ondrop = handleCreateQuizFileDrop;
+
+            document.getElementById('create-quiz-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('create-quiz-name').focus();
         }
 
-        async function addKeywordToAccount(keyword) {
+        function closeCreateQuizModal() {
+            document.getElementById('create-quiz-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeCreateQuizModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeCreateQuizModal();
+            }
+        }
+
+        async function loadSourcesForPicker() {
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/source.php`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error);
+
+                // Filter to unlinked sources only
+                createQuizUnlinkedSources = data.sources.filter(s => !s.linkedKeyword);
+
+                // Update count display
+                const countEl = document.getElementById('existing-source-count');
+                if (createQuizUnlinkedSources.length === 0) {
+                    countEl.textContent = 'No unlinked sources available';
+                } else {
+                    countEl.textContent = `${createQuizUnlinkedSources.length} source${createQuizUnlinkedSources.length > 1 ? 's' : ''} available`;
+                }
+
+                // Render sources list
+                renderSourcesPicker();
+            } catch (err) {
+                console.error('Failed to load sources:', err);
+                document.getElementById('existing-source-count').textContent = 'Failed to load';
+            }
+        }
+
+        function renderSourcesPicker() {
+            const listEl = document.getElementById('create-quiz-sources-list');
+
+            if (createQuizUnlinkedSources.length === 0) {
+                listEl.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;">No unlinked sources. Upload a new file instead.</div>';
+                return;
+            }
+
+            listEl.innerHTML = createQuizUnlinkedSources.map(source => `
+                <label style="display: flex; align-items: center; gap: 10px; padding: 10px; background: ${createQuizSelectedSourceId === source.id ? '#0f3460' : '#2a2a2a'}; border-radius: 6px; margin-bottom: 8px; cursor: pointer; border: 2px solid ${createQuizSelectedSourceId === source.id ? '#4fc3f7' : 'transparent'};">
+                    <input type="radio" name="existing-source" value="${source.id}" ${createQuizSelectedSourceId === source.id ? 'checked' : ''} onchange="selectExistingSource(${source.id})" style="width: 16px; height: 16px;">
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(source.name)}</div>
+                        <div style="color: #888; font-size: 0.8rem;">${getContentTypeIcon(source.contentType)} ${formatBytes(source.sizeBytes)} - ${formatDate(source.createdAt)}</div>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function selectExistingSource(sourceId) {
+            createQuizSelectedSourceId = sourceId;
+            renderSourcesPicker();
+        }
+
+        function handleSourceOptionChange(e) {
+            const value = e.target.value;
+            document.getElementById('create-quiz-upload-section').style.display = value === 'upload' ? 'block' : 'none';
+            document.getElementById('create-quiz-existing-section').style.display = value === 'existing' ? 'block' : 'none';
+
+            // Clear selections when switching options
+            if (value !== 'upload') {
+                createQuizSelectedFile = null;
+                document.getElementById('create-quiz-file-info').style.display = 'none';
+            }
+            if (value !== 'existing') {
+                createQuizSelectedSourceId = null;
+                renderSourcesPicker();
+            }
+        }
+
+        function handleCreateQuizFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) setSelectedFile(file);
+        }
+
+        function handleCreateQuizFileDrop(e) {
+            e.preventDefault();
+            document.getElementById('create-quiz-drop-zone').style.borderColor = '#444';
+            const file = e.dataTransfer.files[0];
+            if (file) setSelectedFile(file);
+        }
+
+        function setSelectedFile(file) {
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                showCreateQuizError('File too large (max 5MB)');
+                return;
+            }
+
+            createQuizSelectedFile = file;
+            document.getElementById('create-quiz-file-name').textContent = file.name;
+            document.getElementById('create-quiz-file-size').textContent = formatBytes(file.size);
+            document.getElementById('create-quiz-file-info').style.display = 'block';
+        }
+
+        function clearSelectedFile() {
+            createQuizSelectedFile = null;
+            document.getElementById('create-quiz-file-info').style.display = 'none';
+            document.getElementById('create-quiz-file-input').value = '';
+        }
+
+        function showCreateQuizError(msg) {
+            const el = document.getElementById('create-quiz-error');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function getContentTypeIcon(contentType) {
+            if (contentType.includes('pdf')) return '📕';
+            if (contentType.includes('html')) return '🌐';
+            if (contentType.includes('json')) return '📋';
+            if (contentType.includes('csv')) return '📊';
+            return '📄';
+        }
+
+        async function createQuizWithSource() {
+            const quizName = document.getElementById('create-quiz-name').value.trim();
+            const sanitized = quizName.toLowerCase().replace(/[^a-z0-9-]/g, '');
+
+            // Validate quiz name
+            if (sanitized.length < 3) {
+                showCreateQuizError('Quiz name must be at least 3 characters');
+                return;
+            }
+            if (sanitized.length > 50) {
+                showCreateQuizError('Quiz name must be 50 characters or less');
+                return;
+            }
+
+            const selectedOption = document.querySelector('input[name="source-option"]:checked').value;
+            let sourceId = null;
+
+            document.getElementById('create-quiz-submit').disabled = true;
+            document.getElementById('create-quiz-submit').textContent = 'Creating...';
+
+            try {
+                // Handle file upload if selected
+                if (selectedOption === 'upload' && createQuizSelectedFile) {
+                    sourceId = await uploadNewSource(createQuizSelectedFile);
+                    if (!sourceId) {
+                        throw new Error('Failed to upload source file');
+                    }
+                } else if (selectedOption === 'existing' && createQuizSelectedSourceId) {
+                    sourceId = createQuizSelectedSourceId;
+                }
+
+                // Create the quiz with optional source link
+                const result = await addKeywordToAccount(sanitized, sourceId);
+
+                if (result.success) {
+                    closeCreateQuizModal();
+                    alert('Quiz created!' + (sourceId ? ' Source material has been linked.' : ''));
+                } else {
+                    throw new Error(result.error || result.message || 'Failed to create quiz');
+                }
+            } catch (err) {
+                showCreateQuizError(err.message);
+            } finally {
+                document.getElementById('create-quiz-submit').disabled = false;
+                document.getElementById('create-quiz-submit').textContent = 'Create Quiz';
+            }
+        }
+
+        async function uploadNewSource(file) {
+            const token = await currentUser.getIdToken();
+
+            // Read file content
+            const content = await file.arrayBuffer();
+            const base64Content = btoa(String.fromCharCode(...new Uint8Array(content)));
+
+            // Detect content type
+            const ext = file.name.split('.').pop().toLowerCase();
+            let contentType = 'text/plain';
+            if (ext === 'pdf') contentType = 'application/pdf';
+            else if (ext === 'html' || ext === 'htm') contentType = 'text/html';
+            else if (ext === 'json') contentType = 'application/json';
+            else if (ext === 'csv') contentType = 'text/csv';
+
+            const response = await fetch(`${VANDROMEDA_API}/quizmyself/source.php`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: file.name,
+                    originalFilename: file.name,
+                    content: base64Content,
+                    contentType: contentType,
+                    isBase64: true
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Upload failed');
+            }
+
+            return data.id;
+        }
+
+        async function addKeywordToAccount(keyword, sourceId = null) {
             if (!currentUser) return { success: false, error: 'Not signed in' };
 
             try {
                 const token = await getAuthToken();
+                const payload = { keyword };
+                if (sourceId) payload.sourceId = sourceId;
+
                 const response = await fetch(`${VANDROMEDA_API}/quizmyself/add-keyword.php`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ keyword })
+                    body: JSON.stringify(payload)
                 });
 
                 const data = await response.json();
@@ -4612,8 +4964,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>';
 
             try {
-                // Load ALL sources across all keywords for this user
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?all=1`;
+                // Load ALL sources for this user (new user-level API)
+                const url = `${VANDROMEDA_API}/quizmyself/source.php`;
                 const token = await currentUser.getIdToken();
                 const headers = { 'Authorization': `Bearer ${token}` };
 
@@ -4636,8 +4988,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     listEl.innerHTML = `
                         <div style="text-align: center; padding: 40px; color: #888;">
                             <div style="font-size: 48px; margin-bottom: 15px;">📭</div>
-                            <p>No imported sources yet.</p>
-                            <p style="font-size: 0.9rem;">Import quiz data to see your sources here.</p>
+                            <p>No source materials yet.</p>
+                            <p style="font-size: 0.9rem;">Create a quiz and upload study material to see it here.</p>
                         </div>
                     `;
                     return;
@@ -4645,16 +4997,24 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                 listEl.innerHTML = data.sources.map(source => `
                     <div class="source-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #2a2a2a; border-radius: 8px; margin-bottom: 10px;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: bold; color: #fff; margin-bottom: 5px;">${escapeHtml(source.name)}</div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+                                <span style="font-weight: bold; color: #fff;">${getContentTypeIcon(source.contentType)} ${escapeHtml(source.name)}</span>
+                                ${source.linkedKeyword ? `<span style="background: #0f3460; color: #4fc3f7; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem;">Linked</span>` : ''}
+                            </div>
                             <div style="font-size: 0.85rem; color: #888;">
-                                <span style="color: #4fc3f7;">${escapeHtml(source.keywordDisplay || source.keyword)}</span> |
-                                ${source.questionCount} questions | ${formatBytes(source.sizeBytes)} | ${formatDate(source.importedAt)}
+                                ${source.linkedKeyword ?
+                                    `<span style="color: #4fc3f7;">${escapeHtml(source.linkedKeywordDisplay || source.linkedKeyword)}</span> | ` :
+                                    '<span style="color: #666;">Unlinked</span> | '
+                                }
+                                ${formatBytes(source.sizeBytes)} | ${formatDate(source.createdAt)}
                             </div>
                         </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}', '${escapeHtml(source.keyword)}')">View</button>
-                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}', '${escapeHtml(source.keyword)}')">Delete</button>
+                        <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                            ${!source.linkedKeyword && currentKeyword ? `<button class="btn btn-small btn-success" onclick="linkSourceToCurrentQuiz(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Link</button>` : ''}
+                            ${source.linkedKeyword ? `<button class="btn btn-small" style="background: #555;" onclick="unlinkSourceFromQuiz('${escapeHtml(source.linkedKeyword)}')">Unlink</button>` : ''}
+                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}', '${escapeHtml(source.contentType || 'text/plain')}')">View</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Delete</button>
                         </div>
                     </div>
                 `).join('');
@@ -4670,19 +5030,54 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         }
 
-        async function viewSourceContent(id, name, keyword) {
+        // ========== FORMAT-AWARE SOURCE VIEWER ==========
+
+        let pdfDoc = null;
+        let pdfCurrentPage = 1;
+        let pdfTotalPages = 0;
+
+        // Load PDF.js from CDN
+        let pdfjsLoaded = false;
+        async function loadPDFJS() {
+            if (pdfjsLoaded) return;
+
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                script.onload = () => {
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                    pdfjsLoaded = true;
+                    resolve();
+                };
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        async function viewSourceContent(id, name, contentType) {
+            // Hide all viewers first
+            document.getElementById('source-viewer-text').style.display = 'none';
+            document.getElementById('source-viewer-html').style.display = 'none';
+            document.getElementById('source-viewer-pdf').style.display = 'none';
+            document.getElementById('source-viewer-loading').style.display = 'block';
+
             document.getElementById('sources-list').style.display = 'none';
             document.getElementById('source-content-view').style.display = 'block';
             document.getElementById('source-content-title').textContent = name;
-            document.getElementById('source-content-text').textContent = 'Loading...';
+
+            // Set content type badge
+            const badge = document.getElementById('source-content-type-badge');
+            if (contentType.includes('pdf')) badge.textContent = 'PDF';
+            else if (contentType.includes('html')) badge.textContent = 'HTML';
+            else if (contentType.includes('json')) badge.textContent = 'JSON';
+            else if (contentType.includes('csv')) badge.textContent = 'CSV';
+            else badge.textContent = 'Text';
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(keyword)}&id=${id}`;
-                const headers = {};
-                if (currentUser) {
-                    const token = await currentUser.getIdToken();
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
+                // Use new API endpoint (user-level sources)
+                const url = `${VANDROMEDA_API}/quizmyself/source.php?id=${id}`;
+                const token = await currentUser.getIdToken();
+                const headers = { 'Authorization': `Bearer ${token}` };
 
                 const response = await fetch(url, { headers });
                 const data = await response.json();
@@ -4691,43 +5086,208 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     throw new Error(data.error || 'Failed to load source');
                 }
 
-                let content = data.content || '(No content)';
+                document.getElementById('source-viewer-loading').style.display = 'none';
 
-                // Decompress if content was stored compressed
-                if (data.contentType && data.contentType.includes('+gzip')) {
-                    document.getElementById('source-content-text').textContent = 'Decompressing...';
-                    const decompressed = await decompressContent(content);
-                    if (decompressed) {
-                        content = decompressed;
-                    } else {
-                        content = '(Failed to decompress content)';
-                    }
+                // Route to appropriate viewer based on content type
+                const actualContentType = data.contentType || contentType || 'text/plain';
+
+                if (actualContentType.includes('pdf')) {
+                    await renderPDF(data.content, data.isBase64);
+                } else if (actualContentType.includes('html')) {
+                    renderHTML(data.content, data.isBase64);
+                } else {
+                    renderText(data.content, data.isCompressed);
                 }
 
-                document.getElementById('source-content-text').textContent = content;
+            } catch (err) {
+                document.getElementById('source-viewer-loading').style.display = 'none';
+                document.getElementById('source-viewer-text').style.display = 'block';
+                document.getElementById('source-viewer-text').textContent = `Error: ${err.message}`;
+            }
+        }
+
+        async function renderPDF(content, isBase64) {
+            try {
+                await loadPDFJS();
+
+                // Decode base64 to bytes
+                let bytes;
+                if (isBase64) {
+                    const binary = atob(content);
+                    bytes = new Uint8Array(binary.length);
+                    for (let i = 0; i < binary.length; i++) {
+                        bytes[i] = binary.charCodeAt(i);
+                    }
+                } else {
+                    const encoder = new TextEncoder();
+                    bytes = encoder.encode(content);
+                }
+
+                // Load PDF
+                pdfDoc = await pdfjsLib.getDocument({ data: bytes }).promise;
+                pdfTotalPages = pdfDoc.numPages;
+                pdfCurrentPage = 1;
+
+                document.getElementById('source-viewer-pdf').style.display = 'block';
+                updatePdfPageInfo();
+                await renderPdfPage(pdfCurrentPage);
 
             } catch (err) {
-                document.getElementById('source-content-text').textContent = `Error: ${err.message}`;
+                console.error('PDF render error:', err);
+                document.getElementById('source-viewer-text').style.display = 'block';
+                document.getElementById('source-viewer-text').textContent = `Failed to render PDF: ${err.message}`;
             }
+        }
+
+        async function renderPdfPage(pageNum) {
+            const page = await pdfDoc.getPage(pageNum);
+            const canvas = document.getElementById('pdf-canvas');
+            const ctx = canvas.getContext('2d');
+
+            const viewport = page.getViewport({ scale: 1.5 });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            await page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            }).promise;
+        }
+
+        function updatePdfPageInfo() {
+            document.getElementById('pdf-page-info').textContent = `Page ${pdfCurrentPage} of ${pdfTotalPages}`;
+            document.getElementById('pdf-prev-btn').disabled = pdfCurrentPage <= 1;
+            document.getElementById('pdf-next-btn').disabled = pdfCurrentPage >= pdfTotalPages;
+        }
+
+        async function pdfPrevPage() {
+            if (pdfCurrentPage > 1) {
+                pdfCurrentPage--;
+                updatePdfPageInfo();
+                await renderPdfPage(pdfCurrentPage);
+            }
+        }
+
+        async function pdfNextPage() {
+            if (pdfCurrentPage < pdfTotalPages) {
+                pdfCurrentPage++;
+                updatePdfPageInfo();
+                await renderPdfPage(pdfCurrentPage);
+            }
+        }
+
+        function renderHTML(content, isBase64) {
+            let htmlContent = content;
+            if (isBase64) {
+                const binary = atob(content);
+                htmlContent = new TextDecoder().decode(new Uint8Array([...binary].map(c => c.charCodeAt(0))));
+            }
+
+            const iframe = document.getElementById('source-viewer-html');
+            iframe.style.display = 'block';
+            iframe.srcdoc = htmlContent;
+        }
+
+        async function renderText(content, isCompressed) {
+            let textContent = content;
+
+            // Decompress if needed
+            if (isCompressed) {
+                const decompressed = await decompressContent(content);
+                if (decompressed) {
+                    textContent = decompressed;
+                } else {
+                    textContent = '(Failed to decompress content)';
+                }
+            }
+
+            document.getElementById('source-viewer-text').style.display = 'block';
+            document.getElementById('source-viewer-text').textContent = textContent || '(No content)';
         }
 
         function hideSourceContent() {
             document.getElementById('source-content-view').style.display = 'none';
             document.getElementById('sources-list').style.display = 'block';
+
+            // Clean up PDF state
+            pdfDoc = null;
+            pdfCurrentPage = 1;
+            pdfTotalPages = 0;
         }
 
-        async function deleteSource(id, name, keyword) {
-            if (!confirm(`Delete "${name}"? This cannot be undone.`)) {
+        async function linkSourceToCurrentQuiz(sourceId, sourceName) {
+            if (!currentKeyword) {
+                alert('Please select a quiz first');
+                return;
+            }
+
+            if (!confirm(`Link "${sourceName}" to quiz "${currentKeyword}"?`)) {
                 return;
             }
 
             try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(keyword)}&id=${id}`;
-                const headers = {};
-                if (currentUser) {
-                    const token = await currentUser.getIdToken();
-                    headers['Authorization'] = `Bearer ${token}`;
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/link-source.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sourceId: sourceId,
+                        keyword: currentKeyword
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || data.message || 'Failed to link source');
                 }
+
+                alert('Source linked to quiz successfully!');
+                loadSources(); // Refresh the list
+
+            } catch (err) {
+                alert(`Failed to link: ${err.message}`);
+            }
+        }
+
+        async function unlinkSourceFromQuiz(keyword) {
+            if (!confirm(`Unlink source from quiz "${keyword}"?`)) {
+                return;
+            }
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/link-source.php?keyword=${encodeURIComponent(keyword)}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to unlink source');
+                }
+
+                alert('Source unlinked from quiz');
+                loadSources(); // Refresh the list
+
+            } catch (err) {
+                alert(`Failed to unlink: ${err.message}`);
+            }
+        }
+
+        async function deleteSource(id, name) {
+            if (!confirm(`Delete "${name}"? This will also unlink it from any quiz. This cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                const url = `${VANDROMEDA_API}/quizmyself/source.php?id=${id}`;
+                const token = await currentUser.getIdToken();
+                const headers = { 'Authorization': `Bearer ${token}` };
 
                 const response = await fetch(url, { method: 'DELETE', headers });
                 const data = await response.json();
