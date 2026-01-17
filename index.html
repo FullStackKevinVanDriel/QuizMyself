@@ -3031,16 +3031,18 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     state.totalCorrect = data.totalCorrect || 0;
                     state.totalAnswered = data.totalAnswered || 0;
 
-                    // Load custom questions for this keyword (if any exist)
+                    // Load custom questions for this keyword
                     const customQuestions = data.customQuestions || [];
+                    questions.length = 0; // Clear existing questions
                     if (customQuestions.length > 0) {
-                        // Replace questions array with custom questions from DB
-                        questions.length = 0;
                         customQuestions.forEach(q => questions.push(q));
                         state.importedQuestionCount = customQuestions.length;
                         console.log(`Loaded ${customQuestions.length} custom questions for keyword: ${currentKeyword}`);
+                    } else {
+                        // No questions for this keyword yet
+                        state.importedQuestionCount = 0;
+                        console.log(`No custom questions for keyword: ${currentKeyword}`);
                     }
-                    // If no custom questions, leave questions array as-is (could be wguQuestions or demoQuestions)
 
                     // Restore exam progress if exists
                     if (data.examInProgress && data.examQuestionIds && data.examQuestionIds.length > 0) {
