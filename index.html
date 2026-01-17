@@ -4546,13 +4546,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             reader.readAsText(file);
         }
 
-        function parseImportData() {
-            const text = document.getElementById('import-textarea').value.trim();
-            if (!text) {
-                alert('Please enter or paste some data to import.');
-                return;
-            }
-
+        // Parse quiz data from text (used by both import screens)
+        function parseQuizData(text) {
             let result = { questions: [], format: 'Unknown' };
 
             // Try JSON first
@@ -4573,6 +4568,17 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 result = tryParseFlashcards(text);
             }
 
+            return result;
+        }
+
+        function parseImportData() {
+            const text = document.getElementById('import-textarea').value.trim();
+            if (!text) {
+                alert('Please enter or paste some data to import.');
+                return;
+            }
+
+            const result = parseQuizData(text);
             parsedImportData = result.questions;
             showImportPreview(result);
         }
