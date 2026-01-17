@@ -5022,7 +5022,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px; flex-shrink: 0;">
-                            ${!source.linkedKeyword && currentKeyword ? `<button class="btn btn-small btn-success" onclick="linkSourceToCurrentQuiz(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Link</button>` : ''}
+                            ${!source.linkedKeyword ? `<button class="btn btn-small btn-success" onclick="linkSourceToQuiz(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Link</button>` : ''}
                             ${source.linkedKeyword ? `<button class="btn btn-small" style="background: #555;" onclick="unlinkSourceFromQuiz('${escapeHtml(source.linkedKeyword)}')">Unlink</button>` : ''}
                             <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}', '${escapeHtml(source.contentType || 'text/plain')}')">View</button>
                             <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Delete</button>
@@ -5226,15 +5226,37 @@ question,answer,choice1,choice2,choice3,choice4,correct
             pdfTotalPages = 0;
         }
 
-        async function linkSourceToCurrentQuiz(sourceId, sourceName) {
-            if (!currentKeyword) {
-                alert('Please select a quiz first');
+        async function linkSourceToQuiz(sourceId, sourceName) {
+            // Find quizzes without a linked source
+            const unlinkedQuizzes = userKeywords.filter(kw => !kw.source_id);
+
+            if (unlinkedQuizzes.length === 0) {
+                alert('All your quizzes already have sources linked. Create a new quiz first.');
                 return;
             }
 
-            if (!confirm(`Link "${sourceName}" to quiz "${currentKeyword}"?`)) {
+            // Build options for the picker
+            const options = unlinkedQuizzes.map(kw => {
+                const label = kw.display_name ? `${kw.display_name} [${kw.keyword}]` : kw.keyword;
+                return `${label}`;
+            });
+
+            // Show picker dialog
+            const choice = prompt(
+                `Link "${sourceName}" to which quiz?\n\n` +
+                options.map((opt, i) => `${i + 1}. ${opt}`).join('\n') +
+                `\n\nEnter number (1-${options.length}):`
+            );
+
+            if (!choice) return;
+
+            const index = parseInt(choice) - 1;
+            if (isNaN(index) || index < 0 || index >= unlinkedQuizzes.length) {
+                alert('Invalid selection');
                 return;
             }
+
+            const selectedKeyword = unlinkedQuizzes[index].keyword;
 
             try {
                 const token = await currentUser.getIdToken();
@@ -5246,7 +5268,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     },
                     body: JSON.stringify({
                         sourceId: sourceId,
-                        keyword: currentKeyword
+                        keyword: selectedKeyword
                     })
                 });
 
@@ -5256,8 +5278,9 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     throw new Error(data.error || data.message || 'Failed to link source');
                 }
 
-                alert('Source linked to quiz successfully!');
-                loadSources(); // Refresh the list
+                alert(`Source linked to "${selectedKeyword}" successfully!`);
+                await loadUserKeywords(); // Refresh keywords to update source_id
+                loadSources(); // Refresh the sources list
 
             } catch (err) {
                 alert(`Failed to link: ${err.message}`);
