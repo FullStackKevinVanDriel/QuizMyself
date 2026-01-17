@@ -2604,6 +2604,15 @@ question,answer,choice1,choice2,choice3,choice4,correct
             updateStats();
             updateHamburgerMenu();
             updateKeywordDropdown();
+            initCategoryFilter(); // Show/hide category filter based on questions
+
+            // Show/hide raw source links based on keyword
+            // Only "noxestyle" has the raw course content
+            const rawLink = document.getElementById('raw-content-link');
+            const courseBtn = document.getElementById('course-content-btn');
+            const hasRawSource = keyword === 'noxestyle';
+            if (rawLink) rawLink.classList.toggle('hidden', !hasRawSource);
+            if (courseBtn) courseBtn.classList.toggle('hidden', !hasRawSource);
         }
 
         // Update keyword dropdown to reflect current selection
@@ -3147,12 +3156,22 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // Initialize category filter
         function initCategoryFilter() {
-            // Get unique categories from questions
-            const categories = [...new Set(questions.map(q => q.category))];
+            // Get unique categories from questions (filter out undefined/null)
+            const categories = [...new Set(questions.map(q => q.category).filter(c => c))];
             allCategories = categories;
 
             // Default: all categories selected
             selectedCategories = new Set(categories);
+
+            // Hide category filter if no meaningful categories (0 or 1 category)
+            const filterEl = document.getElementById('category-filter');
+            if (filterEl) {
+                if (categories.length <= 1) {
+                    filterEl.style.display = 'none';
+                } else {
+                    filterEl.style.display = 'block';
+                }
+            }
 
             // Render category chips
             renderCategoryChips();
