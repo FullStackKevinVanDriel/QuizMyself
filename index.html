@@ -5111,9 +5111,9 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 if (actualContentType.includes('pdf')) {
                     await renderPDF(data.content, data.isBase64);
                 } else if (actualContentType.includes('html')) {
-                    renderHTML(data.content, data.isBase64);
+                    await renderHTML(data.content, data.isBase64, data.isCompressed);
                 } else {
-                    renderText(data.content, data.isCompressed);
+                    await renderText(data.content, data.isCompressed);
                 }
 
             } catch (err) {
@@ -5193,11 +5193,19 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         }
 
-        function renderHTML(content, isBase64) {
+        async function renderHTML(content, isBase64, isCompressed) {
             let htmlContent = content;
             if (isBase64) {
                 const binary = atob(content);
                 htmlContent = new TextDecoder().decode(new Uint8Array([...binary].map(c => c.charCodeAt(0))));
+            }
+
+            // Decompress if needed
+            if (isCompressed) {
+                const decompressed = await decompressContent(htmlContent);
+                if (decompressed) {
+                    htmlContent = decompressed;
+                }
             }
 
             const iframe = document.getElementById('source-viewer-html');
