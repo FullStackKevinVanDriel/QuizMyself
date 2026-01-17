@@ -1586,66 +1586,6 @@
         </div>
     </div>
 
-    <!-- Import Quiz Modal -->
-    <div id="import-modal" class="modal-overlay hidden" onclick="closeImportModalOnOverlay(event)">
-        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
-            <div class="modal-header">
-                <h2>Import Quiz Data</h2>
-                <button class="modal-close" onclick="closeImportModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Drop Zone -->
-                <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
-                    <div class="drop-zone-icon">📁</div>
-                    <div class="drop-zone-text">Drop a file here or click to browse</div>
-                    <div class="drop-zone-subtext">Supports JSON, CSV, or TXT files</div>
-                    <input type="file" id="file-input" accept=".json,.csv,.txt" style="display: none;" onchange="handleFileSelect(event)">
-                </div>
-
-                <!-- Or paste text -->
-                <p style="text-align: center; color: #666; margin-bottom: 15px;">— or paste text directly —</p>
-
-                <textarea id="import-textarea" class="import-textarea" placeholder="Paste your quiz data here...
-
-Supported formats:
-
-JSON:
-[{&quot;q&quot;: &quot;Question?&quot;, &quot;a&quot;: &quot;Answer&quot;, &quot;choices&quot;: [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;], &quot;correct&quot;: 0}]
-
-Q&amp;A Format:
-Q: What is the capital of France?
-A: Paris
-
-CSV:
-question,answer,choice1,choice2,choice3,choice4,correct
-&quot;Question?&quot;,&quot;Answer&quot;,&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,0"></textarea>
-
-                <!-- Preview Section -->
-                <div id="import-preview-section" style="display: none;">
-                    <div class="import-stats">
-                        <div>Questions found: <span id="import-count">0</span></div>
-                        <div>Format: <span id="import-format">Unknown</span></div>
-                    </div>
-                    <div class="import-preview" id="import-preview"></div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="btn-group" style="margin-top: 20px;">
-                    <button class="btn" onclick="parseImportData()">Preview Import</button>
-                    <button class="btn btn-primary" id="import-confirm-btn" onclick="confirmImport()" disabled>Import Questions</button>
-                </div>
-
-                <!-- Import Options -->
-                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #333;">
-                    <label style="display: flex; align-items: center; gap: 10px; color: #888; cursor: pointer;">
-                        <input type="checkbox" id="import-replace" style="width: 18px; height: 18px;">
-                        Replace existing questions (instead of adding to them)
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Quiz Data Modal (combined import + sources) -->
     <div id="sources-modal" class="modal-overlay hidden" onclick="closeSourcesModalOnOverlay(event)">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 700px;">
@@ -1942,15 +1882,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
                             </div>
                         </label>
 
-                        <!-- Upload New Source -->
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #2a2a2a; border-radius: 8px; cursor: pointer; border: 2px solid transparent;" class="source-option" data-option="upload">
-                            <input type="radio" name="source-option" value="upload" style="width: 18px; height: 18px;">
-                            <div style="flex: 1;">
-                                <div style="color: #fff;">Upload new file</div>
-                                <div style="color: #888; font-size: 0.85rem;">PDF, HTML, or text file</div>
-                            </div>
-                        </label>
-
                         <!-- Select Existing Source -->
                         <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #2a2a2a; border-radius: 8px; cursor: pointer; border: 2px solid transparent;" class="source-option" data-option="existing">
                             <input type="radio" name="source-option" value="existing" style="width: 18px; height: 18px;">
@@ -1959,24 +1890,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
                                 <div style="color: #888; font-size: 0.85rem;" id="existing-source-count">Loading...</div>
                             </div>
                         </label>
-                    </div>
-
-                    <!-- Upload Section (hidden by default) -->
-                    <div id="create-quiz-upload-section" style="display: none; margin-top: 15px; padding: 15px; background: #1a1a2e; border-radius: 8px;">
-                        <div id="create-quiz-drop-zone" onclick="document.getElementById('create-quiz-file-input').click()"
-                            style="padding: 30px; border: 2px dashed #444; border-radius: 8px; text-align: center; cursor: pointer;">
-                            <div style="font-size: 32px; margin-bottom: 10px;">📁</div>
-                            <div style="color: #ccc;">Drop a file here or click to browse</div>
-                            <div style="color: #888; font-size: 0.85rem; margin-top: 5px;">PDF, HTML, TXT (max 5MB)</div>
-                            <input type="file" id="create-quiz-file-input" accept=".pdf,.html,.htm,.txt,.json,.csv" style="display: none;">
-                        </div>
-                        <div id="create-quiz-file-info" style="display: none; margin-top: 10px; padding: 10px; background: #0f3460; border-radius: 6px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span id="create-quiz-file-name" style="color: #4fc3f7;"></span>
-                                <button onclick="clearSelectedFile()" style="background: none; border: none; color: #888; cursor: pointer; font-size: 18px;">&times;</button>
-                            </div>
-                            <div id="create-quiz-file-size" style="color: #888; font-size: 0.85rem;"></div>
-                        </div>
                     </div>
 
                     <!-- Existing Sources Picker (hidden by default) -->
@@ -2773,7 +2686,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
         // ========== CREATE QUIZ MODAL ==========
 
         let createQuizUnlinkedSources = [];
-        let createQuizSelectedFile = null;
         let createQuizSelectedSourceId = null;
 
         function showCreateQuizModal() {
@@ -2786,10 +2698,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('create-quiz-name').value = '';
             document.getElementById('create-quiz-error').style.display = 'none';
             document.querySelector('input[name="source-option"][value="none"]').checked = true;
-            document.getElementById('create-quiz-upload-section').style.display = 'none';
             document.getElementById('create-quiz-existing-section').style.display = 'none';
-            document.getElementById('create-quiz-file-info').style.display = 'none';
-            createQuizSelectedFile = null;
             createQuizSelectedSourceId = null;
 
             // Load unlinked sources
@@ -2799,15 +2708,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.querySelectorAll('input[name="source-option"]').forEach(radio => {
                 radio.onchange = handleSourceOptionChange;
             });
-
-            // Setup file input handler
-            document.getElementById('create-quiz-file-input').onchange = handleCreateQuizFileSelect;
-
-            // Setup drag and drop
-            const dropZone = document.getElementById('create-quiz-drop-zone');
-            dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = '#4fc3f7'; };
-            dropZone.ondragleave = () => { dropZone.style.borderColor = '#444'; };
-            dropZone.ondrop = handleCreateQuizFileDrop;
 
             document.getElementById('create-quiz-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -2880,49 +2780,13 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         function handleSourceOptionChange(e) {
             const value = e.target.value;
-            document.getElementById('create-quiz-upload-section').style.display = value === 'upload' ? 'block' : 'none';
             document.getElementById('create-quiz-existing-section').style.display = value === 'existing' ? 'block' : 'none';
 
-            // Clear selections when switching options
-            if (value !== 'upload') {
-                createQuizSelectedFile = null;
-                document.getElementById('create-quiz-file-info').style.display = 'none';
-            }
+            // Clear source selection when switching to 'none'
             if (value !== 'existing') {
                 createQuizSelectedSourceId = null;
                 renderSourcesPicker();
             }
-        }
-
-        function handleCreateQuizFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) setSelectedFile(file);
-        }
-
-        function handleCreateQuizFileDrop(e) {
-            e.preventDefault();
-            document.getElementById('create-quiz-drop-zone').style.borderColor = '#444';
-            const file = e.dataTransfer.files[0];
-            if (file) setSelectedFile(file);
-        }
-
-        function setSelectedFile(file) {
-            const maxSize = 5 * 1024 * 1024; // 5MB
-            if (file.size > maxSize) {
-                showCreateQuizError('File too large (max 5MB)');
-                return;
-            }
-
-            createQuizSelectedFile = file;
-            document.getElementById('create-quiz-file-name').textContent = file.name;
-            document.getElementById('create-quiz-file-size').textContent = formatBytes(file.size);
-            document.getElementById('create-quiz-file-info').style.display = 'block';
-        }
-
-        function clearSelectedFile() {
-            createQuizSelectedFile = null;
-            document.getElementById('create-quiz-file-info').style.display = 'none';
-            document.getElementById('create-quiz-file-input').value = '';
         }
 
         function showCreateQuizError(msg) {
@@ -2960,13 +2824,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('create-quiz-submit').textContent = 'Creating...';
 
             try {
-                // Handle file upload if selected
-                if (selectedOption === 'upload' && createQuizSelectedFile) {
-                    sourceId = await uploadNewSource(createQuizSelectedFile);
-                    if (!sourceId) {
-                        throw new Error('Failed to upload source file');
-                    }
-                } else if (selectedOption === 'existing' && createQuizSelectedSourceId) {
+                // Use existing source if selected
+                if (selectedOption === 'existing' && createQuizSelectedSourceId) {
                     sourceId = createQuizSelectedSourceId;
                 }
 
@@ -4486,84 +4345,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // ========== IMPORT FUNCTIONALITY ==========
         let parsedImportData = [];
-        let importSourceName = 'Pasted Content';
-        let importSourceFormat = 'text';
 
-        function showImportModal() {
-            document.getElementById('import-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            // Reset state
-            document.getElementById('import-textarea').value = '';
-            document.getElementById('import-preview-section').style.display = 'none';
-            document.getElementById('import-confirm-btn').disabled = true;
-            parsedImportData = [];
-            importSourceName = 'Pasted Content';
-            importSourceFormat = 'text';
-            setupDropZone();
-        }
-
-        function closeImportModal() {
-            document.getElementById('import-modal').classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-
-        function closeImportModalOnOverlay(event) {
-            if (event.target === document.getElementById('import-modal')) {
-                closeImportModal();
-            }
-        }
-
-        function setupDropZone() {
-            const dropZone = document.getElementById('drop-zone');
-
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
-            });
-
-            dropZone.addEventListener('drop', handleDrop, false);
-        }
-
-        function handleDrop(e) {
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        }
-
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
-        }
-
-        function handleFile(file) {
-            importSourceName = file.name || 'Uploaded File';
-            const ext = file.name.split('.').pop().toLowerCase();
-            importSourceFormat = ext === 'json' ? 'json' : ext === 'csv' ? 'csv' : 'text';
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('import-textarea').value = e.target.result;
-                parseImportData();
-            };
-            reader.readAsText(file);
-        }
-
-        // Parse quiz data from text (used by both import screens)
+        // Parse quiz data from text
         function parseQuizData(text) {
             let result = { questions: [], format: 'Unknown' };
 
@@ -4586,18 +4369,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
 
             return result;
-        }
-
-        function parseImportData() {
-            const text = document.getElementById('import-textarea').value.trim();
-            if (!text) {
-                alert('Please enter or paste some data to import.');
-                return;
-            }
-
-            const result = parseQuizData(text);
-            parsedImportData = result.questions;
-            showImportPreview(result);
         }
 
         function tryParseJSON(text) {
@@ -4747,97 +4518,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
             ];
         }
 
-        function showImportPreview(result) {
-            const previewSection = document.getElementById('import-preview-section');
-            const previewContainer = document.getElementById('import-preview');
-            const countEl = document.getElementById('import-count');
-            const formatEl = document.getElementById('import-format');
-            const confirmBtn = document.getElementById('import-confirm-btn');
-
-            countEl.textContent = result.questions.length;
-            formatEl.textContent = result.format;
-
-            if (result.questions.length === 0) {
-                previewContainer.innerHTML = '<p style="color: #e94560;">Could not parse any questions. Please check the format.</p>';
-                confirmBtn.disabled = true;
-            } else {
-                const preview = result.questions.slice(0, 5).map((q, i) => `
-                    <div class="import-preview-item">
-                        <strong style="color: #4fc3f7;">${i + 1}.</strong> ${escapeHtml(q.q.substring(0, 100))}${q.q.length > 100 ? '...' : ''}
-                    </div>
-                `).join('');
-
-                const moreText = result.questions.length > 5
-                    ? `<p style="color: #888; margin-top: 10px;">...and ${result.questions.length - 5} more questions</p>`
-                    : '';
-
-                previewContainer.innerHTML = preview + moreText;
-                confirmBtn.disabled = false;
-            }
-
-            previewSection.style.display = 'block';
-        }
-
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
-        }
-
-        async function confirmImport() {
-            if (parsedImportData.length === 0) {
-                alert('No questions to import.');
-                return;
-            }
-
-            const replaceMode = document.getElementById('import-replace').checked;
-
-            // Check free limit for non-Pro users
-            if (!state.isPro && !replaceMode) {
-                const currentImported = state.importedQuestionCount || 0;
-                const newTotal = currentImported + parsedImportData.length;
-                if (newTotal > FREE_IMPORT_LIMIT) {
-                    const remaining = FREE_IMPORT_LIMIT - currentImported;
-                    alert(`Free accounts can import up to ${FREE_IMPORT_LIMIT} questions. You have ${remaining} imports remaining.\n\nUpgrade to Pro for unlimited imports!`);
-                    closeImportModal();
-                    showUpgradeModal();
-                    return;
-                }
-            }
-
-            // Save source material to API
-            const sourceContent = document.getElementById('import-textarea').value;
-            await saveSourceMaterial(importSourceName, sourceContent, importSourceFormat, parsedImportData.length);
-
-            if (replaceMode) {
-                // Replace all questions
-                questions.length = 0;
-                parsedImportData.forEach((q, idx) => {
-                    q.id = idx + 1;
-                    questions.push(q);
-                });
-                // Reset progress since questions changed
-                state.mastered = [];
-                state.answerCounts = {};
-                state.totalCorrect = 0;
-                state.totalAnswered = 0;
-                state.importedQuestionCount = parsedImportData.length;
-            } else {
-                // Add to existing questions
-                const startId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
-                parsedImportData.forEach((q, idx) => {
-                    q.id = startId + idx;
-                    questions.push(q);
-                });
-                state.importedQuestionCount = (state.importedQuestionCount || 0) + parsedImportData.length;
-            }
-
-            // Update UI and save immediately (not debounced)
-            updateStats();
-            saveState(true);
-            closeImportModal();
-
-            alert(`Successfully imported ${parsedImportData.length} questions! They are now saved to your keyword "${currentKeyword}".${replaceMode ? ' Progress has been reset.' : ''}`);
         }
 
         // ========== SOURCE MATERIAL VIEWER ==========
@@ -4967,11 +4651,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     return;
                 }
             }
-
-            // Save source material to API
-            const sourceContent = document.getElementById('import-textarea-modal').value;
-            const sourceName = 'Import ' + new Date().toLocaleString();
-            await saveSourceMaterial(sourceName, sourceContent, 'text', parsedImportDataModal.length);
 
             const importCount = parsedImportDataModal.length;
 
@@ -5488,44 +5167,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         }
 
-        async function saveSourceMaterial(name, content, contentType, questionCount) {
-            try {
-                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}`;
-                const headers = { 'Content-Type': 'application/json' };
-                if (currentUser) {
-                    const token = await currentUser.getIdToken();
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
-
-                // Try to compress content (skip for binary types like PDF which are already compressed)
-                let storedContent = content;
-                let storedType = contentType;
-                const isBinary = contentType.includes('pdf') || contentType.includes('image/');
-                if (!isBinary) {
-                    const compressed = await compressContent(content);
-                    if (compressed && compressed.length < content.length * 0.9) {
-                        // Only use compression if it saves at least 10%
-                        storedContent = compressed;
-                        storedType = contentType + '+gzip';
-                        console.log(`Compressed ${content.length} -> ${compressed.length} bytes (${Math.round(compressed.length/content.length*100)}%)`);
-                    }
-                }
-
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify({ name, content: storedContent, contentType: storedType, questionCount })
-                });
-
-                const data = await response.json();
-                if (!response.ok) {
-                    console.warn('Failed to save source material:', data.error);
-                }
-            } catch (err) {
-                console.warn('Failed to save source material:', err);
-            }
-        }
-
         // ========== UPGRADE/PAYMENT FUNCTIONALITY ==========
 
         // Store pending session ID for license lookup
@@ -5691,7 +5332,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     body: JSON.stringify({
                         price_id: priceId,
                         product: 'quizmyself',
-                        customer_email: email,
+                        email: email,
                         success_url: baseUrl + '?payment=success&session_id={CHECKOUT_SESSION_ID}',
                         cancel_url: baseUrl + '?payment=cancelled',
                         metadata: {
@@ -5704,7 +5345,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                 const data = await response.json();
 
-                if (data.status === 'ok' && data.checkout_url) {
+                if (data.success && data.checkout_url) {
                     // Redirect to Stripe Checkout
                     window.location.href = data.checkout_url;
                 } else {
