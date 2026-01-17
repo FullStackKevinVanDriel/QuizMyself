@@ -1131,6 +1131,158 @@
             display: flex;
             gap: 8px;
         }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .welcome-content {
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .welcome-logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            color: #4fc3f7;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .welcome-tagline {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .welcome-features {
+            text-align: left;
+            background: rgba(15, 52, 96, 0.5);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .welcome-feature:last-child {
+            margin-bottom: 0;
+        }
+
+        .welcome-feature-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .welcome-feature-text {
+            color: #eaeaea;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .welcome-category-section {
+            margin-bottom: 25px;
+        }
+
+        .welcome-category-title {
+            color: #4fc3f7;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .welcome-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .welcome-category-chip {
+            background: #0f3460;
+            color: #888;
+            border: 2px solid #333;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .welcome-category-chip:hover {
+            border-color: #4fc3f7;
+            color: #eaeaea;
+        }
+
+        .welcome-category-chip.selected {
+            background: #1a4a7a;
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+
+        .welcome-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .welcome-btn {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .welcome-btn-primary {
+            background: #4fc3f7;
+            color: #1a1a2e;
+        }
+
+        .welcome-btn-primary:hover {
+            background: #81d4fa;
+            transform: translateY(-2px);
+        }
+
+        .welcome-btn-secondary {
+            background: transparent;
+            color: #888;
+            border: 1px solid #333;
+        }
+
+        .welcome-btn-secondary:hover {
+            color: #eaeaea;
+            border-color: #4fc3f7;
+        }
+
+        .welcome-footer {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.85rem;
+        }
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -1138,6 +1290,44 @@
 </head>
 <body>
     <div id="deploy-banner" class="deploy-banner hidden">Deploying update...</div>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen hidden">
+        <div class="welcome-content">
+            <div class="welcome-logo">📚</div>
+            <h1 class="welcome-title">QuizMyself</h1>
+            <p class="welcome-tagline">Quiz yourself on anything</p>
+
+            <div class="welcome-features">
+                <div class="welcome-feature">
+                    <span class="welcome-feature-icon">✨</span>
+                    <span class="welcome-feature-text">Import your own study material from files or paste text directly</span>
+                </div>
+                <div class="welcome-feature">
+                    <span class="welcome-feature-icon">🎯</span>
+                    <span class="welcome-feature-text">Track your progress with spaced repetition learning</span>
+                </div>
+                <div class="welcome-feature">
+                    <span class="welcome-feature-icon">☁️</span>
+                    <span class="welcome-feature-text">Sync across devices with a free account</span>
+                </div>
+            </div>
+
+            <div class="welcome-category-section">
+                <p class="welcome-category-title">Try a demo quiz to get started:</p>
+                <div class="welcome-categories" id="welcome-categories">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="welcome-actions">
+                <button class="welcome-btn welcome-btn-primary" onclick="startWelcomeQuiz()">Start Quiz</button>
+                <button class="welcome-btn welcome-btn-secondary" onclick="dismissWelcome()">Skip intro</button>
+            </div>
+
+            <p class="welcome-footer">No account required to try it out</p>
+        </div>
+    </div>
 
     <!-- Top Bar -->
     <div class="top-bar">
@@ -4441,8 +4631,81 @@ question,answer,choice1,choice2,choice3,choice4,correct
             }
         });
 
+        // Welcome screen functions
+        let welcomeSelectedCategories = new Set();
+
+        function shouldShowWelcome() {
+            // Don't show if user has seen welcome before
+            if (localStorage.getItem('quizmyself_welcome_seen')) return false;
+            // Don't show if user already has a keyword/session
+            if (localStorage.getItem('quizmyself_keyword')) return false;
+            // Don't show if returning from Stripe checkout
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('session_id') || urlParams.has('canceled')) return false;
+            return true;
+        }
+
+        function showWelcome() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            welcomeScreen.classList.remove('hidden');
+            populateWelcomeCategories();
+        }
+
+        function populateWelcomeCategories() {
+            const container = document.getElementById('welcome-categories');
+            const categories = [...new Set(demoQuestions.map(q => q.category))];
+
+            container.innerHTML = categories.map(cat =>
+                `<button class="welcome-category-chip selected" onclick="toggleWelcomeCategory(this, '${cat}')">${cat}</button>`
+            ).join('');
+
+            // Start with all selected
+            welcomeSelectedCategories = new Set(categories);
+        }
+
+        function toggleWelcomeCategory(btn, category) {
+            btn.classList.toggle('selected');
+            if (welcomeSelectedCategories.has(category)) {
+                welcomeSelectedCategories.delete(category);
+            } else {
+                welcomeSelectedCategories.add(category);
+            }
+        }
+
+        function startWelcomeQuiz() {
+            // If no categories selected, select all
+            if (welcomeSelectedCategories.size === 0) {
+                const categories = [...new Set(demoQuestions.map(q => q.category))];
+                welcomeSelectedCategories = new Set(categories);
+            }
+
+            // Mark welcome as seen
+            localStorage.setItem('quizmyself_welcome_seen', 'true');
+
+            // Hide welcome screen
+            document.getElementById('welcome-screen').classList.add('hidden');
+
+            // Apply selected categories to the main category filter
+            selectedCategories = new Set(welcomeSelectedCategories);
+            updateCategoryChips();
+            updateStats();
+
+            // Start practice quiz
+            startPractice();
+        }
+
+        function dismissWelcome() {
+            localStorage.setItem('quizmyself_welcome_seen', 'true');
+            document.getElementById('welcome-screen').classList.add('hidden');
+        }
+
         // Initialize
         (async function() {
+            // Check if we should show welcome screen
+            if (shouldShowWelcome()) {
+                showWelcome();
+            }
+
             const savedKeyword = localStorage.getItem('quizmyself_keyword');
             if (savedKeyword) {
                 currentKeyword = savedKeyword;
