@@ -24,7 +24,7 @@ jobs:
 
       - name: Inject commit SHA into HTML
         run: |
-          sed -i "s/__COMMIT_SHA__/${{ github.sha }}/g" quiz.html
+          sed -i "s/__COMMIT_SHA__/${{ github.sha }}/g" index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
