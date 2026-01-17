@@ -4390,7 +4390,20 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     throw new Error(data.error || 'Failed to load source');
                 }
 
-                document.getElementById('source-content-text').textContent = data.content || '(No content)';
+                let content = data.content || '(No content)';
+
+                // Decompress if content was stored compressed
+                if (data.contentType && data.contentType.includes('+gzip')) {
+                    document.getElementById('source-content-text').textContent = 'Decompressing...';
+                    const decompressed = await decompressContent(content);
+                    if (decompressed) {
+                        content = decompressed;
+                    } else {
+                        content = '(Failed to decompress content)';
+                    }
+                }
+
+                document.getElementById('source-content-text').textContent = content;
 
             } catch (err) {
                 document.getElementById('source-content-text').textContent = `Error: ${err.message}`;
@@ -4447,6 +4460,50 @@ question,answer,choice1,choice2,choice3,choice4,correct
             return div.innerHTML;
         }
 
+        // Compress content using gzip and return base64
+        async function compressContent(content) {
+            try {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(content);
+                const cs = new CompressionStream('gzip');
+                const writer = cs.writable.getWriter();
+                writer.write(data);
+                writer.close();
+                const compressedData = await new Response(cs.readable).arrayBuffer();
+                // Convert to base64
+                const bytes = new Uint8Array(compressedData);
+                let binary = '';
+                for (let i = 0; i < bytes.length; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return btoa(binary);
+            } catch (err) {
+                console.warn('Compression failed, storing uncompressed:', err);
+                return null;
+            }
+        }
+
+        // Decompress base64 gzip content
+        async function decompressContent(base64Data) {
+            try {
+                const binary = atob(base64Data);
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                const ds = new DecompressionStream('gzip');
+                const writer = ds.writable.getWriter();
+                writer.write(bytes);
+                writer.close();
+                const decompressedData = await new Response(ds.readable).arrayBuffer();
+                const decoder = new TextDecoder();
+                return decoder.decode(decompressedData);
+            } catch (err) {
+                console.warn('Decompression failed:', err);
+                return null;
+            }
+        }
+
         async function saveSourceMaterial(name, content, contentType, questionCount) {
             try {
                 const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}`;
@@ -4456,20 +4513,29 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     headers['Authorization'] = `Bearer ${token}`;
                 }
 
+                // Try to compress content
+                let storedContent = content;
+                let storedType = contentType;
+                const compressed = await compressContent(content);
+                if (compressed && compressed.length < content.length * 0.9) {
+                    // Only use compression if it saves at least 10%
+                    storedContent = compressed;
+                    storedType = contentType + '+gzip';
+                    console.log(`Compressed ${content.length} -> ${compressed.length} bytes (${Math.round(compressed.length/content.length*100)}%)`);
+                }
+
                 const response = await fetch(url, {
                     method: 'POST',
                     headers,
-                    body: JSON.stringify({ name, content, contentType, questionCount })
+                    body: JSON.stringify({ name, content: storedContent, contentType: storedType, questionCount })
                 });
 
                 const data = await response.json();
                 if (!response.ok) {
                     console.warn('Failed to save source material:', data.error);
-                    // Don't block the import if source save fails
                 }
             } catch (err) {
                 console.warn('Failed to save source material:', err);
-                // Don't block the import if source save fails
             }
         }
 
