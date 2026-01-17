@@ -5069,6 +5069,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
         }
 
         async function viewSourceContent(id, name, contentType) {
+            console.log('[DEBUG viewSourceContent] called with id:', id, 'name:', name, 'contentType:', contentType);
             // Hide all viewers first
             document.getElementById('source-viewer-text').style.display = 'none';
             document.getElementById('source-viewer-html').style.display = 'none';
@@ -5095,6 +5096,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                 const response = await fetch(url, { headers });
                 const data = await response.json();
+                console.log('[DEBUG viewSourceContent] API response:', { id: data.id, name: data.name, contentType: data.contentType, isBase64: data.isBase64, contentLength: data.content?.length });
 
                 if (!response.ok) {
                     throw new Error(data.error || 'Failed to load source');
@@ -5104,6 +5106,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
                 // Route to appropriate viewer based on content type
                 const actualContentType = data.contentType || contentType || 'text/plain';
+                console.log('[DEBUG viewSourceContent] using actualContentType:', actualContentType);
 
                 if (actualContentType.includes('pdf')) {
                     await renderPDF(data.content, data.isBase64);
