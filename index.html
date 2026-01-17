@@ -4335,10 +4335,23 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         async function loadSources() {
             const listEl = document.getElementById('sources-list');
+
+            // Check if keyword is selected
+            if (!currentKeyword) {
+                listEl.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #ff6b6b;">
+                        <p>No keyword selected. Please select a keyword first.</p>
+                        <p style="font-size: 0.85rem; color: #888; margin-top: 10px;">Go to Manage Keywords in the menu to select or create a keyword.</p>
+                    </div>
+                `;
+                return;
+            }
+
             listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>';
 
             try {
                 const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}`;
+                console.log('Loading sources for keyword:', currentKeyword, 'URL:', url);
                 const headers = {};
                 if (firebaseUser) {
                     const token = await firebaseUser.getIdToken();
