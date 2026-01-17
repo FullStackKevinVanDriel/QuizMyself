@@ -2912,20 +2912,16 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     state.totalCorrect = data.totalCorrect || 0;
                     state.totalAnswered = data.totalAnswered || 0;
 
-                    // Load custom questions for this keyword
+                    // Load custom questions for this keyword (if any exist)
                     const customQuestions = data.customQuestions || [];
                     if (customQuestions.length > 0) {
-                        // Replace questions array with custom questions
+                        // Replace questions array with custom questions from DB
                         questions.length = 0;
                         customQuestions.forEach(q => questions.push(q));
                         state.importedQuestionCount = customQuestions.length;
                         console.log(`Loaded ${customQuestions.length} custom questions for keyword: ${currentKeyword}`);
-                    } else {
-                        // No custom questions - use demo questions
-                        questions.length = 0;
-                        demoQuestions.forEach(q => questions.push(q));
-                        state.importedQuestionCount = 0;
                     }
+                    // If no custom questions, leave questions array as-is (could be wguQuestions or demoQuestions)
 
                     // Restore exam progress if exists
                     if (data.examInProgress && data.examQuestionIds && data.examQuestionIds.length > 0) {
