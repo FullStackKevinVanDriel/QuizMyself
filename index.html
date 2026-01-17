@@ -4353,8 +4353,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}`;
                 console.log('Loading sources for keyword:', currentKeyword, 'URL:', url);
                 const headers = {};
-                if (firebaseUser) {
-                    const token = await firebaseUser.getIdToken();
+                if (currentUser) {
+                    const token = await currentUser.getIdToken();
                     headers['Authorization'] = `Bearer ${token}`;
                 }
 
@@ -4419,8 +4419,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             try {
                 const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}&id=${id}`;
                 const headers = {};
-                if (firebaseUser) {
-                    const token = await firebaseUser.getIdToken();
+                if (currentUser) {
+                    const token = await currentUser.getIdToken();
                     headers['Authorization'] = `Bearer ${token}`;
                 }
 
@@ -4464,8 +4464,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             try {
                 const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}&id=${id}`;
                 const headers = {};
-                if (firebaseUser) {
-                    const token = await firebaseUser.getIdToken();
+                if (currentUser) {
+                    const token = await currentUser.getIdToken();
                     headers['Authorization'] = `Bearer ${token}`;
                 }
 
@@ -4549,8 +4549,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             try {
                 const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(currentKeyword)}`;
                 const headers = { 'Content-Type': 'application/json' };
-                if (firebaseUser) {
-                    const token = await firebaseUser.getIdToken();
+                if (currentUser) {
+                    const token = await currentUser.getIdToken();
                     headers['Authorization'] = `Bearer ${token}`;
                 }
 
