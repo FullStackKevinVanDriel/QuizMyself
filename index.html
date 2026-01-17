@@ -1440,6 +1440,7 @@
             <button id="course-content-btn" class="btn" onclick="showCourseContent()" style="text-align: center;">View Study Material</button>
             <a id="raw-content-link" href="course-content.html" class="btn hidden" style="text-align: center; text-decoration: none;">View Raw Source (138 Lessons)</a>
             <button class="btn btn-success btn-small" onclick="showImportModal()">Import Quiz Data</button>
+            <button class="btn btn-small" onclick="showSourcesModal()">View Imported Sources</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
         </div>
 
@@ -1608,6 +1609,42 @@ question,answer,choice1,choice2,choice3,choice4,correct
                         <input type="checkbox" id="import-replace" style="width: 18px; height: 18px;">
                         Replace existing questions (instead of adding to them)
                     </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sources Modal -->
+    <div id="sources-modal" class="modal-overlay hidden" onclick="closeSourcesModalOnOverlay(event)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>Imported Sources</h2>
+                <button class="modal-close" onclick="closeSourcesModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Storage Info -->
+                <div id="sources-storage-info" style="margin-bottom: 20px; padding: 15px; background: #2a2a2a; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Storage Used:</span>
+                        <span id="sources-storage-text">Loading...</span>
+                    </div>
+                    <div style="margin-top: 10px; height: 8px; background: #444; border-radius: 4px; overflow: hidden;">
+                        <div id="sources-storage-bar" style="height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A); width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+
+                <!-- Sources List -->
+                <div id="sources-list" style="max-height: 400px; overflow-y: auto;">
+                    <div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>
+                </div>
+
+                <!-- View Source Content -->
+                <div id="source-content-view" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 id="source-content-title" style="margin: 0; color: #ffd700;"></h3>
+                        <button class="btn btn-small" onclick="hideSourceContent()">Back to List</button>
+                    </div>
+                    <pre id="source-content-text" style="background: #1a1a1a; padding: 15px; border-radius: 8px; max-height: 350px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 13px; line-height: 1.5;"></pre>
                 </div>
             </div>
         </div>
@@ -3899,6 +3936,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
 
         // ========== IMPORT FUNCTIONALITY ==========
         let parsedImportData = [];
+        let importSourceName = 'Pasted Content';
+        let importSourceFormat = 'text';
 
         function showImportModal() {
             document.getElementById('import-modal').classList.remove('hidden');
@@ -3908,6 +3947,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
             document.getElementById('import-preview-section').style.display = 'none';
             document.getElementById('import-confirm-btn').disabled = true;
             parsedImportData = [];
+            importSourceName = 'Pasted Content';
+            importSourceFormat = 'text';
             setupDropZone();
         }
 
@@ -3960,6 +4001,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
         }
 
         function handleFile(file) {
+            importSourceName = file.name || 'Uploaded File';
+            const ext = file.name.split('.').pop().toLowerCase();
+            importSourceFormat = ext === 'json' ? 'json' : ext === 'csv' ? 'csv' : 'text';
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('import-textarea').value = e.target.result;
@@ -4183,7 +4228,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
             return div.innerHTML;
         }
 
-        function confirmImport() {
+        async function confirmImport() {
             if (parsedImportData.length === 0) {
                 alert('No questions to import.');
                 return;
@@ -4203,6 +4248,10 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     return;
                 }
             }
+
+            // Save source material to API
+            const sourceContent = document.getElementById('import-textarea').value;
+            await saveSourceMaterial(importSourceName, sourceContent, importSourceFormat, parsedImportData.length);
 
             if (replaceMode) {
                 // Replace all questions
@@ -4233,6 +4282,195 @@ question,answer,choice1,choice2,choice3,choice4,correct
             closeImportModal();
 
             alert(`Successfully imported ${parsedImportData.length} questions!${replaceMode ? ' Progress has been reset.' : ''}`);
+        }
+
+        // ========== SOURCE MATERIAL VIEWER ==========
+
+        function showSourcesModal() {
+            document.getElementById('sources-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('source-content-view').style.display = 'none';
+            document.getElementById('sources-list').style.display = 'block';
+            loadSources();
+        }
+
+        function closeSourcesModal() {
+            document.getElementById('sources-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeSourcesModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeSourcesModal();
+            }
+        }
+
+        async function loadSources() {
+            const listEl = document.getElementById('sources-list');
+            listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>';
+
+            try {
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}`;
+                const headers = {};
+                if (firebaseUser) {
+                    const token = await firebaseUser.getIdToken();
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(url, { headers });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load sources');
+                }
+
+                // Update storage bar
+                const usedMB = (data.storageUsed / (1024 * 1024)).toFixed(2);
+                const limitMB = (data.storageLimit / (1024 * 1024)).toFixed(0);
+                const percent = data.storageLimit > 0 ? (data.storageUsed / data.storageLimit) * 100 : 0;
+
+                document.getElementById('sources-storage-text').textContent = `${usedMB} MB / ${limitMB} MB${data.isPro ? ' (Pro)' : ''}`;
+                document.getElementById('sources-storage-bar').style.width = `${Math.min(percent, 100)}%`;
+
+                if (data.sources.length === 0) {
+                    listEl.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #888;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">📭</div>
+                            <p>No imported sources yet.</p>
+                            <p style="font-size: 0.9rem;">Import quiz data to see your sources here.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                listEl.innerHTML = data.sources.map(source => `
+                    <div class="source-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #2a2a2a; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #fff; margin-bottom: 5px;">${escapeHtml(source.name)}</div>
+                            <div style="font-size: 0.85rem; color: #888;">
+                                ${source.questionCount} questions | ${formatBytes(source.sizeBytes)} | ${formatDate(source.importedAt)}
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">View</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error('Error loading sources:', err);
+                listEl.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #ff6b6b;">
+                        <p>Failed to load sources: ${escapeHtml(err.message)}</p>
+                        <button class="btn btn-small" onclick="loadSources()" style="margin-top: 15px;">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        async function viewSourceContent(id, name) {
+            document.getElementById('sources-list').style.display = 'none';
+            document.getElementById('source-content-view').style.display = 'block';
+            document.getElementById('source-content-title').textContent = name;
+            document.getElementById('source-content-text').textContent = 'Loading...';
+
+            try {
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}&id=${id}`;
+                const headers = {};
+                if (firebaseUser) {
+                    const token = await firebaseUser.getIdToken();
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(url, { headers });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to load source');
+                }
+
+                document.getElementById('source-content-text').textContent = data.content || '(No content)';
+
+            } catch (err) {
+                document.getElementById('source-content-text').textContent = `Error: ${err.message}`;
+            }
+        }
+
+        function hideSourceContent() {
+            document.getElementById('source-content-view').style.display = 'none';
+            document.getElementById('sources-list').style.display = 'block';
+        }
+
+        async function deleteSource(id, name) {
+            if (!confirm(`Delete "${name}"? This cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}&id=${id}`;
+                const headers = {};
+                if (firebaseUser) {
+                    const token = await firebaseUser.getIdToken();
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(url, { method: 'DELETE', headers });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to delete source');
+                }
+
+                // Reload the list
+                loadSources();
+
+            } catch (err) {
+                alert(`Failed to delete: ${err.message}`);
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        async function saveSourceMaterial(name, content, contentType, questionCount) {
+            try {
+                const url = `https://www.vandromeda.com/api/quizmyself/source.php?keyword=${encodeURIComponent(KEYWORD)}`;
+                const headers = { 'Content-Type': 'application/json' };
+                if (firebaseUser) {
+                    const token = await firebaseUser.getIdToken();
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({ name, content, contentType, questionCount })
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    console.warn('Failed to save source material:', data.error);
+                    // Don't block the import if source save fails
+                }
+            } catch (err) {
+                console.warn('Failed to save source material:', err);
+                // Don't block the import if source save fails
+            }
         }
 
         // ========== UPGRADE/PAYMENT FUNCTIONALITY ==========

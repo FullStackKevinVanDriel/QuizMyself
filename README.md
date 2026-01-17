@@ -7,9 +7,11 @@ A flexible quiz tool where you can import your own study material and test yours
 - **Import your own quizzes** - Drag & drop files (CSV, JSON, text) or paste directly
 - **Multiple formats supported** - Q&A pairs, flashcards, CSV, JSON
 - **Progress tracking** - Synced across devices via cloud storage
+- **Source material storage** - View and manage your imported source files
 - **Practice mode** - Spaced repetition, master questions by answering correctly
 - **Final exam mode** - 100% required to pass
-- **Pro features** - Unlimited imports, cloud sync
+- **Demo quizzes** - Try out with built-in demo questions across multiple categories
+- **Pro features** - Unlimited imports, 50MB storage
 
 ## Live Demo
 
@@ -19,9 +21,20 @@ https://fullstackkevinvandriel.github.io/QuizMyself/
 
 ### Getting Started
 
-1. Enter a keyword to save your progress
-2. Import quiz data or use the built-in questions
+1. Enter a keyword to save your progress (or try the demo)
+2. Import quiz data or use the built-in demo questions
 3. Start practicing!
+
+### Demo Categories
+
+Try the app with demo questions in these categories:
+- US Presidents
+- World Capitals
+- Basic Math
+- Science Facts
+- Programming
+- Language & Vocabulary
+- History
 
 ### Import Formats
 
@@ -64,7 +77,8 @@ A: Paris
 ## Tech Stack
 
 - **Frontend**: Vanilla HTML/CSS/JavaScript
-- **Storage**: Cloudflare Workers KV
+- **Storage**: Vandromeda API (MySQL)
+- **Auth**: Firebase Authentication
 - **Payments**: Stripe via Vandromeda API
 - **Hosting**: GitHub Pages
 
