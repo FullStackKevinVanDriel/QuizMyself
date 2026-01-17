@@ -2193,7 +2193,6 @@ question,answer,choice1,choice2,choice3,choice4,correct
         let allCategories = [];
         let courseContentCategory = null;
 
-        const STORAGE_URL = 'https://quiz-storage.kvquiz.workers.dev';
         const VANDROMEDA_API = 'https://www.vandromeda.com/api';
         const FREE_IMPORT_LIMIT = 50;
         const STRIPE_PRICES = {
@@ -2860,7 +2859,7 @@ question,answer,choice1,choice2,choice3,choice4,correct
         async function loadState() {
             if (!currentKeyword) return;
             try {
-                const res = await fetch(`${STORAGE_URL}/${currentKeyword}`);
+                const res = await fetch(`${VANDROMEDA_API}/quizmyself/progress.php?keyword=${encodeURIComponent(currentKeyword)}`);
                 if (res.ok) {
                     const data = await res.json();
                     state.mastered = data.mastered || [];
@@ -2924,8 +2923,8 @@ question,answer,choice1,choice2,choice3,choice4,correct
                     } else {
                         payload.examInProgress = false;
                     }
-                    await fetch(`${STORAGE_URL}/${currentKeyword}`, {
-                        method: 'PUT',
+                    await fetch(`${VANDROMEDA_API}/quizmyself/progress.php?keyword=${encodeURIComponent(currentKeyword)}`, {
+                        method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
