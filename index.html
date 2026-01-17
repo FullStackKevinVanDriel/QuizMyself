@@ -2857,6 +2857,11 @@ question,answer,choice1,choice2,choice3,choice4,correct
             dropdown.classList.add('show');
         }
 
+        function closeHamburgerMenu() {
+            const dropdown = document.getElementById('hamburger-dropdown');
+            dropdown.classList.remove('show');
+        }
+
         function updateHamburgerMenu() {
             const signinSection = document.getElementById('menu-signin-section');
             const accountSection = document.getElementById('menu-account-section');
