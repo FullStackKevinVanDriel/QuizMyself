@@ -2675,7 +2675,11 @@ question,answer,choice1,choice2,choice3,choice4,correct
                 <div class="keyword-item">
                     <div class="keyword-item-info">
                         <div class="keyword-item-name ${currentKeyword === kw.keyword ? 'active' : ''}">${kw.keyword}</div>
-                        <div class="keyword-item-date">Created: ${new Date(kw.created_at).toLocaleDateString()}${kw.is_migrated ? ' (Claimed)' : ''}</div>
+                        <div class="keyword-item-date">
+                            ${kw.question_count > 0 ? `<span style="color: #4fc3f7;">${kw.question_count} questions</span>` : '<span style="color: #666;">No questions</span>'}
+                            ${kw.source_count > 0 ? ` | <span style="color: #888;">${kw.source_count} source${kw.source_count > 1 ? 's' : ''}</span>` : ''}
+                            | ${new Date(kw.created_at).toLocaleDateString()}${kw.is_migrated ? ' (Claimed)' : ''}
+                        </div>
                     </div>
                     <div class="keyword-item-actions">
                         ${currentKeyword !== kw.keyword ?
