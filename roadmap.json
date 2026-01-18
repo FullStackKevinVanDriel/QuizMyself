@@ -1,18 +1,185 @@
 {
-  "generated": "2026-01-18T03:49:28.653Z",
+  "generated": "2026-01-18T04:28:55.396Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 7,
-    "open": 1,
-    "closed": 6,
+    "total": 18,
+    "open": 11,
+    "closed": 7,
     "byLabel": {
-      "enhancement": 1,
-      "bug": 5,
-      "feedback": 1
+      "bug": 9,
+      "feedback": 5,
+      "enhancement": 4
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 140,
+      "title": "P1: Integrate Plausible analytics",
+      "state": "closed",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T03:36:57Z",
+      "updatedAt": "2026-01-18T04:28:46Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
+      "feedback_id": null
+    },
+    {
+      "number": 163,
+      "title": "[bug] after my quiz questions have been AI generated, i ...",
+      "state": "open",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:34Z",
+      "updatedAt": "2026-01-18T04:05:34Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/163",
+      "feedback_id": 5
+    },
+    {
+      "number": 162,
+      "title": "[feedback] Test - verifying feedback ID is returned",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:34Z",
+      "updatedAt": "2026-01-18T04:05:34Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
+      "feedback_id": 6
+    },
+    {
+      "number": 161,
+      "title": "[bug] this is good; now, when i look at the source mater...",
+      "state": "open",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:33Z",
+      "updatedAt": "2026-01-18T04:05:33Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
+      "feedback_id": 7
+    },
+    {
+      "number": 160,
+      "title": "[feature] Test feature request - live roadmap should show th...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:32Z",
+      "updatedAt": "2026-01-18T04:05:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/160",
+      "feedback_id": 8
+    },
+    {
+      "number": 159,
+      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
+      "state": "open",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:32Z",
+      "updatedAt": "2026-01-18T04:05:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
+      "feedback_id": 9
+    },
+    {
+      "number": 158,
+      "title": "[feedback] we need to upgrade the UI with something non-AI lo...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:31Z",
+      "updatedAt": "2026-01-18T04:05:31Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/158",
+      "feedback_id": 10
+    },
+    {
+      "number": 157,
+      "title": "[bug] Ensure all screens and modals are friendly for mon...",
+      "state": "open",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:30Z",
+      "updatedAt": "2026-01-18T04:05:30Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/157",
+      "feedback_id": 11
+    },
+    {
+      "number": 156,
+      "title": "[feature] Find a way to read YouTube transcripts to import a...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:30Z",
+      "updatedAt": "2026-01-18T04:05:30Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/156",
+      "feedback_id": 12
+    },
+    {
+      "number": 155,
+      "title": "[feature] For Claude cli agent generation to analyze this si...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:29Z",
+      "updatedAt": "2026-01-18T04:05:29Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/155",
+      "feedback_id": 13
+    },
+    {
+      "number": 154,
+      "title": "[feedback] When taking a quiz you are not being shown how man...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:28Z",
+      "updatedAt": "2026-01-18T04:05:28Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/154",
+      "feedback_id": 14
+    },
+    {
+      "number": 153,
+      "title": "[feedback] In the roadmap, everything says “just now”. Pr...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:27Z",
+      "updatedAt": "2026-01-18T04:05:27Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/153",
+      "feedback_id": 15
+    },
     {
       "number": 144,
       "title": "P0: Fix XSS vulnerability in category onclick handlers",
@@ -37,19 +204,6 @@
       "updatedAt": "2026-01-18T03:44:03Z",
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
-      "feedback_id": null
-    },
-    {
-      "number": 140,
-      "title": "P1: Integrate Plausible analytics",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T03:36:57Z",
-      "updatedAt": "2026-01-18T03:36:57Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
       "feedback_id": null
     },
     {
@@ -110,6 +264,13 @@
     }
   ],
   "recentlyCompleted": [
+    {
+      "number": 140,
+      "title": "P1: Integrate Plausible analytics",
+      "closedAt": "2026-01-18T04:28:46Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
+      "feedback_id": null
+    },
     {
       "number": 144,
       "title": "P0: Fix XSS vulnerability in category onclick handlers",
