@@ -14,7 +14,7 @@ module.exports = defineConfig({
     headless: true,
 
     // Base URL for tests - uses local server
-    baseURL: "http://localhost:8080",
+    baseURL: "http://localhost:8095",
 
     // Capture screenshot on failure
     screenshot: "only-on-failure",
@@ -28,8 +28,8 @@ module.exports = defineConfig({
 
   // Serve the app locally before running tests
   webServer: {
-    command: "npx serve -l 8080",
-    url: "http://localhost:8080",
+    command: "npx serve -l 8095",
+    url: "http://localhost:8095",
     reuseExistingServer: !process.env.CI,
   },
 

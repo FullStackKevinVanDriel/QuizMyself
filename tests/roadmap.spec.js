@@ -25,7 +25,7 @@ test.describe("Roadmap Modal Tests", () => {
     await page.click(".hamburger-btn");
     await expect(page.locator("#hamburger-dropdown")).toBeVisible();
 
-    const roadmapMenuItem = page.locator('.menu-item:has-text("Roadmap")');
+    const roadmapMenuItem = page.locator('.menu-item:has-text("Progress")');
     await expect(roadmapMenuItem.first()).toBeVisible();
   });
 
@@ -33,7 +33,7 @@ test.describe("Roadmap Modal Tests", () => {
     await page.click(".hamburger-btn");
     await expect(page.locator("#hamburger-dropdown")).toBeVisible();
 
-    await page.click('.menu-item:has-text("Roadmap")');
+    await page.click('.menu-item:has-text("Progress")');
 
     const roadmapModal = page.locator("#roadmap-modal");
     await expect(roadmapModal).toBeVisible();
@@ -42,7 +42,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("roadmap modal can be closed with X button", async ({ page }) => {
     await page.click(".hamburger-btn");
-    await page.click('.menu-item:has-text("Roadmap")');
+    await page.click('.menu-item:has-text("Progress")');
 
     const roadmapModal = page.locator("#roadmap-modal");
     await expect(roadmapModal).toBeVisible();
@@ -53,7 +53,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("roadmap modal can be closed by clicking overlay", async ({ page }) => {
     await page.click(".hamburger-btn");
-    await page.click('.menu-item:has-text("Roadmap")');
+    await page.click('.menu-item:has-text("Progress")');
 
     const roadmapModal = page.locator("#roadmap-modal");
     await expect(roadmapModal).toBeVisible();
@@ -67,7 +67,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     await page.click(".hamburger-btn");
-    await page.click('.menu-item:has-text("Roadmap")');
+    await page.click('.menu-item:has-text("Progress")');
 
     const roadmapModal = page.locator("#roadmap-modal");
     await expect(roadmapModal).toBeVisible();
@@ -83,9 +83,63 @@ test.describe("Roadmap Modal Tests", () => {
     const contentText = await content.textContent();
     const hasRoadmapData =
       contentText.includes("Open") || contentText.includes("Milestone");
-    const hasFallback = contentText.includes("Roadmap coming soon");
+    const hasFallback = contentText.includes("Progress updates coming soon");
 
     expect(hasRoadmapData || hasFallback).toBe(true);
+  });
+
+  test("progress modal displays product vision section", async ({ page }) => {
+    // Mock the API response to ensure vision section renders
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test feedback",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    const roadmapModal = page.locator("#roadmap-modal");
+    await expect(roadmapModal).toBeVisible();
+
+    // Wait for content to load
+    await page.waitForSelector(".progress-vision", { timeout: 10000 });
+
+    // Verify vision section exists
+    const visionSection = page.locator(".progress-vision");
+    await expect(visionSection).toBeVisible();
+
+    // Verify vision title
+    const visionTitle = page.locator(".progress-vision-title");
+    await expect(visionTitle).toContainText("Product Vision");
+
+    // Verify vision text contains product description
+    const visionText = page.locator(".progress-vision-text");
+    await expect(visionText).toContainText("Empower learners");
+
+    // Verify goals are displayed
+    const goals = page.locator(".progress-goal");
+    await expect(goals).toHaveCount(4);
+
+    // Verify iterative update message
+    const updateMessage = page.locator(".progress-last-update");
+    await expect(updateMessage).toContainText("Updated iteratively");
   });
 
   test("showRoadmapModal function is defined", async ({ page }) => {

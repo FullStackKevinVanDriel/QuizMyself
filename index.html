@@ -1913,6 +1913,60 @@
             color: #888;
         }
 
+        /* Progress Modal Vision Section */
+        .progress-vision {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .progress-vision-title {
+            color: #4fc3f7;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-vision-text {
+            color: #eaeaea;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .progress-goals {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .progress-goal {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(79, 195, 247, 0.1);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: #81d4fa;
+        }
+
+        .progress-goal-icon {
+            font-size: 0.9rem;
+        }
+
+        .progress-last-update {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 10px;
+            text-align: right;
+        }
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -2215,7 +2269,7 @@
                         <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
                     </div>
                     <div class="menu-divider"></div>
-                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Roadmap</div>
+                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Progress</div>
                     <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
                 <!-- Signed In State -->
@@ -2233,7 +2287,7 @@
                     <div class="menu-item" onclick="showSourcesModal(); closeHamburgerMenu();">Quiz Data</div>
                     <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
                     <div class="menu-divider"></div>
-                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Roadmap</div>
+                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Progress</div>
                     <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
             </div>
@@ -3106,7 +3160,7 @@
     <div id="roadmap-modal" class="modal-overlay hidden" onclick="closeRoadmapModalOnOverlay(event)">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
             <div class="modal-header">
-                <h2>Roadmap & Issues</h2>
+                <h2>Progress</h2>
                 <button class="modal-close" onclick="closeRoadmapModal()">&times;</button>
             </div>
             <div class="modal-body" id="roadmap-content">
@@ -4681,7 +4735,7 @@
                     console.error('Failed to load roadmap:', error);
                     document.getElementById('roadmap-content').innerHTML = `
                         <div class="roadmap-empty">
-                            <p>Roadmap coming soon! Submit feedback to help shape our priorities.</p>
+                            <p>Progress updates coming soon! Submit feedback to help shape our priorities.</p>
                             <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
                         </div>
                     `;
@@ -4799,7 +4853,7 @@
             if (!data.milestones?.length && !data.issues?.length) {
                 html = `
                     <div class="roadmap-empty">
-                        <p>Roadmap coming soon! Submit feedback to help shape our priorities.</p>
+                        <p>Progress updates coming soon! Submit feedback to help shape our priorities.</p>
                         <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
                     </div>
                 `;
@@ -4856,6 +4910,24 @@
             const feedback = data.feedback || [];
             const stats = data.stats || {};
             let html = '';
+
+            // Product Vision Section - tied to business objectives
+            html += `
+                <div class="progress-vision">
+                    <div class="progress-vision-title">Product Vision</div>
+                    <div class="progress-vision-text">
+                        Empower learners to master any subject through self-paced quizzing with AI-generated questions,
+                        progress tracking, and spaced repetition.
+                    </div>
+                    <div class="progress-goals">
+                        <span class="progress-goal"><span class="progress-goal-icon">&#9889;</span> Fast quiz creation</span>
+                        <span class="progress-goal"><span class="progress-goal-icon">&#128202;</span> Track progress</span>
+                        <span class="progress-goal"><span class="progress-goal-icon">&#129302;</span> AI-powered learning</span>
+                        <span class="progress-goal"><span class="progress-goal-icon">&#128274;</span> Sync across devices</span>
+                    </div>
+                    <div class="progress-last-update">Updated iteratively based on user feedback</div>
+                </div>
+            `;
 
             // Stats bar
             html += `
