@@ -689,6 +689,10 @@
             z-index: 1000;
         }
 
+        .modal-overlay.modal-top {
+            z-index: 1500;
+        }
+
         .modal-content {
             background: #16213e;
             border-radius: 15px;
@@ -1702,8 +1706,8 @@
     <div id="toast-container" class="toast-container"></div>
 
     <!-- Confirm Modal -->
-    <div id="confirm-modal" class="modal-overlay hidden">
-        <div class="confirm-modal-content">
+    <div id="confirm-modal" class="modal-overlay modal-top hidden">
+        <div class="confirm-modal-content" onclick="event.stopPropagation()">
             <div id="confirm-modal-icon" class="confirm-modal-icon"></div>
             <div id="confirm-modal-title" class="confirm-modal-title"></div>
             <div class="confirm-modal-buttons">
@@ -1714,8 +1718,8 @@
     </div>
 
     <!-- Selection Modal -->
-    <div id="selection-modal" class="modal-overlay hidden">
-        <div class="selection-modal-content">
+    <div id="selection-modal" class="modal-overlay modal-top hidden">
+        <div class="selection-modal-content" onclick="event.stopPropagation()">
             <div class="selection-modal-header">
                 <h3 id="selection-modal-title">Select an Option</h3>
                 <p id="selection-modal-subtitle"></p>
@@ -2562,36 +2566,44 @@
                 confirmBtn.textContent = options.confirmText || 'Select';
                 confirmBtn.disabled = true;
 
-                // Render items
+                // Render items with escaped HTML attributes
                 listEl.innerHTML = items.map((item, index) => `
-                    <div class="selection-modal-item" data-value="${item.value}" data-index="${index}">
-                        <div class="selection-modal-item-title">${item.title}</div>
-                        ${item.subtitle ? `<div class="selection-modal-item-subtitle">${item.subtitle}</div>` : ''}
+                    <div class="selection-modal-item" data-value="${escapeAttr(item.value)}" data-index="${index}">
+                        <div class="selection-modal-item-title">${escapeHtml(item.title)}</div>
+                        ${item.subtitle ? `<div class="selection-modal-item-subtitle">${escapeHtml(item.subtitle)}</div>` : ''}
                     </div>
                 `).join('');
 
-                // Handle item selection
+                // Handle item selection with proper event handling
+                const itemClickHandlers = [];
                 listEl.querySelectorAll('.selection-modal-item').forEach(el => {
-                    el.onclick = () => {
+                    const handler = (e) => {
+                        e.stopPropagation();
                         listEl.querySelectorAll('.selection-modal-item').forEach(i => i.classList.remove('selected'));
                         el.classList.add('selected');
                         selectedValue = el.dataset.value;
                         confirmBtn.disabled = false;
                     };
+                    el.addEventListener('click', handler);
+                    itemClickHandlers.push({ el, handler });
                 });
 
                 // Show modal
                 modal.classList.remove('hidden');
 
-                // Handle responses
+                // Handle responses with cleanup
                 const cleanup = () => {
                     modal.classList.add('hidden');
+                    // Clear all event handlers
                     cancelBtn.onclick = null;
                     confirmBtn.onclick = null;
+                    itemClickHandlers.forEach(({ el, handler }) => {
+                        el.removeEventListener('click', handler);
+                    });
                 };
 
-                cancelBtn.onclick = () => { cleanup(); resolve(null); };
-                confirmBtn.onclick = () => { cleanup(); resolve(selectedValue); };
+                cancelBtn.onclick = (e) => { e.stopPropagation(); cleanup(); resolve(null); };
+                confirmBtn.onclick = (e) => { e.stopPropagation(); cleanup(); resolve(selectedValue); };
             });
         }
 
@@ -5302,6 +5314,17 @@
             return div.innerHTML;
         }
 
+        // Escape string for use in HTML attributes (escapes quotes too)
+        function escapeAttr(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         // Escape string for use in JavaScript onclick handlers
         function escapeJsString(str) {
             if (!str) return '';
@@ -6054,22 +6077,22 @@
                 }
             }
 
-            // Add to existing questions
-            const startId = window.questions.length > 0 ? Math.max(...window.questions.map(q => q.id)) + 1 : 1;
-            questions.forEach((q, idx) => {
+            // Add to existing questions (questions is the global array)
+            const startId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
+            aiGenerationState.questions.forEach((q, idx) => {
                 q.id = startId + idx;
                 q.category = 'AI Generated';
-                window.questions.push(q);
+                questions.push(q);
             });
 
-            state.importedQuestionCount = (state.importedQuestionCount || 0) + questions.length;
+            state.importedQuestionCount = (state.importedQuestionCount || 0) + aiGenerationState.questions.length;
 
             // Update UI
             updateStats();
             initCategoryFilter();
             saveState();
 
-            showToast(`Imported ${questions.length} AI-generated questions!`, 'success');
+            showToast(`Imported ${aiGenerationState.questions.length} AI-generated questions!`, 'success');
             closeAIGenerateModal();
             closeSourcesModal();
         }
