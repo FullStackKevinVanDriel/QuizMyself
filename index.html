@@ -4367,12 +4367,16 @@
                 <div class="stat-label">Total</div>
             </div>
             <div class="stat">
-                <div class="stat-value" id="mastered-count">0</div>
-                <div class="stat-label">Mastered</div>
+                <div class="stat-value" id="right-count">0</div>
+                <div class="stat-label">Right</div>
             </div>
             <div class="stat">
-                <div class="stat-value" id="remaining-count">0</div>
-                <div class="stat-label">Remaining</div>
+                <div class="stat-value" id="wrong-count">0</div>
+                <div class="stat-label">Wrong</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="mastered-count">0</div>
+                <div class="stat-label">Mastered</div>
             </div>
             <div class="stat">
                 <div class="stat-value" id="accuracy">0%</div>
@@ -6382,6 +6386,7 @@
                 saveState(true);
                 renderQuizEditorQuestions();
                 updateStats();
+                initCategoryFilter(); // Refresh categories after deletion
                 updateKeywords(); // Update question count in dropdown
                 showToast('Question deleted.', 'success');
             }
@@ -9275,9 +9280,18 @@
         function updateStats() {
             const filteredQuestions = getFilteredQuestions();
             document.getElementById('total-count').textContent = filteredQuestions.length;
+
+            // Right and wrong counts
+            const rightCount = state.totalCorrect || 0;
+            const wrongCount = (state.totalAnswered || 0) - rightCount;
+            document.getElementById('right-count').textContent = rightCount;
+            document.getElementById('wrong-count').textContent = wrongCount;
+
+            // Mastered count
             const masteredInFilter = state.mastered.filter(id => filteredQuestions.some(q => q.id === id));
             document.getElementById('mastered-count').textContent = masteredInFilter.length;
-            document.getElementById('remaining-count').textContent = filteredQuestions.length - masteredInFilter.length;
+
+            // Accuracy = right / total answered
             const accuracy = state.totalAnswered > 0
                 ? Math.round((state.totalCorrect / state.totalAnswered) * 100)
                 : 0;
@@ -10704,6 +10718,7 @@
 
             // Update UI and save immediately
             updateStats();
+            initCategoryFilter(); // Refresh categories from imported questions
             saveState(true);
 
             plausible('Import', { props: { count: importCount, mode: replaceMode ? 'replace' : 'append' } });
@@ -11797,9 +11812,11 @@
 
                 showToast(`Source linked successfully!`, 'success');
                 await loadUserKeywords();
-                loadSources();
                 updateKeywordDropdown();
                 updateSourceDependentButtons();
+
+                // Re-open sources modal to show updated state
+                showSourcesModal();
 
             } catch (err) {
                 showToast(`Failed to link: ${err.message}`, 'error');
