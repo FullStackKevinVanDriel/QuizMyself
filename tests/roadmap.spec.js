@@ -181,6 +181,104 @@ test.describe("Roadmap Modal Tests", () => {
     expect(results.week).toContain("week");
   });
 
+  test("formatFullDate function is defined and returns full date", async ({
+    page,
+  }) => {
+    const result = await page.evaluate(() => {
+      const testDate = "2025-01-15T10:30:00Z";
+      return window.formatFullDate(testDate);
+    });
+
+    // Should contain full date components
+    expect(result).toContain("January");
+    expect(result).toContain("15");
+    expect(result).toContain("2025");
+  });
+
+  test("timestamps show relative time with full date tooltip", async ({
+    page,
+  }) => {
+    // Mock the API response with a specific date
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test feature",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date(
+                Date.now() - 2 * 24 * 60 * 60 * 1000,
+              ).toISOString(), // 2 days ago
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item", { timeout: 10000 });
+
+    // Check that timestamp has relative time text
+    const timestamp = page.locator(".roadmap-item-meta .timestamp-relative");
+    await expect(timestamp).toContainText("days ago");
+
+    // Check that timestamp has title attribute with full date
+    const title = await timestamp.getAttribute("title");
+    expect(title).toBeTruthy();
+    expect(title.length).toBeGreaterThan(10); // Full date should be longer than relative time
+  });
+
+  test("timeline items show timestamp with full date tooltip", async ({
+    page,
+  }) => {
+    // Mock with in-progress item to appear in timeline
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "In progress feature",
+              type: "feature",
+              status: "in_progress",
+              status_label: "In Progress",
+              is_resolved: false,
+              created_at: new Date(
+                Date.now() - 3 * 24 * 60 * 60 * 1000,
+              ).toISOString(), // 3 days ago
+            },
+          ],
+          stats: { open: 0, in_progress: 1, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".timeline-item", { timeout: 10000 });
+
+    // Check that timeline date has title attribute
+    const timelineDate = page.locator(".timeline-date.timestamp-relative");
+    await expect(timelineDate).toContainText("days ago");
+
+    const title = await timelineDate.getAttribute("title");
+    expect(title).toBeTruthy();
+  });
+
   test("progress modal displays milestone card with progress ring", async ({
     page,
   }) => {

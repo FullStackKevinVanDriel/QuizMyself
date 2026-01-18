@@ -1833,6 +1833,16 @@
             font-size: 0.8rem;
         }
 
+        .timestamp-relative {
+            cursor: help;
+            border-bottom: 1px dotted #666;
+        }
+
+        .timestamp-relative:hover {
+            color: #4fc3f7;
+            border-bottom-color: #4fc3f7;
+        }
+
         .roadmap-labels {
             display: flex;
             gap: 6px;
@@ -6053,6 +6063,20 @@
             }
         }
 
+        // Format date as full human-readable string for tooltips
+        function formatFullDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
         function renderRoadmap(data) {
             const container = document.getElementById('roadmap-content');
             let html = '';
@@ -6531,6 +6555,7 @@
         function renderTimelineItem(item) {
             const statusClass = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in-progress' : 'pending');
             const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
+            const fullDate = item.created_at ? formatFullDate(item.created_at) : '';
             const typeIdBadgeClass = item.type || 'feedback';
             const typeId = getTypePrefixedId(item);
 
@@ -6553,7 +6578,7 @@
                                 ${escapeHtml(item.title)}
                                 <span class="item-priority ${priority.level}">${priority.label}</span>
                             </span>
-                            <span class="timeline-date">${timeAgo}</span>
+                            <span class="timeline-date timestamp-relative" title="${escapeAttr(fullDate)}">${timeAgo}</span>
                             ${renderStarButton(item)}
                         </div>
                         <div class="timeline-description">
@@ -6689,6 +6714,7 @@
             const typeIdBadgeClass = item.type || 'feedback';
             const typeId = getTypePrefixedId(item);
             const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
+            const fullDate = item.created_at ? formatFullDate(item.created_at) : '';
 
             // Priority indicator
             const priorityScore = calculatePriorityScore(item);
@@ -6723,25 +6749,21 @@
 
             // Created timestamp
             if (item.created_at) {
-                const createdDate = new Date(item.created_at).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                });
                 registrationHtml += `
                     <div class="item-registration-entry">
                         <span class="icon">📅</span>
-                        <span>${createdDate}</span>
+                        <span class="timestamp-relative" title="${escapeAttr(fullDate)}">Created ${timeAgo}</span>
                     </div>
                 `;
             }
 
             // Updated timestamp (if different from created)
             if (item.updated_at && item.updated_at !== item.created_at) {
+                const updatedFullDate = formatFullDate(item.updated_at);
                 registrationHtml += `
                     <div class="item-registration-entry">
                         <span class="icon">🔄</span>
-                        <span>Updated ${formatRelativeTime(item.updated_at)}</span>
+                        <span class="timestamp-relative" title="${escapeAttr(updatedFullDate)}">Updated ${formatRelativeTime(item.updated_at)}</span>
                     </div>
                 `;
             }
@@ -6810,7 +6832,7 @@
                             <span class="item-priority ${priority.level}" aria-label="${priority.label} priority">${priority.label}</span>
                         </div>
                         <div class="roadmap-item-meta">
-                            ${statusHtml} | <span aria-label="Created ${timeAgo}">${timeAgo}</span>
+                            ${statusHtml} | <span class="timestamp-relative" title="${escapeAttr(fullDate)}" aria-label="Created ${timeAgo}">${timeAgo}</span>
                             ${renderStarButton(item)}
                         </div>
                     </div>
