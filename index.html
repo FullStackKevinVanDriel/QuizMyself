@@ -3833,6 +3833,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 </head>
 <body>
+    <!-- Skip Link for Accessibility (WCAG 2.4.1 Bypass Blocks) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
@@ -3970,7 +3973,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <main id="main-content" class="container" role="main" tabindex="-1">
         <header>
             <h1>QuizMyself</h1>
             <p class="subtitle">Quiz Yourself on Anything</p>
@@ -4126,7 +4129,7 @@
                 <div id="course-content-list"></div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Study Material Modal -->
     <div id="study-modal" class="modal-overlay hidden" onclick="closeModalOnOverlay(event)">
@@ -4835,12 +4838,11 @@
     <!-- Roadmap Modal -->
     <div id="roadmap-modal" class="modal-overlay hidden" onclick="closeRoadmapModalOnOverlay(event)" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
-            <a href="#roadmap-main-content" class="skip-link">Skip to main content</a>
             <div class="modal-header">
                 <h2 id="roadmap-modal-title">Progress</h2>
                 <button class="modal-close" onclick="closeRoadmapModal()" aria-label="Close progress modal">&times;</button>
             </div>
-            <div class="modal-body" id="roadmap-content" role="main" id="roadmap-main-content">
+            <div class="modal-body" id="roadmap-content">
                 <!-- Dynamic content loaded here -->
             </div>
         </div>
