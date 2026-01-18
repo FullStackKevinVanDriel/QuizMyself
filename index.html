@@ -6247,18 +6247,32 @@
 
         async function loadRoadmapData() {
             try {
-                // Fetch and reconcile feedback from Vandromeda API (syncs with GitHub)
-                const response = await fetch(`${VANDROMEDA_API}/quizmyself/reconcile-feedback.php?product=quizmyself`);
-                if (!response.ok) throw new Error('Failed to load roadmap');
-
-                const data = await response.json();
-                if (data.success) {
-                    renderRoadmapFromFeedback(data);
-                    // Announce to screen readers
-                    announceToScreenReader(`Loaded ${data.feedback?.length || 0} progress items`);
-                } else {
-                    throw new Error(data.error || 'Failed to load');
+                // Try reconcile endpoint first (syncs with GitHub)
+                let data = null;
+                try {
+                    const reconcileResponse = await fetch(`${VANDROMEDA_API}/quizmyself/reconcile-feedback.php?product=quizmyself`);
+                    if (reconcileResponse.ok) {
+                        const reconcileData = await reconcileResponse.json();
+                        if (reconcileData.success && reconcileData.feedback?.length > 0) {
+                            data = reconcileData;
+                            console.log('Loaded via reconcile:', reconcileData.reconciliation);
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Reconcile endpoint failed, falling back:', e.message);
                 }
+
+                // Fall back to simple feedback endpoint if reconcile failed
+                if (!data) {
+                    const feedbackResponse = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`);
+                    if (!feedbackResponse.ok) throw new Error('Failed to load roadmap');
+                    data = await feedbackResponse.json();
+                    if (!data.success) throw new Error(data.error || 'Failed to load');
+                    console.log('Loaded via fallback feedback endpoint');
+                }
+
+                renderRoadmapFromFeedback(data);
+                announceToScreenReader(`Loaded ${data.feedback?.length || 0} progress items`);
             } catch (error) {
                 console.error('Failed to load roadmap:', error);
                 document.getElementById('roadmap-content').innerHTML = renderErrorState(error);
