@@ -2223,6 +2223,18 @@
                     <input type="file" id="source-file-upload" accept=".pdf,.html,.htm,.txt,.json,.csv" style="display: none;" onchange="handleSourceFileUpload(event)">
                 </div>
 
+                <!-- Import from URL -->
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; gap: 10px;">
+                        <input type="url" id="source-url-input" placeholder="https://example.com/article"
+                               style="flex: 1; padding: 12px; background: #1a1a2e; border: 1px solid #333; border-radius: 6px; color: #fff; font-size: 14px;">
+                        <button class="btn" id="scrape-url-btn" onclick="scrapeUrlSource()" style="white-space: nowrap;">
+                            🌐 Import URL
+                        </button>
+                    </div>
+                    <div id="url-scrape-status" style="display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 0.9rem;"></div>
+                </div>
+
                 <!-- Sources List -->
                 <div id="sources-list" style="max-height: 300px; overflow-y: auto;">
                     <div style="text-align: center; padding: 40px; color: #888;">Loading sources...</div>
@@ -2711,6 +2723,7 @@
 
         // Show a selection modal (returns a Promise with selected value or null)
         function showSelection(title, subtitle, items, options = {}) {
+            console.log('[DEBUG showSelection] Called with:', { title, subtitle, items, options });
             return new Promise((resolve) => {
                 const modal = document.getElementById('selection-modal');
                 const titleEl = document.getElementById('selection-modal-title');
@@ -2718,6 +2731,21 @@
                 const listEl = document.getElementById('selection-modal-list');
                 const cancelBtn = document.getElementById('selection-modal-cancel');
                 const confirmBtn = document.getElementById('selection-modal-confirm');
+
+                console.log('[DEBUG showSelection] Elements:', {
+                    modal: !!modal,
+                    titleEl: !!titleEl,
+                    subtitleEl: !!subtitleEl,
+                    listEl: !!listEl,
+                    cancelBtn: !!cancelBtn,
+                    confirmBtn: !!confirmBtn
+                });
+
+                if (!modal) {
+                    console.error('[DEBUG showSelection] Modal element not found!');
+                    resolve(null);
+                    return;
+                }
 
                 let selectedValue = null;
 
@@ -2751,6 +2779,8 @@
 
                 // Show modal
                 modal.classList.remove('hidden');
+                console.log('[DEBUG showSelection] Modal shown, classes:', modal.className);
+                console.log('[DEBUG showSelection] Modal computed display:', window.getComputedStyle(modal).display);
 
                 // Handle responses with cleanup
                 const cleanup = () => {
@@ -5729,6 +5759,82 @@
             event.target.value = '';
         }
 
+        // Scrape content from a URL
+        async function scrapeUrlSource() {
+            const urlInput = document.getElementById('source-url-input');
+            const statusDiv = document.getElementById('url-scrape-status');
+            const scrapeBtn = document.getElementById('scrape-url-btn');
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                showToast('Please enter a URL.', 'warning');
+                return;
+            }
+
+            // Basic URL validation
+            try {
+                new URL(url);
+            } catch {
+                showToast('Please enter a valid URL.', 'error');
+                return;
+            }
+
+            if (!currentUser) {
+                showToast('Please sign in to import URLs.', 'warning');
+                return;
+            }
+
+            // Show loading state
+            scrapeBtn.disabled = true;
+            scrapeBtn.innerHTML = '<span class="loading-spinner"></span> Importing...';
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = '#1a1a2e';
+            statusDiv.style.color = '#ccc';
+            statusDiv.innerHTML = 'Fetching content from URL...';
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${API_BASE}/quizmyself/scrape-url.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ url })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to scrape URL');
+                }
+
+                // Success
+                statusDiv.style.background = '#1a3a1a';
+                statusDiv.style.color = '#4CAF50';
+                if (data.existing) {
+                    statusDiv.innerHTML = `<strong>${data.title || data.domain}</strong> already imported`;
+                } else {
+                    statusDiv.innerHTML = `<strong>${data.title || data.domain}</strong> imported (${Math.round(data.contentLength / 1024)}KB)`;
+                }
+
+                // Clear input and refresh sources
+                urlInput.value = '';
+                loadSources();
+
+                showToast(data.existing ? 'URL already imported!' : 'URL imported successfully!', 'success');
+
+            } catch (err) {
+                statusDiv.style.background = '#3a1a1a';
+                statusDiv.style.color = '#f44336';
+                statusDiv.innerHTML = err.message;
+                showToast(`Import failed: ${err.message}`, 'error');
+            } finally {
+                scrapeBtn.disabled = false;
+                scrapeBtn.innerHTML = '🌐 Import URL';
+            }
+        }
+
         // Toggle import section visibility
         function toggleImportSection() {
             const section = document.getElementById('import-section');
@@ -5894,14 +6000,20 @@
                     return;
                 }
 
-                listEl.innerHTML = data.sources.map(source => `
+                listEl.innerHTML = data.sources.map(source => {
+                    const isUrl = source.sourceType === 'url';
+                    const icon = isUrl ? '🌐' : getContentTypeIcon(source.contentType);
+                    const subtitle = isUrl && source.sourceDomain ? source.sourceDomain : null;
+                    return `
                     <div class="source-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #2a2a2a; border-radius: 8px; margin-bottom: 10px;">
                         <div style="flex: 1; min-width: 0;">
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
-                                <span style="font-weight: bold; color: #fff;">${getContentTypeIcon(source.contentType)} ${escapeHtml(source.name)}</span>
+                                <span style="font-weight: bold; color: #fff;">${icon} ${escapeHtml(source.name)}</span>
                                 ${source.linkedKeyword ? `<span style="background: #0f3460; color: #4fc3f7; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem;">Linked</span>` : ''}
+                                ${isUrl ? `<span style="background: #1a3a1a; color: #4CAF50; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem;">URL</span>` : ''}
                             </div>
                             <div style="font-size: 0.85rem; color: #888;">
+                                ${subtitle ? `<span style="color: #888;">${escapeHtml(subtitle)}</span> | ` : ''}
                                 ${source.linkedKeyword ?
                                     `<span style="color: #4fc3f7;">${escapeHtml(source.linkedKeywordDisplay || source.linkedKeyword)}</span> | ` :
                                     '<span style="color: #666;">Unlinked</span> | '
@@ -5916,7 +6028,7 @@
                             <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeJsString(source.name)}')">Delete</button>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
 
             } catch (err) {
                 console.error('Error loading sources:', err);
