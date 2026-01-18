@@ -1913,6 +1913,659 @@
             color: #888;
         }
 
+        /* Progress Modal Vision Section */
+        .progress-vision {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .progress-vision-title {
+            color: #4fc3f7;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-vision-text {
+            color: #eaeaea;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .progress-goals {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .progress-goal {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(79, 195, 247, 0.1);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: #81d4fa;
+        }
+
+        .progress-goal-icon {
+            font-size: 0.9rem;
+        }
+
+        .progress-last-update {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        /* Progress Timeline */
+        .progress-timeline {
+            position: relative;
+            padding: 15px 0 15px 25px;
+            margin-bottom: 20px;
+        }
+
+        .progress-timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #4fc3f7 0%, #0f3460 100%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -17px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4fc3f7;
+            border: 3px solid #1a1a2e;
+            z-index: 1;
+        }
+
+        .timeline-item.completed::before {
+            background: #4caf50;
+        }
+
+        .timeline-item.in-progress::before {
+            background: #ffa726;
+            box-shadow: 0 0 8px rgba(255, 167, 38, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 167, 38, 0.5); }
+            50% { box-shadow: 0 0 16px rgba(255, 167, 38, 0.8); }
+        }
+
+        .timeline-item.pending::before {
+            background: #666;
+        }
+
+        .timeline-content {
+            background: #0f3460;
+            border-radius: 8px;
+            padding: 12px 15px;
+            border-left: 3px solid #4fc3f7;
+        }
+
+        .timeline-item.completed .timeline-content {
+            border-left-color: #4caf50;
+        }
+
+        .timeline-item.in-progress .timeline-content {
+            border-left-color: #ffa726;
+        }
+
+        .timeline-item.pending .timeline-content {
+            border-left-color: #666;
+            opacity: 0.7;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .timeline-title {
+            color: #eaeaea;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .timeline-date {
+            color: #888;
+            font-size: 0.75rem;
+        }
+
+        .timeline-description {
+            color: #aaa;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Milestone Progress */
+        .milestone-card {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+
+        .milestone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .milestone-title {
+            color: #4fc3f7;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .milestone-title-icon {
+            font-size: 1.1rem;
+        }
+
+        .milestone-progress-ring {
+            width: 50px;
+            height: 50px;
+            position: relative;
+        }
+
+        .milestone-progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .milestone-progress-ring circle {
+            fill: none;
+            stroke-width: 5;
+        }
+
+        .milestone-progress-ring .bg {
+            stroke: #1a1a2e;
+        }
+
+        .milestone-progress-ring .progress {
+            stroke: #4fc3f7;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .milestone-progress-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #eaeaea;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .milestone-description {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .milestone-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .milestone-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .milestone-stat-icon {
+            font-size: 0.9rem;
+        }
+
+        /* SDLC Stage Tracking */
+        .sdlc-stages {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 10px;
+            padding: 8px 0;
+        }
+
+        .sdlc-stage {
+            flex: 1;
+            height: 4px;
+            background: #1a1a2e;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .sdlc-stage.completed {
+            background: linear-gradient(90deg, #4caf50, #81c784);
+        }
+
+        .sdlc-stage.current {
+            background: linear-gradient(90deg, #ffa726, #ffcc80);
+            animation: stagePulse 2s infinite;
+        }
+
+        @keyframes stagePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .sdlc-stage-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: #666;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .sdlc-stage-labels span {
+            flex: 1;
+            text-align: center;
+        }
+
+        .sdlc-stage-labels span.completed {
+            color: #4caf50;
+        }
+
+        .sdlc-stage-labels span.current {
+            color: #ffa726;
+            font-weight: 600;
+        }
+
+        /* Item Priority Indicator */
+        .item-priority {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .item-priority.high {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+        }
+
+        .item-priority.medium {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .item-priority.low {
+            background: rgba(158, 158, 158, 0.2);
+            color: #9e9e9e;
+        }
+
+        /* Unique Type ID Badge */
+        .type-id-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .type-id-badge.bug {
+            background: rgba(233, 69, 96, 0.15);
+            color: #e94560;
+        }
+
+        .type-id-badge.feature {
+            background: rgba(76, 175, 80, 0.15);
+            color: #4caf50;
+        }
+
+        .type-id-badge.question {
+            background: rgba(79, 195, 247, 0.15);
+            color: #4fc3f7;
+        }
+
+        .type-id-badge.request {
+            background: rgba(156, 39, 176, 0.15);
+            color: #ce93d8;
+        }
+
+        .type-id-badge.feedback {
+            background: rgba(158, 158, 158, 0.15);
+            color: #9e9e9e;
+        }
+
+        /* Enhanced Item Meta Section */
+        .item-registration {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .item-registration-entry {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .item-registration-entry a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+
+        .item-registration-entry a:hover {
+            text-decoration: underline;
+        }
+
+        .item-registration-entry .icon {
+            opacity: 0.7;
+        }
+
+        /* Category Filter Bar */
+        .progress-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            background: rgba(15, 52, 96, 0.5);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .progress-filter-bar .filter-label {
+            color: #888;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
+        }
+
+        .progress-filter-chip {
+            background: #1a1a2e;
+            color: #888;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .progress-filter-chip:hover {
+            border-color: #4fc3f7;
+            color: #eaeaea;
+        }
+
+        .progress-filter-chip.active {
+            background: rgba(79, 195, 247, 0.15);
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+
+        .progress-filter-chip .count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        .progress-filter-chip.active .count {
+            background: rgba(79, 195, 247, 0.3);
+        }
+
+        /* Category-specific filter chip colors */
+        .progress-filter-chip[data-type="bug"].active {
+            background: rgba(233, 69, 96, 0.15);
+            border-color: #e94560;
+            color: #e94560;
+        }
+        .progress-filter-chip[data-type="feature"].active {
+            background: rgba(76, 175, 80, 0.15);
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+        .progress-filter-chip[data-type="question"].active {
+            background: rgba(79, 195, 247, 0.15);
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+        .progress-filter-chip[data-type="request"].active {
+            background: rgba(156, 39, 176, 0.15);
+            border-color: #ce93d8;
+            color: #ce93d8;
+        }
+
+        /* Expandable Item */
+        .roadmap-item.expandable {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .roadmap-item.expandable:hover {
+            background: #1e3a5f;
+        }
+
+        .roadmap-item-expand-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #4fc3f7;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .roadmap-item-expand-toggle .arrow {
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .roadmap-item.expanded .roadmap-item-expand-toggle .arrow {
+            transform: rotate(90deg);
+        }
+
+        .item-lifecycle {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .roadmap-item.expanded .item-lifecycle {
+            display: block;
+        }
+
+        .lifecycle-section {
+            margin-bottom: 12px;
+        }
+
+        .lifecycle-section-title {
+            color: #4fc3f7;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .lifecycle-event {
+            display: flex;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            border-left: 2px solid #333;
+            padding-left: 12px;
+            margin-left: 4px;
+        }
+
+        .lifecycle-event.birth {
+            border-left-color: #4caf50;
+        }
+
+        .lifecycle-event.update {
+            border-left-color: #ff9800;
+        }
+
+        .lifecycle-event.status-change {
+            border-left-color: #4fc3f7;
+        }
+
+        .lifecycle-event.resolved {
+            border-left-color: #27ae60;
+        }
+
+        .lifecycle-event-icon {
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+        }
+
+        .lifecycle-event-content {
+            flex: 1;
+        }
+
+        .lifecycle-event-description {
+            color: #eaeaea;
+        }
+
+        .lifecycle-event-timestamp {
+            color: #666;
+            font-size: 0.7rem;
+            margin-top: 2px;
+        }
+
+        /* Dependencies */
+        .item-dependencies {
+            margin-top: 10px;
+        }
+
+        .dependency-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+
+        .dependency-item .dep-icon {
+            color: #ff9800;
+        }
+
+        .dependency-item .dep-icon.resolved {
+            color: #4caf50;
+        }
+
+        .dependency-item .dep-label {
+            color: #888;
+            font-size: 0.7rem;
+        }
+
+        .dependency-item .dep-title {
+            flex: 1;
+            color: #eaeaea;
+        }
+
+        .dependency-item .dep-status {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .dependency-item .dep-status.pending {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .dependency-item .dep-status.done {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        /* Item Progress Bar (individual item completion) */
+        .item-progress-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .item-progress-track {
+            flex: 1;
+            height: 6px;
+            background: #1a1a2e;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .item-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #4caf50);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .item-progress-text {
+            color: #888;
+            font-size: 0.7rem;
+            min-width: 35px;
+            text-align: right;
+        }
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -2097,6 +2750,668 @@
                 width: 100%;
             }
         }
+
+        /* Story 5: Integrations & Automation */
+
+        /* Star Button */
+        .item-star-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px 8px;
+            margin-left: auto;
+            transition: transform 0.2s, color 0.2s;
+            color: #666;
+        }
+
+        .item-star-btn:hover {
+            transform: scale(1.2);
+            color: #ffc107;
+        }
+
+        .item-star-btn.starred {
+            color: #ffc107;
+        }
+
+        .item-star-btn.starred:hover {
+            color: #ff9800;
+        }
+
+        .item-star-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .star-count {
+            font-size: 0.75rem;
+            color: #888;
+            margin-left: 2px;
+        }
+
+        /* GitHub Integration Badge */
+        .github-integration-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: #58a6ff;
+        }
+
+        .github-integration-badge.synced {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+
+        .create-issue-btn {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            border: none;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .create-issue-btn:hover {
+            background: linear-gradient(135deg, #2ea043, #3fb950);
+            transform: translateY(-1px);
+        }
+
+        .create-issue-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Comments Section */
+        .item-comments {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comments-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .comments-count {
+            color: #888;
+            font-size: 0.75rem;
+        }
+
+        .comment-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .comment-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4fc3f7, #0f3460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comment-author {
+            color: #4fc3f7;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .comment-timestamp {
+            color: #666;
+            font-size: 0.7rem;
+            margin-left: auto;
+        }
+
+        .comment-body {
+            color: #ccc;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            padding-left: 32px;
+        }
+
+        .add-comment-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .add-comment-input {
+            flex: 1;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #eaeaea;
+            font-size: 0.8rem;
+        }
+
+        .add-comment-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        .add-comment-btn {
+            background: #4fc3f7;
+            border: none;
+            color: #0a1628;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .add-comment-btn:hover {
+            background: #81d4fa;
+        }
+
+        .add-comment-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Assignee Section */
+        .item-assignees {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .assignee-label {
+            color: #888;
+            font-size: 0.7rem;
+        }
+
+        .assignee-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ce93d8, #0f3460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: white;
+            font-weight: 600;
+            border: 2px solid #16213e;
+            margin-left: -6px;
+        }
+
+        .assignee-avatar:first-of-type {
+            margin-left: 0;
+        }
+
+        .assignee-avatar.add {
+            background: transparent;
+            border: 2px dashed #666;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .assignee-avatar.add:hover {
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+
+        /* Automation Indicator */
+        .automation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            font-size: 0.65rem;
+            color: #ffc107;
+        }
+
+        .automation-badge.active {
+            animation: automationPulse 2s infinite;
+        }
+
+        @keyframes automationPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Sign-in prompt for features */
+        .feature-signin-prompt {
+            color: #888;
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        .feature-signin-prompt a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+
+        .feature-signin-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== STORY 6: FLEXIBILITY & ITERATION ========== */
+
+        /* View Mode Toggle */
+        .progress-view-toggle {
+            display: flex;
+            gap: 4px;
+            background: #1a1a2e;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .progress-view-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .progress-view-btn:hover {
+            color: #eaeaea;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-view-btn.active {
+            background: #4fc3f7;
+            color: #0a1628;
+            font-weight: 500;
+        }
+
+        .progress-view-btn:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Themes Section */
+        .progress-themes {
+            margin-bottom: 20px;
+        }
+
+        .theme-card {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #4fc3f7;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .theme-card:hover {
+            transform: translateX(3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-card:focus-within {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        .theme-card.theme-performance {
+            border-left-color: #e94560;
+        }
+
+        .theme-card.theme-ux {
+            border-left-color: #4caf50;
+        }
+
+        .theme-card.theme-reliability {
+            border-left-color: #ff9800;
+        }
+
+        .theme-card.theme-growth {
+            border-left-color: #9c27b0;
+        }
+
+        .theme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .theme-title {
+            color: #eaeaea;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-icon {
+            font-size: 1rem;
+        }
+
+        .theme-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .theme-description {
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .theme-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #1a1a2e;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .theme-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #81d4fa);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .theme-progress-text {
+            color: #888;
+            font-size: 0.7rem;
+            min-width: 40px;
+        }
+
+        .theme-items {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .theme-item-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .theme-item-status.completed {
+            background: #4caf50;
+        }
+
+        .theme-item-status.in-progress {
+            background: #ffa726;
+            animation: pulse 2s infinite;
+        }
+
+        .theme-item-status.pending {
+            background: #666;
+        }
+
+        /* Custom Fields Section */
+        .custom-fields-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .custom-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .custom-field:last-child {
+            border-bottom: none;
+        }
+
+        .custom-field-label {
+            color: #888;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .custom-field-value {
+            color: #eaeaea;
+            font-size: 0.8rem;
+        }
+
+        .custom-field-value.editable {
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .custom-field-value.editable:hover {
+            background: rgba(79, 195, 247, 0.1);
+        }
+
+        .custom-field-value.editable:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Automation Rules */
+        .automation-rules-section {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .automation-rule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: rgba(255, 193, 7, 0.05);
+            border: 1px solid rgba(255, 193, 7, 0.15);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+
+        .automation-rule-icon {
+            color: #ffc107;
+            font-size: 1rem;
+        }
+
+        .automation-rule-text {
+            flex: 1;
+            color: #ccc;
+        }
+
+        .automation-rule-toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+        }
+
+        .automation-rule-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .automation-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #333;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .automation-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background: #666;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .automation-rule-toggle input:checked + .automation-toggle-slider {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .automation-rule-toggle input:checked + .automation-toggle-slider:before {
+            transform: translateX(16px);
+            background: #4caf50;
+        }
+
+        .automation-rule-toggle input:focus + .automation-toggle-slider {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Accessibility: Skip Links */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #4fc3f7;
+            color: #0a1628;
+            padding: 8px 16px;
+            z-index: 3000;
+            border-radius: 0 0 4px 0;
+            font-weight: 500;
+            text-decoration: none;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Accessibility: Focus Indicators */
+        .roadmap-item:focus,
+        .timeline-item:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        .progress-filter-chip:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Accessibility: Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .timeline-item.in-progress::before,
+            .sdlc-stage.current,
+            .automation-badge.active,
+            .theme-item-status.in-progress {
+                animation: none;
+            }
+
+            .theme-card,
+            .roadmap-item,
+            .item-progress-fill,
+            .theme-progress-fill {
+                transition: none;
+            }
+        }
+
+        /* Accessibility: High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .roadmap-item,
+            .timeline-content,
+            .theme-card,
+            .milestone-card {
+                border: 2px solid #eaeaea;
+            }
+
+            .progress-filter-chip {
+                border: 2px solid #888;
+            }
+
+            .progress-filter-chip.active {
+                border-color: #4fc3f7;
+            }
+        }
+
+        /* Accessibility: Screen Reader Only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus visible for keyboard users */
+        .roadmap-item:focus-visible,
+        .timeline-item:focus-visible,
+        .theme-card:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 3px;
+        }
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -2215,7 +3530,7 @@
                         <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
                     </div>
                     <div class="menu-divider"></div>
-                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Roadmap</div>
+                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Progress</div>
                     <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
                 <!-- Signed In State -->
@@ -2233,7 +3548,7 @@
                     <div class="menu-item" onclick="showSourcesModal(); closeHamburgerMenu();">Quiz Data</div>
                     <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
                     <div class="menu-divider"></div>
-                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Roadmap</div>
+                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Progress</div>
                     <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
             </div>
@@ -3103,13 +4418,14 @@
     </div>
 
     <!-- Roadmap Modal -->
-    <div id="roadmap-modal" class="modal-overlay hidden" onclick="closeRoadmapModalOnOverlay(event)">
+    <div id="roadmap-modal" class="modal-overlay hidden" onclick="closeRoadmapModalOnOverlay(event)" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
+            <a href="#roadmap-main-content" class="skip-link">Skip to main content</a>
             <div class="modal-header">
-                <h2>Roadmap & Issues</h2>
-                <button class="modal-close" onclick="closeRoadmapModal()">&times;</button>
+                <h2 id="roadmap-modal-title">Progress</h2>
+                <button class="modal-close" onclick="closeRoadmapModal()" aria-label="Close progress modal">&times;</button>
             </div>
-            <div class="modal-body" id="roadmap-content">
+            <div class="modal-body" id="roadmap-content" role="main" id="roadmap-main-content">
                 <!-- Dynamic content loaded here -->
             </div>
         </div>
@@ -4659,10 +5975,21 @@
         }
 
         // Roadmap Modal Functions
-        function showRoadmapModal() {
+        async function showRoadmapModal() {
             document.getElementById('roadmap-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading">Loading roadmap...</div>';
+            document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading" role="status" aria-live="polite">Loading roadmap...</div>';
+
+            // Setup keyboard navigation (Story 6: Accessibility)
+            setupProgressModalKeyboardNav();
+
+            // Focus management (Story 6: Accessibility)
+            focusProgressModal();
+
+            // Fetch user's starred items if logged in (for personalized tracking)
+            if (currentUser) {
+                fetchUserStarredItems();
+            }
 
             // Fetch live feedback from Vandromeda API
             fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`)
@@ -4673,6 +6000,8 @@
                 .then(data => {
                     if (data.success) {
                         renderRoadmapFromFeedback(data);
+                        // Announce to screen readers
+                        announceToScreenReader(`Loaded ${data.feedback?.length || 0} progress items`);
                     } else {
                         throw new Error(data.error || 'Failed to load');
                     }
@@ -4680,8 +6009,8 @@
                 .catch(error => {
                     console.error('Failed to load roadmap:', error);
                     document.getElementById('roadmap-content').innerHTML = `
-                        <div class="roadmap-empty">
-                            <p>Roadmap coming soon! Submit feedback to help shape our priorities.</p>
+                        <div class="roadmap-empty" role="alert">
+                            <p>Progress updates coming soon! Submit feedback to help shape our priorities.</p>
                             <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
                         </div>
                     `;
@@ -4799,7 +6128,7 @@
             if (!data.milestones?.length && !data.issues?.length) {
                 html = `
                     <div class="roadmap-empty">
-                        <p>Roadmap coming soon! Submit feedback to help shape our priorities.</p>
+                        <p>Progress updates coming soon! Submit feedback to help shape our priorities.</p>
                         <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
                     </div>
                 `;
@@ -4851,68 +6180,208 @@
             `;
         }
 
+        // Store current feedback data for filtering
+        let currentFeedbackData = null;
+        let activeFilters = new Set();
+
         function renderRoadmapFromFeedback(data) {
+            currentFeedbackData = data;
             const container = document.getElementById('roadmap-content');
             const feedback = data.feedback || [];
             const stats = data.stats || {};
             let html = '';
 
-            // Stats bar
+            // Product Vision Section - tied to business objectives
             html += `
-                <div class="roadmap-stats">
-                    <div class="stat">
-                        <div class="stat-value">${stats.open || 0}</div>
+                <div class="progress-vision" role="region" aria-label="Product vision">
+                    <div class="progress-vision-title">Product Vision</div>
+                    <div class="progress-vision-text">
+                        Empower learners to master any subject through self-paced quizzing with AI-generated questions,
+                        progress tracking, and spaced repetition.
+                    </div>
+                    <div class="progress-goals" role="list" aria-label="Product goals">
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#9889;</span> Fast quiz creation</span>
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#128202;</span> Track progress</span>
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#129302;</span> AI-powered learning</span>
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#128274;</span> Sync across devices</span>
+                    </div>
+                    <div class="progress-last-update">Updated iteratively based on user feedback</div>
+                </div>
+            `;
+
+            // View Toggle (Story 6: themes vs status view)
+            html += renderViewToggle();
+
+            // Stats bar with accessibility
+            html += `
+                <div class="roadmap-stats" role="region" aria-label="Progress statistics">
+                    <div class="stat" role="group" aria-label="Open items">
+                        <div class="stat-value" aria-hidden="true">${stats.open || 0}</div>
                         <div class="stat-label">Open</div>
+                        <span class="sr-only">${stats.open || 0} open items</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">${stats.in_progress || 0}</div>
+                    <div class="stat" role="group" aria-label="Items in progress">
+                        <div class="stat-value" aria-hidden="true">${stats.in_progress || 0}</div>
                         <div class="stat-label">In Progress</div>
+                        <span class="sr-only">${stats.in_progress || 0} items in progress</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">${stats.resolved || 0}</div>
+                    <div class="stat" role="group" aria-label="Resolved items">
+                        <div class="stat-value" aria-hidden="true">${stats.resolved || 0}</div>
                         <div class="stat-label">Resolved</div>
+                        <span class="sr-only">${stats.resolved || 0} resolved items</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">${stats.total || 0}</div>
+                    <div class="stat" role="group" aria-label="Total items">
+                        <div class="stat-value" aria-hidden="true">${stats.total || 0}</div>
                         <div class="stat-label">Total</div>
+                        <span class="sr-only">${stats.total || 0} total items</span>
                     </div>
                 </div>
             `;
 
-            // Group feedback by status
-            const openItems = feedback.filter(f => !f.is_resolved && f.status !== 'in_progress');
-            const inProgressItems = feedback.filter(f => f.status === 'in_progress');
-            const resolvedItems = feedback.filter(f => f.is_resolved);
+            // If themes view is selected, render that instead of status view
+            if (currentProgressView === 'themes') {
+                html += renderThemesView(feedback);
+                container.innerHTML = html;
+                return;
+            }
 
-            // In Progress section
-            if (inProgressItems.length > 0) {
-                html += '<div class="roadmap-section"><h3>In Progress</h3>';
-                inProgressItems.forEach(item => {
-                    html += renderFeedbackItem(item);
+            // Category Filter Bar
+            if (feedback.length > 0) {
+                const typeCounts = {};
+                feedback.forEach(item => {
+                    const type = item.type || 'other';
+                    typeCounts[type] = (typeCounts[type] || 0) + 1;
+                });
+
+                const typeLabels = {
+                    'feature': 'Features',
+                    'bug': 'Bugs',
+                    'question': 'Questions',
+                    'request': 'Requests',
+                    'feedback': 'Feedback'
+                };
+
+                const typeIcons = {
+                    'feature': '✨',
+                    'bug': '🐛',
+                    'question': '❓',
+                    'request': '📝',
+                    'feedback': '💬'
+                };
+
+                html += '<div class="progress-filter-bar">';
+                html += '<span class="filter-label">Filter:</span>';
+                html += `<button class="progress-filter-chip ${activeFilters.size === 0 ? 'active' : ''}" data-type="all" onclick="toggleProgressFilter('all')">All <span class="count">${feedback.length}</span></button>`;
+
+                Object.keys(typeCounts).sort().forEach(type => {
+                    const isActive = activeFilters.has(type);
+                    const label = typeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1);
+                    const icon = typeIcons[type] || '📋';
+                    html += `<button class="progress-filter-chip ${isActive ? 'active' : ''}" data-type="${escapeAttr(type)}" onclick="toggleProgressFilter('${escapeAttr(type)}')">${icon} ${label} <span class="count">${typeCounts[type]}</span></button>`;
                 });
                 html += '</div>';
             }
 
-            // Open section
+            // Sort feedback by priority (highest first) for data-driven prioritization
+            const sortByPriority = (items) => {
+                return [...items].sort((a, b) => calculatePriorityScore(b) - calculatePriorityScore(a));
+            };
+
+            // Apply category filter
+            const filteredFeedback = activeFilters.size === 0
+                ? feedback
+                : feedback.filter(f => activeFilters.has(f.type));
+
+            // Group feedback by status and sort by priority
+            const openItems = sortByPriority(filteredFeedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
+            const inProgressItems = sortByPriority(filteredFeedback.filter(f => f.status === 'in_progress'));
+            const resolvedItems = sortByPriority(filteredFeedback.filter(f => f.is_resolved));
+
+            // Milestone summary card (shows overall progress)
+            if (feedback.length > 0) {
+                const totalItems = feedback.length;
+                const completedItems = resolvedItems.length;
+                const progressPercent = Math.round((completedItems / totalItems) * 100);
+                const circumference = 2 * Math.PI * 18; // radius = 18
+                const dashOffset = circumference - (progressPercent / 100) * circumference;
+
+                html += `
+                    <div class="milestone-card">
+                        <div class="milestone-header">
+                            <div class="milestone-title">
+                                <span class="milestone-title-icon">🎯</span>
+                                Current Milestone
+                            </div>
+                            <div class="milestone-progress-ring">
+                                <svg width="50" height="50">
+                                    <circle class="bg" cx="25" cy="25" r="18"></circle>
+                                    <circle class="progress" cx="25" cy="25" r="18"
+                                        stroke-dasharray="${circumference}"
+                                        stroke-dashoffset="${dashOffset}"></circle>
+                                </svg>
+                                <div class="milestone-progress-percent">${progressPercent}%</div>
+                            </div>
+                        </div>
+                        <div class="milestone-description">
+                            Tracking ${totalItems} items across the product lifecycle
+                        </div>
+                        <div class="milestone-stats">
+                            <span class="milestone-stat">
+                                <span class="milestone-stat-icon">📋</span>
+                                ${openItems.length} open
+                            </span>
+                            <span class="milestone-stat">
+                                <span class="milestone-stat-icon">🔧</span>
+                                ${inProgressItems.length} in progress
+                            </span>
+                            <span class="milestone-stat">
+                                <span class="milestone-stat-icon">✅</span>
+                                ${completedItems} resolved
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Timeline view for active items (in progress + recently resolved)
+            const timelineItems = [...inProgressItems, ...resolvedItems.slice(0, 3)];
+            if (timelineItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>Timeline</h3>';
+                html += '<div class="progress-timeline">';
+                timelineItems.forEach(item => {
+                    html += renderTimelineItem(item);
+                });
+                html += '</div></div>';
+            }
+
+            // Open section (items awaiting work)
             if (openItems.length > 0) {
-                html += '<div class="roadmap-section"><h3>Open</h3>';
+                html += '<div class="roadmap-section"><h3>Backlog</h3>';
                 openItems.forEach(item => {
                     html += renderFeedbackItem(item);
                 });
                 html += '</div>';
             }
 
-            // Resolved section
-            if (resolvedItems.length > 0) {
-                html += '<div class="roadmap-section"><h3>Resolved</h3>';
-                resolvedItems.forEach(item => {
+            // Additional resolved items (beyond the 3 shown in timeline)
+            const additionalResolved = resolvedItems.slice(3);
+            if (additionalResolved.length > 0) {
+                html += '<div class="roadmap-section"><h3>Previously Completed</h3>';
+                additionalResolved.forEach(item => {
                     html += renderFeedbackItem(item);
                 });
                 html += '</div>';
             }
 
-            if (feedback.length === 0) {
-                html = `
+            if (filteredFeedback.length === 0 && feedback.length > 0) {
+                html += `
+                    <div class="roadmap-empty">
+                        <p>No items match the selected filters.</p>
+                        <button class="btn" onclick="toggleProgressFilter('all')">Clear Filters</button>
+                    </div>
+                `;
+            } else if (feedback.length === 0) {
+                html += `
                     <div class="roadmap-empty">
                         <p>No feedback yet! Be the first to help shape our priorities.</p>
                         <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
@@ -4921,6 +6390,283 @@
             }
 
             container.innerHTML = html;
+        }
+
+        // Toggle category filter
+        function toggleProgressFilter(type) {
+            if (type === 'all') {
+                activeFilters.clear();
+            } else if (activeFilters.has(type)) {
+                activeFilters.delete(type);
+            } else {
+                activeFilters.add(type);
+            }
+            // Re-render with current data
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+        }
+
+        // Toggle item expansion
+        function toggleItemExpand(itemId) {
+            const item = document.querySelector(`.roadmap-item[data-item-id="${itemId}"]`);
+            if (item) {
+                const isExpanded = item.classList.toggle('expanded');
+                // Update aria-expanded for accessibility (Story 6)
+                item.setAttribute('aria-expanded', isExpanded.toString());
+                // Announce to screen readers
+                announceToScreenReader(isExpanded ? 'Item expanded' : 'Item collapsed');
+            }
+        }
+
+        // Generate unique type-prefixed ID (e.g., F-1 for feature, B-2 for bug)
+        function getTypePrefixedId(item) {
+            const typePrefixes = {
+                'feature': 'F',
+                'bug': 'B',
+                'question': 'Q',
+                'request': 'R',
+                'feedback': 'FB'
+            };
+            const prefix = typePrefixes[item.type] || 'I';
+            return `${prefix}-${item.id}`;
+        }
+
+        // Calculate item priority score based on engagement metrics
+        function calculatePriorityScore(item) {
+            let score = 0;
+
+            // Higher score for bugs (critical)
+            if (item.type === 'bug') score += 30;
+            // Features get moderate boost
+            else if (item.type === 'feature') score += 20;
+            // Questions/requests are lower priority
+            else if (item.type === 'question') score += 10;
+            else if (item.type === 'request') score += 15;
+
+            // Engagement metrics boost
+            if (item.stars_count) score += item.stars_count * 5;
+            if (item.comments_count) score += item.comments_count * 3;
+            if (item.views_count) score += Math.min(item.views_count, 100) / 10;
+
+            // Age factor - newer items get slight boost
+            if (item.created_at) {
+                const daysSinceCreation = (Date.now() - new Date(item.created_at).getTime()) / (1000 * 60 * 60 * 24);
+                if (daysSinceCreation < 7) score += 10;
+                else if (daysSinceCreation < 30) score += 5;
+            }
+
+            // GitHub linkage indicates importance
+            if (item.github_issue) score += 10;
+
+            return score;
+        }
+
+        // Get priority level from score
+        function getPriorityLevel(score) {
+            if (score >= 40) return { level: 'high', label: 'High' };
+            if (score >= 20) return { level: 'medium', label: 'Med' };
+            return { level: 'low', label: 'Low' };
+        }
+
+        // Get SDLC stage info for an item
+        function getSDLCStageInfo(item) {
+            const stages = ['submitted', 'triaged', 'development', 'testing', 'deployed'];
+            const stageLabels = ['Submit', 'Triage', 'Dev', 'Test', 'Deploy'];
+
+            // Map status to SDLC stage
+            const statusToStage = {
+                'new': 0,           // Submitted
+                'reviewed': 1,      // Triaged
+                'in_progress': 2,   // Development
+                'testing': 3,       // Testing
+                'resolved': 4       // Deployed
+            };
+
+            // Use sdlc_stage from API if available, otherwise infer from status
+            let currentStageIndex = item.sdlc_stage !== undefined
+                ? item.sdlc_stage
+                : (statusToStage[item.status] !== undefined ? statusToStage[item.status] : 0);
+
+            // Resolved items are at the final stage
+            if (item.is_resolved) currentStageIndex = 4;
+
+            return {
+                stages,
+                stageLabels,
+                currentStageIndex,
+                totalStages: stages.length
+            };
+        }
+
+        // Render SDLC progress bar for an item
+        function renderSDLCProgress(item) {
+            const { stages, stageLabels, currentStageIndex, totalStages } = getSDLCStageInfo(item);
+
+            let stagesHtml = '<div class="sdlc-stages">';
+            let labelsHtml = '<div class="sdlc-stage-labels">';
+
+            for (let i = 0; i < totalStages; i++) {
+                let stageClass = '';
+                let labelClass = '';
+
+                if (i < currentStageIndex) {
+                    stageClass = 'completed';
+                    labelClass = 'completed';
+                } else if (i === currentStageIndex) {
+                    stageClass = 'current';
+                    labelClass = 'current';
+                }
+
+                stagesHtml += `<div class="sdlc-stage ${stageClass}"></div>`;
+                labelsHtml += `<span class="${labelClass}">${stageLabels[i]}</span>`;
+            }
+
+            stagesHtml += '</div>';
+            labelsHtml += '</div>';
+
+            return stagesHtml + labelsHtml;
+        }
+
+        function renderTimelineItem(item) {
+            const statusClass = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in-progress' : 'pending');
+            const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
+            const typeIdBadgeClass = item.type || 'feedback';
+            const typeId = getTypePrefixedId(item);
+
+            // Priority indicator
+            const priorityScore = calculatePriorityScore(item);
+            const priority = getPriorityLevel(priorityScore);
+
+            // Build reference numbers
+            let refHtml = '';
+            if (item.github_issue && item.github_issue_url) {
+                refHtml = ` <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7; font-size: 0.75rem;">GH-${item.github_issue}</a>`;
+            }
+
+            return `
+                <div class="timeline-item ${statusClass}" data-item-id="${item.id}">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-title">
+                                <span class="type-id-badge ${typeIdBadgeClass}">${typeId}</span>
+                                ${escapeHtml(item.title)}
+                                <span class="item-priority ${priority.level}">${priority.label}</span>
+                            </span>
+                            <span class="timeline-date">${timeAgo}</span>
+                            ${renderStarButton(item)}
+                        </div>
+                        <div class="timeline-description">
+                            <span class="roadmap-label ${typeIdBadgeClass === 'feature' ? 'enhancement' : typeIdBadgeClass}" style="margin-right: 8px;">${escapeHtml(item.type)}</span>
+                            ${refHtml}
+                            ${renderGitHubIntegration(item)}
+                        </div>
+                        ${renderAssignees(item)}
+                        ${renderSDLCProgress(item)}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Build lifecycle events for an item
+        function buildLifecycleEvents(item) {
+            const events = [];
+
+            // Birth event (created)
+            if (item.created_at) {
+                events.push({
+                    type: 'birth',
+                    icon: '🌱',
+                    description: `${item.type || 'Item'} submitted`,
+                    timestamp: item.created_at
+                });
+            }
+
+            // Infer status changes from current status
+            const statusOrder = ['new', 'reviewed', 'in_progress', 'testing', 'resolved'];
+            const currentIndex = statusOrder.indexOf(item.status);
+
+            if (currentIndex >= 1) {
+                events.push({
+                    type: 'status-change',
+                    icon: '👁️',
+                    description: 'Reviewed and triaged',
+                    timestamp: item.reviewed_at || item.updated_at
+                });
+            }
+            if (currentIndex >= 2) {
+                events.push({
+                    type: 'status-change',
+                    icon: '🔧',
+                    description: 'Development started',
+                    timestamp: item.started_at || item.updated_at
+                });
+            }
+            if (currentIndex >= 3) {
+                events.push({
+                    type: 'status-change',
+                    icon: '🧪',
+                    description: 'Moved to testing',
+                    timestamp: item.testing_at || item.updated_at
+                });
+            }
+
+            // Update event (if updated after creation)
+            if (item.updated_at && item.updated_at !== item.created_at && !item.is_resolved) {
+                events.push({
+                    type: 'update',
+                    icon: '📝',
+                    description: 'Last updated',
+                    timestamp: item.updated_at
+                });
+            }
+
+            // Resolved event
+            if (item.is_resolved) {
+                events.push({
+                    type: 'resolved',
+                    icon: '✅',
+                    description: 'Resolved and deployed',
+                    timestamp: item.resolved_at || item.updated_at
+                });
+            }
+
+            return events;
+        }
+
+        // Calculate item progress percentage based on SDLC stage
+        function calculateItemProgress(item) {
+            const { currentStageIndex, totalStages } = getSDLCStageInfo(item);
+            return Math.round((currentStageIndex / (totalStages - 1)) * 100);
+        }
+
+        // Render dependencies section for an item
+        function renderDependencies(item) {
+            const dependencies = item.dependencies || [];
+            if (dependencies.length === 0) return '';
+
+            let html = '<div class="item-dependencies">';
+            html += '<div class="lifecycle-section-title">Dependencies</div>';
+
+            dependencies.forEach(dep => {
+                const isResolved = dep.is_resolved || dep.status === 'resolved';
+                const iconClass = isResolved ? 'resolved' : '';
+                const statusClass = isResolved ? 'done' : 'pending';
+                const statusLabel = isResolved ? 'Done' : 'Pending';
+                const depTypeId = getTypePrefixedId(dep);
+
+                html += `
+                    <div class="dependency-item">
+                        <span class="dep-icon ${iconClass}">${isResolved ? '✓' : '○'}</span>
+                        <span class="type-id-badge ${dep.type || 'feedback'}" style="font-size: 0.65rem;">${depTypeId}</span>
+                        <span class="dep-title">${escapeHtml(dep.title || 'Linked item')}</span>
+                        <span class="dep-status ${statusClass}">${statusLabel}</span>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            return html;
         }
 
         function renderFeedbackItem(item) {
@@ -4940,30 +6686,980 @@
             };
 
             const colorClass = typeColors[item.type] || 'default';
+            const typeIdBadgeClass = item.type || 'feedback';
+            const typeId = getTypePrefixedId(item);
             const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
 
-            // Build reference numbers
-            let refHtml = `<span class="roadmap-item-refs">#${item.id}`;
-            if (item.github_issue && item.github_issue_url) {
-                refHtml += ` | <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7;">GH-${item.github_issue}</a>`;
-            }
-            refHtml += '</span>';
+            // Priority indicator
+            const priorityScore = calculatePriorityScore(item);
+            const priority = getPriorityLevel(priorityScore);
+
+            // Item progress percentage
+            const progressPercent = calculateItemProgress(item);
 
             // Status badge
             const statusHtml = `<span class="roadmap-status" style="color: ${statusColors[item.status] || '#888'};">${escapeHtml(item.status_label)}</span>`;
 
-            return `
-                <div class="roadmap-item">
-                    <div class="roadmap-item-header">
-                        <div class="roadmap-item-title">${refHtml}${escapeHtml(item.title)}</div>
-                        <div class="roadmap-item-meta">${statusHtml} | ${timeAgo}</div>
+            // Build registration/metadata section
+            let registrationHtml = '<div class="item-registration">';
+
+            // API Registration ID
+            registrationHtml += `
+                <div class="item-registration-entry">
+                    <span class="icon">📝</span>
+                    <span>API #${item.id}</span>
+                </div>
+            `;
+
+            // GitHub Issue Link
+            if (item.github_issue && item.github_issue_url) {
+                registrationHtml += `
+                    <div class="item-registration-entry">
+                        <span class="icon">🔗</span>
+                        <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener">GitHub #${item.github_issue}</a>
                     </div>
-                    <div class="roadmap-labels">
-                        <span class="roadmap-label ${colorClass}">${escapeHtml(item.type)}</span>
+                `;
+            }
+
+            // Created timestamp
+            if (item.created_at) {
+                const createdDate = new Date(item.created_at).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                registrationHtml += `
+                    <div class="item-registration-entry">
+                        <span class="icon">📅</span>
+                        <span>${createdDate}</span>
+                    </div>
+                `;
+            }
+
+            // Updated timestamp (if different from created)
+            if (item.updated_at && item.updated_at !== item.created_at) {
+                registrationHtml += `
+                    <div class="item-registration-entry">
+                        <span class="icon">🔄</span>
+                        <span>Updated ${formatRelativeTime(item.updated_at)}</span>
+                    </div>
+                `;
+            }
+
+            registrationHtml += '</div>';
+
+            // Build lifecycle section (hidden by default, shown when expanded)
+            const lifecycleEvents = buildLifecycleEvents(item);
+            let lifecycleHtml = '<div class="item-lifecycle">';
+
+            // Lifecycle events history
+            lifecycleHtml += '<div class="lifecycle-section">';
+            lifecycleHtml += '<div class="lifecycle-section-title">History</div>';
+            lifecycleEvents.forEach(event => {
+                const eventDate = event.timestamp
+                    ? new Date(event.timestamp).toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    })
+                    : '';
+                lifecycleHtml += `
+                    <div class="lifecycle-event ${event.type}">
+                        <span class="lifecycle-event-icon">${event.icon}</span>
+                        <div class="lifecycle-event-content">
+                            <div class="lifecycle-event-description">${escapeHtml(event.description)}</div>
+                            <div class="lifecycle-event-timestamp">${eventDate}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            lifecycleHtml += '</div>';
+
+            // Dependencies (if any)
+            lifecycleHtml += renderDependencies(item);
+
+            // Item-level progress bar
+            lifecycleHtml += `
+                <div class="lifecycle-section">
+                    <div class="lifecycle-section-title">Completion</div>
+                    <div class="item-progress-bar">
+                        <div class="item-progress-track">
+                            <div class="item-progress-fill" style="width: ${progressPercent}%;"></div>
+                        </div>
+                        <span class="item-progress-text">${progressPercent}%</span>
                     </div>
                 </div>
             `;
+
+            lifecycleHtml += '</div>';
+
+            // Render collaboration section (comments, assignees)
+            const collaborationHtml = renderCollaborationSection(item);
+
+            // Story 6: Custom Fields and Automation Rules
+            const customFieldsHtml = renderCustomFields(item);
+            const automationRulesHtml = renderAutomationRules(item);
+
+            return `
+                <div class="roadmap-item expandable" data-item-id="${item.id}" onclick="toggleItemExpand(${item.id})"
+                     tabindex="0" role="article" aria-label="${escapeAttr(item.title)}, ${item.type}, ${priority.label} priority, ${item.status_label}"
+                     aria-expanded="false">
+                    <div class="roadmap-item-header">
+                        <div class="roadmap-item-title">
+                            <span class="type-id-badge ${typeIdBadgeClass}" aria-label="Item ID ${typeId}">${typeId}</span>
+                            ${escapeHtml(item.title)}
+                            <span class="item-priority ${priority.level}" aria-label="${priority.label} priority">${priority.label}</span>
+                        </div>
+                        <div class="roadmap-item-meta">
+                            ${statusHtml} | <span aria-label="Created ${timeAgo}">${timeAgo}</span>
+                            ${renderStarButton(item)}
+                        </div>
+                    </div>
+                    <div class="roadmap-labels" role="list" aria-label="Item labels">
+                        <span class="roadmap-label ${colorClass}" role="listitem">${escapeHtml(item.type)}</span>
+                        ${renderGitHubIntegration(item)}
+                    </div>
+                    ${renderAssignees(item)}
+                    ${renderSDLCProgress(item)}
+                    ${registrationHtml}
+                    <div class="roadmap-item-expand-toggle" aria-hidden="true">
+                        <span class="arrow">▶</span> View lifecycle details
+                    </div>
+                    ${lifecycleHtml}
+                    ${customFieldsHtml}
+                    ${automationRulesHtml}
+                    ${collaborationHtml}
+                </div>
+            `;
         }
+
+        // ========== STORY 5: INTEGRATIONS & AUTOMATION ==========
+
+        // Track which items the current user has starred
+        let userStarredItems = new Set();
+
+        // Render star button for personalized tracking
+        function renderStarButton(item) {
+            const isStarred = userStarredItems.has(item.id);
+            const starCount = item.stars_count || 0;
+
+            if (!currentUser) {
+                // Show sign-in prompt for non-logged-in users
+                return `<span class="feature-signin-prompt"><a href="#" onclick="event.stopPropagation(); showAuthModal();">Sign in</a> to star</span>`;
+            }
+
+            const starClass = isStarred ? 'starred' : '';
+            return `
+                <button class="item-star-btn ${starClass}"
+                        onclick="event.stopPropagation(); toggleStar(${item.id});"
+                        title="${isStarred ? 'Unstar this item' : 'Star for personalized tracking'}">
+                    ${isStarred ? '★' : '☆'}
+                    ${starCount > 0 ? `<span class="star-count">${starCount}</span>` : ''}
+                </button>
+            `;
+        }
+
+        // Toggle star on an item
+        async function toggleStar(itemId) {
+            if (!currentUser) {
+                showToast('Please sign in to star items', 'warning');
+                return;
+            }
+
+            const btn = document.querySelector(`.roadmap-item[data-item-id="${itemId}"] .item-star-btn`);
+            if (btn) btn.disabled = true;
+
+            try {
+                const token = await currentUser.getIdToken();
+                const isCurrentlyStarred = userStarredItems.has(itemId);
+                const action = isCurrentlyStarred ? 'unstar' : 'star';
+
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: action,
+                        feedback_id: itemId,
+                        product: 'quizmyself'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    if (isCurrentlyStarred) {
+                        userStarredItems.delete(itemId);
+                        showToast('Item unstarred', 'success');
+                    } else {
+                        userStarredItems.add(itemId);
+                        showToast('Item starred for tracking', 'success');
+                    }
+
+                    // Update the star count in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === itemId);
+                        if (item) {
+                            item.stars_count = (item.stars_count || 0) + (isCurrentlyStarred ? -1 : 1);
+                        }
+                    }
+
+                    // Re-render to update UI
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to update star');
+                }
+            } catch (error) {
+                console.error('Star toggle error:', error);
+                showToast('Failed to update star', 'error');
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        // Fetch user's starred items on modal open
+        async function fetchUserStarredItems() {
+            if (!currentUser) return;
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&action=starred`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (result.success && result.starred_items) {
+                    userStarredItems = new Set(result.starred_items);
+                }
+            } catch (error) {
+                console.error('Failed to fetch starred items:', error);
+            }
+        }
+
+        // Render GitHub integration status and create issue button
+        function renderGitHubIntegration(item) {
+            if (item.github_issue && item.github_issue_url) {
+                // Already synced with GitHub
+                return `
+                    <span class="github-integration-badge synced" title="Synced with GitHub">
+                        <span>&#128279;</span> GH-${item.github_issue}
+                    </span>
+                    <span class="automation-badge active" title="Automated sync enabled">
+                        <span>&#9889;</span> Auto-sync
+                    </span>
+                `;
+            }
+
+            // Not yet linked to GitHub - show create button for team members
+            if (!currentUser) return '';
+
+            return `
+                <button class="create-issue-btn"
+                        onclick="event.stopPropagation(); createGitHubIssue(${item.id});"
+                        title="Create GitHub issue and enable auto-sync">
+                    <span>+</span> Create Issue
+                </button>
+            `;
+        }
+
+        // Create GitHub issue and sync with Vandromeda API
+        async function createGitHubIssue(feedbackId) {
+            if (!currentUser) {
+                showToast('Please sign in to create issues', 'warning');
+                return;
+            }
+
+            const btn = document.querySelector(`.roadmap-item[data-item-id="${feedbackId}"] .create-issue-btn`);
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span>...</span> Creating...';
+            }
+
+            try {
+                const token = await currentUser.getIdToken();
+
+                // Call Vandromeda API to create GitHub issue
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'create_github_issue',
+                        feedback_id: feedbackId,
+                        product: 'quizmyself'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast(`GitHub issue #${result.github_issue} created! Auto-sync enabled.`, 'success');
+
+                    // Update the item in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === feedbackId);
+                        if (item) {
+                            item.github_issue = result.github_issue;
+                            item.github_issue_url = result.github_issue_url;
+                        }
+                    }
+
+                    // Re-render to show the synced badge
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to create issue');
+                }
+            } catch (error) {
+                console.error('Create GitHub issue error:', error);
+                showToast('Failed to create GitHub issue. You may need admin permissions.', 'error');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>+</span> Create Issue';
+                }
+            }
+        }
+
+        // Render assignees section
+        function renderAssignees(item) {
+            const assignees = item.assignees || [];
+            if (assignees.length === 0 && !currentUser) return '';
+
+            let html = '<div class="item-assignees">';
+            html += '<span class="assignee-label">Assigned:</span>';
+
+            if (assignees.length === 0) {
+                html += '<span class="assignee-label" style="color: #666;">Unassigned</span>';
+            } else {
+                assignees.forEach(assignee => {
+                    const initials = (assignee.name || assignee.email || 'U')
+                        .split(' ')
+                        .map(n => n[0])
+                        .slice(0, 2)
+                        .join('')
+                        .toUpperCase();
+                    html += `
+                        <span class="assignee-avatar" title="${escapeAttr(assignee.name || assignee.email)}">
+                            ${initials}
+                        </span>
+                    `;
+                });
+            }
+
+            // Add assignee button for logged-in users
+            if (currentUser) {
+                html += `
+                    <span class="assignee-avatar add"
+                          onclick="event.stopPropagation(); assignToItem(${item.id});"
+                          title="Assign someone">+</span>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // Assign user to an item
+        async function assignToItem(feedbackId) {
+            if (!currentUser) {
+                showToast('Please sign in to assign items', 'warning');
+                return;
+            }
+
+            // For now, assign self. In future, show a picker
+            const confirmed = await showConfirm('Assign yourself to this item?', {
+                icon: '👤',
+                confirmText: 'Assign Me'
+            });
+
+            if (!confirmed) return;
+
+            try {
+                const token = await currentUser.getIdToken();
+
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'assign',
+                        feedback_id: feedbackId,
+                        product: 'quizmyself',
+                        assignee_email: currentUser.email
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('You have been assigned to this item', 'success');
+
+                    // Update the item in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === feedbackId);
+                        if (item) {
+                            item.assignees = item.assignees || [];
+                            if (!item.assignees.find(a => a.email === currentUser.email)) {
+                                item.assignees.push({ email: currentUser.email, name: currentUser.displayName || currentUser.email });
+                            }
+                        }
+                    }
+
+                    // Re-render
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to assign');
+                }
+            } catch (error) {
+                console.error('Assign error:', error);
+                showToast('Failed to assign. Please try again.', 'error');
+            }
+        }
+
+        // Render collaboration section with comments
+        function renderCollaborationSection(item) {
+            const comments = item.comments || [];
+
+            let html = '<div class="item-comments" onclick="event.stopPropagation();">';
+            html += '<div class="comments-header">';
+            html += '<div class="lifecycle-section-title">Discussion</div>';
+            html += `<span class="comments-count">${comments.length} comment${comments.length !== 1 ? 's' : ''}</span>`;
+            html += '</div>';
+
+            // Render existing comments
+            if (comments.length > 0) {
+                comments.slice(0, 3).forEach(comment => {
+                    const initials = (comment.author || 'User')
+                        .split(' ')
+                        .map(n => n[0])
+                        .slice(0, 2)
+                        .join('')
+                        .toUpperCase();
+                    const timeAgo = comment.created_at ? formatRelativeTime(comment.created_at) : '';
+
+                    html += `
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <span class="comment-avatar">${initials}</span>
+                                <span class="comment-author">${escapeHtml(comment.author || 'User')}</span>
+                                <span class="comment-timestamp">${timeAgo}</span>
+                            </div>
+                            <div class="comment-body">${escapeHtml(comment.body || comment.message)}</div>
+                        </div>
+                    `;
+                });
+
+                if (comments.length > 3) {
+                    html += `<div style="color: #888; font-size: 0.75rem; text-align: center;">+ ${comments.length - 3} more comments</div>`;
+                }
+            } else {
+                html += '<div style="color: #666; font-size: 0.8rem; padding: 8px 0;">No comments yet. Be the first to add one!</div>';
+            }
+
+            // Add comment form for logged-in users
+            if (currentUser) {
+                html += `
+                    <div class="add-comment-form">
+                        <input type="text"
+                               class="add-comment-input"
+                               id="comment-input-${item.id}"
+                               placeholder="Add a comment..."
+                               onkeypress="if(event.key==='Enter') addComment(${item.id})">
+                        <button class="add-comment-btn" onclick="addComment(${item.id})">Post</button>
+                    </div>
+                `;
+            } else {
+                html += `<div class="feature-signin-prompt" style="margin-top: 8px;"><a href="#" onclick="event.stopPropagation(); showAuthModal();">Sign in</a> to comment</div>`;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // Add a comment to an item
+        async function addComment(feedbackId) {
+            if (!currentUser) {
+                showToast('Please sign in to comment', 'warning');
+                return;
+            }
+
+            const input = document.getElementById(`comment-input-${feedbackId}`);
+            const commentText = input?.value?.trim();
+
+            if (!commentText) {
+                showToast('Please enter a comment', 'warning');
+                return;
+            }
+
+            const btn = input.nextElementSibling;
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '...';
+            }
+
+            try {
+                const token = await currentUser.getIdToken();
+
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'comment',
+                        feedback_id: feedbackId,
+                        product: 'quizmyself',
+                        message: commentText
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('Comment added', 'success');
+
+                    // Update the item in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === feedbackId);
+                        if (item) {
+                            item.comments = item.comments || [];
+                            item.comments.push({
+                                author: currentUser.displayName || currentUser.email,
+                                body: commentText,
+                                created_at: new Date().toISOString()
+                            });
+                        }
+                    }
+
+                    // Clear input and re-render
+                    if (input) input.value = '';
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                        // Re-expand the item
+                        setTimeout(() => {
+                            const itemEl = document.querySelector(`.roadmap-item[data-item-id="${feedbackId}"]`);
+                            if (itemEl) itemEl.classList.add('expanded');
+                        }, 50);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to add comment');
+                }
+            } catch (error) {
+                console.error('Add comment error:', error);
+                showToast('Failed to add comment. Please try again.', 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Post';
+                }
+            }
+        }
+
+        // ========== END STORY 5 ==========
+
+        // ========== STORY 6: FLEXIBILITY & ITERATION ==========
+
+        // View mode: 'status' (default) or 'themes'
+        let currentProgressView = 'status';
+
+        // Strategic themes for agile updates (goals over rigid timelines)
+        const strategicThemes = {
+            'performance': {
+                name: 'Performance',
+                icon: '⚡',
+                description: 'Speed and efficiency improvements',
+                keywords: ['speed', 'fast', 'performance', 'optimize', 'slow', 'lag']
+            },
+            'ux': {
+                name: 'User Experience',
+                icon: '✨',
+                description: 'Interface and usability enhancements',
+                keywords: ['ui', 'ux', 'design', 'interface', 'usability', 'intuitive', 'confusing']
+            },
+            'reliability': {
+                name: 'Reliability',
+                icon: '🛡️',
+                description: 'Stability and bug fixes',
+                keywords: ['bug', 'fix', 'crash', 'error', 'broken', 'issue', 'problem']
+            },
+            'growth': {
+                name: 'Growth Features',
+                icon: '🚀',
+                description: 'New capabilities and features',
+                keywords: ['feature', 'add', 'new', 'implement', 'support', 'want', 'would like']
+            }
+        };
+
+        // Automation rules configuration
+        let automationRules = {
+            autoTriage: true,           // Auto-assign priority based on type
+            notifyOnProgress: true,     // Notify when item moves to in_progress
+            githubSync: true,           // Sync status with GitHub issues
+            autoClose: false            // Auto-close resolved items after 7 days
+        };
+
+        // Custom fields configuration (user can define these)
+        const defaultCustomFields = [
+            { key: 'sprint', label: 'Sprint', type: 'text', value: '' },
+            { key: 'effort', label: 'Effort', type: 'select', options: ['XS', 'S', 'M', 'L', 'XL'], value: '' },
+            { key: 'team', label: 'Team', type: 'text', value: '' }
+        ];
+
+        // Switch between status view and themes view
+        function switchProgressView(view) {
+            currentProgressView = view;
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+        }
+
+        // Render view toggle buttons
+        function renderViewToggle() {
+            return `
+                <div class="progress-view-toggle" role="tablist" aria-label="Progress view options">
+                    <button class="progress-view-btn ${currentProgressView === 'status' ? 'active' : ''}"
+                            onclick="switchProgressView('status')"
+                            role="tab"
+                            aria-selected="${currentProgressView === 'status'}"
+                            aria-controls="progress-status-view"
+                            tabindex="${currentProgressView === 'status' ? '0' : '-1'}">
+                        📋 By Status
+                    </button>
+                    <button class="progress-view-btn ${currentProgressView === 'themes' ? 'active' : ''}"
+                            onclick="switchProgressView('themes')"
+                            role="tab"
+                            aria-selected="${currentProgressView === 'themes'}"
+                            aria-controls="progress-themes-view"
+                            tabindex="${currentProgressView === 'themes' ? '0' : '-1'}">
+                        🎯 By Theme
+                    </button>
+                </div>
+            `;
+        }
+
+        // Classify an item into a strategic theme based on keywords
+        function classifyItemTheme(item) {
+            const text = `${item.title || ''} ${item.message || ''} ${item.type || ''}`.toLowerCase();
+
+            for (const [themeKey, theme] of Object.entries(strategicThemes)) {
+                for (const keyword of theme.keywords) {
+                    if (text.includes(keyword)) {
+                        return themeKey;
+                    }
+                }
+            }
+
+            // Default to growth for features, reliability for bugs
+            if (item.type === 'bug') return 'reliability';
+            if (item.type === 'feature') return 'growth';
+            return 'ux';
+        }
+
+        // Render items grouped by strategic themes
+        function renderThemesView(feedback) {
+            // Group items by theme
+            const themeGroups = {};
+            for (const themeKey of Object.keys(strategicThemes)) {
+                themeGroups[themeKey] = [];
+            }
+
+            feedback.forEach(item => {
+                const theme = item.theme || classifyItemTheme(item);
+                if (themeGroups[theme]) {
+                    themeGroups[theme].push(item);
+                } else {
+                    themeGroups['growth'].push(item); // Default fallback
+                }
+            });
+
+            let html = '<div class="progress-themes" role="region" aria-label="Items grouped by strategic theme">';
+
+            for (const [themeKey, theme] of Object.entries(strategicThemes)) {
+                const items = themeGroups[themeKey];
+                if (items.length === 0) continue;
+
+                const completedCount = items.filter(i => i.is_resolved).length;
+                const progressPercent = Math.round((completedCount / items.length) * 100);
+
+                html += `
+                    <div class="theme-card theme-${themeKey}" tabindex="0" role="article" aria-label="${theme.name} theme: ${items.length} items, ${progressPercent}% complete">
+                        <div class="theme-header">
+                            <div class="theme-title">
+                                <span class="theme-icon" aria-hidden="true">${theme.icon}</span>
+                                ${escapeHtml(theme.name)}
+                            </div>
+                            <span class="theme-count" aria-label="${items.length} items">${items.length} items</span>
+                        </div>
+                        <div class="theme-description">${escapeHtml(theme.description)}</div>
+                        <div class="theme-progress" role="progressbar" aria-valuenow="${progressPercent}" aria-valuemin="0" aria-valuemax="100" aria-label="Theme progress">
+                            <div class="theme-progress-bar">
+                                <div class="theme-progress-fill" style="width: ${progressPercent}%;"></div>
+                            </div>
+                            <span class="theme-progress-text">${progressPercent}%</span>
+                        </div>
+                        <div class="theme-items" role="list" aria-label="Items in this theme">
+                            ${items.slice(0, 5).map(item => {
+                                const statusClass = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in-progress' : 'pending');
+                                const statusLabel = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in progress' : 'pending');
+                                return `
+                                    <div class="theme-item" role="listitem">
+                                        <span class="theme-item-status ${statusClass}" aria-label="Status: ${statusLabel}"></span>
+                                        <span>${escapeHtml(item.title)}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                            ${items.length > 5 ? `<div class="theme-item" style="color: #666;">+ ${items.length - 5} more items</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // Render custom fields section for an item
+        function renderCustomFields(item) {
+            const customFields = item.custom_fields || defaultCustomFields;
+            if (!customFields || customFields.length === 0) return '';
+
+            let html = '<div class="custom-fields-section" role="region" aria-label="Custom fields">';
+            html += '<div class="lifecycle-section-title">Custom Fields</div>';
+
+            customFields.forEach(field => {
+                const value = field.value || '—';
+                const isEditable = currentUser ? 'editable' : '';
+                const editHandler = currentUser ? `onclick="event.stopPropagation(); editCustomField(${item.id}, '${field.key}')"` : '';
+                const tabIndex = currentUser ? 'tabindex="0"' : '';
+
+                html += `
+                    <div class="custom-field">
+                        <span class="custom-field-label">${escapeHtml(field.label)}</span>
+                        <span class="custom-field-value ${isEditable}" ${editHandler} ${tabIndex}
+                              role="${currentUser ? 'button' : 'text'}"
+                              aria-label="${field.label}: ${value}${currentUser ? ', click to edit' : ''}">
+                            ${escapeHtml(value)}
+                        </span>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            return html;
+        }
+
+        // Render automation rules section
+        function renderAutomationRules(item) {
+            if (!currentUser) return ''; // Only show to logged-in users
+
+            const rules = [
+                { key: 'autoTriage', label: 'Auto-triage new items', icon: '🎯' },
+                { key: 'notifyOnProgress', label: 'Notify on status change', icon: '🔔' },
+                { key: 'githubSync', label: 'Sync with GitHub', icon: '🔗' }
+            ];
+
+            let html = '<div class="automation-rules-section" role="region" aria-label="Automation rules">';
+            html += '<div class="lifecycle-section-title">Automation Rules</div>';
+
+            rules.forEach(rule => {
+                const isEnabled = automationRules[rule.key];
+                html += `
+                    <div class="automation-rule">
+                        <span class="automation-rule-icon" aria-hidden="true">${rule.icon}</span>
+                        <span class="automation-rule-text" id="rule-label-${rule.key}">${rule.label}</span>
+                        <label class="automation-rule-toggle">
+                            <input type="checkbox"
+                                   ${isEnabled ? 'checked' : ''}
+                                   onchange="toggleAutomationRule('${rule.key}', this.checked)"
+                                   aria-labelledby="rule-label-${rule.key}">
+                            <span class="automation-toggle-slider" aria-hidden="true"></span>
+                            <span class="sr-only">${isEnabled ? 'Enabled' : 'Disabled'}</span>
+                        </label>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            return html;
+        }
+
+        // Toggle automation rule
+        async function toggleAutomationRule(ruleKey, enabled) {
+            automationRules[ruleKey] = enabled;
+
+            // Persist to API if logged in
+            if (currentUser) {
+                try {
+                    const token = await currentUser.getIdToken();
+                    await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            action: 'update_automation_rules',
+                            product: 'quizmyself',
+                            rules: automationRules
+                        })
+                    });
+                    showToast(`${enabled ? 'Enabled' : 'Disabled'} automation rule`, 'success');
+                } catch (error) {
+                    console.error('Failed to update automation rule:', error);
+                    showToast('Failed to update rule', 'error');
+                }
+            }
+        }
+
+        // Edit a custom field value
+        async function editCustomField(itemId, fieldKey) {
+            if (!currentUser) {
+                showToast('Please sign in to edit fields', 'warning');
+                return;
+            }
+
+            const item = currentFeedbackData?.feedback?.find(f => f.id === itemId);
+            if (!item) return;
+
+            const customFields = item.custom_fields || defaultCustomFields;
+            const field = customFields.find(f => f.key === fieldKey);
+            if (!field) return;
+
+            // Simple prompt for now - could be enhanced with a modal
+            const newValue = prompt(`Enter new value for ${field.label}:`, field.value || '');
+            if (newValue === null) return; // Cancelled
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'update_custom_field',
+                        feedback_id: itemId,
+                        product: 'quizmyself',
+                        field_key: fieldKey,
+                        field_value: newValue
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update local data
+                    field.value = newValue;
+                    showToast('Field updated', 'success');
+
+                    // Re-render
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                        // Re-expand the item
+                        setTimeout(() => {
+                            const itemEl = document.querySelector(`.roadmap-item[data-item-id="${itemId}"]`);
+                            if (itemEl) itemEl.classList.add('expanded');
+                        }, 50);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to update field');
+                }
+            } catch (error) {
+                console.error('Edit custom field error:', error);
+                showToast('Failed to update field', 'error');
+            }
+        }
+
+        // Keyboard navigation for Progress modal
+        function setupProgressModalKeyboardNav() {
+            const modal = document.getElementById('roadmap-modal');
+            if (!modal) return;
+
+            modal.addEventListener('keydown', (e) => {
+                // Escape to close
+                if (e.key === 'Escape') {
+                    closeRoadmapModal();
+                    return;
+                }
+
+                // Tab trap within modal
+                if (e.key === 'Tab') {
+                    const focusableElements = modal.querySelectorAll(
+                        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                    );
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+
+                    if (e.shiftKey && document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    } else if (!e.shiftKey && document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+
+                // Arrow keys for filter chips
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    const chips = modal.querySelectorAll('.progress-filter-chip');
+                    const currentIndex = Array.from(chips).indexOf(document.activeElement);
+                    if (currentIndex !== -1) {
+                        e.preventDefault();
+                        const nextIndex = e.key === 'ArrowRight'
+                            ? (currentIndex + 1) % chips.length
+                            : (currentIndex - 1 + chips.length) % chips.length;
+                        chips[nextIndex].focus();
+                    }
+                }
+
+                // Enter/Space to expand items
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const target = e.target;
+                    if (target.classList.contains('roadmap-item') && target.classList.contains('expandable')) {
+                        e.preventDefault();
+                        const itemId = target.dataset.itemId;
+                        if (itemId) toggleItemExpand(parseInt(itemId));
+                    }
+                }
+            });
+        }
+
+        // Focus management when modal opens
+        function focusProgressModal() {
+            const modal = document.getElementById('roadmap-modal');
+            if (modal) {
+                const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                if (firstFocusable) {
+                    setTimeout(() => firstFocusable.focus(), 100);
+                }
+            }
+        }
+
+        // Announce status changes for screen readers
+        function announceToScreenReader(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('role', 'status');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = message;
+            document.body.appendChild(announcement);
+            setTimeout(() => announcement.remove(), 1000);
+        }
+
+        // ========== END STORY 6 ==========
 
         async function submitFeedback() {
             const type = document.getElementById('feedback-type').value;
