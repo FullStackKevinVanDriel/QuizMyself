@@ -1394,7 +1394,7 @@
                     <div class="menu-divider"></div>
                     <div class="menu-hint">Or use quick access (limited features):</div>
                     <div class="menu-signin-form">
-                        <input type="text" id="menu-keyword-input" placeholder="Keyword only"
+                        <input type="text" id="menu-keyword-input" placeholder="Quiz name"
                             onkeypress="if(event.key==='Enter')submitKeywordFromMenu()">
                         <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
                     </div>
@@ -1822,31 +1822,20 @@
     <div id="keyword-modal" class="modal-overlay hidden" onclick="closeKeywordModal()">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 500px;">
             <div class="modal-header">
-                <h2>Manage Keywords</h2>
+                <h2>Manage Quizzes</h2>
                 <button class="modal-close" onclick="closeKeywordModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Add New Keyword</h3>
+                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Add New Quiz</h3>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="new-keyword-input" placeholder="Enter keyword" style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 5px; color: white;">
+                        <input type="text" id="new-keyword-input" placeholder="Enter quiz name" style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 5px; color: white;">
                         <button class="btn btn-primary btn-small" onclick="handleAddKeyword()">Add</button>
                     </div>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Claim Existing Progress</h3>
-                    <p style="color: #888; font-size: 0.85rem; margin-bottom: 10px;">
-                        Have progress from before creating an account? Claim it here.
-                    </p>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="claim-keyword-input" placeholder="Keyword to claim" style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 5px; color: white;">
-                        <button class="btn btn-small" onclick="handleClaimKeyword()">Claim</button>
-                    </div>
-                </div>
-
                 <div>
-                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Your Keywords</h3>
+                    <h3 style="font-size: 1rem; color: #4fc3f7; margin-bottom: 10px;">Your Quizzes</h3>
                     <div id="keyword-list" style="max-height: 300px; overflow-y: auto;"></div>
                 </div>
 
@@ -2458,7 +2447,7 @@
 
         async function handleLogin() {
             if (!auth) {
-                showAuthError('Auth not configured. Use keyword access.');
+                showAuthError('Auth not configured. Use quick access.');
                 return;
             }
             const email = document.getElementById('login-email').value.trim();
@@ -2481,7 +2470,7 @@
 
         async function handleRegister() {
             if (!auth) {
-                showAuthError('Auth not configured. Use keyword access.');
+                showAuthError('Auth not configured. Use quick access.');
                 return;
             }
             const email = document.getElementById('register-email').value.trim();
@@ -2887,7 +2876,8 @@
                     closeCreateQuizModal();
                     alert('Quiz created!' + (sourceId ? ' Source material has been linked.' : ''));
                 } else {
-                    throw new Error(result.error || result.message || 'Failed to create quiz');
+                    // Prefer user-friendly message over error code
+                    throw new Error(result.message || result.error || 'Failed to create quiz');
                 }
             } catch (err) {
                 showCreateQuizError(err.message);
@@ -3003,33 +2993,6 @@
                             updateHamburgerMenu();
                         }
                     }
-                }
-
-                return data;
-            } catch (error) {
-                return { success: false, error: error.message };
-            }
-        }
-
-        async function claimKeyword(keyword) {
-            if (!currentUser) return { success: false, error: 'Not signed in' };
-
-            try {
-                const token = await getAuthToken();
-                const response = await fetch(`${VANDROMEDA_API}/quizmyself/claim-keyword.php`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ keyword })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    await loadUserKeywords();
-                    await selectKeyword(keyword);
                 }
 
                 return data;
@@ -3180,7 +3143,7 @@
             const list = document.getElementById('keyword-list');
 
             if (userKeywords.length === 0) {
-                list.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No keywords yet. Add one above.</p>';
+                list.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No quizzes yet. Add one above.</p>';
                 return;
             }
 
@@ -3209,7 +3172,7 @@
             const keyword = input.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
 
             if (!keyword || keyword.length < 3) {
-                showKeywordModalMessage('Keyword must be at least 3 characters', 'error');
+                showKeywordModalMessage('Quiz name must be at least 3 characters', 'error');
                 return;
             }
 
@@ -3218,34 +3181,14 @@
             if (result.success) {
                 input.value = '';
                 renderKeywordList();
-                showKeywordModalMessage('Keyword added!', 'success');
+                showKeywordModalMessage('Quiz added!', 'success');
             } else {
-                showKeywordModalMessage(result.message || result.error || 'Failed to add keyword', 'error');
-            }
-        }
-
-        async function handleClaimKeyword() {
-            const input = document.getElementById('claim-keyword-input');
-            const keyword = input.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
-
-            if (!keyword) {
-                showKeywordModalMessage('Enter a keyword to claim', 'error');
-                return;
-            }
-
-            const result = await claimKeyword(keyword);
-
-            if (result.success) {
-                input.value = '';
-                renderKeywordList();
-                showKeywordModalMessage('Keyword claimed! Your progress has been linked.', 'success');
-            } else {
-                showKeywordModalMessage(result.message || result.error || 'Failed to claim keyword', 'error');
+                showKeywordModalMessage(result.message || result.error || 'Failed to add quiz', 'error');
             }
         }
 
         async function confirmDeleteKeyword(keyword) {
-            if (!confirm(`Delete keyword "${keyword}"? Your progress will remain but can be claimed by others.`)) {
+            if (!confirm(`Delete quiz "${keyword}"? This cannot be undone.`)) {
                 return;
             }
 
@@ -3253,9 +3196,9 @@
 
             if (result.success) {
                 renderKeywordList();
-                showKeywordModalMessage('Keyword deleted', 'success');
+                showKeywordModalMessage('Quiz deleted', 'success');
             } else {
-                showKeywordModalMessage(result.message || result.error || 'Failed to delete keyword', 'error');
+                showKeywordModalMessage(result.message || result.error || 'Failed to delete quiz', 'error');
             }
         }
 
@@ -4836,7 +4779,7 @@
             document.getElementById('import-toggle-icon').textContent = '+';
             loadSources();
 
-            alert(`Successfully imported ${importCount} questions! They are now saved to your keyword "${currentKeyword}".${replaceMode ? ' Progress has been reset.' : ''}`);
+            alert(`Successfully imported ${importCount} questions! They are now saved to your quiz "${currentKeyword}".${replaceMode ? ' Progress has been reset.' : ''}`);
         }
 
         async function loadSources() {
@@ -5782,7 +5725,7 @@
 
             // Apply selected categories to the main category filter
             selectedCategories = new Set(welcomeSelectedCategories);
-            updateCategoryChips();
+            renderCategoryChips();
             updateStats();
 
             // Start practice quiz
