@@ -1133,4 +1133,356 @@ test.describe("Roadmap Modal Tests", () => {
     const bugChip = page.locator('.progress-filter-chip[data-type="bug"]');
     await expect(bugChip).toContainText("1");
   });
+
+  // Story 5: Integrations and Automation tests
+
+  test("renderStarButton function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderStarButton === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("renderGitHubIntegration function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderGitHubIntegration === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("renderAssignees function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderAssignees === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("renderCollaborationSection function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderCollaborationSection === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("toggleStar function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.toggleStar === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("createGitHubIssue function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.createGitHubIssue === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("addComment function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.addComment === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("assignToItem function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.assignToItem === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("progress modal shows sign-in prompt for star button when not logged in", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test feature",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item", { timeout: 10000 });
+
+    // Should show sign-in prompt for starring
+    const signinPrompt = page.locator('.feature-signin-prompt:has-text("Sign in")');
+    await expect(signinPrompt.first()).toBeVisible();
+  });
+
+  test("progress modal displays GitHub synced badge for items with GitHub issue", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Synced with GitHub",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+              github_issue: 42,
+              github_issue_url: "https://github.com/test/repo/issues/42",
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item", { timeout: 10000 });
+
+    // Should show GitHub synced badge
+    const syncedBadge = page.locator(".github-integration-badge.synced");
+    await expect(syncedBadge).toBeVisible();
+    await expect(syncedBadge).toContainText("GH-42");
+
+    // Should show auto-sync badge
+    const automationBadge = page.locator(".automation-badge");
+    await expect(automationBadge).toBeVisible();
+    await expect(automationBadge).toContainText("Auto-sync");
+  });
+
+  test("progress modal displays comments section in expanded items", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Item with comments",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+              comments: [
+                {
+                  author: "John Doe",
+                  body: "This is a test comment",
+                  created_at: new Date().toISOString(),
+                },
+              ],
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Expand the item
+    await page.click(".roadmap-item.expandable");
+
+    // Wait for item to expand
+    await page.waitForSelector(".roadmap-item.expanded", { timeout: 5000 });
+
+    // Should show comments section
+    const commentsSection = page.locator(".item-comments");
+    await expect(commentsSection).toBeVisible();
+
+    // Should show discussion title
+    const discussionTitle = page.locator('.lifecycle-section-title:has-text("Discussion")');
+    await expect(discussionTitle).toBeVisible();
+
+    // Should show the comment
+    const commentItem = page.locator(".comment-item");
+    await expect(commentItem).toBeVisible();
+    await expect(commentItem).toContainText("test comment");
+  });
+
+  test("progress modal displays assignees section", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Item with assignees",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+              assignees: [
+                { name: "Alice Smith", email: "alice@example.com" },
+                { name: "Bob Jones", email: "bob@example.com" },
+              ],
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item", { timeout: 10000 });
+
+    // Should show assignees section
+    const assigneesSection = page.locator(".item-assignees");
+    await expect(assigneesSection).toBeVisible();
+
+    // Should show assignee avatars
+    const assigneeAvatars = page.locator(".assignee-avatar:not(.add)");
+    await expect(assigneeAvatars).toHaveCount(2);
+  });
+
+  test("timeline items include star button and GitHub integration", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "In progress feature",
+              type: "feature",
+              status: "in_progress",
+              status_label: "In Progress",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+              github_issue: 123,
+              github_issue_url: "https://github.com/test/repo/issues/123",
+            },
+          ],
+          stats: { open: 0, in_progress: 1, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".timeline-item", { timeout: 10000 });
+
+    // Should show synced badge in timeline
+    const syncedBadge = page.locator(".timeline-item .github-integration-badge.synced");
+    await expect(syncedBadge).toBeVisible();
+
+    // Should have data-item-id on timeline item
+    const timelineItem = page.locator('.timeline-item[data-item-id="1"]');
+    await expect(timelineItem).toBeVisible();
+  });
+
+  test("comments count shows correct number", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Item with multiple comments",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+              comments: [
+                { author: "User 1", body: "Comment 1", created_at: new Date().toISOString() },
+                { author: "User 2", body: "Comment 2", created_at: new Date().toISOString() },
+                { author: "User 3", body: "Comment 3", created_at: new Date().toISOString() },
+              ],
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    // Wait for expand toggle to appear
+    await page.waitForSelector(".roadmap-item-expand-toggle", { timeout: 10000 });
+
+    // Expand the item by clicking on the expand toggle
+    await page.click(".roadmap-item-expand-toggle");
+
+    // Wait for item to have expanded class
+    await page.waitForSelector(".roadmap-item.expanded", { timeout: 5000 });
+
+    // Should show correct comment count
+    const commentsCount = page.locator(".comments-count");
+    await expect(commentsCount).toContainText("3 comments");
+  });
+
+  test("no comments shows helpful message", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Item without comments",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+              comments: [],
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Expand the item
+    await page.click(".roadmap-item.expandable");
+
+    // Wait for item to expand
+    await page.waitForSelector(".roadmap-item.expanded", { timeout: 5000 });
+
+    // Should show no comments message
+    const noCommentsMsg = page.locator('.item-comments:has-text("No comments yet")');
+    await expect(noCommentsMsg).toBeVisible();
+  });
 });

@@ -2750,6 +2750,277 @@
                 width: 100%;
             }
         }
+
+        /* Story 5: Integrations & Automation */
+
+        /* Star Button */
+        .item-star-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px 8px;
+            margin-left: auto;
+            transition: transform 0.2s, color 0.2s;
+            color: #666;
+        }
+
+        .item-star-btn:hover {
+            transform: scale(1.2);
+            color: #ffc107;
+        }
+
+        .item-star-btn.starred {
+            color: #ffc107;
+        }
+
+        .item-star-btn.starred:hover {
+            color: #ff9800;
+        }
+
+        .item-star-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .star-count {
+            font-size: 0.75rem;
+            color: #888;
+            margin-left: 2px;
+        }
+
+        /* GitHub Integration Badge */
+        .github-integration-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: #58a6ff;
+        }
+
+        .github-integration-badge.synced {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+
+        .create-issue-btn {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            border: none;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .create-issue-btn:hover {
+            background: linear-gradient(135deg, #2ea043, #3fb950);
+            transform: translateY(-1px);
+        }
+
+        .create-issue-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Comments Section */
+        .item-comments {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comments-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .comments-count {
+            color: #888;
+            font-size: 0.75rem;
+        }
+
+        .comment-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .comment-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4fc3f7, #0f3460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comment-author {
+            color: #4fc3f7;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .comment-timestamp {
+            color: #666;
+            font-size: 0.7rem;
+            margin-left: auto;
+        }
+
+        .comment-body {
+            color: #ccc;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            padding-left: 32px;
+        }
+
+        .add-comment-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .add-comment-input {
+            flex: 1;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #eaeaea;
+            font-size: 0.8rem;
+        }
+
+        .add-comment-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        .add-comment-btn {
+            background: #4fc3f7;
+            border: none;
+            color: #0a1628;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .add-comment-btn:hover {
+            background: #81d4fa;
+        }
+
+        .add-comment-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Assignee Section */
+        .item-assignees {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .assignee-label {
+            color: #888;
+            font-size: 0.7rem;
+        }
+
+        .assignee-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ce93d8, #0f3460);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: white;
+            font-weight: 600;
+            border: 2px solid #16213e;
+            margin-left: -6px;
+        }
+
+        .assignee-avatar:first-of-type {
+            margin-left: 0;
+        }
+
+        .assignee-avatar.add {
+            background: transparent;
+            border: 2px dashed #666;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .assignee-avatar.add:hover {
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+
+        /* Automation Indicator */
+        .automation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            font-size: 0.65rem;
+            color: #ffc107;
+        }
+
+        .automation-badge.active {
+            animation: automationPulse 2s infinite;
+        }
+
+        @keyframes automationPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Sign-in prompt for features */
+        .feature-signin-prompt {
+            color: #888;
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        .feature-signin-prompt a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+
+        .feature-signin-prompt a:hover {
+            text-decoration: underline;
+        }
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -5312,10 +5583,15 @@
         }
 
         // Roadmap Modal Functions
-        function showRoadmapModal() {
+        async function showRoadmapModal() {
             document.getElementById('roadmap-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading">Loading roadmap...</div>';
+
+            // Fetch user's starred items if logged in (for personalized tracking)
+            if (currentUser) {
+                fetchUserStarredItems();
+            }
 
             // Fetch live feedback from Vandromeda API
             fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`)
@@ -5851,7 +6127,7 @@
             }
 
             return `
-                <div class="timeline-item ${statusClass}">
+                <div class="timeline-item ${statusClass}" data-item-id="${item.id}">
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <span class="timeline-title">
@@ -5860,11 +6136,14 @@
                                 <span class="item-priority ${priority.level}">${priority.label}</span>
                             </span>
                             <span class="timeline-date">${timeAgo}</span>
+                            ${renderStarButton(item)}
                         </div>
                         <div class="timeline-description">
                             <span class="roadmap-label ${typeIdBadgeClass === 'feature' ? 'enhancement' : typeIdBadgeClass}" style="margin-right: 8px;">${escapeHtml(item.type)}</span>
                             ${refHtml}
+                            ${renderGitHubIntegration(item)}
                         </div>
+                        ${renderAssignees(item)}
                         ${renderSDLCProgress(item)}
                     </div>
                 </div>
@@ -6095,6 +6374,9 @@
 
             lifecycleHtml += '</div>';
 
+            // Render collaboration section (comments, assignees)
+            const collaborationHtml = renderCollaborationSection(item);
+
             return `
                 <div class="roadmap-item expandable" data-item-id="${item.id}" onclick="toggleItemExpand(${item.id})">
                     <div class="roadmap-item-header">
@@ -6103,20 +6385,462 @@
                             ${escapeHtml(item.title)}
                             <span class="item-priority ${priority.level}">${priority.label}</span>
                         </div>
-                        <div class="roadmap-item-meta">${statusHtml} | ${timeAgo}</div>
+                        <div class="roadmap-item-meta">
+                            ${statusHtml} | ${timeAgo}
+                            ${renderStarButton(item)}
+                        </div>
                     </div>
                     <div class="roadmap-labels">
                         <span class="roadmap-label ${colorClass}">${escapeHtml(item.type)}</span>
+                        ${renderGitHubIntegration(item)}
                     </div>
+                    ${renderAssignees(item)}
                     ${renderSDLCProgress(item)}
                     ${registrationHtml}
                     <div class="roadmap-item-expand-toggle">
                         <span class="arrow">▶</span> View lifecycle details
                     </div>
                     ${lifecycleHtml}
+                    ${collaborationHtml}
                 </div>
             `;
         }
+
+        // ========== STORY 5: INTEGRATIONS & AUTOMATION ==========
+
+        // Track which items the current user has starred
+        let userStarredItems = new Set();
+
+        // Render star button for personalized tracking
+        function renderStarButton(item) {
+            const isStarred = userStarredItems.has(item.id);
+            const starCount = item.stars_count || 0;
+
+            if (!currentUser) {
+                // Show sign-in prompt for non-logged-in users
+                return `<span class="feature-signin-prompt"><a href="#" onclick="event.stopPropagation(); showAuthModal();">Sign in</a> to star</span>`;
+            }
+
+            const starClass = isStarred ? 'starred' : '';
+            return `
+                <button class="item-star-btn ${starClass}"
+                        onclick="event.stopPropagation(); toggleStar(${item.id});"
+                        title="${isStarred ? 'Unstar this item' : 'Star for personalized tracking'}">
+                    ${isStarred ? '★' : '☆'}
+                    ${starCount > 0 ? `<span class="star-count">${starCount}</span>` : ''}
+                </button>
+            `;
+        }
+
+        // Toggle star on an item
+        async function toggleStar(itemId) {
+            if (!currentUser) {
+                showToast('Please sign in to star items', 'warning');
+                return;
+            }
+
+            const btn = document.querySelector(`.roadmap-item[data-item-id="${itemId}"] .item-star-btn`);
+            if (btn) btn.disabled = true;
+
+            try {
+                const token = await currentUser.getIdToken();
+                const isCurrentlyStarred = userStarredItems.has(itemId);
+                const action = isCurrentlyStarred ? 'unstar' : 'star';
+
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: action,
+                        feedback_id: itemId,
+                        product: 'quizmyself'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    if (isCurrentlyStarred) {
+                        userStarredItems.delete(itemId);
+                        showToast('Item unstarred', 'success');
+                    } else {
+                        userStarredItems.add(itemId);
+                        showToast('Item starred for tracking', 'success');
+                    }
+
+                    // Update the star count in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === itemId);
+                        if (item) {
+                            item.stars_count = (item.stars_count || 0) + (isCurrentlyStarred ? -1 : 1);
+                        }
+                    }
+
+                    // Re-render to update UI
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to update star');
+                }
+            } catch (error) {
+                console.error('Star toggle error:', error);
+                showToast('Failed to update star', 'error');
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        // Fetch user's starred items on modal open
+        async function fetchUserStarredItems() {
+            if (!currentUser) return;
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&action=starred`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (result.success && result.starred_items) {
+                    userStarredItems = new Set(result.starred_items);
+                }
+            } catch (error) {
+                console.error('Failed to fetch starred items:', error);
+            }
+        }
+
+        // Render GitHub integration status and create issue button
+        function renderGitHubIntegration(item) {
+            if (item.github_issue && item.github_issue_url) {
+                // Already synced with GitHub
+                return `
+                    <span class="github-integration-badge synced" title="Synced with GitHub">
+                        <span>&#128279;</span> GH-${item.github_issue}
+                    </span>
+                    <span class="automation-badge active" title="Automated sync enabled">
+                        <span>&#9889;</span> Auto-sync
+                    </span>
+                `;
+            }
+
+            // Not yet linked to GitHub - show create button for team members
+            if (!currentUser) return '';
+
+            return `
+                <button class="create-issue-btn"
+                        onclick="event.stopPropagation(); createGitHubIssue(${item.id});"
+                        title="Create GitHub issue and enable auto-sync">
+                    <span>+</span> Create Issue
+                </button>
+            `;
+        }
+
+        // Create GitHub issue and sync with Vandromeda API
+        async function createGitHubIssue(feedbackId) {
+            if (!currentUser) {
+                showToast('Please sign in to create issues', 'warning');
+                return;
+            }
+
+            const btn = document.querySelector(`.roadmap-item[data-item-id="${feedbackId}"] .create-issue-btn`);
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span>...</span> Creating...';
+            }
+
+            try {
+                const token = await currentUser.getIdToken();
+
+                // Call Vandromeda API to create GitHub issue
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'create_github_issue',
+                        feedback_id: feedbackId,
+                        product: 'quizmyself'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast(`GitHub issue #${result.github_issue} created! Auto-sync enabled.`, 'success');
+
+                    // Update the item in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === feedbackId);
+                        if (item) {
+                            item.github_issue = result.github_issue;
+                            item.github_issue_url = result.github_issue_url;
+                        }
+                    }
+
+                    // Re-render to show the synced badge
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to create issue');
+                }
+            } catch (error) {
+                console.error('Create GitHub issue error:', error);
+                showToast('Failed to create GitHub issue. You may need admin permissions.', 'error');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>+</span> Create Issue';
+                }
+            }
+        }
+
+        // Render assignees section
+        function renderAssignees(item) {
+            const assignees = item.assignees || [];
+            if (assignees.length === 0 && !currentUser) return '';
+
+            let html = '<div class="item-assignees">';
+            html += '<span class="assignee-label">Assigned:</span>';
+
+            if (assignees.length === 0) {
+                html += '<span class="assignee-label" style="color: #666;">Unassigned</span>';
+            } else {
+                assignees.forEach(assignee => {
+                    const initials = (assignee.name || assignee.email || 'U')
+                        .split(' ')
+                        .map(n => n[0])
+                        .slice(0, 2)
+                        .join('')
+                        .toUpperCase();
+                    html += `
+                        <span class="assignee-avatar" title="${escapeAttr(assignee.name || assignee.email)}">
+                            ${initials}
+                        </span>
+                    `;
+                });
+            }
+
+            // Add assignee button for logged-in users
+            if (currentUser) {
+                html += `
+                    <span class="assignee-avatar add"
+                          onclick="event.stopPropagation(); assignToItem(${item.id});"
+                          title="Assign someone">+</span>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // Assign user to an item
+        async function assignToItem(feedbackId) {
+            if (!currentUser) {
+                showToast('Please sign in to assign items', 'warning');
+                return;
+            }
+
+            // For now, assign self. In future, show a picker
+            const confirmed = await showConfirm('Assign yourself to this item?', {
+                icon: '👤',
+                confirmText: 'Assign Me'
+            });
+
+            if (!confirmed) return;
+
+            try {
+                const token = await currentUser.getIdToken();
+
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'assign',
+                        feedback_id: feedbackId,
+                        product: 'quizmyself',
+                        assignee_email: currentUser.email
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('You have been assigned to this item', 'success');
+
+                    // Update the item in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === feedbackId);
+                        if (item) {
+                            item.assignees = item.assignees || [];
+                            if (!item.assignees.find(a => a.email === currentUser.email)) {
+                                item.assignees.push({ email: currentUser.email, name: currentUser.displayName || currentUser.email });
+                            }
+                        }
+                    }
+
+                    // Re-render
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to assign');
+                }
+            } catch (error) {
+                console.error('Assign error:', error);
+                showToast('Failed to assign. Please try again.', 'error');
+            }
+        }
+
+        // Render collaboration section with comments
+        function renderCollaborationSection(item) {
+            const comments = item.comments || [];
+
+            let html = '<div class="item-comments" onclick="event.stopPropagation();">';
+            html += '<div class="comments-header">';
+            html += '<div class="lifecycle-section-title">Discussion</div>';
+            html += `<span class="comments-count">${comments.length} comment${comments.length !== 1 ? 's' : ''}</span>`;
+            html += '</div>';
+
+            // Render existing comments
+            if (comments.length > 0) {
+                comments.slice(0, 3).forEach(comment => {
+                    const initials = (comment.author || 'User')
+                        .split(' ')
+                        .map(n => n[0])
+                        .slice(0, 2)
+                        .join('')
+                        .toUpperCase();
+                    const timeAgo = comment.created_at ? formatRelativeTime(comment.created_at) : '';
+
+                    html += `
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <span class="comment-avatar">${initials}</span>
+                                <span class="comment-author">${escapeHtml(comment.author || 'User')}</span>
+                                <span class="comment-timestamp">${timeAgo}</span>
+                            </div>
+                            <div class="comment-body">${escapeHtml(comment.body || comment.message)}</div>
+                        </div>
+                    `;
+                });
+
+                if (comments.length > 3) {
+                    html += `<div style="color: #888; font-size: 0.75rem; text-align: center;">+ ${comments.length - 3} more comments</div>`;
+                }
+            } else {
+                html += '<div style="color: #666; font-size: 0.8rem; padding: 8px 0;">No comments yet. Be the first to add one!</div>';
+            }
+
+            // Add comment form for logged-in users
+            if (currentUser) {
+                html += `
+                    <div class="add-comment-form">
+                        <input type="text"
+                               class="add-comment-input"
+                               id="comment-input-${item.id}"
+                               placeholder="Add a comment..."
+                               onkeypress="if(event.key==='Enter') addComment(${item.id})">
+                        <button class="add-comment-btn" onclick="addComment(${item.id})">Post</button>
+                    </div>
+                `;
+            } else {
+                html += `<div class="feature-signin-prompt" style="margin-top: 8px;"><a href="#" onclick="event.stopPropagation(); showAuthModal();">Sign in</a> to comment</div>`;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // Add a comment to an item
+        async function addComment(feedbackId) {
+            if (!currentUser) {
+                showToast('Please sign in to comment', 'warning');
+                return;
+            }
+
+            const input = document.getElementById(`comment-input-${feedbackId}`);
+            const commentText = input?.value?.trim();
+
+            if (!commentText) {
+                showToast('Please enter a comment', 'warning');
+                return;
+            }
+
+            const btn = input.nextElementSibling;
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '...';
+            }
+
+            try {
+                const token = await currentUser.getIdToken();
+
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'comment',
+                        feedback_id: feedbackId,
+                        product: 'quizmyself',
+                        message: commentText
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('Comment added', 'success');
+
+                    // Update the item in currentFeedbackData
+                    if (currentFeedbackData && currentFeedbackData.feedback) {
+                        const item = currentFeedbackData.feedback.find(f => f.id === feedbackId);
+                        if (item) {
+                            item.comments = item.comments || [];
+                            item.comments.push({
+                                author: currentUser.displayName || currentUser.email,
+                                body: commentText,
+                                created_at: new Date().toISOString()
+                            });
+                        }
+                    }
+
+                    // Clear input and re-render
+                    if (input) input.value = '';
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                        // Re-expand the item
+                        setTimeout(() => {
+                            const itemEl = document.querySelector(`.roadmap-item[data-item-id="${feedbackId}"]`);
+                            if (itemEl) itemEl.classList.add('expanded');
+                        }, 50);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to add comment');
+                }
+            } catch (error) {
+                console.error('Add comment error:', error);
+                showToast('Failed to add comment. Please try again.', 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Post';
+                }
+            }
+        }
+
+        // ========== END STORY 5 ==========
 
         async function submitFeedback() {
             const type = document.getElementById('feedback-type').value;
