@@ -1,0 +1,5 @@
+CPU: Central Processing Unit - the brain of the computer
+RAM: Random Access Memory - temporary storage for running programs
+ROM: Read Only Memory - permanent storage that cannot be modified
+SSD: Solid State Drive - fast storage with no moving parts
+GPU: Graphics Processing Unit - specialized processor for graphics
