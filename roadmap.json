@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-18T08:51:28.575Z",
+  "generated": "2026-01-18T08:53:23.250Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 48,
@@ -25,9 +25,9 @@
       "title": "M2: Beta Stability",
       "description": "Address beta feedback and stabilize the product.\n\n**Goals:**\n- Fix bugs reported by beta users\n- Improve data handling reliability\n- Mobile experience polished\n- Parser edge cases resolved\n\n**Exit Criteria:**\n- No critical bugs open\n- saveState race condition fixed\n- Mobile-friendly across all screens\n- Import reliability >95%",
       "dueDate": "2026-02-14T00:00:00Z",
-      "progress": 25,
-      "openIssues": 6,
-      "closedIssues": 2
+      "progress": 38,
+      "openIssues": 5,
+      "closedIssues": 3
     },
     {
       "title": "M3: Product-Market Fit",
