@@ -138,11 +138,11 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 
 ### Immediate (Bugs/Polish)
 
-- [ ] **Replace native dialogs with custom modals**
-  - [ ] Success/error toasts instead of alert()
-  - [ ] Confirmation modal instead of confirm()
-  - [ ] Selection modal for source-to-quiz linking instead of prompt()
-- [ ] Remove debug console.log statements
+- [x] **Replace native dialogs with custom modals**
+  - [x] Success/error toasts instead of alert()
+  - [x] Confirmation modal instead of confirm()
+  - [x] Selection modal for source-to-quiz linking instead of prompt()
+- [x] Remove debug console.log statements
 - [ ] Consolidate Pro status check functions
 
 ### Short Term (UX Improvements)
@@ -169,6 +169,18 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 - [ ] PWA for mobile app experience
 - [ ] Offline mode with service worker
 - [ ] Consider framework migration (React/Vue/Svelte)
+
+### Infrastructure (Decision Required)
+
+- [ ] **Frontend hosting strategy**
+  - Option A: Host on Vandromeda server (unified infrastructure)
+  - Option B: Separate server (maintain separation of concerns)
+  - Considerations: SSL, deployment pipeline, cost, maintenance overhead
+- [ ] **Disaster recovery & continuity**
+  - [ ] Database backup strategy (automated, off-site)
+  - [ ] Service restoration runbook
+  - [ ] Data export/import for user portability
+  - [ ] Uptime monitoring and alerting
 
 ---
 
