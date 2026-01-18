@@ -48,8 +48,17 @@ quizlet/
 ### Low Priority
 - [ ] Add mobile app wrapper (PWA)
 - [ ] Create study timer/Pomodoro feature
-- [ ] Add social sharing of quiz scores
 - [ ] Implement offline mode with service worker
+
+## Future Roadmap
+
+### Quiz Sharing (Not Started)
+Enable users to share quizzes publicly via shareable links.
+- [ ] Add optional `share_slug` column (globally unique, nullable)
+- [ ] Create public quiz view page at `/q/{share_slug}`
+- [ ] Add "Share Quiz" button that generates/claims a public slug
+- [ ] Add privacy controls (public/private toggle)
+- [ ] Consider quiz discovery/marketplace features
 
 ## Technical Debt
 - [ ] Consider migrating to a proper framework (React/Vue/Svelte)
