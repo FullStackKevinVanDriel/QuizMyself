@@ -1,19 +1,64 @@
 {
-  "generated": "2026-01-18T06:11:59.590Z",
+  "generated": "2026-01-18T06:12:15.365Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 20,
-    "open": 9,
+    "total": 23,
+    "open": 12,
     "closed": 11,
     "byLabel": {
-      "enhancement": 6,
-      "roadmap": 2,
+      "enhancement": 9,
+      "roadmap": 5,
       "feedback": 5,
       "bug": 9
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 179,
+      "title": "Spaced repetition, streaks, and daily goals",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:03Z",
+      "updatedAt": "2026-01-18T06:12:03Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/179",
+      "feedback_id": null
+    },
+    {
+      "number": 177,
+      "title": "Niche specialization: Pick one vertical (e.g., med school)",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:12:02Z",
+      "updatedAt": "2026-01-18T06:12:02Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/177",
+      "feedback_id": null
+    },
+    {
+      "number": 176,
+      "title": "Fair-use policy + no long-term storage + copyright disclaimers",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:12:00Z",
+      "updatedAt": "2026-01-18T06:12:00Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/176",
+      "feedback_id": null
+    },
     {
       "number": 175,
       "title": "Hard per-user AI generation caps",
