@@ -1,0 +1,23 @@
+[
+  {
+    "question": "What is the largest planet in our solar system?",
+    "answer": "Jupiter",
+    "choices": ["Jupiter", "Saturn", "Neptune", "Uranus"],
+    "correct": 0,
+    "category": "Astronomy"
+  },
+  {
+    "question": "Which element has the atomic number 6?",
+    "answer": "Carbon",
+    "choices": ["Oxygen", "Carbon", "Nitrogen", "Hydrogen"],
+    "correct": 1,
+    "category": "Chemistry"
+  },
+  {
+    "question": "What year did World War II end?",
+    "answer": "1945",
+    "choices": ["1943", "1944", "1945", "1946"],
+    "correct": 2,
+    "category": "History"
+  }
+]
