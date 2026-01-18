@@ -1,10 +1,10 @@
 {
-  "generated": "2026-01-18T08:47:11.879Z",
+  "generated": "2026-01-18T08:51:28.575Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 48,
-    "open": 34,
-    "closed": 14,
+    "open": 33,
+    "closed": 15,
     "byLabel": {
       "bug": 13,
       "enhancement": 20,
@@ -33,9 +33,9 @@
       "title": "M3: Product-Market Fit",
       "description": "Validate product-market fit with retention features.\n\n**Goals:**\n- Spaced repetition algorithm live\n- Streaks and daily goals driving engagement\n- Niche vertical identified and targeted\n- GDPR/privacy compliance\n\n**Exit Criteria:**\n- 7-day retention >40%\n- Daily active users metric established\n- Privacy policy and consent flows compliant\n- Clear target audience defined",
       "dueDate": "2026-02-28T00:00:00Z",
-      "progress": 0,
-      "openIssues": 6,
-      "closedIssues": 0
+      "progress": 17,
+      "openIssues": 5,
+      "closedIssues": 1
     },
     {
       "title": "M4: Scale Ready",
@@ -55,6 +55,19 @@
     }
   ],
   "issues": [
+    {
+      "number": 212,
+      "title": "feat: Sort and search functionality for Progress modal",
+      "state": "closed",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:45Z",
+      "updatedAt": "2026-01-18T08:51:17Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
+      "feedback_id": null
+    },
     {
       "number": 160,
       "title": "[feature] Test feature request - live roadmap should show th...",
@@ -110,19 +123,6 @@
       "milestone": "M5: v1.0 Public Launch",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/155",
       "feedback_id": 13
-    },
-    {
-      "number": 212,
-      "title": "feat: Sort and search functionality for Progress modal",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:45Z",
-      "updatedAt": "2026-01-18T08:38:03Z",
-      "milestone": "M3: Product-Market Fit",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
-      "feedback_id": null
     },
     {
       "number": 210,
@@ -727,6 +727,13 @@
   ],
   "recentlyCompleted": [
     {
+      "number": 212,
+      "title": "feat: Sort and search functionality for Progress modal",
+      "closedAt": "2026-01-18T08:51:17Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
+      "feedback_id": null
+    },
+    {
       "number": 213,
       "title": "feat: Improved empty states and loading experience",
       "closedAt": "2026-01-18T08:04:57Z",
@@ -787,13 +794,6 @@
       "title": "P0: Fix XSS vulnerability in category onclick handlers",
       "closedAt": "2026-01-18T03:44:03Z",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
-      "feedback_id": null
-    },
-    {
-      "number": 143,
-      "title": "P0: Fix XSS vulnerability in keyword onclick handlers",
-      "closedAt": "2026-01-18T03:44:03Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
       "feedback_id": null
     }
   ]
