@@ -144,20 +144,29 @@ Retrieve feedback entries.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
+| `id` | int | Fetch a single feedback item by ID |
+| `history` | boolean | Set to "true" to include lifecycle history events |
 | `product` | string | Filter by product (e.g., "quizmyself") |
 | `unprocessed` | boolean | Set to "true" to get only unprocessed feedback |
 | `status` | string | Filter by status (pending, processing, resolved, etc.) |
 | `limit` | int | Max entries to return (default: 100, max: 500) |
 | `offset` | int | Pagination offset (default: 0) |
 
-**Example:**
+**Example - List feedback:**
 
 ```bash
 curl -H "Authorization: Bearer $TOKEN" \
   "https://api.vandromeda.com/feedback.php?product=quizmyself&unprocessed=true"
 ```
 
-**Response:**
+**Example - Get single item with history:**
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  "https://api.vandromeda.com/feedback.php?id=123&history=true"
+```
+
+**Response (list):**
 
 ```json
 {
@@ -184,6 +193,45 @@ curl -H "Authorization: Bearer $TOKEN" \
     "limit": 100,
     "offset": 0,
     "has_more": false
+  }
+}
+```
+
+**Response (single item with history):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 123,
+    "product": "quizmyself",
+    "type": "bug",
+    "message": "Login button not working",
+    "status": "resolved",
+    "github_issue": 456,
+    "github_issue_url": "https://github.com/org/repo/issues/456",
+    "processed_at": "2025-01-16 09:00:00",
+    "created_at": "2025-01-15 10:30:00",
+    "history": [
+      {
+        "type": "created",
+        "description": "Bug submitted",
+        "timestamp": "2025-01-15 10:30:00"
+      },
+      {
+        "type": "processed",
+        "description": "Linked to GitHub issue #456",
+        "timestamp": "2025-01-16 09:00:00",
+        "github_issue": 456,
+        "github_issue_url": "https://github.com/org/repo/issues/456"
+      },
+      {
+        "type": "status_change",
+        "description": "Resolved and deployed",
+        "status": "resolved",
+        "timestamp": "2025-01-16 09:00:00"
+      }
+    ]
   }
 }
 ```

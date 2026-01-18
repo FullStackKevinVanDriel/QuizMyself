@@ -134,11 +134,105 @@ function hasPermission(array $tokenData, string $permission): bool {
 }
 
 /**
+ * Build lifecycle history events from feedback item data
+ * Infers status changes from available timestamps
+ */
+function buildLifecycleHistory(array $item): array {
+    $events = [];
+
+    // Birth event (created)
+    if (!empty($item['created_at'])) {
+        $events[] = [
+            'type' => 'created',
+            'description' => ucfirst($item['type'] ?? 'Item') . ' submitted',
+            'timestamp' => $item['created_at'],
+        ];
+    }
+
+    // Processed event (linked to GitHub)
+    if (!empty($item['processed_at'])) {
+        $description = 'Linked to GitHub';
+        if (!empty($item['github_issue'])) {
+            $description .= ' issue #' . $item['github_issue'];
+        }
+        $events[] = [
+            'type' => 'processed',
+            'description' => $description,
+            'timestamp' => $item['processed_at'],
+            'github_issue' => $item['github_issue'] ?? null,
+            'github_issue_url' => $item['github_issue_url'] ?? null,
+        ];
+    }
+
+    // Infer status changes based on current status
+    $statusDescriptions = [
+        'pending' => 'Awaiting review',
+        'processing' => 'Development started',
+        'resolved' => 'Resolved and deployed',
+        'wontfix' => 'Marked as won\'t fix',
+        'duplicate' => 'Marked as duplicate',
+        'invalid' => 'Marked as invalid',
+    ];
+
+    // If status is not pending, add a status change event
+    if (!empty($item['status']) && $item['status'] !== 'pending') {
+        $statusTime = $item['processed_at'] ?? $item['created_at'];
+        $events[] = [
+            'type' => 'status_change',
+            'description' => $statusDescriptions[$item['status']] ?? 'Status updated to ' . $item['status'],
+            'status' => $item['status'],
+            'timestamp' => $statusTime,
+        ];
+    }
+
+    // Sort events by timestamp
+    usort($events, function($a, $b) {
+        return strtotime($a['timestamp']) - strtotime($b['timestamp']);
+    });
+
+    return $events;
+}
+
+/**
  * Handle GET requests - retrieve feedback
  */
 function handleGet(PDO $db, array $tokenData): void {
     if (!hasPermission($tokenData, 'feedback:read')) {
         errorResponse('Permission denied: feedback:read required', 403);
+    }
+
+    // Check for single item fetch by ID
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+    $includeHistory = isset($_GET['history']) && $_GET['history'] === 'true';
+
+    // Single item fetch
+    if ($id !== null && $id > 0) {
+        $stmt = $db->prepare("
+            SELECT id, product, type, message, email, user_agent, url, context,
+                   status, github_issue, github_issue_url, processed_at, created_at
+            FROM feedback
+            WHERE id = ?
+        ");
+        $stmt->execute([$id]);
+        $item = $stmt->fetch();
+
+        if (!$item) {
+            errorResponse('Feedback not found', 404);
+        }
+
+        // Parse JSON context field
+        $item['context'] = json_decode($item['context'] ?? '{}', true);
+
+        // Include lifecycle history if requested
+        if ($includeHistory) {
+            $item['history'] = buildLifecycleHistory($item);
+        }
+
+        jsonResponse([
+            'success' => true,
+            'data' => $item,
+        ]);
+        return;
     }
 
     $product = $_GET['product'] ?? null;
@@ -190,9 +284,12 @@ function handleGet(PDO $db, array $tokenData): void {
     $stmt->execute($params);
     $feedback = $stmt->fetchAll();
 
-    // Parse JSON context field
+    // Parse JSON context field and optionally include history
     foreach ($feedback as &$item) {
         $item['context'] = json_decode($item['context'] ?? '{}', true);
+        if ($includeHistory) {
+            $item['history'] = buildLifecycleHistory($item);
+        }
     }
 
     jsonResponse([
