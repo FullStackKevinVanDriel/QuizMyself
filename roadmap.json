@@ -1,19 +1,276 @@
 {
-  "generated": "2026-01-18T08:13:21.583Z",
+  "generated": "2026-01-18T08:29:53.051Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 44,
-    "open": 30,
+    "total": 48,
+    "open": 34,
     "closed": 14,
     "byLabel": {
-      "enhancement": 19,
+      "bug": 13,
+      "enhancement": 20,
       "roadmap": 20,
-      "feedback": 5,
-      "bug": 10
+      "feedback": 5
     }
   },
-  "milestones": [],
+  "milestones": [
+    {
+      "title": "M1: Beta Launch",
+      "description": "Get the product stable and secure for initial beta testers.\n\n**Goals:**\n- Security vulnerabilities fixed\n- Analytics tracking live\n- 5-10 beta users recruited\n- Core bugs resolved\n\n**Exit Criteria:**\n- No P0 security issues\n- Usage data flowing to Plausible\n- Active beta testers providing feedback",
+      "dueDate": "2026-01-31T00:00:00Z",
+      "progress": 0,
+      "openIssues": 2,
+      "closedIssues": 0
+    },
+    {
+      "title": "M2: Beta Stability",
+      "description": "Address beta feedback and stabilize the product.\n\n**Goals:**\n- Fix bugs reported by beta users\n- Improve data handling reliability\n- Mobile experience polished\n- Parser edge cases resolved\n\n**Exit Criteria:**\n- No critical bugs open\n- saveState race condition fixed\n- Mobile-friendly across all screens\n- Import reliability >95%",
+      "dueDate": "2026-02-14T00:00:00Z",
+      "progress": 0,
+      "openIssues": 3,
+      "closedIssues": 0
+    },
+    {
+      "title": "M3: Product-Market Fit",
+      "description": "Validate product-market fit with retention features.\n\n**Goals:**\n- Spaced repetition algorithm live\n- Streaks and daily goals driving engagement\n- Niche vertical identified and targeted\n- GDPR/privacy compliance\n\n**Exit Criteria:**\n- 7-day retention >40%\n- Daily active users metric established\n- Privacy policy and consent flows compliant\n- Clear target audience defined",
+      "dueDate": "2026-02-28T00:00:00Z",
+      "progress": 0,
+      "openIssues": 3,
+      "closedIssues": 0
+    },
+    {
+      "title": "M4: Scale Ready",
+      "description": "Prepare infrastructure for growth and monetization.\n\n**Goals:**\n- Multi-provider AI (reduce OpenAI dependency)\n- Usage caps and fair-use policy\n- Content quality controls\n- Cost-sustainable AI operations\n\n**Exit Criteria:**\n- Gemini/Claude fallback working\n- Per-user AI caps enforced\n- Copyright disclaimers in place\n- Human review queue for flagged content",
+      "dueDate": "2026-03-14T00:00:00Z",
+      "progress": 0,
+      "openIssues": 4,
+      "closedIssues": 0
+    },
+    {
+      "title": "M5: v1.0 Public Launch",
+      "description": "Public launch with full feature set.\n\n**Goals:**\n- PWA for mobile app experience\n- Quiz sharing via public links\n- Progress dashboard\n- Marketing-ready landing page\n\n**Exit Criteria:**\n- App installable on mobile\n- Shareable quiz links working\n- User dashboard with insights\n- Ready for public marketing push",
+      "dueDate": "2026-03-31T00:00:00Z",
+      "progress": 0,
+      "openIssues": 3,
+      "closedIssues": 0
+    }
+  ],
   "issues": [
+    {
+      "number": 183,
+      "title": "Focus on teacher communities/Reddit/TikTok edu marketing",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:32Z",
+      "updatedAt": "2026-01-18T08:29:49Z",
+      "milestone": "M5: v1.0 Public Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/183",
+      "feedback_id": null
+    },
+    {
+      "number": 184,
+      "title": "Evergreen content + community features",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:33Z",
+      "updatedAt": "2026-01-18T08:29:48Z",
+      "milestone": "M5: v1.0 Public Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/184",
+      "feedback_id": null
+    },
+    {
+      "number": 185,
+      "title": "Responsive design + native app investment",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:34Z",
+      "updatedAt": "2026-01-18T08:29:46Z",
+      "milestone": "M5: v1.0 Public Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/185",
+      "feedback_id": null
+    },
+    {
+      "number": 247,
+      "title": "Fix CSV/Flashcard parser edge cases",
+      "state": "open",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T08:29:41Z",
+      "updatedAt": "2026-01-18T08:29:41Z",
+      "milestone": "M2: Beta Stability",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/247",
+      "feedback_id": null
+    },
+    {
+      "number": 245,
+      "title": "Fix saveState race condition",
+      "state": "open",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T08:29:29Z",
+      "updatedAt": "2026-01-18T08:29:29Z",
+      "milestone": "M2: Beta Stability",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/245",
+      "feedback_id": null
+    },
+    {
+      "number": 244,
+      "title": "Fix source material UI refresh after linking",
+      "state": "open",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T08:29:24Z",
+      "updatedAt": "2026-01-18T08:29:24Z",
+      "milestone": "M2: Beta Stability",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/244",
+      "feedback_id": null
+    },
+    {
+      "number": 243,
+      "title": "Recruit 5-10 beta users",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T08:29:20Z",
+      "updatedAt": "2026-01-18T08:29:20Z",
+      "milestone": "M1: Beta Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/243",
+      "feedback_id": null
+    },
+    {
+      "number": 181,
+      "title": "Human review queue + user reports + quality scores",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:30Z",
+      "updatedAt": "2026-01-18T08:28:00Z",
+      "milestone": "M4: Scale Ready",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/181",
+      "feedback_id": null
+    },
+    {
+      "number": 176,
+      "title": "Fair-use policy + no long-term storage + copyright disclaimers",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:12:00Z",
+      "updatedAt": "2026-01-18T08:27:59Z",
+      "milestone": "M4: Scale Ready",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/176",
+      "feedback_id": null
+    },
+    {
+      "number": 175,
+      "title": "Hard per-user AI generation caps",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:11:55Z",
+      "updatedAt": "2026-01-18T08:27:58Z",
+      "milestone": "M4: Scale Ready",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/175",
+      "feedback_id": null
+    },
+    {
+      "number": 174,
+      "title": "Multi-provider AI support (Gemini/o3-mini backup)",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:11:50Z",
+      "updatedAt": "2026-01-18T08:27:57Z",
+      "milestone": "M4: Scale Ready",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/174",
+      "feedback_id": null
+    },
+    {
+      "number": 182,
+      "title": "Audit data privacy/GDPR + consent flows",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:31Z",
+      "updatedAt": "2026-01-18T08:27:50Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/182",
+      "feedback_id": null
+    },
+    {
+      "number": 177,
+      "title": "Niche specialization: Pick one vertical (e.g., med school)",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:12:02Z",
+      "updatedAt": "2026-01-18T08:27:49Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/177",
+      "feedback_id": null
+    },
+    {
+      "number": 179,
+      "title": "Spaced repetition, streaks, and daily goals",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:03Z",
+      "updatedAt": "2026-01-18T08:27:47Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/179",
+      "feedback_id": null
+    },
+    {
+      "number": 157,
+      "title": "[bug] Ensure all screens and modals are friendly for mon...",
+      "state": "open",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:30Z",
+      "updatedAt": "2026-01-18T08:27:42Z",
+      "milestone": "M1: Beta Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/157",
+      "feedback_id": 11
+    },
     {
       "number": 213,
       "title": "feat: Improved empty states and loading experience",
@@ -233,156 +490,6 @@
       "feedback_id": null
     },
     {
-      "number": 185,
-      "title": "Responsive design + native app investment",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:medium"
-      ],
-      "createdAt": "2026-01-18T06:12:34Z",
-      "updatedAt": "2026-01-18T06:12:34Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/185",
-      "feedback_id": null
-    },
-    {
-      "number": 184,
-      "title": "Evergreen content + community features",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:medium"
-      ],
-      "createdAt": "2026-01-18T06:12:33Z",
-      "updatedAt": "2026-01-18T06:12:33Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/184",
-      "feedback_id": null
-    },
-    {
-      "number": 183,
-      "title": "Focus on teacher communities/Reddit/TikTok edu marketing",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:medium"
-      ],
-      "createdAt": "2026-01-18T06:12:32Z",
-      "updatedAt": "2026-01-18T06:12:32Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/183",
-      "feedback_id": null
-    },
-    {
-      "number": 182,
-      "title": "Audit data privacy/GDPR + consent flows",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:high"
-      ],
-      "createdAt": "2026-01-18T06:12:31Z",
-      "updatedAt": "2026-01-18T06:12:31Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/182",
-      "feedback_id": null
-    },
-    {
-      "number": 181,
-      "title": "Human review queue + user reports + quality scores",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:high"
-      ],
-      "createdAt": "2026-01-18T06:12:30Z",
-      "updatedAt": "2026-01-18T06:12:30Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/181",
-      "feedback_id": null
-    },
-    {
-      "number": 179,
-      "title": "Spaced repetition, streaks, and daily goals",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:high"
-      ],
-      "createdAt": "2026-01-18T06:12:03Z",
-      "updatedAt": "2026-01-18T06:12:03Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/179",
-      "feedback_id": null
-    },
-    {
-      "number": 177,
-      "title": "Niche specialization: Pick one vertical (e.g., med school)",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:critical"
-      ],
-      "createdAt": "2026-01-18T06:12:02Z",
-      "updatedAt": "2026-01-18T06:12:02Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/177",
-      "feedback_id": null
-    },
-    {
-      "number": 176,
-      "title": "Fair-use policy + no long-term storage + copyright disclaimers",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:critical"
-      ],
-      "createdAt": "2026-01-18T06:12:00Z",
-      "updatedAt": "2026-01-18T06:12:00Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/176",
-      "feedback_id": null
-    },
-    {
-      "number": 175,
-      "title": "Hard per-user AI generation caps",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:critical"
-      ],
-      "createdAt": "2026-01-18T06:11:55Z",
-      "updatedAt": "2026-01-18T06:11:55Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/175",
-      "feedback_id": null
-    },
-    {
-      "number": 174,
-      "title": "Multi-provider AI support (Gemini/o3-mini backup)",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "roadmap",
-        "priority:critical"
-      ],
-      "createdAt": "2026-01-18T06:11:50Z",
-      "updatedAt": "2026-01-18T06:11:50Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/174",
-      "feedback_id": null
-    },
-    {
       "number": 161,
       "title": "[bug] this is good; now, when i look at the source mater...",
       "state": "closed",
@@ -478,20 +585,6 @@
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/158",
       "feedback_id": 10
-    },
-    {
-      "number": 157,
-      "title": "[bug] Ensure all screens and modals are friendly for mon...",
-      "state": "open",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:30Z",
-      "updatedAt": "2026-01-18T04:05:30Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/157",
-      "feedback_id": 11
     },
     {
       "number": 156,
