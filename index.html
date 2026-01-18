@@ -2310,6 +2310,262 @@
             opacity: 0.7;
         }
 
+        /* Category Filter Bar */
+        .progress-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            background: rgba(15, 52, 96, 0.5);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .progress-filter-bar .filter-label {
+            color: #888;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
+        }
+
+        .progress-filter-chip {
+            background: #1a1a2e;
+            color: #888;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .progress-filter-chip:hover {
+            border-color: #4fc3f7;
+            color: #eaeaea;
+        }
+
+        .progress-filter-chip.active {
+            background: rgba(79, 195, 247, 0.15);
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+
+        .progress-filter-chip .count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        .progress-filter-chip.active .count {
+            background: rgba(79, 195, 247, 0.3);
+        }
+
+        /* Category-specific filter chip colors */
+        .progress-filter-chip[data-type="bug"].active {
+            background: rgba(233, 69, 96, 0.15);
+            border-color: #e94560;
+            color: #e94560;
+        }
+        .progress-filter-chip[data-type="feature"].active {
+            background: rgba(76, 175, 80, 0.15);
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+        .progress-filter-chip[data-type="question"].active {
+            background: rgba(79, 195, 247, 0.15);
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+        .progress-filter-chip[data-type="request"].active {
+            background: rgba(156, 39, 176, 0.15);
+            border-color: #ce93d8;
+            color: #ce93d8;
+        }
+
+        /* Expandable Item */
+        .roadmap-item.expandable {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .roadmap-item.expandable:hover {
+            background: #1e3a5f;
+        }
+
+        .roadmap-item-expand-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #4fc3f7;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .roadmap-item-expand-toggle .arrow {
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .roadmap-item.expanded .roadmap-item-expand-toggle .arrow {
+            transform: rotate(90deg);
+        }
+
+        .item-lifecycle {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .roadmap-item.expanded .item-lifecycle {
+            display: block;
+        }
+
+        .lifecycle-section {
+            margin-bottom: 12px;
+        }
+
+        .lifecycle-section-title {
+            color: #4fc3f7;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .lifecycle-event {
+            display: flex;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            border-left: 2px solid #333;
+            padding-left: 12px;
+            margin-left: 4px;
+        }
+
+        .lifecycle-event.birth {
+            border-left-color: #4caf50;
+        }
+
+        .lifecycle-event.update {
+            border-left-color: #ff9800;
+        }
+
+        .lifecycle-event.status-change {
+            border-left-color: #4fc3f7;
+        }
+
+        .lifecycle-event.resolved {
+            border-left-color: #27ae60;
+        }
+
+        .lifecycle-event-icon {
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+        }
+
+        .lifecycle-event-content {
+            flex: 1;
+        }
+
+        .lifecycle-event-description {
+            color: #eaeaea;
+        }
+
+        .lifecycle-event-timestamp {
+            color: #666;
+            font-size: 0.7rem;
+            margin-top: 2px;
+        }
+
+        /* Dependencies */
+        .item-dependencies {
+            margin-top: 10px;
+        }
+
+        .dependency-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+
+        .dependency-item .dep-icon {
+            color: #ff9800;
+        }
+
+        .dependency-item .dep-icon.resolved {
+            color: #4caf50;
+        }
+
+        .dependency-item .dep-label {
+            color: #888;
+            font-size: 0.7rem;
+        }
+
+        .dependency-item .dep-title {
+            flex: 1;
+            color: #eaeaea;
+        }
+
+        .dependency-item .dep-status {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .dependency-item .dep-status.pending {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .dependency-item .dep-status.done {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        /* Item Progress Bar (individual item completion) */
+        .item-progress-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .item-progress-track {
+            flex: 1;
+            height: 6px;
+            background: #1a1a2e;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .item-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #4caf50);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .item-progress-text {
+            color: #888;
+            font-size: 0.7rem;
+            min-width: 35px;
+            text-align: right;
+        }
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -5248,7 +5504,12 @@
             `;
         }
 
+        // Store current feedback data for filtering
+        let currentFeedbackData = null;
+        let activeFilters = new Set();
+
         function renderRoadmapFromFeedback(data) {
+            currentFeedbackData = data;
             const container = document.getElementById('roadmap-content');
             const feedback = data.feedback || [];
             const stats = data.stats || {};
@@ -5294,15 +5555,57 @@
                 </div>
             `;
 
+            // Category Filter Bar
+            if (feedback.length > 0) {
+                const typeCounts = {};
+                feedback.forEach(item => {
+                    const type = item.type || 'other';
+                    typeCounts[type] = (typeCounts[type] || 0) + 1;
+                });
+
+                const typeLabels = {
+                    'feature': 'Features',
+                    'bug': 'Bugs',
+                    'question': 'Questions',
+                    'request': 'Requests',
+                    'feedback': 'Feedback'
+                };
+
+                const typeIcons = {
+                    'feature': '✨',
+                    'bug': '🐛',
+                    'question': '❓',
+                    'request': '📝',
+                    'feedback': '💬'
+                };
+
+                html += '<div class="progress-filter-bar">';
+                html += '<span class="filter-label">Filter:</span>';
+                html += `<button class="progress-filter-chip ${activeFilters.size === 0 ? 'active' : ''}" data-type="all" onclick="toggleProgressFilter('all')">All <span class="count">${feedback.length}</span></button>`;
+
+                Object.keys(typeCounts).sort().forEach(type => {
+                    const isActive = activeFilters.has(type);
+                    const label = typeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1);
+                    const icon = typeIcons[type] || '📋';
+                    html += `<button class="progress-filter-chip ${isActive ? 'active' : ''}" data-type="${escapeAttr(type)}" onclick="toggleProgressFilter('${escapeAttr(type)}')">${icon} ${label} <span class="count">${typeCounts[type]}</span></button>`;
+                });
+                html += '</div>';
+            }
+
             // Sort feedback by priority (highest first) for data-driven prioritization
             const sortByPriority = (items) => {
                 return [...items].sort((a, b) => calculatePriorityScore(b) - calculatePriorityScore(a));
             };
 
+            // Apply category filter
+            const filteredFeedback = activeFilters.size === 0
+                ? feedback
+                : feedback.filter(f => activeFilters.has(f.type));
+
             // Group feedback by status and sort by priority
-            const openItems = sortByPriority(feedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
-            const inProgressItems = sortByPriority(feedback.filter(f => f.status === 'in_progress'));
-            const resolvedItems = sortByPriority(feedback.filter(f => f.is_resolved));
+            const openItems = sortByPriority(filteredFeedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
+            const inProgressItems = sortByPriority(filteredFeedback.filter(f => f.status === 'in_progress'));
+            const resolvedItems = sortByPriority(filteredFeedback.filter(f => f.is_resolved));
 
             // Milestone summary card (shows overall progress)
             if (feedback.length > 0) {
@@ -5380,7 +5683,14 @@
                 html += '</div>';
             }
 
-            if (feedback.length === 0) {
+            if (filteredFeedback.length === 0 && feedback.length > 0) {
+                html += `
+                    <div class="roadmap-empty">
+                        <p>No items match the selected filters.</p>
+                        <button class="btn" onclick="toggleProgressFilter('all')">Clear Filters</button>
+                    </div>
+                `;
+            } else if (feedback.length === 0) {
                 html += `
                     <div class="roadmap-empty">
                         <p>No feedback yet! Be the first to help shape our priorities.</p>
@@ -5390,6 +5700,29 @@
             }
 
             container.innerHTML = html;
+        }
+
+        // Toggle category filter
+        function toggleProgressFilter(type) {
+            if (type === 'all') {
+                activeFilters.clear();
+            } else if (activeFilters.has(type)) {
+                activeFilters.delete(type);
+            } else {
+                activeFilters.add(type);
+            }
+            // Re-render with current data
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+        }
+
+        // Toggle item expansion
+        function toggleItemExpand(itemId) {
+            const item = document.querySelector(`.roadmap-item[data-item-id="${itemId}"]`);
+            if (item) {
+                item.classList.toggle('expanded');
+            }
         }
 
         // Generate unique type-prefixed ID (e.g., F-1 for feature, B-2 for bug)
@@ -5538,6 +5871,107 @@
             `;
         }
 
+        // Build lifecycle events for an item
+        function buildLifecycleEvents(item) {
+            const events = [];
+
+            // Birth event (created)
+            if (item.created_at) {
+                events.push({
+                    type: 'birth',
+                    icon: '🌱',
+                    description: `${item.type || 'Item'} submitted`,
+                    timestamp: item.created_at
+                });
+            }
+
+            // Infer status changes from current status
+            const statusOrder = ['new', 'reviewed', 'in_progress', 'testing', 'resolved'];
+            const currentIndex = statusOrder.indexOf(item.status);
+
+            if (currentIndex >= 1) {
+                events.push({
+                    type: 'status-change',
+                    icon: '👁️',
+                    description: 'Reviewed and triaged',
+                    timestamp: item.reviewed_at || item.updated_at
+                });
+            }
+            if (currentIndex >= 2) {
+                events.push({
+                    type: 'status-change',
+                    icon: '🔧',
+                    description: 'Development started',
+                    timestamp: item.started_at || item.updated_at
+                });
+            }
+            if (currentIndex >= 3) {
+                events.push({
+                    type: 'status-change',
+                    icon: '🧪',
+                    description: 'Moved to testing',
+                    timestamp: item.testing_at || item.updated_at
+                });
+            }
+
+            // Update event (if updated after creation)
+            if (item.updated_at && item.updated_at !== item.created_at && !item.is_resolved) {
+                events.push({
+                    type: 'update',
+                    icon: '📝',
+                    description: 'Last updated',
+                    timestamp: item.updated_at
+                });
+            }
+
+            // Resolved event
+            if (item.is_resolved) {
+                events.push({
+                    type: 'resolved',
+                    icon: '✅',
+                    description: 'Resolved and deployed',
+                    timestamp: item.resolved_at || item.updated_at
+                });
+            }
+
+            return events;
+        }
+
+        // Calculate item progress percentage based on SDLC stage
+        function calculateItemProgress(item) {
+            const { currentStageIndex, totalStages } = getSDLCStageInfo(item);
+            return Math.round((currentStageIndex / (totalStages - 1)) * 100);
+        }
+
+        // Render dependencies section for an item
+        function renderDependencies(item) {
+            const dependencies = item.dependencies || [];
+            if (dependencies.length === 0) return '';
+
+            let html = '<div class="item-dependencies">';
+            html += '<div class="lifecycle-section-title">Dependencies</div>';
+
+            dependencies.forEach(dep => {
+                const isResolved = dep.is_resolved || dep.status === 'resolved';
+                const iconClass = isResolved ? 'resolved' : '';
+                const statusClass = isResolved ? 'done' : 'pending';
+                const statusLabel = isResolved ? 'Done' : 'Pending';
+                const depTypeId = getTypePrefixedId(dep);
+
+                html += `
+                    <div class="dependency-item">
+                        <span class="dep-icon ${iconClass}">${isResolved ? '✓' : '○'}</span>
+                        <span class="type-id-badge ${dep.type || 'feedback'}" style="font-size: 0.65rem;">${depTypeId}</span>
+                        <span class="dep-title">${escapeHtml(dep.title || 'Linked item')}</span>
+                        <span class="dep-status ${statusClass}">${statusLabel}</span>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            return html;
+        }
+
         function renderFeedbackItem(item) {
             const typeColors = {
                 'bug': 'bug',
@@ -5562,6 +5996,9 @@
             // Priority indicator
             const priorityScore = calculatePriorityScore(item);
             const priority = getPriorityLevel(priorityScore);
+
+            // Item progress percentage
+            const progressPercent = calculateItemProgress(item);
 
             // Status badge
             const statusHtml = `<span class="roadmap-status" style="color: ${statusColors[item.status] || '#888'};">${escapeHtml(item.status_label)}</span>`;
@@ -5614,8 +6051,52 @@
 
             registrationHtml += '</div>';
 
+            // Build lifecycle section (hidden by default, shown when expanded)
+            const lifecycleEvents = buildLifecycleEvents(item);
+            let lifecycleHtml = '<div class="item-lifecycle">';
+
+            // Lifecycle events history
+            lifecycleHtml += '<div class="lifecycle-section">';
+            lifecycleHtml += '<div class="lifecycle-section-title">History</div>';
+            lifecycleEvents.forEach(event => {
+                const eventDate = event.timestamp
+                    ? new Date(event.timestamp).toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    })
+                    : '';
+                lifecycleHtml += `
+                    <div class="lifecycle-event ${event.type}">
+                        <span class="lifecycle-event-icon">${event.icon}</span>
+                        <div class="lifecycle-event-content">
+                            <div class="lifecycle-event-description">${escapeHtml(event.description)}</div>
+                            <div class="lifecycle-event-timestamp">${eventDate}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            lifecycleHtml += '</div>';
+
+            // Dependencies (if any)
+            lifecycleHtml += renderDependencies(item);
+
+            // Item-level progress bar
+            lifecycleHtml += `
+                <div class="lifecycle-section">
+                    <div class="lifecycle-section-title">Completion</div>
+                    <div class="item-progress-bar">
+                        <div class="item-progress-track">
+                            <div class="item-progress-fill" style="width: ${progressPercent}%;"></div>
+                        </div>
+                        <span class="item-progress-text">${progressPercent}%</span>
+                    </div>
+                </div>
+            `;
+
+            lifecycleHtml += '</div>';
+
             return `
-                <div class="roadmap-item">
+                <div class="roadmap-item expandable" data-item-id="${item.id}" onclick="toggleItemExpand(${item.id})">
                     <div class="roadmap-item-header">
                         <div class="roadmap-item-title">
                             <span class="type-id-badge ${typeIdBadgeClass}">${typeId}</span>
@@ -5629,6 +6110,10 @@
                     </div>
                     ${renderSDLCProgress(item)}
                     ${registrationHtml}
+                    <div class="roadmap-item-expand-toggle">
+                        <span class="arrow">▶</span> View lifecycle details
+                    </div>
+                    ${lifecycleHtml}
                 </div>
             `;
         }

@@ -672,4 +672,465 @@ test.describe("Roadmap Modal Tests", () => {
 
     expect(bugIndex).toBeLessThan(questionIndex);
   });
+
+  // Story 4: Advanced UI and Filters tests
+
+  test("progress modal displays category filter bar", async ({ page }) => {
+    // Mock with multiple item types
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test feature",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "Test bug",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 3,
+              title: "Test question",
+              type: "question",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 3, in_progress: 0, resolved: 0, total: 3 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-filter-bar", { timeout: 10000 });
+
+    // Verify filter bar exists
+    const filterBar = page.locator(".progress-filter-bar");
+    await expect(filterBar).toBeVisible();
+
+    // Verify All filter chip
+    const allChip = page.locator('.progress-filter-chip[data-type="all"]');
+    await expect(allChip).toBeVisible();
+    await expect(allChip).toHaveClass(/active/);
+
+    // Verify type-specific chips exist
+    const featureChip = page.locator('.progress-filter-chip[data-type="feature"]');
+    await expect(featureChip).toBeVisible();
+
+    const bugChip = page.locator('.progress-filter-chip[data-type="bug"]');
+    await expect(bugChip).toBeVisible();
+  });
+
+  test("category filters toggle correctly", async ({ page }) => {
+    // Mock with multiple item types
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test feature",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "Test bug",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 2, in_progress: 0, resolved: 0, total: 2 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-filter-bar", { timeout: 10000 });
+
+    // Click on bug filter
+    await page.click('.progress-filter-chip[data-type="bug"]');
+
+    // Bug chip should be active now
+    const bugChip = page.locator('.progress-filter-chip[data-type="bug"]');
+    await expect(bugChip).toHaveClass(/active/);
+
+    // All chip should not be active
+    const allChip = page.locator('.progress-filter-chip[data-type="all"]');
+    await expect(allChip).not.toHaveClass(/active/);
+
+    // Only bug item should be visible
+    const items = await page.locator(".roadmap-item").allTextContents();
+    expect(items.some((text) => text.includes("Test bug"))).toBe(true);
+    expect(items.some((text) => text.includes("Test feature"))).toBe(false);
+  });
+
+  test("clicking All filter clears other filters", async ({ page }) => {
+    // Mock with multiple item types
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test feature",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "Test bug",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 2, in_progress: 0, resolved: 0, total: 2 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-filter-bar", { timeout: 10000 });
+
+    // Activate bug filter first
+    await page.click('.progress-filter-chip[data-type="bug"]');
+
+    // Then click All to clear
+    await page.click('.progress-filter-chip[data-type="all"]');
+
+    // All chip should be active
+    const allChip = page.locator('.progress-filter-chip[data-type="all"]');
+    await expect(allChip).toHaveClass(/active/);
+
+    // Both items should be visible
+    const items = await page.locator(".roadmap-item").allTextContents();
+    expect(items.some((text) => text.includes("Test bug"))).toBe(true);
+    expect(items.some((text) => text.includes("Test feature"))).toBe(true);
+  });
+
+  test("roadmap items are expandable", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Expandable item",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Verify item is expandable
+    const expandableItem = page.locator(".roadmap-item.expandable");
+    await expect(expandableItem).toBeVisible();
+
+    // Verify expand toggle exists
+    const expandToggle = page.locator(".roadmap-item-expand-toggle");
+    await expect(expandToggle).toBeVisible();
+    await expect(expandToggle).toContainText("View lifecycle details");
+  });
+
+  test("clicking expandable item shows lifecycle details", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Expandable item",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: "2025-01-10T10:00:00Z",
+              updated_at: "2025-01-15T14:30:00Z",
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Lifecycle section should be hidden initially
+    const lifecycleSection = page.locator(".item-lifecycle");
+    await expect(lifecycleSection).not.toBeVisible();
+
+    // Click to expand
+    await page.click(".roadmap-item.expandable");
+
+    // Item should have expanded class
+    const expandedItem = page.locator(".roadmap-item.expanded");
+    await expect(expandedItem).toBeVisible();
+
+    // Lifecycle section should be visible
+    await expect(lifecycleSection).toBeVisible();
+
+    // History section should be present
+    const historyTitle = page.locator('.lifecycle-section-title:has-text("History")');
+    await expect(historyTitle).toBeVisible();
+  });
+
+  test("lifecycle shows birth event", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Feature with history",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: "2025-01-10T10:00:00Z",
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Expand the item
+    await page.click(".roadmap-item.expandable");
+
+    // Verify birth event is shown
+    const birthEvent = page.locator(".lifecycle-event.birth");
+    await expect(birthEvent).toBeVisible();
+    await expect(birthEvent).toContainText("submitted");
+  });
+
+  test("lifecycle shows status change events", async ({ page }) => {
+    // Use 'reviewed' status (which is in the backlog, not timeline) but shows status changes
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Feature reviewed",
+              type: "feature",
+              status: "reviewed",
+              status_label: "Reviewed",
+              is_resolved: false,
+              created_at: "2025-01-10T10:00:00Z",
+              updated_at: "2025-01-12T14:00:00Z",
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Expand the item
+    await page.click(".roadmap-item.expandable");
+
+    // Verify status change events are shown
+    const statusChangeEvents = page.locator(".lifecycle-event.status-change");
+    const count = await statusChangeEvents.count();
+    expect(count).toBeGreaterThan(0);
+  });
+
+  test("expanded item shows completion progress bar", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Feature in backlog",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Expand the item
+    await page.click(".roadmap-item.expandable");
+
+    // Verify completion section exists
+    const completionTitle = page.locator('.lifecycle-section-title:has-text("Completion")');
+    await expect(completionTitle).toBeVisible();
+
+    // Verify progress bar exists
+    const progressBar = page.locator(".item-progress-bar");
+    await expect(progressBar).toBeVisible();
+
+    // Verify progress fill exists (may be 0% width for open items)
+    const progressFill = page.locator(".item-progress-fill");
+    await expect(progressFill).toBeAttached();
+
+    const progressText = page.locator(".item-progress-text");
+    await expect(progressText).toBeVisible();
+    await expect(progressText).toContainText("%");
+  });
+
+  test("toggleProgressFilter function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.toggleProgressFilter === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("toggleItemExpand function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.toggleItemExpand === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("buildLifecycleEvents function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.buildLifecycleEvents === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("calculateItemProgress function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.calculateItemProgress === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("calculateItemProgress returns correct percentage", async ({ page }) => {
+    const results = await page.evaluate(() => {
+      const newItem = window.calculateItemProgress({ status: "new" });
+      const inProgress = window.calculateItemProgress({ status: "in_progress" });
+      const resolved = window.calculateItemProgress({ status: "resolved", is_resolved: true });
+      return { newItem, inProgress, resolved };
+    });
+
+    expect(results.newItem).toBe(0);
+    expect(results.inProgress).toBe(50);
+    expect(results.resolved).toBe(100);
+  });
+
+  test("filter chips show correct counts", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            { id: 1, title: "F1", type: "feature", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() },
+            { id: 2, title: "F2", type: "feature", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() },
+            { id: 3, title: "B1", type: "bug", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() },
+          ],
+          stats: { open: 3, in_progress: 0, resolved: 0, total: 3 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-filter-bar", { timeout: 10000 });
+
+    // All chip should show 3
+    const allChip = page.locator('.progress-filter-chip[data-type="all"]');
+    await expect(allChip).toContainText("3");
+
+    // Feature chip should show 2
+    const featureChip = page.locator('.progress-filter-chip[data-type="feature"]');
+    await expect(featureChip).toContainText("2");
+
+    // Bug chip should show 1
+    const bugChip = page.locator('.progress-filter-chip[data-type="bug"]');
+    await expect(bugChip).toContainText("1");
+  });
 });
