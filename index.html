@@ -6001,8 +6001,8 @@
                 fetchUserStarredItems();
             }
 
-            // Fetch live feedback from Vandromeda API
-            fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`)
+            // Fetch and reconcile feedback from Vandromeda API (syncs with GitHub)
+            fetch(`${VANDROMEDA_API}/quizmyself/reconcile-feedback.php?product=quizmyself`)
                 .then(response => {
                     if (!response.ok) throw new Error('Failed to load roadmap');
                     return response.json();
