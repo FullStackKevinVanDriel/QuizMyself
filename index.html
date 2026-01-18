@@ -3656,6 +3656,177 @@
             outline: 3px solid #4fc3f7;
             outline-offset: 3px;
         }
+
+        /* ========== ACCESSIBILITY: TOUCH TARGET SIZES ========== */
+        /* WCAG 2.5.5 (AAA) recommends 44x44px touch targets */
+        /* WCAG 2.5.8 (AA) requires 24x24px minimum with adequate spacing */
+
+        /* Ensure minimum touch target for filter chips */
+        .progress-filter-chip {
+            min-height: 44px;
+            min-width: 44px;
+            padding: 10px 14px;
+        }
+
+        /* Ensure minimum touch target for view toggle buttons */
+        .progress-view-btn {
+            min-height: 44px;
+            padding: 12px 16px;
+        }
+
+        /* Ensure minimum touch target for create issue button */
+        .create-issue-btn {
+            min-height: 44px;
+            min-width: 44px;
+            padding: 10px 14px;
+        }
+
+        /* Ensure minimum touch target for add comment button */
+        .add-comment-btn {
+            min-height: 44px;
+            min-width: 44px;
+            padding: 12px 18px;
+        }
+
+        /* Ensure minimum touch target for star button */
+        .item-star-btn {
+            min-height: 44px;
+            min-width: 44px;
+            padding: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ensure minimum touch target for mode buttons */
+        .mode-btn {
+            min-height: 44px;
+        }
+
+        /* Ensure minimum touch target for assignee add button */
+        .assignee-avatar.add {
+            min-width: 44px;
+            min-height: 44px;
+            width: 44px;
+            height: 44px;
+        }
+
+        /* Ensure adequate touch targets on mobile devices */
+        @media (pointer: coarse) {
+            /* Filter chips need larger touch targets on touch devices */
+            .progress-filter-chip {
+                min-height: 48px;
+                padding: 12px 16px;
+                margin: 4px;
+            }
+
+            /* View toggle buttons */
+            .progress-view-btn {
+                min-height: 48px;
+                padding: 14px 18px;
+            }
+
+            /* Create issue button */
+            .create-issue-btn {
+                min-height: 48px;
+                padding: 12px 16px;
+            }
+
+            /* Add comment button */
+            .add-comment-btn {
+                min-height: 48px;
+                padding: 14px 20px;
+            }
+
+            /* Star button */
+            .item-star-btn {
+                min-height: 48px;
+                min-width: 48px;
+                padding: 12px;
+            }
+
+            /* Mode buttons */
+            .mode-btn {
+                min-height: 48px;
+                padding: 14px 18px;
+            }
+
+            /* Roadmap labels when used as interactive elements */
+            .roadmap-label {
+                min-height: 44px;
+                padding: 10px 14px;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            /* Type ID badges when interactive */
+            .type-id-badge {
+                min-height: 44px;
+                padding: 10px 12px;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            /* Assignee add button */
+            .assignee-avatar.add {
+                min-width: 48px;
+                min-height: 48px;
+                width: 48px;
+                height: 48px;
+            }
+
+            /* Ensure adequate spacing between small interactive elements */
+            .progress-filters {
+                gap: 8px;
+            }
+
+            .progress-view-toggle {
+                gap: 8px;
+                padding: 6px;
+            }
+
+            /* GitHub integration badge if clickable */
+            .github-integration-badge {
+                min-height: 44px;
+                padding: 10px 14px;
+            }
+
+            /* Automation badge if clickable */
+            .automation-badge {
+                min-height: 44px;
+                padding: 10px 12px;
+            }
+
+            /* Item priority indicator if interactive */
+            .item-priority {
+                min-height: 44px;
+                padding: 10px 14px;
+            }
+
+            /* Dependency items if clickable */
+            .dependency-item {
+                min-height: 48px;
+                padding: 12px 14px;
+            }
+        }
+
+        /* Additional spacing for very small screens */
+        @media (max-width: 480px) and (pointer: coarse) {
+            .progress-filter-chip {
+                margin: 6px 4px;
+            }
+
+            .progress-filters {
+                gap: 10px;
+            }
+
+            /* Ensure buttons in modals have adequate touch targets */
+            .confirm-modal-buttons .btn,
+            .selection-modal-footer .btn {
+                min-height: 48px;
+                padding: 14px 20px;
+            }
+        }
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
