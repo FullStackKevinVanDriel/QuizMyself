@@ -1,0 +1,31 @@
+## Summary
+
+Story #1 "Rename Roadmap to Progress" has been completed successfully. Here's what was done:
+
+### Changes Made
+
+**index.html:**
+- Updated hamburger menu items (both signed-out and signed-in states) from "Roadmap" to "Progress"
+- Changed modal title from "Roadmap & Issues" to "Progress"
+- Updated loading text from "Loading roadmap..." to "Loading progress..."
+- Updated empty state messages from "Roadmap coming soon!" to "No progress items yet."
+
+**tests/roadmap.spec.js:**
+- Updated test selectors to use "Progress" instead of "Roadmap"
+- Updated fallback text check to "No progress items yet"
+
+### Acceptance Criteria Met
+✅ Hamburger menu shows 'Progress' instead of 'Roadmap'  
+✅ Modal title says 'Progress' when opened  
+✅ All references to 'roadmap' in UI text updated to 'progress'
+
+### Test Results
+All 9 roadmap modal tests pass.
+
+### Commit
+Created on branch `feat/rename-roadmap-to-progress` with commit message:
+```
+feat: rename Roadmap to Progress in UI
+```
+
+The PRD has been updated to mark story #1 as `passes: true`.

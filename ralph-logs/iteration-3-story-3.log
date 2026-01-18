@@ -1,0 +1,23 @@
+Story #3 is complete. Here's a summary of what was implemented:
+
+## Story #3: Show description and status for each item ✅
+
+### Acceptance Criteria Met:
+1. **Description shown (truncated to reasonable length with ellipsis)** - Added `.roadmap-item-description` CSS class with 2-line clamp using `-webkit-line-clamp` and `text-overflow: ellipsis`
+
+2. **Status displayed with visual indicator (badge/pill)** - Created `.status-badge` CSS class with pill styling (border-radius, padding, inline-block)
+
+3. **Status options: Open, In Progress, In Review, Resolved, Closed** - Added `statusMapping` object that maps API status values to these display labels
+
+4. **Status has appropriate color coding** - Each status has distinct colors:
+   - **Open**: Gray (#9e9e9e)
+   - **In Progress**: Orange (#ffa726)
+   - **In Review**: Blue (#4fc3f7)
+   - **Resolved**: Green (#4caf50)
+   - **Closed**: Dark gray (#666)
+
+### Changes Made:
+- `index.html`: Added CSS for description truncation and status badges, updated `renderFeedbackItem()` function
+- `tests/roadmap.spec.js`: Added 8 new tests for description and status functionality
+- All 79 tests pass
+- Commit: `ac275bd`

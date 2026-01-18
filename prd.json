@@ -1,0 +1,145 @@
+{
+  "name": "Progress",
+  "description": "All bugs, features, requests, and feedback past present and future - a comprehensive view of every item's journey through the SDLC lifecycle",
+  "created": "2026-01-17",
+  "repository": "FullStackKevinVanDriel/QuizMyself",
+  "stories": [
+    {
+      "id": 1,
+      "title": "Rename Roadmap to Progress",
+      "description": "Change the hamburger menu item from 'Roadmap' to 'Progress' and update the modal title",
+      "acceptance_criteria": [
+        "Hamburger menu shows 'Progress' instead of 'Roadmap'",
+        "Modal title says 'Progress' when opened",
+        "All references to 'roadmap' in UI text updated to 'progress'"
+      ],
+      "priority": "high",
+      "passes": true
+    },
+    {
+      "id": 2,
+      "title": "Display dual reference numbers",
+      "description": "Each item shows both the GitHub issue number (GH-XXX) and the internal API submission ID (#XXX)",
+      "acceptance_criteria": [
+        "Items display format: '#123 | GH-456' when both exist",
+        "Items display '#123' only when no GitHub issue linked",
+        "Items display 'GH-456' only when no internal ID exists",
+        "GitHub number is a clickable link that opens GitHub issue in new tab"
+      ],
+      "priority": "high",
+      "passes": true
+    },
+    {
+      "id": 3,
+      "title": "Show description and status for each item",
+      "description": "Display the item description and current status clearly",
+      "acceptance_criteria": [
+        "Description shown (truncated to reasonable length with ellipsis)",
+        "Status displayed with visual indicator (badge/pill)",
+        "Status options: Open, In Progress, In Review, Resolved, Closed",
+        "Status has appropriate color coding"
+      ],
+      "priority": "high",
+      "passes": true
+    },
+    {
+      "id": 4,
+      "title": "Add progress bar for each item",
+      "description": "Visual 0-100% progress bar showing SDLC lifecycle completion",
+      "acceptance_criteria": [
+        "Each item has a horizontal progress bar",
+        "Progress percentage displayed (e.g., '75%')",
+        "Progress calculated from SDLC stage: Open=10%, In Progress=40%, In Review=70%, Resolved=100%",
+        "Progress bar has gradient color (red→yellow→green)"
+      ],
+      "priority": "high",
+      "passes": true
+    },
+    {
+      "id": 5,
+      "title": "Add category filters",
+      "description": "Filter buttons to show/hide items by category",
+      "acceptance_criteria": [
+        "Filter buttons for: All, Bugs, Features, Requests, Feedback",
+        "Active filter visually highlighted",
+        "Filters work instantly (no reload)",
+        "Item count shown per category in filter buttons",
+        "Multiple filters can be active simultaneously"
+      ],
+      "priority": "medium",
+      "passes": true
+    },
+    {
+      "id": 6,
+      "title": "Display accurate timestamps",
+      "description": "Show created date and last updated date for each item",
+      "acceptance_criteria": [
+        "Created date shown in human-readable format",
+        "Last updated date shown if different from created",
+        "Relative time shown (e.g., '2 days ago') with full date on hover",
+        "Timestamps pulled from API data"
+      ],
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "id": 7,
+      "title": "Expandable lifecycle timeline",
+      "description": "Click item to expand and show full lifecycle history from birth to current state",
+      "acceptance_criteria": [
+        "Clicking item expands to show timeline",
+        "Timeline shows: Created → Status changes → Current state",
+        "Each timeline event has timestamp",
+        "Timeline visually shows progression (vertical line with dots)",
+        "Click again or X button to collapse"
+      ],
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "id": 8,
+      "title": "API endpoint for lifecycle data",
+      "description": "Backend endpoint to return full lifecycle/history data for items",
+      "acceptance_criteria": [
+        "Endpoint: GET /feedback.php?id=X&history=true",
+        "Returns array of status change events with timestamps",
+        "Includes: created_at, status_changes[], github_events[]",
+        "Handles items with no history gracefully"
+      ],
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "id": 9,
+      "title": "Sort and search functionality",
+      "description": "Allow sorting and searching the progress list",
+      "acceptance_criteria": [
+        "Search box filters by description text",
+        "Sort by: Newest, Oldest, Most Progress, Least Progress",
+        "Sort selection persists during session",
+        "Clear search button when search has text"
+      ],
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "id": 10,
+      "title": "Empty states and loading",
+      "description": "Handle loading and empty states gracefully",
+      "acceptance_criteria": [
+        "Loading spinner while fetching data",
+        "Empty state message when no items match filter",
+        "Error state with retry button if API fails",
+        "Skeleton loading for better perceived performance"
+      ],
+      "priority": "low",
+      "passes": false
+    }
+  ],
+  "notes": [
+    "SDLC progress mapping: Open=10%, In Progress=40%, In Review=70%, Resolved=100%",
+    "GitHub link format: https://github.com/FullStackKevinVanDriel/QuizMyself/issues/{number}",
+    "Existing roadmap modal code can be refactored for this feature",
+    "Consider caching API response for performance"
+  ]
+}
