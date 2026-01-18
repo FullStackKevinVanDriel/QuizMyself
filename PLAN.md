@@ -15,12 +15,18 @@ A self-study quiz tool with custom quiz imports and progress tracking.
 
 ```
 QuizMyself/
-├── index.html           # Single-page application (5,800+ lines)
+├── index.html           # Single-page application (7,100+ lines)
 ├── playwright.config.js # Test configuration
-├── tests/               # Playwright test suites
+├── tests/               # Playwright test suites (10 files, 79 tests)
 │   ├── smoke.spec.js
 │   ├── guest-mode.spec.js
-│   └── feedback.spec.js
+│   ├── feedback.spec.js
+│   ├── category-filter.spec.js
+│   ├── exam-mode.spec.js
+│   ├── import.spec.js
+│   ├── ai-generation.spec.js
+│   ├── link-source.spec.js
+│   └── roadmap.spec.js
 └── test-data/           # Test fixtures
 ```
 
@@ -83,100 +89,123 @@ QuizMyself/
 
 ---
 
-## Bugs & Issues
+## Bugs & Issues (SDLC Audit - Jan 2026)
 
-### High Priority
+### P0 Critical - Security
+
+#### XSS in Keyword/Category Onclick Handlers
+Inline `onclick` handlers use unescaped user input for keywords and category names.
+
+**Affected code:**
+- `keyword-item` onclick handlers (user-controlled keyword text)
+- Category button onclick handlers (category names from imported data)
+
+**Impact:** Malicious quiz imports could execute arbitrary JavaScript
+
+**Fix:** Escape special characters or use `data-*` attributes with event delegation
+
+### P1 High - Beta Blockers
+
+#### Recruit Beta Users (CRITICAL)
+No beta testers onboarded yet. Need 5-10 users to validate product-market fit.
+
+**Actions:**
+1. Create landing page with signup form
+2. Personal outreach to 10 potential users
+3. Offer incentive (free Pro tier for feedback)
+
+#### Integrate Analytics
+No usage tracking. Cannot measure retention, feature adoption, or drop-off points.
+
+**Options:** Google Analytics 4, Plausible (privacy-friendly), or Mixpanel
 
 #### Source Material UI Not Updating After Link
-After associating a quiz with source material, the screen doesn't refresh to show the newly linked source material.
+After associating a quiz with source material, the screen doesn't refresh to show the newly linked source.
 
-Additionally, when no quiz material/test material/program/mastered questions have been generated yet:
-- The corresponding buttons should be **disabled**
-- Buttons should be visually styled as disabled (grayed out)
-- UI should **highlight** that material needs to be generated from the source
+**Fix:** Refresh source material display after successful linking
 
-**Impact:** User confusion - they don't see feedback after linking, and can click buttons for content that doesn't exist yet
+### P2 Medium - Stability
 
-**Fix:**
-1. Refresh the source material display after successful linking
-2. Check for generated content and disable/style buttons accordingly
-3. Add visual indicator (badge/tooltip) prompting user to generate material
+#### saveState Race Condition
+Concurrent calls to `saveState()` can cause data corruption if cloud sync overlaps.
 
-#### Native Dialog Overuse
-The app uses native `alert()`, `confirm()`, and `prompt()` dialogs extensively:
-- Quiz creation success/failure messages
-- Import validation and results
-- Delete confirmations
-- **Source material linking uses `prompt()` to select quiz** - very clunky UX
+**Fix:** Add mutex/debounce to prevent parallel saves
 
-**Impact:** Blocks UI, can't be styled, poor mobile experience, interrupts flow
+#### CSV Parser Edge Cases
+- Double-quoted fields with embedded commas fail
+- Empty rows not handled gracefully
 
-**Fix:** Replace all native dialogs with custom modal components
+#### Flashcard Parser Fragility
+`parseFlashcards()` splits on `\n\n` but doesn't handle Windows line endings or extra whitespace.
 
-#### Debug Logging in Production
-Multiple `console.log('[DEBUG ...]')` statements left in code:
-- `showCourseContent` (lines 3540-3542)
-- `viewSourceContent` (lines 4894, 4921, 4931)
-- `linkSourceToQuiz` (lines 5079-5139)
+#### Missing Null Checks
+Several functions assume state values exist without validation:
+- `currentQuiz` accessed without null check in multiple places
+- `progress` array operations without length verification
 
-**Fix:** Remove or add conditional debug flag
+### P3 Low - Polish
 
-### Medium Priority
+#### Content Security Policy Missing
+No CSP header. Should add to prevent XSS escalation.
 
-#### Inconsistent Patterns
-- Mix of inline `onclick` handlers and `addEventListener`
-- Heavy use of inline `style=""` instead of CSS classes
-- Magic numbers hardcoded (3 for mastery, 100% for exam, 50 import limit)
+#### Hardcoded Configuration
+Magic numbers scattered throughout:
+- `3` for mastery threshold
+- `100` for exam pass percentage
+- `50` for free tier import limit
 
-#### Error Handling
-- Many catch blocks show generic "Failed to..." messages
-- No user-friendly error recovery options
-- API errors not consistently surfaced
-
-### Low Priority
-
-#### Code Organization
-- 5,800+ lines in single HTML file
-- 162+ functions with no modular structure
-- Global state object with 14+ properties
+**Fix:** Extract to `CONFIG` object at top of file
 
 ---
 
-## Roadmap
+## Roadmap (SDLC-Derived - Jan 2026)
 
-### Immediate (Bugs/Polish)
+### Completed ✅
 
-- [x] **Replace native dialogs with custom modals**
-  - [x] Success/error toasts instead of alert()
-  - [x] Confirmation modal instead of confirm()
-  - [x] Selection modal for source-to-quiz linking instead of prompt()
+- [x] Replace native dialogs with custom modals (toasts, confirm, selection)
 - [x] Remove debug console.log statements
+- [x] Stripe payment integration
+- [x] Cloud sync via Vandromeda API
+- [x] AI quiz generation with tiered limits
+- [x] Feedback submission system
+
+### Sprint 1: Security & Beta Launch
+
+- [ ] **Fix XSS vulnerabilities** (P0 Critical)
+  - [ ] Escape keyword onclick handlers
+  - [ ] Escape category button onclick handlers
+  - [ ] Consider event delegation pattern
+- [ ] **Recruit 5-10 beta users** (P1 High)
+  - [ ] Personal outreach
+  - [ ] Offer free Pro tier for feedback
+- [ ] **Integrate analytics** (P1 High)
+  - [ ] Choose provider (GA4 / Plausible / Mixpanel)
+  - [ ] Add page views and key event tracking
+  - [ ] Track: quiz starts, completions, imports, AI generations
+
+### Sprint 2: Stability
+
+- [ ] Fix source material UI refresh after linking
+- [ ] Add saveState mutex/debounce
+- [ ] Fix CSV parser edge cases (quoted fields, empty rows)
+- [ ] Fix flashcard parser (Windows line endings)
+- [ ] Add null checks for state access
+
+### Sprint 3: Polish & Launch Prep
+
+- [ ] Add Content Security Policy header
+- [ ] Extract hardcoded config to CONFIG object
 - [ ] Consolidate Pro status check functions
+- [ ] Document Firebase API key exposure (acceptable risk)
+- [ ] Beta feedback review and prioritization
 
-### Short Term (UX Improvements)
-
-- [ ] Progress dashboard showing completion percentage
-- [ ] Search functionality across questions
-- [ ] Better import error messages with line numbers
-- [ ] Consistent form validation patterns
-
-### Medium Term (Features)
-
-- [ ] Flashcard mode for term memorization
-- [ ] Dark/light theme toggle
-- [ ] Export progress to PDF
-- [ ] Bookmarking specific questions
-- [ ] Study timer/Pomodoro feature
-
-### Long Term (Architecture)
+### Post-Launch (Backlog)
 
 - [ ] Quiz sharing via public links
-  - [ ] Optional `share_slug` (globally unique)
-  - [ ] Public quiz view at `/q/{slug}`
-  - [ ] Privacy controls
 - [ ] PWA for mobile app experience
 - [ ] Offline mode with service worker
-- [ ] Consider framework migration (React/Vue/Svelte)
+- [ ] Progress dashboard
+- [ ] Search across questions
 
 ### Infrastructure (Decision Required)
 
@@ -194,17 +223,19 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 
 ## Technical Debt
 
-- [ ] Extract magic numbers to constants
+- [ ] Extract magic numbers to constants (see Sprint 3)
 - [ ] Organize state into logical groups (user, quiz, progress, exam)
-- [ ] Consistent event handler patterns
+- [ ] Consistent event handler patterns (see XSS fix in Sprint 1)
 - [ ] Move inline styles to CSS classes
-- [ ] Add JSDoc comments to functions
+- [ ] Add JSDoc comments to critical functions
 - [ ] Expand test coverage:
   - [x] Category filtering
   - [x] Exam mode
   - [x] Import functionality (CSV, JSON, Q&A)
   - [x] Modal stacking
   - [x] AI generation
+  - [x] Source-to-quiz linking
+  - [x] Roadmap display
   - [ ] Auth flows (login, register, reset)
   - [ ] Progress sync
   - [ ] Pro tier features
