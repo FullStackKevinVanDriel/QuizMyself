@@ -2580,6 +2580,149 @@
             color: #ce93d8;
         }
 
+        /* Search and Sort Bar */
+        .progress-search-sort-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(15, 52, 96, 0.5);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .progress-search-container {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .progress-search-input {
+            width: 100%;
+            padding: 8px 36px 8px 12px;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: #eaeaea;
+            font-size: 0.9rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .progress-search-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.25);
+        }
+
+        .progress-search-input::placeholder {
+            color: #666;
+        }
+
+        .progress-search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 0.9rem;
+            line-height: 1;
+            border-radius: 50%;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .progress-search-clear:hover {
+            color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.1);
+        }
+
+        .progress-search-clear:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        .progress-sort-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-sort-label {
+            color: #888;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .progress-sort-select {
+            padding: 8px 32px 8px 12px;
+            background: #1a1a2e url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 10px center;
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: #eaeaea;
+            font-size: 0.85rem;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .progress-sort-select:hover {
+            border-color: #4fc3f7;
+        }
+
+        .progress-sort-select:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.25);
+        }
+
+        .progress-no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .progress-no-results-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .progress-result-count {
+            color: #888;
+            font-size: 0.8rem;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+        }
+
+        .progress-result-count strong {
+            color: #4fc3f7;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: #4fc3f7;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: inherit;
+            padding: 0;
+        }
+
+        .link-btn:hover {
+            color: #81d4fa;
+        }
+
+        .link-btn:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
         /* Expandable Item */
         .roadmap-item.expandable {
             cursor: pointer;
@@ -6690,6 +6833,98 @@
         let currentFeedbackData = null;
         let activeFilters = new Set();
         let activeStatusFilter = null; // null = all, or 'new', 'in_progress', 'resolved', 'reviewed', 'wont_fix'
+        let progressSearchText = '';
+        let progressSortOption = 'priority'; // 'priority', 'newest', 'oldest', 'alphabetical'
+
+        // Search and sort handlers
+        function handleProgressSearch(event) {
+            progressSearchText = event.target.value.toLowerCase().trim();
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+        }
+
+        function clearProgressSearch() {
+            progressSearchText = '';
+            const searchInput = document.querySelector('.progress-search-input');
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.focus();
+            }
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+        }
+
+        function handleProgressSort(event) {
+            progressSortOption = event.target.value;
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+        }
+
+        function sortProgressItems(items) {
+            switch (progressSortOption) {
+                case 'priority':
+                    return [...items].sort((a, b) => calculatePriorityScore(b) - calculatePriorityScore(a));
+                case 'newest':
+                    return [...items].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+                case 'oldest':
+                    return [...items].sort((a, b) => new Date(a.created_at || 0) - new Date(b.created_at || 0));
+                case 'alphabetical':
+                    return [...items].sort((a, b) => (a.message || '').localeCompare(b.message || ''));
+                default:
+                    return items;
+            }
+        }
+
+        function filterBySearchText(items) {
+            if (!progressSearchText) return items;
+            return items.filter(item => {
+                const message = (item.message || '').toLowerCase();
+                const type = (item.type || '').toLowerCase();
+                const status = (item.status || '').toLowerCase();
+                return message.includes(progressSearchText) ||
+                       type.includes(progressSearchText) ||
+                       status.includes(progressSearchText);
+            });
+        }
+
+        function renderSearchSortBar(totalCount) {
+            return `
+                <div class="progress-search-sort-bar" role="search" aria-label="Search and sort progress items">
+                    <div class="progress-search-container">
+                        <input type="text"
+                            class="progress-search-input"
+                            placeholder="Search items..."
+                            value="${escapeAttr(progressSearchText)}"
+                            oninput="handleProgressSearch(event)"
+                            aria-label="Search progress items"
+                        />
+                        ${progressSearchText ? `
+                            <button class="progress-search-clear"
+                                onclick="clearProgressSearch()"
+                                aria-label="Clear search"
+                                title="Clear search">
+                                ×
+                            </button>
+                        ` : ''}
+                    </div>
+                    <div class="progress-sort-container">
+                        <label class="progress-sort-label" for="progress-sort">Sort by:</label>
+                        <select id="progress-sort"
+                            class="progress-sort-select"
+                            onchange="handleProgressSort(event)"
+                            aria-label="Sort progress items">
+                            <option value="priority" ${progressSortOption === 'priority' ? 'selected' : ''}>Priority</option>
+                            <option value="newest" ${progressSortOption === 'newest' ? 'selected' : ''}>Newest First</option>
+                            <option value="oldest" ${progressSortOption === 'oldest' ? 'selected' : ''}>Oldest First</option>
+                            <option value="alphabetical" ${progressSortOption === 'alphabetical' ? 'selected' : ''}>A-Z</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
 
         function renderRoadmapFromFeedback(data) {
             currentFeedbackData = data;
@@ -6757,6 +6992,11 @@
                 return;
             }
 
+            // Search and Sort Bar
+            if (feedback.length > 0) {
+                html += renderSearchSortBar(feedback.length);
+            }
+
             // Category Filter Bar
             if (feedback.length > 0) {
                 const typeCounts = {};
@@ -6794,11 +7034,6 @@
                 html += '</div>';
             }
 
-            // Sort feedback by priority (highest first) for data-driven prioritization
-            const sortByPriority = (items) => {
-                return [...items].sort((a, b) => calculatePriorityScore(b) - calculatePriorityScore(a));
-            };
-
             // Apply category filter (type)
             let filteredFeedback = activeFilters.size === 0
                 ? feedback
@@ -6817,10 +7052,33 @@
                 });
             }
 
-            // Group feedback by status and sort by priority
-            const openItems = sortByPriority(filteredFeedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
-            const inProgressItems = sortByPriority(filteredFeedback.filter(f => f.status === 'in_progress'));
-            const resolvedItems = sortByPriority(filteredFeedback.filter(f => f.is_resolved));
+            // Apply search filter
+            filteredFeedback = filterBySearchText(filteredFeedback);
+
+            // Show result count if search is active
+            if (progressSearchText && feedback.length > 0) {
+                html += `<div class="progress-result-count" role="status" aria-live="polite">
+                    Showing <strong>${filteredFeedback.length}</strong> of ${feedback.length} items
+                </div>`;
+            }
+
+            // Show no results message if search returns empty
+            if (progressSearchText && filteredFeedback.length === 0) {
+                html += `
+                    <div class="progress-no-results" role="status" aria-live="polite">
+                        <span class="progress-no-results-icon" aria-hidden="true">🔍</span>
+                        <p>No items match "<strong>${escapeHtml(progressSearchText)}</strong>"</p>
+                        <p>Try a different search term or <button class="link-btn" onclick="clearProgressSearch()">clear the search</button></p>
+                    </div>
+                `;
+                container.innerHTML = html;
+                return;
+            }
+
+            // Group feedback by status and sort using selected sort option
+            const openItems = sortProgressItems(filteredFeedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
+            const inProgressItems = sortProgressItems(filteredFeedback.filter(f => f.status === 'in_progress'));
+            const resolvedItems = sortProgressItems(filteredFeedback.filter(f => f.is_resolved));
 
             // Milestone summary card (shows overall progress)
             if (feedback.length > 0) {
