@@ -1,19 +1,94 @@
 {
-  "generated": "2026-01-18T06:12:15.365Z",
+  "generated": "2026-01-18T06:12:56.640Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 23,
-    "open": 12,
+    "total": 28,
+    "open": 17,
     "closed": 11,
     "byLabel": {
-      "enhancement": 9,
-      "roadmap": 5,
+      "enhancement": 14,
+      "roadmap": 10,
       "feedback": 5,
       "bug": 9
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 185,
+      "title": "Responsive design + native app investment",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:34Z",
+      "updatedAt": "2026-01-18T06:12:34Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/185",
+      "feedback_id": null
+    },
+    {
+      "number": 184,
+      "title": "Evergreen content + community features",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:33Z",
+      "updatedAt": "2026-01-18T06:12:33Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/184",
+      "feedback_id": null
+    },
+    {
+      "number": 183,
+      "title": "Focus on teacher communities/Reddit/TikTok edu marketing",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:32Z",
+      "updatedAt": "2026-01-18T06:12:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/183",
+      "feedback_id": null
+    },
+    {
+      "number": 182,
+      "title": "Audit data privacy/GDPR + consent flows",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:31Z",
+      "updatedAt": "2026-01-18T06:12:31Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/182",
+      "feedback_id": null
+    },
+    {
+      "number": 181,
+      "title": "Human review queue + user reports + quality scores",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:30Z",
+      "updatedAt": "2026-01-18T06:12:30Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/181",
+      "feedback_id": null
+    },
     {
       "number": 179,
       "title": "Spaced repetition, streaks, and daily goals",
