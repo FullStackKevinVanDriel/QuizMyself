@@ -1,13 +1,13 @@
 {
-  "generated": "2026-01-18T03:37:50.890Z",
+  "generated": "2026-01-18T03:49:28.653Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 7,
-    "open": 3,
-    "closed": 4,
+    "open": 1,
+    "closed": 6,
     "byLabel": {
-      "bug": 5,
       "enhancement": 1,
+      "bug": 5,
       "feedback": 1
     }
   },
@@ -16,12 +16,12 @@
     {
       "number": 144,
       "title": "P0: Fix XSS vulnerability in category onclick handlers",
-      "state": "open",
+      "state": "closed",
       "labels": [
         "bug"
       ],
       "createdAt": "2026-01-18T03:37:32Z",
-      "updatedAt": "2026-01-18T03:37:32Z",
+      "updatedAt": "2026-01-18T03:44:03Z",
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
       "feedback_id": null
@@ -29,12 +29,12 @@
     {
       "number": 143,
       "title": "P0: Fix XSS vulnerability in keyword onclick handlers",
-      "state": "open",
+      "state": "closed",
       "labels": [
         "bug"
       ],
       "createdAt": "2026-01-18T03:37:30Z",
-      "updatedAt": "2026-01-18T03:37:30Z",
+      "updatedAt": "2026-01-18T03:44:03Z",
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
       "feedback_id": null
@@ -110,6 +110,20 @@
     }
   ],
   "recentlyCompleted": [
+    {
+      "number": 144,
+      "title": "P0: Fix XSS vulnerability in category onclick handlers",
+      "closedAt": "2026-01-18T03:44:03Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
+      "feedback_id": null
+    },
+    {
+      "number": 143,
+      "title": "P0: Fix XSS vulnerability in keyword onclick handlers",
+      "closedAt": "2026-01-18T03:44:03Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
+      "feedback_id": null
+    },
     {
       "number": 127,
       "title": "[feedback] some stuff works; some stuff does not",
