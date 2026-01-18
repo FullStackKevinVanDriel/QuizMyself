@@ -3021,6 +3021,397 @@
         .feature-signin-prompt a:hover {
             text-decoration: underline;
         }
+
+        /* ========== STORY 6: FLEXIBILITY & ITERATION ========== */
+
+        /* View Mode Toggle */
+        .progress-view-toggle {
+            display: flex;
+            gap: 4px;
+            background: #1a1a2e;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .progress-view-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .progress-view-btn:hover {
+            color: #eaeaea;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-view-btn.active {
+            background: #4fc3f7;
+            color: #0a1628;
+            font-weight: 500;
+        }
+
+        .progress-view-btn:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Themes Section */
+        .progress-themes {
+            margin-bottom: 20px;
+        }
+
+        .theme-card {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #4fc3f7;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .theme-card:hover {
+            transform: translateX(3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-card:focus-within {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        .theme-card.theme-performance {
+            border-left-color: #e94560;
+        }
+
+        .theme-card.theme-ux {
+            border-left-color: #4caf50;
+        }
+
+        .theme-card.theme-reliability {
+            border-left-color: #ff9800;
+        }
+
+        .theme-card.theme-growth {
+            border-left-color: #9c27b0;
+        }
+
+        .theme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .theme-title {
+            color: #eaeaea;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-icon {
+            font-size: 1rem;
+        }
+
+        .theme-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .theme-description {
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .theme-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #1a1a2e;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .theme-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #81d4fa);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .theme-progress-text {
+            color: #888;
+            font-size: 0.7rem;
+            min-width: 40px;
+        }
+
+        .theme-items {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .theme-item-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .theme-item-status.completed {
+            background: #4caf50;
+        }
+
+        .theme-item-status.in-progress {
+            background: #ffa726;
+            animation: pulse 2s infinite;
+        }
+
+        .theme-item-status.pending {
+            background: #666;
+        }
+
+        /* Custom Fields Section */
+        .custom-fields-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .custom-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .custom-field:last-child {
+            border-bottom: none;
+        }
+
+        .custom-field-label {
+            color: #888;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .custom-field-value {
+            color: #eaeaea;
+            font-size: 0.8rem;
+        }
+
+        .custom-field-value.editable {
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .custom-field-value.editable:hover {
+            background: rgba(79, 195, 247, 0.1);
+        }
+
+        .custom-field-value.editable:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Automation Rules */
+        .automation-rules-section {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .automation-rule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: rgba(255, 193, 7, 0.05);
+            border: 1px solid rgba(255, 193, 7, 0.15);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+
+        .automation-rule-icon {
+            color: #ffc107;
+            font-size: 1rem;
+        }
+
+        .automation-rule-text {
+            flex: 1;
+            color: #ccc;
+        }
+
+        .automation-rule-toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+        }
+
+        .automation-rule-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .automation-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #333;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .automation-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background: #666;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .automation-rule-toggle input:checked + .automation-toggle-slider {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .automation-rule-toggle input:checked + .automation-toggle-slider:before {
+            transform: translateX(16px);
+            background: #4caf50;
+        }
+
+        .automation-rule-toggle input:focus + .automation-toggle-slider {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Accessibility: Skip Links */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #4fc3f7;
+            color: #0a1628;
+            padding: 8px 16px;
+            z-index: 3000;
+            border-radius: 0 0 4px 0;
+            font-weight: 500;
+            text-decoration: none;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Accessibility: Focus Indicators */
+        .roadmap-item:focus,
+        .timeline-item:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        .progress-filter-chip:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        /* Accessibility: Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .timeline-item.in-progress::before,
+            .sdlc-stage.current,
+            .automation-badge.active,
+            .theme-item-status.in-progress {
+                animation: none;
+            }
+
+            .theme-card,
+            .roadmap-item,
+            .item-progress-fill,
+            .theme-progress-fill {
+                transition: none;
+            }
+        }
+
+        /* Accessibility: High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .roadmap-item,
+            .timeline-content,
+            .theme-card,
+            .milestone-card {
+                border: 2px solid #eaeaea;
+            }
+
+            .progress-filter-chip {
+                border: 2px solid #888;
+            }
+
+            .progress-filter-chip.active {
+                border-color: #4fc3f7;
+            }
+        }
+
+        /* Accessibility: Screen Reader Only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus visible for keyboard users */
+        .roadmap-item:focus-visible,
+        .timeline-item:focus-visible,
+        .theme-card:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 3px;
+        }
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -4027,13 +4418,14 @@
     </div>
 
     <!-- Roadmap Modal -->
-    <div id="roadmap-modal" class="modal-overlay hidden" onclick="closeRoadmapModalOnOverlay(event)">
+    <div id="roadmap-modal" class="modal-overlay hidden" onclick="closeRoadmapModalOnOverlay(event)" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
+            <a href="#roadmap-main-content" class="skip-link">Skip to main content</a>
             <div class="modal-header">
-                <h2>Progress</h2>
-                <button class="modal-close" onclick="closeRoadmapModal()">&times;</button>
+                <h2 id="roadmap-modal-title">Progress</h2>
+                <button class="modal-close" onclick="closeRoadmapModal()" aria-label="Close progress modal">&times;</button>
             </div>
-            <div class="modal-body" id="roadmap-content">
+            <div class="modal-body" id="roadmap-content" role="main" id="roadmap-main-content">
                 <!-- Dynamic content loaded here -->
             </div>
         </div>
@@ -5586,7 +5978,13 @@
         async function showRoadmapModal() {
             document.getElementById('roadmap-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading">Loading roadmap...</div>';
+            document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading" role="status" aria-live="polite">Loading roadmap...</div>';
+
+            // Setup keyboard navigation (Story 6: Accessibility)
+            setupProgressModalKeyboardNav();
+
+            // Focus management (Story 6: Accessibility)
+            focusProgressModal();
 
             // Fetch user's starred items if logged in (for personalized tracking)
             if (currentUser) {
@@ -5602,6 +6000,8 @@
                 .then(data => {
                     if (data.success) {
                         renderRoadmapFromFeedback(data);
+                        // Announce to screen readers
+                        announceToScreenReader(`Loaded ${data.feedback?.length || 0} progress items`);
                     } else {
                         throw new Error(data.error || 'Failed to load');
                     }
@@ -5609,7 +6009,7 @@
                 .catch(error => {
                     console.error('Failed to load roadmap:', error);
                     document.getElementById('roadmap-content').innerHTML = `
-                        <div class="roadmap-empty">
+                        <div class="roadmap-empty" role="alert">
                             <p>Progress updates coming soon! Submit feedback to help shape our priorities.</p>
                             <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
                         </div>
@@ -5793,43 +6193,57 @@
 
             // Product Vision Section - tied to business objectives
             html += `
-                <div class="progress-vision">
+                <div class="progress-vision" role="region" aria-label="Product vision">
                     <div class="progress-vision-title">Product Vision</div>
                     <div class="progress-vision-text">
                         Empower learners to master any subject through self-paced quizzing with AI-generated questions,
                         progress tracking, and spaced repetition.
                     </div>
-                    <div class="progress-goals">
-                        <span class="progress-goal"><span class="progress-goal-icon">&#9889;</span> Fast quiz creation</span>
-                        <span class="progress-goal"><span class="progress-goal-icon">&#128202;</span> Track progress</span>
-                        <span class="progress-goal"><span class="progress-goal-icon">&#129302;</span> AI-powered learning</span>
-                        <span class="progress-goal"><span class="progress-goal-icon">&#128274;</span> Sync across devices</span>
+                    <div class="progress-goals" role="list" aria-label="Product goals">
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#9889;</span> Fast quiz creation</span>
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#128202;</span> Track progress</span>
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#129302;</span> AI-powered learning</span>
+                        <span class="progress-goal" role="listitem"><span class="progress-goal-icon" aria-hidden="true">&#128274;</span> Sync across devices</span>
                     </div>
                     <div class="progress-last-update">Updated iteratively based on user feedback</div>
                 </div>
             `;
 
-            // Stats bar
+            // View Toggle (Story 6: themes vs status view)
+            html += renderViewToggle();
+
+            // Stats bar with accessibility
             html += `
-                <div class="roadmap-stats">
-                    <div class="stat">
-                        <div class="stat-value">${stats.open || 0}</div>
+                <div class="roadmap-stats" role="region" aria-label="Progress statistics">
+                    <div class="stat" role="group" aria-label="Open items">
+                        <div class="stat-value" aria-hidden="true">${stats.open || 0}</div>
                         <div class="stat-label">Open</div>
+                        <span class="sr-only">${stats.open || 0} open items</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">${stats.in_progress || 0}</div>
+                    <div class="stat" role="group" aria-label="Items in progress">
+                        <div class="stat-value" aria-hidden="true">${stats.in_progress || 0}</div>
                         <div class="stat-label">In Progress</div>
+                        <span class="sr-only">${stats.in_progress || 0} items in progress</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">${stats.resolved || 0}</div>
+                    <div class="stat" role="group" aria-label="Resolved items">
+                        <div class="stat-value" aria-hidden="true">${stats.resolved || 0}</div>
                         <div class="stat-label">Resolved</div>
+                        <span class="sr-only">${stats.resolved || 0} resolved items</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value">${stats.total || 0}</div>
+                    <div class="stat" role="group" aria-label="Total items">
+                        <div class="stat-value" aria-hidden="true">${stats.total || 0}</div>
                         <div class="stat-label">Total</div>
+                        <span class="sr-only">${stats.total || 0} total items</span>
                     </div>
                 </div>
             `;
+
+            // If themes view is selected, render that instead of status view
+            if (currentProgressView === 'themes') {
+                html += renderThemesView(feedback);
+                container.innerHTML = html;
+                return;
+            }
 
             // Category Filter Bar
             if (feedback.length > 0) {
@@ -5997,7 +6411,11 @@
         function toggleItemExpand(itemId) {
             const item = document.querySelector(`.roadmap-item[data-item-id="${itemId}"]`);
             if (item) {
-                item.classList.toggle('expanded');
+                const isExpanded = item.classList.toggle('expanded');
+                // Update aria-expanded for accessibility (Story 6)
+                item.setAttribute('aria-expanded', isExpanded.toString());
+                // Announce to screen readers
+                announceToScreenReader(isExpanded ? 'Item expanded' : 'Item collapsed');
             }
         }
 
@@ -6377,30 +6795,38 @@
             // Render collaboration section (comments, assignees)
             const collaborationHtml = renderCollaborationSection(item);
 
+            // Story 6: Custom Fields and Automation Rules
+            const customFieldsHtml = renderCustomFields(item);
+            const automationRulesHtml = renderAutomationRules(item);
+
             return `
-                <div class="roadmap-item expandable" data-item-id="${item.id}" onclick="toggleItemExpand(${item.id})">
+                <div class="roadmap-item expandable" data-item-id="${item.id}" onclick="toggleItemExpand(${item.id})"
+                     tabindex="0" role="article" aria-label="${escapeAttr(item.title)}, ${item.type}, ${priority.label} priority, ${item.status_label}"
+                     aria-expanded="false">
                     <div class="roadmap-item-header">
                         <div class="roadmap-item-title">
-                            <span class="type-id-badge ${typeIdBadgeClass}">${typeId}</span>
+                            <span class="type-id-badge ${typeIdBadgeClass}" aria-label="Item ID ${typeId}">${typeId}</span>
                             ${escapeHtml(item.title)}
-                            <span class="item-priority ${priority.level}">${priority.label}</span>
+                            <span class="item-priority ${priority.level}" aria-label="${priority.label} priority">${priority.label}</span>
                         </div>
                         <div class="roadmap-item-meta">
-                            ${statusHtml} | ${timeAgo}
+                            ${statusHtml} | <span aria-label="Created ${timeAgo}">${timeAgo}</span>
                             ${renderStarButton(item)}
                         </div>
                     </div>
-                    <div class="roadmap-labels">
-                        <span class="roadmap-label ${colorClass}">${escapeHtml(item.type)}</span>
+                    <div class="roadmap-labels" role="list" aria-label="Item labels">
+                        <span class="roadmap-label ${colorClass}" role="listitem">${escapeHtml(item.type)}</span>
                         ${renderGitHubIntegration(item)}
                     </div>
                     ${renderAssignees(item)}
                     ${renderSDLCProgress(item)}
                     ${registrationHtml}
-                    <div class="roadmap-item-expand-toggle">
+                    <div class="roadmap-item-expand-toggle" aria-hidden="true">
                         <span class="arrow">▶</span> View lifecycle details
                     </div>
                     ${lifecycleHtml}
+                    ${customFieldsHtml}
+                    ${automationRulesHtml}
                     ${collaborationHtml}
                 </div>
             `;
@@ -6841,6 +7267,399 @@
         }
 
         // ========== END STORY 5 ==========
+
+        // ========== STORY 6: FLEXIBILITY & ITERATION ==========
+
+        // View mode: 'status' (default) or 'themes'
+        let currentProgressView = 'status';
+
+        // Strategic themes for agile updates (goals over rigid timelines)
+        const strategicThemes = {
+            'performance': {
+                name: 'Performance',
+                icon: '⚡',
+                description: 'Speed and efficiency improvements',
+                keywords: ['speed', 'fast', 'performance', 'optimize', 'slow', 'lag']
+            },
+            'ux': {
+                name: 'User Experience',
+                icon: '✨',
+                description: 'Interface and usability enhancements',
+                keywords: ['ui', 'ux', 'design', 'interface', 'usability', 'intuitive', 'confusing']
+            },
+            'reliability': {
+                name: 'Reliability',
+                icon: '🛡️',
+                description: 'Stability and bug fixes',
+                keywords: ['bug', 'fix', 'crash', 'error', 'broken', 'issue', 'problem']
+            },
+            'growth': {
+                name: 'Growth Features',
+                icon: '🚀',
+                description: 'New capabilities and features',
+                keywords: ['feature', 'add', 'new', 'implement', 'support', 'want', 'would like']
+            }
+        };
+
+        // Automation rules configuration
+        let automationRules = {
+            autoTriage: true,           // Auto-assign priority based on type
+            notifyOnProgress: true,     // Notify when item moves to in_progress
+            githubSync: true,           // Sync status with GitHub issues
+            autoClose: false            // Auto-close resolved items after 7 days
+        };
+
+        // Custom fields configuration (user can define these)
+        const defaultCustomFields = [
+            { key: 'sprint', label: 'Sprint', type: 'text', value: '' },
+            { key: 'effort', label: 'Effort', type: 'select', options: ['XS', 'S', 'M', 'L', 'XL'], value: '' },
+            { key: 'team', label: 'Team', type: 'text', value: '' }
+        ];
+
+        // Switch between status view and themes view
+        function switchProgressView(view) {
+            currentProgressView = view;
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+        }
+
+        // Render view toggle buttons
+        function renderViewToggle() {
+            return `
+                <div class="progress-view-toggle" role="tablist" aria-label="Progress view options">
+                    <button class="progress-view-btn ${currentProgressView === 'status' ? 'active' : ''}"
+                            onclick="switchProgressView('status')"
+                            role="tab"
+                            aria-selected="${currentProgressView === 'status'}"
+                            aria-controls="progress-status-view"
+                            tabindex="${currentProgressView === 'status' ? '0' : '-1'}">
+                        📋 By Status
+                    </button>
+                    <button class="progress-view-btn ${currentProgressView === 'themes' ? 'active' : ''}"
+                            onclick="switchProgressView('themes')"
+                            role="tab"
+                            aria-selected="${currentProgressView === 'themes'}"
+                            aria-controls="progress-themes-view"
+                            tabindex="${currentProgressView === 'themes' ? '0' : '-1'}">
+                        🎯 By Theme
+                    </button>
+                </div>
+            `;
+        }
+
+        // Classify an item into a strategic theme based on keywords
+        function classifyItemTheme(item) {
+            const text = `${item.title || ''} ${item.message || ''} ${item.type || ''}`.toLowerCase();
+
+            for (const [themeKey, theme] of Object.entries(strategicThemes)) {
+                for (const keyword of theme.keywords) {
+                    if (text.includes(keyword)) {
+                        return themeKey;
+                    }
+                }
+            }
+
+            // Default to growth for features, reliability for bugs
+            if (item.type === 'bug') return 'reliability';
+            if (item.type === 'feature') return 'growth';
+            return 'ux';
+        }
+
+        // Render items grouped by strategic themes
+        function renderThemesView(feedback) {
+            // Group items by theme
+            const themeGroups = {};
+            for (const themeKey of Object.keys(strategicThemes)) {
+                themeGroups[themeKey] = [];
+            }
+
+            feedback.forEach(item => {
+                const theme = item.theme || classifyItemTheme(item);
+                if (themeGroups[theme]) {
+                    themeGroups[theme].push(item);
+                } else {
+                    themeGroups['growth'].push(item); // Default fallback
+                }
+            });
+
+            let html = '<div class="progress-themes" role="region" aria-label="Items grouped by strategic theme">';
+
+            for (const [themeKey, theme] of Object.entries(strategicThemes)) {
+                const items = themeGroups[themeKey];
+                if (items.length === 0) continue;
+
+                const completedCount = items.filter(i => i.is_resolved).length;
+                const progressPercent = Math.round((completedCount / items.length) * 100);
+
+                html += `
+                    <div class="theme-card theme-${themeKey}" tabindex="0" role="article" aria-label="${theme.name} theme: ${items.length} items, ${progressPercent}% complete">
+                        <div class="theme-header">
+                            <div class="theme-title">
+                                <span class="theme-icon" aria-hidden="true">${theme.icon}</span>
+                                ${escapeHtml(theme.name)}
+                            </div>
+                            <span class="theme-count" aria-label="${items.length} items">${items.length} items</span>
+                        </div>
+                        <div class="theme-description">${escapeHtml(theme.description)}</div>
+                        <div class="theme-progress" role="progressbar" aria-valuenow="${progressPercent}" aria-valuemin="0" aria-valuemax="100" aria-label="Theme progress">
+                            <div class="theme-progress-bar">
+                                <div class="theme-progress-fill" style="width: ${progressPercent}%;"></div>
+                            </div>
+                            <span class="theme-progress-text">${progressPercent}%</span>
+                        </div>
+                        <div class="theme-items" role="list" aria-label="Items in this theme">
+                            ${items.slice(0, 5).map(item => {
+                                const statusClass = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in-progress' : 'pending');
+                                const statusLabel = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in progress' : 'pending');
+                                return `
+                                    <div class="theme-item" role="listitem">
+                                        <span class="theme-item-status ${statusClass}" aria-label="Status: ${statusLabel}"></span>
+                                        <span>${escapeHtml(item.title)}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                            ${items.length > 5 ? `<div class="theme-item" style="color: #666;">+ ${items.length - 5} more items</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // Render custom fields section for an item
+        function renderCustomFields(item) {
+            const customFields = item.custom_fields || defaultCustomFields;
+            if (!customFields || customFields.length === 0) return '';
+
+            let html = '<div class="custom-fields-section" role="region" aria-label="Custom fields">';
+            html += '<div class="lifecycle-section-title">Custom Fields</div>';
+
+            customFields.forEach(field => {
+                const value = field.value || '—';
+                const isEditable = currentUser ? 'editable' : '';
+                const editHandler = currentUser ? `onclick="event.stopPropagation(); editCustomField(${item.id}, '${field.key}')"` : '';
+                const tabIndex = currentUser ? 'tabindex="0"' : '';
+
+                html += `
+                    <div class="custom-field">
+                        <span class="custom-field-label">${escapeHtml(field.label)}</span>
+                        <span class="custom-field-value ${isEditable}" ${editHandler} ${tabIndex}
+                              role="${currentUser ? 'button' : 'text'}"
+                              aria-label="${field.label}: ${value}${currentUser ? ', click to edit' : ''}">
+                            ${escapeHtml(value)}
+                        </span>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            return html;
+        }
+
+        // Render automation rules section
+        function renderAutomationRules(item) {
+            if (!currentUser) return ''; // Only show to logged-in users
+
+            const rules = [
+                { key: 'autoTriage', label: 'Auto-triage new items', icon: '🎯' },
+                { key: 'notifyOnProgress', label: 'Notify on status change', icon: '🔔' },
+                { key: 'githubSync', label: 'Sync with GitHub', icon: '🔗' }
+            ];
+
+            let html = '<div class="automation-rules-section" role="region" aria-label="Automation rules">';
+            html += '<div class="lifecycle-section-title">Automation Rules</div>';
+
+            rules.forEach(rule => {
+                const isEnabled = automationRules[rule.key];
+                html += `
+                    <div class="automation-rule">
+                        <span class="automation-rule-icon" aria-hidden="true">${rule.icon}</span>
+                        <span class="automation-rule-text" id="rule-label-${rule.key}">${rule.label}</span>
+                        <label class="automation-rule-toggle">
+                            <input type="checkbox"
+                                   ${isEnabled ? 'checked' : ''}
+                                   onchange="toggleAutomationRule('${rule.key}', this.checked)"
+                                   aria-labelledby="rule-label-${rule.key}">
+                            <span class="automation-toggle-slider" aria-hidden="true"></span>
+                            <span class="sr-only">${isEnabled ? 'Enabled' : 'Disabled'}</span>
+                        </label>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            return html;
+        }
+
+        // Toggle automation rule
+        async function toggleAutomationRule(ruleKey, enabled) {
+            automationRules[ruleKey] = enabled;
+
+            // Persist to API if logged in
+            if (currentUser) {
+                try {
+                    const token = await currentUser.getIdToken();
+                    await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            action: 'update_automation_rules',
+                            product: 'quizmyself',
+                            rules: automationRules
+                        })
+                    });
+                    showToast(`${enabled ? 'Enabled' : 'Disabled'} automation rule`, 'success');
+                } catch (error) {
+                    console.error('Failed to update automation rule:', error);
+                    showToast('Failed to update rule', 'error');
+                }
+            }
+        }
+
+        // Edit a custom field value
+        async function editCustomField(itemId, fieldKey) {
+            if (!currentUser) {
+                showToast('Please sign in to edit fields', 'warning');
+                return;
+            }
+
+            const item = currentFeedbackData?.feedback?.find(f => f.id === itemId);
+            if (!item) return;
+
+            const customFields = item.custom_fields || defaultCustomFields;
+            const field = customFields.find(f => f.key === fieldKey);
+            if (!field) return;
+
+            // Simple prompt for now - could be enhanced with a modal
+            const newValue = prompt(`Enter new value for ${field.label}:`, field.value || '');
+            if (newValue === null) return; // Cancelled
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'update_custom_field',
+                        feedback_id: itemId,
+                        product: 'quizmyself',
+                        field_key: fieldKey,
+                        field_value: newValue
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update local data
+                    field.value = newValue;
+                    showToast('Field updated', 'success');
+
+                    // Re-render
+                    if (currentFeedbackData) {
+                        renderRoadmapFromFeedback(currentFeedbackData);
+                        // Re-expand the item
+                        setTimeout(() => {
+                            const itemEl = document.querySelector(`.roadmap-item[data-item-id="${itemId}"]`);
+                            if (itemEl) itemEl.classList.add('expanded');
+                        }, 50);
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to update field');
+                }
+            } catch (error) {
+                console.error('Edit custom field error:', error);
+                showToast('Failed to update field', 'error');
+            }
+        }
+
+        // Keyboard navigation for Progress modal
+        function setupProgressModalKeyboardNav() {
+            const modal = document.getElementById('roadmap-modal');
+            if (!modal) return;
+
+            modal.addEventListener('keydown', (e) => {
+                // Escape to close
+                if (e.key === 'Escape') {
+                    closeRoadmapModal();
+                    return;
+                }
+
+                // Tab trap within modal
+                if (e.key === 'Tab') {
+                    const focusableElements = modal.querySelectorAll(
+                        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                    );
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+
+                    if (e.shiftKey && document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    } else if (!e.shiftKey && document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+
+                // Arrow keys for filter chips
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    const chips = modal.querySelectorAll('.progress-filter-chip');
+                    const currentIndex = Array.from(chips).indexOf(document.activeElement);
+                    if (currentIndex !== -1) {
+                        e.preventDefault();
+                        const nextIndex = e.key === 'ArrowRight'
+                            ? (currentIndex + 1) % chips.length
+                            : (currentIndex - 1 + chips.length) % chips.length;
+                        chips[nextIndex].focus();
+                    }
+                }
+
+                // Enter/Space to expand items
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const target = e.target;
+                    if (target.classList.contains('roadmap-item') && target.classList.contains('expandable')) {
+                        e.preventDefault();
+                        const itemId = target.dataset.itemId;
+                        if (itemId) toggleItemExpand(parseInt(itemId));
+                    }
+                }
+            });
+        }
+
+        // Focus management when modal opens
+        function focusProgressModal() {
+            const modal = document.getElementById('roadmap-modal');
+            if (modal) {
+                const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                if (firstFocusable) {
+                    setTimeout(() => firstFocusable.focus(), 100);
+                }
+            }
+        }
+
+        // Announce status changes for screen readers
+        function announceToScreenReader(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('role', 'status');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = message;
+            document.body.appendChild(announcement);
+            setTimeout(() => announcement.remove(), 1000);
+        }
+
+        // ========== END STORY 6 ==========
 
         async function submitFeedback() {
             const type = document.getElementById('feedback-type').value;

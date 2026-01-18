@@ -1485,4 +1485,455 @@ test.describe("Roadmap Modal Tests", () => {
     const noCommentsMsg = page.locator('.item-comments:has-text("No comments yet")');
     await expect(noCommentsMsg).toBeVisible();
   });
+
+  // Story 6: Flexibility and Iteration tests
+
+  test("switchProgressView function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.switchProgressView === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("renderViewToggle function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderViewToggle === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("classifyItemTheme function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.classifyItemTheme === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("renderThemesView function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderThemesView === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("renderCustomFields function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderCustomFields === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("renderAutomationRules function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderAutomationRules === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("toggleAutomationRule function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.toggleAutomationRule === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("editCustomField function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.editCustomField === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("setupProgressModalKeyboardNav function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.setupProgressModalKeyboardNav === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("announceToScreenReader function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.announceToScreenReader === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("progress modal displays view toggle buttons", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test feature",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-view-toggle", { timeout: 10000 });
+
+    // Verify view toggle exists
+    const viewToggle = page.locator(".progress-view-toggle");
+    await expect(viewToggle).toBeVisible();
+
+    // Verify By Status button is active by default
+    const statusBtn = page.locator('.progress-view-btn:has-text("By Status")');
+    await expect(statusBtn).toBeVisible();
+    await expect(statusBtn).toHaveClass(/active/);
+
+    // Verify By Theme button exists
+    const themeBtn = page.locator('.progress-view-btn:has-text("By Theme")');
+    await expect(themeBtn).toBeVisible();
+  });
+
+  test("clicking By Theme shows themes view", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Fix slow loading bug",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "Add new feature",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 2, in_progress: 0, resolved: 0, total: 2 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-view-toggle", { timeout: 10000 });
+
+    // Click on By Theme button
+    await page.click('.progress-view-btn:has-text("By Theme")');
+
+    // Verify themes view is displayed
+    const themesSection = page.locator(".progress-themes");
+    await expect(themesSection).toBeVisible();
+
+    // Verify theme cards exist
+    const themeCards = page.locator(".theme-card");
+    const count = await themeCards.count();
+    expect(count).toBeGreaterThan(0);
+  });
+
+  test("theme cards show progress bar and item count", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Fix bug issue",
+              type: "bug",
+              status: "resolved",
+              status_label: "Resolved",
+              is_resolved: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "Another bug problem",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 1, total: 2 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-view-toggle", { timeout: 10000 });
+
+    // Switch to themes view
+    await page.click('.progress-view-btn:has-text("By Theme")');
+
+    await page.waitForSelector(".theme-card", { timeout: 5000 });
+
+    // Check for theme progress bar
+    const themeProgress = page.locator(".theme-progress");
+    await expect(themeProgress.first()).toBeVisible();
+
+    // Check for theme progress fill
+    const themeFill = page.locator(".theme-progress-fill");
+    await expect(themeFill.first()).toBeAttached();
+
+    // Check for item count badge
+    const themeCount = page.locator(".theme-count");
+    await expect(themeCount.first()).toBeVisible();
+  });
+
+  test("classifyItemTheme assigns bugs to reliability theme", async ({ page }) => {
+    const result = await page.evaluate(() => {
+      return window.classifyItemTheme({ type: "bug", title: "Something broken" });
+    });
+    expect(result).toBe("reliability");
+  });
+
+  test("classifyItemTheme assigns features to growth theme", async ({ page }) => {
+    const result = await page.evaluate(() => {
+      return window.classifyItemTheme({ type: "feature", title: "New capability" });
+    });
+    expect(result).toBe("growth");
+  });
+
+  test("classifyItemTheme detects performance keywords", async ({ page }) => {
+    const result = await page.evaluate(() => {
+      return window.classifyItemTheme({ type: "feature", title: "Make it faster" });
+    });
+    expect(result).toBe("performance");
+  });
+
+  test("expanded items show custom fields section", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Feature with custom fields",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Expand the item
+    await page.click(".roadmap-item.expandable");
+
+    // Wait for item to expand
+    await page.waitForSelector(".roadmap-item.expanded", { timeout: 5000 });
+
+    // Custom fields section should be visible
+    const customFields = page.locator(".custom-fields-section");
+    await expect(customFields).toBeVisible();
+
+    // Should show Sprint, Effort, Team fields
+    await expect(page.locator('.custom-field-label:has-text("Sprint")')).toBeVisible();
+    await expect(page.locator('.custom-field-label:has-text("Effort")')).toBeVisible();
+    await expect(page.locator('.custom-field-label:has-text("Team")')).toBeVisible();
+  });
+
+  test("roadmap modal has proper ARIA attributes", async ({ page }) => {
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    const roadmapModal = page.locator("#roadmap-modal");
+    await expect(roadmapModal).toBeVisible();
+
+    // Check for dialog role
+    await expect(roadmapModal).toHaveAttribute("role", "dialog");
+
+    // Check for aria-modal
+    await expect(roadmapModal).toHaveAttribute("aria-modal", "true");
+
+    // Check for aria-labelledby
+    await expect(roadmapModal).toHaveAttribute("aria-labelledby", "roadmap-modal-title");
+  });
+
+  test("roadmap items have aria-expanded attribute", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Accessible item",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item.expandable", { timeout: 10000 });
+
+    // Check initial aria-expanded is false
+    const item = page.locator(".roadmap-item.expandable");
+    await expect(item).toHaveAttribute("aria-expanded", "false");
+
+    // Click to expand
+    await page.click(".roadmap-item.expandable");
+
+    // Check aria-expanded is now true
+    await expect(item).toHaveAttribute("aria-expanded", "true");
+  });
+
+  test("keyboard navigation works with Escape key to close modal", async ({ page }) => {
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    const roadmapModal = page.locator("#roadmap-modal");
+    await expect(roadmapModal).toBeVisible();
+
+    // Focus on modal content first
+    await page.focus("#roadmap-modal .modal-close");
+
+    // Press Escape key
+    await page.keyboard.press("Escape");
+
+    // Modal should be hidden
+    await expect(roadmapModal).toHaveClass(/hidden/);
+  });
+
+  test("progress modal close button has aria-label", async ({ page }) => {
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    const closeBtn = page.locator("#roadmap-modal .modal-close");
+    await expect(closeBtn).toHaveAttribute("aria-label", "Close progress modal");
+  });
+
+  test("vision section has proper accessibility attributes", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Test",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-vision", { timeout: 10000 });
+
+    // Vision section should have role="region"
+    const vision = page.locator(".progress-vision");
+    await expect(vision).toHaveAttribute("role", "region");
+    await expect(vision).toHaveAttribute("aria-label", "Product vision");
+  });
+
+  test("stats section has proper accessibility attributes", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [],
+          stats: { open: 5, in_progress: 2, resolved: 10, total: 17 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-stats", { timeout: 10000 });
+
+    // Stats section should have role="region"
+    const stats = page.locator(".roadmap-stats");
+    await expect(stats).toHaveAttribute("role", "region");
+    await expect(stats).toHaveAttribute("aria-label", "Progress statistics");
+  });
+
+  test("view toggle has tablist role for accessibility", async ({ page }) => {
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [{ id: 1, title: "Test", type: "feature", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() }],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".progress-view-toggle", { timeout: 10000 });
+
+    // View toggle should have role="tablist"
+    const toggle = page.locator(".progress-view-toggle");
+    await expect(toggle).toHaveAttribute("role", "tablist");
+
+    // Buttons should have role="tab"
+    const statusBtn = page.locator('.progress-view-btn:has-text("By Status")');
+    await expect(statusBtn).toHaveAttribute("role", "tab");
+    await expect(statusBtn).toHaveAttribute("aria-selected", "true");
+  });
 });
