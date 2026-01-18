@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.3 - 2026-01-18
+- Fix: Clear source state when switching keywords to prevent cross-quiz contamination
+
 ## 0.1.2 - 2026-01-18
 - Feature: Add Plausible analytics for usage tracking
 - Track quiz starts, imports, AI generations, and upgrade clicks
