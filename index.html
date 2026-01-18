@@ -5670,6 +5670,7 @@
             state.examIndex = 0;
             state.examCorrect = 0;
             state.currentMode = 'exam';
+            plausible('Exam Start', { props: { questions: state.examQuestions.length } });
 
             showScreen('exam-screen');
             loadExamQuestion();
@@ -5761,6 +5762,7 @@
         function showExamResults() {
             const percentage = Math.round((state.examCorrect / state.examQuestions.length) * 100);
             const passed = percentage === 100;
+            plausible('Exam Complete', { props: { score: percentage, passed: passed, questions: state.examQuestions.length } });
 
             showScreen('result-screen');
             document.getElementById('result-score').textContent = percentage + '%';
