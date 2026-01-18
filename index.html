@@ -2273,6 +2273,78 @@
             border: 1px solid #333;
         }
 
+        /* Milestones Grid */
+        .milestones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .milestone-card-clickable {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            width: 100%;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .milestone-card-clickable:hover {
+            transform: translateY(-2px);
+            border-color: #4fc3f7;
+            box-shadow: 0 4px 12px rgba(79, 195, 247, 0.2);
+        }
+
+        .milestone-card-clickable.active {
+            border-color: #4fc3f7;
+            background: linear-gradient(135deg, #1a4a7a 0%, #1a3a5e 100%);
+            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.3);
+        }
+
+        .milestone-card-clickable .milestone-title-icon {
+            background: #4fc3f7;
+            color: #0a1628;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        /* Milestone Filter Bar */
+        .milestone-filter-bar {
+            margin-top: 8px;
+        }
+
+        .milestone-chip {
+            background: #1a1a2e;
+            border-color: #444;
+        }
+
+        .milestone-chip:hover {
+            border-color: #4fc3f7;
+            background: #252540;
+        }
+
+        .milestone-chip.active {
+            background: #4fc3f7;
+            color: #0a1628;
+            border-color: #4fc3f7;
+        }
+
+        /* Milestone Badge on Items */
+        .milestone-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: #0a1628;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
         .milestone-header {
             display: flex;
             justify-content: space-between;
@@ -6471,28 +6543,29 @@
 
         async function loadRoadmapData() {
             try {
-                // Try reconcile endpoint first (syncs with GitHub)
-                let data = null;
-                try {
-                    const reconcileResponse = await fetch(`${VANDROMEDA_API}/quizmyself/reconcile-feedback.php?product=quizmyself`);
-                    if (reconcileResponse.ok) {
-                        const reconcileData = await reconcileResponse.json();
-                        if (reconcileData.success && reconcileData.feedback?.length > 0) {
-                            data = reconcileData;
-                            console.log('Loaded via reconcile:', reconcileData.reconciliation);
-                        }
-                    }
-                } catch (e) {
-                    console.warn('Reconcile endpoint failed, falling back:', e.message);
+                // Fetch both feedback API and roadmap.json in parallel
+                const [feedbackResult, roadmapResult] = await Promise.allSettled([
+                    fetchFeedbackData(),
+                    fetch('roadmap.json').then(r => r.ok ? r.json() : null)
+                ]);
+
+                // Get feedback data
+                let data = feedbackResult.status === 'fulfilled' ? feedbackResult.value : null;
+                if (!data) {
+                    throw new Error('Failed to load feedback data');
                 }
 
-                // Fall back to simple feedback endpoint if reconcile failed
-                if (!data) {
-                    const feedbackResponse = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`);
-                    if (!feedbackResponse.ok) throw new Error('Failed to load roadmap');
-                    data = await feedbackResponse.json();
-                    if (!data.success) throw new Error(data.error || 'Failed to load');
-                    console.log('Loaded via fallback feedback endpoint');
+                // Get roadmap data (milestones + issue-milestone mapping)
+                const roadmapData = roadmapResult.status === 'fulfilled' ? roadmapResult.value : null;
+                if (roadmapData) {
+                    currentRoadmapData = roadmapData;
+                    console.log('Loaded roadmap.json:', {
+                        milestones: roadmapData.milestones?.length || 0,
+                        issues: roadmapData.issues?.length || 0
+                    });
+
+                    // Merge milestone info into feedback items
+                    data = mergeMilestoneData(data, roadmapData);
                 }
 
                 renderRoadmapFromFeedback(data);
@@ -6502,6 +6575,59 @@
                 document.getElementById('roadmap-content').innerHTML = renderErrorState(error);
                 announceToScreenReader('Failed to load progress items');
             }
+        }
+
+        // Fetch feedback data from API (tries reconcile first, then fallback)
+        async function fetchFeedbackData() {
+            // Try reconcile endpoint first (syncs with GitHub)
+            try {
+                const reconcileResponse = await fetch(`${VANDROMEDA_API}/quizmyself/reconcile-feedback.php?product=quizmyself`);
+                if (reconcileResponse.ok) {
+                    const reconcileData = await reconcileResponse.json();
+                    if (reconcileData.success && reconcileData.feedback?.length > 0) {
+                        console.log('Loaded via reconcile:', reconcileData.reconciliation);
+                        return reconcileData;
+                    }
+                }
+            } catch (e) {
+                console.warn('Reconcile endpoint failed, falling back:', e.message);
+            }
+
+            // Fall back to simple feedback endpoint
+            const feedbackResponse = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`);
+            if (!feedbackResponse.ok) throw new Error('Failed to load roadmap');
+            const data = await feedbackResponse.json();
+            if (!data.success) throw new Error(data.error || 'Failed to load');
+            console.log('Loaded via fallback feedback endpoint');
+            return data;
+        }
+
+        // Merge milestone data from roadmap.json into feedback items
+        function mergeMilestoneData(feedbackData, roadmapData) {
+            if (!roadmapData?.issues || !feedbackData?.feedback) {
+                return feedbackData;
+            }
+
+            // Create a map of issue number -> milestone
+            const issueMilestoneMap = {};
+            roadmapData.issues.forEach(issue => {
+                if (issue.milestone) {
+                    issueMilestoneMap[issue.number] = issue.milestone;
+                }
+            });
+
+            // Add milestone to each feedback item
+            feedbackData.feedback = feedbackData.feedback.map(item => {
+                if (item.github_issue && issueMilestoneMap[item.github_issue]) {
+                    return { ...item, milestone: issueMilestoneMap[item.github_issue] };
+                }
+                return item;
+            });
+
+            // Add milestones array to feedback data for rendering milestone cards
+            feedbackData.milestones = roadmapData.milestones || [];
+
+            return feedbackData;
         }
 
         function retryLoadRoadmap() {
@@ -6688,8 +6814,10 @@
 
         // Store current feedback data for filtering
         let currentFeedbackData = null;
+        let currentRoadmapData = null; // Milestones and issue-milestone mapping from roadmap.json
         let activeFilters = new Set();
         let activeStatusFilter = null; // null = all, or 'new', 'in_progress', 'resolved', 'reviewed', 'wont_fix'
+        let activeMilestoneFilter = null; // null = all, or milestone title like 'M1: Beta Launch'
 
         function renderRoadmapFromFeedback(data) {
             currentFeedbackData = data;
@@ -6782,7 +6910,7 @@
                 };
 
                 html += '<div class="progress-filter-bar">';
-                html += '<span class="filter-label">Filter:</span>';
+                html += '<span class="filter-label">Type:</span>';
                 html += `<button class="progress-filter-chip ${activeFilters.size === 0 ? 'active' : ''}" data-type="all" onclick="toggleProgressFilter('all')">All <span class="count">${feedback.length}</span></button>`;
 
                 Object.keys(typeCounts).sort().forEach(type => {
@@ -6792,6 +6920,36 @@
                     html += `<button class="progress-filter-chip ${isActive ? 'active' : ''}" data-type="${escapeAttr(type)}" onclick="toggleProgressFilter('${escapeAttr(type)}')">${icon} ${label} <span class="count">${typeCounts[type]}</span></button>`;
                 });
                 html += '</div>';
+
+                // Milestone Filter Bar
+                const milestones = data.milestones || [];
+                if (milestones.length > 0) {
+                    // Count items per milestone
+                    const milestoneCounts = {};
+                    feedback.forEach(item => {
+                        const ms = item.milestone || 'Unassigned';
+                        milestoneCounts[ms] = (milestoneCounts[ms] || 0) + 1;
+                    });
+
+                    html += '<div class="progress-filter-bar milestone-filter-bar">';
+                    html += '<span class="filter-label">Milestone:</span>';
+                    html += `<button class="progress-filter-chip milestone-chip ${activeMilestoneFilter === null ? 'active' : ''}" onclick="toggleMilestoneFilter(null)">All</button>`;
+
+                    milestones.forEach(ms => {
+                        const isActive = activeMilestoneFilter === ms.title;
+                        const shortTitle = ms.title.split(':')[0]; // "M1: Beta Launch" -> "M1"
+                        const count = milestoneCounts[ms.title] || 0;
+                        html += `<button class="progress-filter-chip milestone-chip ${isActive ? 'active' : ''}" onclick="toggleMilestoneFilter('${escapeAttr(ms.title)}')" title="${escapeAttr(ms.title)}">${shortTitle} <span class="count">${count}</span></button>`;
+                    });
+
+                    // Show unassigned count if any
+                    const unassignedCount = milestoneCounts['Unassigned'] || 0;
+                    if (unassignedCount > 0) {
+                        const isActive = activeMilestoneFilter === 'Unassigned';
+                        html += `<button class="progress-filter-chip milestone-chip ${isActive ? 'active' : ''}" onclick="toggleMilestoneFilter('Unassigned')">Unassigned <span class="count">${unassignedCount}</span></button>`;
+                    }
+                    html += '</div>';
+                }
             }
 
             // Sort feedback by priority (highest first) for data-driven prioritization
@@ -6817,55 +6975,67 @@
                 });
             }
 
+            // Apply milestone filter
+            if (activeMilestoneFilter) {
+                filteredFeedback = filteredFeedback.filter(f => {
+                    if (activeMilestoneFilter === 'Unassigned') {
+                        return !f.milestone;
+                    }
+                    return f.milestone === activeMilestoneFilter;
+                });
+            }
+
             // Group feedback by status and sort by priority
             const openItems = sortByPriority(filteredFeedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
             const inProgressItems = sortByPriority(filteredFeedback.filter(f => f.status === 'in_progress'));
             const resolvedItems = sortByPriority(filteredFeedback.filter(f => f.is_resolved));
 
-            // Milestone summary card (shows overall progress)
-            if (feedback.length > 0) {
-                const totalItems = feedback.length;
-                const completedItems = resolvedItems.length;
-                const progressPercent = Math.round((completedItems / totalItems) * 100);
-                const circumference = 2 * Math.PI * 18; // radius = 18
-                const dashOffset = circumference - (progressPercent / 100) * circumference;
+            // Milestone Progress Cards (from GitHub milestones)
+            const milestonesData = data.milestones || [];
+            if (milestonesData.length > 0) {
+                html += '<div class="milestones-grid">';
+                milestonesData.forEach(ms => {
+                    const totalIssues = ms.openIssues + ms.closedIssues;
+                    const progress = totalIssues > 0 ? ms.progress : 0;
+                    const circumference = 2 * Math.PI * 18;
+                    const dashOffset = circumference - (progress / 100) * circumference;
+                    const shortTitle = ms.title.split(':')[0]; // "M1: Beta Launch" -> "M1"
+                    const fullTitle = ms.title.split(': ')[1] || ms.title; // "Beta Launch"
+                    const isActive = activeMilestoneFilter === ms.title;
+                    const dueDate = ms.dueDate ? new Date(ms.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : null;
 
-                html += `
-                    <div class="milestone-card">
-                        <div class="milestone-header">
-                            <div class="milestone-title">
-                                <span class="milestone-title-icon">🎯</span>
-                                Current Milestone
+                    html += `
+                        <button class="milestone-card milestone-card-clickable ${isActive ? 'active' : ''}" onclick="toggleMilestoneFilter('${escapeAttr(ms.title)}')">
+                            <div class="milestone-header">
+                                <div class="milestone-title">
+                                    <span class="milestone-title-icon">${shortTitle}</span>
+                                    ${escapeHtml(fullTitle)}
+                                </div>
+                                <div class="milestone-progress-ring">
+                                    <svg width="50" height="50">
+                                        <circle class="bg" cx="25" cy="25" r="18"></circle>
+                                        <circle class="progress" cx="25" cy="25" r="18"
+                                            stroke-dasharray="${circumference}"
+                                            stroke-dashoffset="${dashOffset}"></circle>
+                                    </svg>
+                                    <div class="milestone-progress-percent">${progress}%</div>
+                                </div>
                             </div>
-                            <div class="milestone-progress-ring">
-                                <svg width="50" height="50">
-                                    <circle class="bg" cx="25" cy="25" r="18"></circle>
-                                    <circle class="progress" cx="25" cy="25" r="18"
-                                        stroke-dasharray="${circumference}"
-                                        stroke-dashoffset="${dashOffset}"></circle>
-                                </svg>
-                                <div class="milestone-progress-percent">${progressPercent}%</div>
+                            <div class="milestone-stats">
+                                <span class="milestone-stat">
+                                    <span class="milestone-stat-icon">📋</span>
+                                    ${ms.openIssues} open
+                                </span>
+                                <span class="milestone-stat">
+                                    <span class="milestone-stat-icon">✅</span>
+                                    ${ms.closedIssues} done
+                                </span>
+                                ${dueDate ? `<span class="milestone-stat"><span class="milestone-stat-icon">📅</span> ${dueDate}</span>` : ''}
                             </div>
-                        </div>
-                        <div class="milestone-description">
-                            Tracking ${totalItems} items across the product lifecycle
-                        </div>
-                        <div class="milestone-stats">
-                            <span class="milestone-stat">
-                                <span class="milestone-stat-icon">📋</span>
-                                ${openItems.length} open
-                            </span>
-                            <span class="milestone-stat">
-                                <span class="milestone-stat-icon">🔧</span>
-                                ${inProgressItems.length} in progress
-                            </span>
-                            <span class="milestone-stat">
-                                <span class="milestone-stat-icon">✅</span>
-                                ${completedItems} resolved
-                            </span>
-                        </div>
-                    </div>
-                `;
+                        </button>
+                    `;
+                });
+                html += '</div>';
             }
 
             // Timeline view for active items (in progress + recently resolved)
@@ -6951,6 +7121,22 @@
             // Announce change to screen readers
             const label = status === 'open' ? 'open' : status === 'in_progress' ? 'in progress' : status === 'resolved' ? 'resolved' : 'all';
             announceToScreenReader(`Showing ${label} items`);
+        }
+
+        function toggleMilestoneFilter(milestone) {
+            if (activeMilestoneFilter === milestone) {
+                // Clicking same filter again clears it (show all)
+                activeMilestoneFilter = null;
+            } else {
+                activeMilestoneFilter = milestone;
+            }
+            // Re-render with current data
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+            // Announce change to screen readers
+            const label = milestone ? milestone : 'all milestones';
+            announceToScreenReader(`Showing items from ${label}`);
         }
 
         // Toggle item expansion
@@ -7091,12 +7277,18 @@
                 refHtml = ` <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7; font-size: 0.75rem;">GH-${item.github_issue}</a>`;
             }
 
+            // Milestone badge
+            const milestoneBadge = item.milestone
+                ? `<span class="milestone-badge" title="${escapeAttr(item.milestone)}">${item.milestone.split(':')[0]}</span>`
+                : '';
+
             return `
                 <div class="timeline-item ${statusClass}" data-item-id="${item.id}">
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <span class="timeline-title">
                                 <span class="type-id-badge ${typeIdBadgeClass}">${typeId}</span>
+                                ${milestoneBadge}
                                 ${escapeHtml(item.title)}
                                 <span class="item-priority ${priority.level}">${priority.label}</span>
                             </span>
@@ -7343,6 +7535,11 @@
             const customFieldsHtml = renderCustomFields(item);
             const automationRulesHtml = renderAutomationRules(item);
 
+            // Milestone badge
+            const milestoneBadge = item.milestone
+                ? `<span class="milestone-badge" title="${escapeAttr(item.milestone)}">${item.milestone.split(':')[0]}</span>`
+                : '';
+
             return `
                 <div class="roadmap-item expandable" data-item-id="${item.id}" onclick="toggleItemExpand(${item.id})"
                      tabindex="0" role="article" aria-label="${escapeAttr(item.title)}, ${item.type}, ${priority.label} priority, ${item.status_label}"
@@ -7350,6 +7547,7 @@
                     <div class="roadmap-item-header">
                         <div class="roadmap-item-title">
                             <span class="type-id-badge ${typeIdBadgeClass}" aria-label="Item ID ${typeId}">${typeId}</span>
+                            ${milestoneBadge}
                             ${escapeHtml(item.title)}
                             <span class="item-priority ${priority.level}" aria-label="${priority.label} priority">${priority.label}</span>
                         </div>
