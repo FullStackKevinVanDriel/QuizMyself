@@ -7522,6 +7522,9 @@
             generatedQuestions.forEach((q, idx) => {
                 q.id = startId + idx;
                 q.category = 'AI Generated';
+                // Add source reference so "View in Source" button works
+                q.sourceId = aiGenerationState.sourceId;
+                q.sourceName = aiGenerationState.sourceName;
                 questions.push(q);
             });
 
@@ -7767,6 +7770,9 @@
             generatedQuestions.forEach((q, idx) => {
                 q.id = startId + idx;
                 q.category = 'AI Generated';
+                // Add source reference so "View in Source" button works
+                q.sourceId = aiGenerationState.sourceId;
+                q.sourceName = aiGenerationState.sourceName;
                 questions.push(q);
             });
 

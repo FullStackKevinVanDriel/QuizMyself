@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.4 - 2026-01-18
+- Fix: Add source reference to AI-generated questions so "View in Source" button works
+
 ## 0.1.3 - 2026-01-18
 - Fix: Clear source state when switching keywords to prevent cross-quiz contamination
 
