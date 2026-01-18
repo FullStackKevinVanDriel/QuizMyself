@@ -79,6 +79,21 @@ QuizMyself/
 
 ### High Priority
 
+#### Source Material UI Not Updating After Link
+After associating a quiz with source material, the screen doesn't refresh to show the newly linked source material.
+
+Additionally, when no quiz material/test material/program/mastered questions have been generated yet:
+- The corresponding buttons should be **disabled**
+- Buttons should be visually styled as disabled (grayed out)
+- UI should **highlight** that material needs to be generated from the source
+
+**Impact:** User confusion - they don't see feedback after linking, and can click buttons for content that doesn't exist yet
+
+**Fix:**
+1. Refresh the source material display after successful linking
+2. Check for generated content and disable/style buttons accordingly
+3. Add visual indicator (badge/tooltip) prompting user to generate material
+
 #### Native Dialog Overuse
 The app uses native `alert()`, `confirm()`, and `prompt()` dialogs extensively:
 - Quiz creation success/failure messages

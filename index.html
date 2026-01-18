@@ -1311,12 +1311,227 @@
             color: #666;
             font-size: 0.85rem;
         }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            min-width: 280px;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            pointer-events: auto;
+            border-left: 4px solid #4fc3f7;
+        }
+
+        .toast.success { border-left-color: #4caf50; }
+        .toast.error { border-left-color: #e94560; }
+        .toast.warning { border-left-color: #ff9800; }
+
+        .toast-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex: 1;
+            color: #eaeaea;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .toast-close:hover { color: #eaeaea; }
+
+        .toast.hiding {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Confirm Modal */
+        .confirm-modal-content {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .confirm-modal-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .confirm-modal-title {
+            color: #eaeaea;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .confirm-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .confirm-modal-buttons .btn {
+            min-width: 100px;
+        }
+
+        /* Selection Modal */
+        .selection-modal-content {
+            background: #16213e;
+            border-radius: 12px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .selection-modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .selection-modal-header h3 {
+            color: #4fc3f7;
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .selection-modal-header p {
+            color: #888;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .selection-modal-list {
+            padding: 15px;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        .selection-modal-item {
+            background: #1a1a2e;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .selection-modal-item:hover {
+            border-color: #4fc3f7;
+        }
+
+        .selection-modal-item.selected {
+            border-color: #4fc3f7;
+            background: #0f3460;
+        }
+
+        .selection-modal-item-title {
+            color: #eaeaea;
+            font-weight: 500;
+        }
+
+        .selection-modal-item-subtitle {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 3px;
+        }
+
+        .selection-modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 480px) {
+            .toast-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+            }
+            .toast {
+                min-width: auto;
+                width: 100%;
+            }
+        }
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 </head>
 <body>
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Confirm Modal -->
+    <div id="confirm-modal" class="modal-overlay hidden">
+        <div class="confirm-modal-content">
+            <div id="confirm-modal-icon" class="confirm-modal-icon"></div>
+            <div id="confirm-modal-title" class="confirm-modal-title"></div>
+            <div class="confirm-modal-buttons">
+                <button class="btn" id="confirm-modal-cancel">Cancel</button>
+                <button class="btn btn-danger" id="confirm-modal-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selection Modal -->
+    <div id="selection-modal" class="modal-overlay hidden">
+        <div class="selection-modal-content">
+            <div class="selection-modal-header">
+                <h3 id="selection-modal-title">Select an Option</h3>
+                <p id="selection-modal-subtitle"></p>
+            </div>
+            <div id="selection-modal-list" class="selection-modal-list"></div>
+            <div class="selection-modal-footer">
+                <button class="btn" id="selection-modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="selection-modal-confirm" disabled>Select</button>
+            </div>
+        </div>
+    </div>
+
     <div id="deploy-banner" class="deploy-banner hidden">Deploying update...</div>
 
     <!-- Welcome Screen -->
@@ -1953,6 +2168,120 @@
     </div>
 
     <script>
+        // ========== TOAST & MODAL UTILITIES ==========
+
+        // Show a toast notification
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type] || icons.info}</span>
+                <span class="toast-content">${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+            container.appendChild(toast);
+
+            // Auto-remove after duration
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+
+            return toast;
+        }
+
+        // Show a confirmation modal (returns a Promise)
+        function showConfirm(message, options = {}) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('confirm-modal');
+                const iconEl = document.getElementById('confirm-modal-icon');
+                const titleEl = document.getElementById('confirm-modal-title');
+                const cancelBtn = document.getElementById('confirm-modal-cancel');
+                const confirmBtn = document.getElementById('confirm-modal-confirm');
+
+                // Set content
+                iconEl.textContent = options.icon || '⚠';
+                titleEl.textContent = message;
+                cancelBtn.textContent = options.cancelText || 'Cancel';
+                confirmBtn.textContent = options.confirmText || 'Confirm';
+                confirmBtn.className = `btn ${options.danger ? 'btn-danger' : 'btn-primary'}`;
+
+                // Show modal
+                modal.classList.remove('hidden');
+
+                // Handle responses
+                const cleanup = () => {
+                    modal.classList.add('hidden');
+                    cancelBtn.onclick = null;
+                    confirmBtn.onclick = null;
+                };
+
+                cancelBtn.onclick = () => { cleanup(); resolve(false); };
+                confirmBtn.onclick = () => { cleanup(); resolve(true); };
+            });
+        }
+
+        // Show a selection modal (returns a Promise with selected value or null)
+        function showSelection(title, subtitle, items, options = {}) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('selection-modal');
+                const titleEl = document.getElementById('selection-modal-title');
+                const subtitleEl = document.getElementById('selection-modal-subtitle');
+                const listEl = document.getElementById('selection-modal-list');
+                const cancelBtn = document.getElementById('selection-modal-cancel');
+                const confirmBtn = document.getElementById('selection-modal-confirm');
+
+                let selectedValue = null;
+
+                // Set content
+                titleEl.textContent = title;
+                subtitleEl.textContent = subtitle || '';
+                confirmBtn.textContent = options.confirmText || 'Select';
+                confirmBtn.disabled = true;
+
+                // Render items
+                listEl.innerHTML = items.map((item, index) => `
+                    <div class="selection-modal-item" data-value="${item.value}" data-index="${index}">
+                        <div class="selection-modal-item-title">${item.title}</div>
+                        ${item.subtitle ? `<div class="selection-modal-item-subtitle">${item.subtitle}</div>` : ''}
+                    </div>
+                `).join('');
+
+                // Handle item selection
+                listEl.querySelectorAll('.selection-modal-item').forEach(el => {
+                    el.onclick = () => {
+                        listEl.querySelectorAll('.selection-modal-item').forEach(i => i.classList.remove('selected'));
+                        el.classList.add('selected');
+                        selectedValue = el.dataset.value;
+                        confirmBtn.disabled = false;
+                    };
+                });
+
+                // Show modal
+                modal.classList.remove('hidden');
+
+                // Handle responses
+                const cleanup = () => {
+                    modal.classList.add('hidden');
+                    cancelBtn.onclick = null;
+                    confirmBtn.onclick = null;
+                };
+
+                cancelBtn.onclick = () => { cleanup(); resolve(null); };
+                confirmBtn.onclick = () => { cleanup(); resolve(selectedValue); };
+            });
+        }
+
         // Owner account that can see all data
         const OWNER_EMAIL = 'noxestyle@gmail.com';
 
@@ -2732,7 +3061,7 @@
 
         function showCreateQuizModal() {
             if (!currentUser) {
-                alert('Please sign in to create a quiz');
+                showToast('Please sign in to create a quiz', 'warning');
                 return;
             }
 
@@ -2876,7 +3205,7 @@
 
                 if (result.success) {
                     closeCreateQuizModal();
-                    alert('Quiz created!' + (sourceId ? ' Source material has been linked.' : ''));
+                    showToast('Quiz created!' + (sourceId ? ' Source material has been linked.' : ''), 'success');
                 } else {
                     // Prefer user-friendly message over error code
                     throw new Error(result.message || result.error || 'Failed to create quiz');
@@ -3190,9 +3519,12 @@
         }
 
         async function confirmDeleteKeyword(keyword) {
-            if (!confirm(`Delete quiz "${keyword}"? This cannot be undone.`)) {
-                return;
-            }
+            const confirmed = await showConfirm(`Delete quiz "${keyword}"? This cannot be undone.`, {
+                icon: '🗑️',
+                confirmText: 'Delete',
+                danger: true
+            });
+            if (!confirmed) return;
 
             const result = await deleteKeywordFromAccount(keyword);
 
@@ -3537,9 +3869,6 @@
         function showCourseContent() {
             // Check if current keyword has a linked source - show that instead
             const keywordInfo = userKeywords.find(kw => kw.keyword === currentKeyword);
-            console.log('[DEBUG showCourseContent] currentKeyword:', currentKeyword);
-            console.log('[DEBUG showCourseContent] keywordInfo:', keywordInfo);
-            console.log('[DEBUG showCourseContent] source_id:', keywordInfo?.source_id, 'source_name:', keywordInfo?.source_name, 'content_type:', keywordInfo?.source_content_type);
             if (keywordInfo && keywordInfo.source_id) {
                 // Show the linked source in the format-aware viewer
                 showSourcesModal();
@@ -3629,7 +3958,7 @@
         function startPractice() {
             const filteredQuestions = getFilteredQuestions();
             if (filteredQuestions.length === 0) {
-                alert('No questions available. Select at least one category or import some questions!');
+                showToast('No questions available. Select at least one category or import some questions!', 'warning');
                 return;
             }
             state.currentMode = 'practice';
@@ -3649,7 +3978,7 @@
             }
 
             if (!state.currentQuestion) {
-                alert('No questions available!');
+                showToast('No questions available!', 'warning');
                 backToMenu();
                 return;
             }
@@ -3781,7 +4110,7 @@
         // Resume in-progress exam
         function resumeExam() {
             if (state.examQuestions.length === 0 || state.examIndex >= state.examQuestions.length) {
-                alert('No exam in progress');
+                showToast('No exam in progress', 'warning');
                 return;
             }
             state.currentMode = 'exam';
@@ -3978,8 +4307,13 @@
         }
 
         // Reset progress
-        function resetProgress() {
-            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+        async function resetProgress() {
+            const confirmed = await showConfirm('Are you sure you want to reset all progress? This cannot be undone.', {
+                icon: '⚠️',
+                confirmText: 'Reset All',
+                danger: true
+            });
+            if (confirmed) {
                 state.mastered = [];
                 state.answerCounts = {};
                 state.totalCorrect = 0;
@@ -3990,7 +4324,7 @@
                 saveState();
                 updateStats();
                 updateResumeExamButton(false);
-                alert('Progress has been reset.');
+                showToast('Progress has been reset.', 'success');
             }
         }
 
@@ -4640,7 +4974,7 @@
             if (!file) return;
 
             if (!currentUser) {
-                alert('Please sign in to upload files.');
+                showToast('Please sign in to upload files.', 'warning');
                 return;
             }
 
@@ -4652,13 +4986,13 @@
                 const sourceId = await uploadNewSource(file);
 
                 if (sourceId) {
-                    alert(`Uploaded "${file.name}" successfully!`);
+                    showToast(`Uploaded "${file.name}" successfully!`, 'success');
                     loadSources(); // Refresh the list
                 } else {
                     throw new Error('Upload failed');
                 }
             } catch (err) {
-                alert(`Upload failed: ${err.message}`);
+                showToast(`Upload failed: ${err.message}`, 'error');
                 loadSources(); // Refresh to show current state
             }
 
@@ -4697,7 +5031,7 @@
         function parseImportDataModal() {
             const text = document.getElementById('import-textarea-modal').value.trim();
             if (!text) {
-                alert('Please enter or paste quiz data first.');
+                showToast('Please enter or paste quiz data first.', 'warning');
                 return;
             }
 
@@ -4706,7 +5040,7 @@
             parsedImportDataModal = result.questions;
 
             if (parsedImportDataModal.length === 0) {
-                alert('Could not parse any questions from the input.');
+                showToast('Could not parse any questions from the input.', 'error');
                 return;
             }
 
@@ -4723,7 +5057,7 @@
         // Confirm import in modal
         async function confirmImportModal() {
             if (parsedImportDataModal.length === 0) {
-                alert('No questions to import.');
+                showToast('No questions to import.', 'warning');
                 return;
             }
 
@@ -4735,7 +5069,7 @@
                 const newTotal = currentImported + parsedImportDataModal.length;
                 if (newTotal > FREE_IMPORT_LIMIT) {
                     const remaining = FREE_IMPORT_LIMIT - currentImported;
-                    alert(`Free accounts can import up to ${FREE_IMPORT_LIMIT} questions. You have ${remaining} imports remaining.\n\nUpgrade to Pro for unlimited imports!`);
+                    showToast(`Free accounts can import up to ${FREE_IMPORT_LIMIT} questions. You have ${remaining} remaining. Upgrade to Pro for unlimited imports!`, 'warning', 6000);
                     showUpgradeModal();
                     return;
                 }
@@ -4781,7 +5115,7 @@
             document.getElementById('import-toggle-icon').textContent = '+';
             loadSources();
 
-            alert(`Successfully imported ${importCount} questions! They are now saved to your quiz "${currentKeyword}".${replaceMode ? ' Progress has been reset.' : ''}`);
+            showToast(`Successfully imported ${importCount} questions to "${currentKeyword}"!${replaceMode ? ' Progress has been reset.' : ''}`, 'success', 5000);
         }
 
         async function loadSources() {
@@ -4891,7 +5225,6 @@
         }
 
         async function viewSourceContent(id, name, contentType) {
-            console.log('[DEBUG viewSourceContent] called with id:', id, 'name:', name, 'contentType:', contentType);
             // Hide all viewers first
             document.getElementById('source-viewer-text').style.display = 'none';
             document.getElementById('source-viewer-html').style.display = 'none';
@@ -4918,7 +5251,6 @@
 
                 const response = await fetch(url, { headers });
                 const data = await response.json();
-                console.log('[DEBUG viewSourceContent] API response:', { id: data.id, name: data.name, contentType: data.contentType, isBase64: data.isBase64, contentLength: data.content?.length });
 
                 if (!response.ok) {
                     throw new Error(data.error || 'Failed to load source');
@@ -4928,7 +5260,6 @@
 
                 // Route to appropriate viewer based on content type
                 const actualContentType = data.contentType || contentType || 'text/plain';
-                console.log('[DEBUG viewSourceContent] using actualContentType:', actualContentType);
 
                 if (actualContentType.includes('pdf')) {
                     // Simple approach: create blob and open in iframe
@@ -5076,39 +5407,30 @@
         }
 
         async function linkSourceToQuiz(sourceId, sourceName) {
-            console.log('[DEBUG linkSourceToQuiz] called with sourceId:', sourceId, 'sourceName:', sourceName);
             // Find quizzes without a linked source
             const unlinkedQuizzes = userKeywords.filter(kw => !kw.source_id);
-            console.log('[DEBUG linkSourceToQuiz] unlinkedQuizzes:', unlinkedQuizzes);
 
             if (unlinkedQuizzes.length === 0) {
-                alert('All your quizzes already have sources linked. Create a new quiz first.');
+                showToast('All your quizzes already have sources linked. Create a new quiz first.', 'info');
                 return;
             }
 
-            // Build options for the picker
-            const options = unlinkedQuizzes.map(kw => {
-                const label = kw.display_name ? `${kw.display_name} [${kw.keyword}]` : kw.keyword;
-                return `${label}`;
-            });
+            // Build items for selection modal
+            const items = unlinkedQuizzes.map(kw => ({
+                value: kw.keyword,
+                title: kw.display_name || kw.keyword,
+                subtitle: kw.display_name ? kw.keyword : null
+            }));
 
-            // Show picker dialog
-            const choice = prompt(
-                `Link "${sourceName}" to which quiz?\n\n` +
-                options.map((opt, i) => `${i + 1}. ${opt}`).join('\n') +
-                `\n\nEnter number (1-${options.length}):`
+            // Show selection modal
+            const selectedKeyword = await showSelection(
+                'Link Source to Quiz',
+                `Select a quiz to link "${sourceName}" to:`,
+                items,
+                { confirmText: 'Link' }
             );
 
-            if (!choice) return;
-
-            const index = parseInt(choice) - 1;
-            if (isNaN(index) || index < 0 || index >= unlinkedQuizzes.length) {
-                alert('Invalid selection');
-                return;
-            }
-
-            const selectedKeyword = unlinkedQuizzes[index].keyword;
-            console.log('[DEBUG linkSourceToQuiz] linking sourceId:', sourceId, 'to keyword:', selectedKeyword);
+            if (!selectedKeyword) return;
 
             try {
                 const token = await currentUser.getIdToken();
@@ -5116,7 +5438,6 @@
                     sourceId: sourceId,
                     keyword: selectedKeyword
                 };
-                console.log('[DEBUG linkSourceToQuiz] API request body:', requestBody);
                 const response = await fetch(`${VANDROMEDA_API}/quizmyself/link-source.php`, {
                     method: 'POST',
                     headers: {
@@ -5132,22 +5453,21 @@
                     throw new Error(data.error || data.message || 'Failed to link source');
                 }
 
-                alert(`Source linked to "${selectedKeyword}" successfully!`);
+                showToast(`Source linked to "${selectedKeyword}" successfully!`, 'success');
                 await loadUserKeywords(); // Refresh keywords to update source_id
-                console.log('[DEBUG linkSourceToQuiz] After loadUserKeywords, userKeywords:', userKeywords);
-                const linkedKw = userKeywords.find(kw => kw.keyword === selectedKeyword);
-                console.log('[DEBUG linkSourceToQuiz] Linked keyword info:', linkedKw);
                 loadSources(); // Refresh the sources list
 
             } catch (err) {
-                alert(`Failed to link: ${err.message}`);
+                showToast(`Failed to link: ${err.message}`, 'error');
             }
         }
 
         async function unlinkSourceFromQuiz(keyword) {
-            if (!confirm(`Unlink source from quiz "${keyword}"?`)) {
-                return;
-            }
+            const confirmed = await showConfirm(`Unlink source from quiz "${keyword}"?`, {
+                icon: '🔗',
+                confirmText: 'Unlink'
+            });
+            if (!confirmed) return;
 
             try {
                 const token = await currentUser.getIdToken();
@@ -5162,18 +5482,21 @@
                     throw new Error(data.error || 'Failed to unlink source');
                 }
 
-                alert('Source unlinked from quiz');
+                showToast('Source unlinked from quiz', 'success');
                 loadSources(); // Refresh the list
 
             } catch (err) {
-                alert(`Failed to unlink: ${err.message}`);
+                showToast(`Failed to unlink: ${err.message}`, 'error');
             }
         }
 
         async function deleteSource(id, name) {
-            if (!confirm(`Delete "${name}"? This will also unlink it from any quiz. This cannot be undone.`)) {
-                return;
-            }
+            const confirmed = await showConfirm(`Delete "${name}"? This will also unlink it from any quiz. This cannot be undone.`, {
+                icon: '🗑️',
+                confirmText: 'Delete',
+                danger: true
+            });
+            if (!confirmed) return;
 
             try {
                 const url = `${VANDROMEDA_API}/quizmyself/source.php?id=${id}`;
@@ -5191,7 +5514,7 @@
                 loadSources();
 
             } catch (err) {
-                alert(`Failed to delete: ${err.message}`);
+                showToast(`Failed to delete: ${err.message}`, 'error');
             }
         }
 
@@ -5343,8 +5666,8 @@
                     licenseFound.style.display = 'none';
                 }
             } else if (options.licenseKey) {
-                // Fallback: show alert with license key if DOM elements don't exist
-                alert('Pro activated! Your license key: ' + options.licenseKey);
+                // Fallback: show toast with license key if DOM elements don't exist
+                showToast('Pro activated! Your license key: ' + options.licenseKey, 'success', 8000);
             }
 
             // Show login required message if not signed in with Firebase
@@ -5430,10 +5753,10 @@
             const licenseKey = document.getElementById('license-display').textContent;
             if (licenseKey) {
                 navigator.clipboard.writeText(licenseKey).then(() => {
-                    alert('License key copied to clipboard!');
+                    showToast('License key copied to clipboard!', 'success');
                 }).catch(() => {
-                    // Fallback for older browsers
-                    prompt('Copy your license key:', licenseKey);
+                    // Fallback: select text for manual copy
+                    showToast('Please copy manually: ' + licenseKey, 'info', 8000);
                 });
             }
         }
