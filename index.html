@@ -4686,9 +4686,9 @@
                     </div>
                     <div class="keyword-item-actions">
                         ${currentKeyword !== kw.keyword ?
-                            `<button class="btn btn-small btn-primary" onclick="selectKeyword('${kw.keyword}'); renderKeywordList();">Use</button>` :
+                            `<button class="btn btn-small btn-primary" onclick="selectKeyword('${escapeJsString(kw.keyword)}'); renderKeywordList();">Use</button>` :
                             '<span style="color: #4fc3f7; font-size: 0.8rem; padding: 5px 10px;">Active</span>'}
-                        <button class="btn btn-small btn-danger" onclick="confirmDeleteKeyword('${kw.keyword}')">Delete</button>
+                        <button class="btn btn-small btn-danger" onclick="confirmDeleteKeyword('${escapeJsString(kw.keyword)}')">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -5031,7 +5031,7 @@
                 const isActive = selectedCategories.has(cat);
                 const count = questions.filter(q => q.category === cat).length;
                 return `<button class="category-chip ${isActive ? 'active' : ''}"
-                    onclick="toggleCategory('${cat}')">${cat} (${count})</button>`;
+                    onclick="toggleCategory('${escapeJsString(cat)}')">${escapeHtml(cat)} (${count})</button>`;
             }).join('');
         }
 
@@ -5091,7 +5091,7 @@
                     const isActive = courseContentCategory === cat;
                     const count = questions.filter(q => q.category === cat).length;
                     return `<button class="category-chip ${isActive ? 'active' : ''}"
-                        onclick="filterCourseContent('${cat}')">${cat} (${count})</button>`;
+                        onclick="filterCourseContent('${escapeJsString(cat)}')">${escapeHtml(cat)} (${count})</button>`;
                 }).join('');
         }
 
@@ -7666,7 +7666,7 @@
             const categories = [...new Set(demoQuestions.map(q => q.category))];
 
             container.innerHTML = categories.map(cat =>
-                `<button class="welcome-category-chip selected" onclick="toggleWelcomeCategory(this, '${cat}')">${cat}</button>`
+                `<button class="welcome-category-chip selected" onclick="toggleWelcomeCategory(this, '${escapeJsString(cat)}')">${escapeHtml(cat)}</button>`
             ).join('');
 
             // Start with all selected
