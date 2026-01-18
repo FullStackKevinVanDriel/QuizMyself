@@ -93,16 +93,10 @@ QuizMyself/
 
 ### P0 Critical - Security
 
-#### XSS in Keyword/Category Onclick Handlers
-Inline `onclick` handlers use unescaped user input for keywords and category names.
+#### ~~XSS in Keyword/Category Onclick Handlers~~ ✅ RESOLVED (PR #228)
+~~Inline `onclick` handlers use unescaped user input for keywords and category names.~~
 
-**Affected code:**
-- `keyword-item` onclick handlers (user-controlled keyword text)
-- Category button onclick handlers (category names from imported data)
-
-**Impact:** Malicious quiz imports could execute arbitrary JavaScript
-
-**Fix:** Escape special characters or use `data-*` attributes with event delegation
+**Resolution:** Implemented event delegation pattern with `data-*` attributes. All user input is now escaped via `escapeAttr()` before insertion into HTML.
 
 ### P1 High - Beta Blockers
 
@@ -114,10 +108,10 @@ No beta testers onboarded yet. Need 5-10 users to validate product-market fit.
 2. Personal outreach to 10 potential users
 3. Offer incentive (free Pro tier for feedback)
 
-#### Integrate Analytics
-No usage tracking. Cannot measure retention, feature adoption, or drop-off points.
+#### ~~Integrate Analytics~~ ✅ RESOLVED (PR #229)
+~~No usage tracking. Cannot measure retention, feature adoption, or drop-off points.~~
 
-**Options:** Google Analytics 4, Plausible (privacy-friendly), or Mixpanel
+**Resolution:** Plausible analytics integrated. Tracking: page views, quiz starts, exam starts/completions, imports, AI generations, upgrade clicks.
 
 #### Source Material UI Not Updating After Link
 After associating a quiz with source material, the screen doesn't refresh to show the newly linked source.
