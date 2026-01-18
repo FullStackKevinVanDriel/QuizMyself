@@ -6214,7 +6214,8 @@
 
         async function loadRoadmapData() {
             try {
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`);
+                // Fetch and reconcile feedback from Vandromeda API (syncs with GitHub)
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/reconcile-feedback.php?product=quizmyself`);
                 if (!response.ok) throw new Error('Failed to load roadmap');
 
                 const data = await response.json();
@@ -7973,7 +7974,7 @@
             list.innerHTML = userKeywords.map(kw => `
                 <div class="keyword-item">
                     <div class="keyword-item-info">
-                        <div class="keyword-item-name ${currentKeyword === kw.keyword ? 'active' : ''}">${kw.keyword}</div>
+                        <div class="keyword-item-name ${currentKeyword === kw.keyword ? 'active' : ''}">${escapeHtml(kw.keyword)}</div>
                         <div class="keyword-item-date">
                             ${kw.question_count > 0 ? `<span style="color: #4fc3f7;">${kw.question_count} questions</span>` : '<span style="color: #666;">No questions</span>'}
                             ${kw.source_count > 0 ? ` | <span style="color: #888;">${kw.source_count} source${kw.source_count > 1 ? 's' : ''}</span>` : ''}
@@ -7982,9 +7983,9 @@
                     </div>
                     <div class="keyword-item-actions">
                         ${currentKeyword !== kw.keyword ?
-                            `<button class="btn btn-small btn-primary" onclick="selectKeyword('${escapeJsString(kw.keyword)}'); renderKeywordList();">Use</button>` :
+                            `<button class="btn btn-small btn-primary" data-action="select-keyword" data-keyword="${escapeAttr(kw.keyword)}">Use</button>` :
                             '<span style="color: #4fc3f7; font-size: 0.8rem; padding: 5px 10px;">Active</span>'}
-                        <button class="btn btn-small btn-danger" onclick="confirmDeleteKeyword('${escapeJsString(kw.keyword)}')">Delete</button>
+                        <button class="btn btn-small btn-danger" data-action="delete-keyword" data-keyword="${escapeAttr(kw.keyword)}">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -8170,6 +8171,67 @@
             }
         });
 
+        // Event delegation for dynamically created elements (XSS-safe)
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+
+            const action = target.dataset.action;
+            const keyword = target.dataset.keyword;
+            const category = target.dataset.category;
+            const sourceId = target.dataset.sourceId;
+            const sourceName = target.dataset.sourceName;
+            const contentType = target.dataset.contentType;
+
+            switch (action) {
+                case 'select-keyword':
+                    if (keyword) {
+                        selectKeyword(keyword);
+                        renderKeywordList();
+                    }
+                    break;
+                case 'delete-keyword':
+                    if (keyword) {
+                        confirmDeleteKeyword(keyword);
+                    }
+                    break;
+                case 'toggle-category':
+                    if (category) {
+                        toggleCategory(category);
+                    }
+                    break;
+                case 'toggle-welcome-category':
+                    if (category) {
+                        toggleWelcomeCategory(target, category);
+                    }
+                    break;
+                case 'link-source':
+                    if (sourceId && sourceName) {
+                        linkSourceToQuiz(parseInt(sourceId), sourceName);
+                    }
+                    break;
+                case 'unlink-source':
+                    if (keyword) {
+                        unlinkSourceFromQuiz(keyword);
+                    }
+                    break;
+                case 'view-source':
+                    if (sourceId && sourceName && contentType) {
+                        viewSourceContent(parseInt(sourceId), sourceName, contentType);
+                    }
+                    break;
+                case 'delete-source':
+                    if (sourceId && sourceName) {
+                        deleteSource(parseInt(sourceId), sourceName);
+                    }
+                    break;
+                case 'filter-course-content':
+                    // Empty string means null (show all)
+                    filterCourseContent(category || null);
+                    break;
+            }
+        });
+
         // Load state from server
         async function loadState() {
             if (!currentKeyword) return;
@@ -8327,7 +8389,7 @@
                 const isActive = selectedCategories.has(cat);
                 const count = questions.filter(q => q.category === cat).length;
                 return `<button class="category-chip ${isActive ? 'active' : ''}"
-                    onclick="toggleCategory('${escapeJsString(cat)}')">${escapeHtml(cat)} (${count})</button>`;
+                    data-action="toggle-category" data-category="${escapeAttr(cat)}">${escapeHtml(cat)} (${count})</button>`;
             }).join('');
         }
 
@@ -8382,12 +8444,12 @@
             const showAll = courseContentCategory === null;
 
             container.innerHTML = `<button class="category-chip ${showAll ? 'active' : ''}"
-                onclick="filterCourseContent(null)">All</button>` +
+                data-action="filter-course-content" data-category="">All</button>` +
                 allCategories.map(cat => {
                     const isActive = courseContentCategory === cat;
                     const count = questions.filter(q => q.category === cat).length;
                     return `<button class="category-chip ${isActive ? 'active' : ''}"
-                        onclick="filterCourseContent('${escapeJsString(cat)}')">${escapeHtml(cat)} (${count})</button>`;
+                        data-action="filter-course-content" data-category="${escapeAttr(cat)}">${escapeHtml(cat)} (${count})</button>`;
                 }).join('');
         }
 
@@ -8602,6 +8664,7 @@
             state.examIndex = 0;
             state.examCorrect = 0;
             state.currentMode = 'exam';
+            plausible('Exam Start', { props: { questions: state.examQuestions.length } });
 
             showScreen('exam-screen');
             loadExamQuestion();
@@ -8693,6 +8756,7 @@
         function showExamResults() {
             const percentage = Math.round((state.examCorrect / state.examQuestions.length) * 100);
             const passed = percentage === 100;
+            plausible('Exam Complete', { props: { score: percentage, passed: passed, questions: state.examQuestions.length } });
 
             showScreen('result-screen');
             document.getElementById('result-score').textContent = percentage + '%';
@@ -9792,10 +9856,10 @@
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px; flex-shrink: 0;">
-                            ${!source.linkedKeyword ? `<button class="btn btn-small btn-success" onclick="linkSourceToQuiz(${source.id}, '${escapeJsString(source.name)}')">Link</button>` : ''}
-                            ${source.linkedKeyword ? `<button class="btn btn-small" style="background: #555;" onclick="unlinkSourceFromQuiz('${escapeJsString(source.linkedKeyword)}')">Unlink</button>` : ''}
-                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeJsString(source.name)}', '${escapeJsString(source.contentType || 'text/plain')}')">View</button>
-                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeJsString(source.name)}')">Delete</button>
+                            ${!source.linkedKeyword ? `<button class="btn btn-small btn-success" data-action="link-source" data-source-id="${source.id}" data-source-name="${escapeAttr(source.name)}">Link</button>` : ''}
+                            ${source.linkedKeyword ? `<button class="btn btn-small" style="background: #555;" data-action="unlink-source" data-keyword="${escapeAttr(source.linkedKeyword)}">Unlink</button>` : ''}
+                            <button class="btn btn-small" data-action="view-source" data-source-id="${source.id}" data-source-name="${escapeAttr(source.name)}" data-content-type="${escapeAttr(source.contentType || 'text/plain')}">View</button>
+                            <button class="btn btn-danger btn-small" data-action="delete-source" data-source-id="${source.id}" data-source-name="${escapeAttr(source.name)}">Delete</button>
                         </div>
                     </div>
                 `}).join('');
@@ -11368,7 +11432,7 @@
             const categories = [...new Set(demoQuestions.map(q => q.category))];
 
             container.innerHTML = categories.map(cat =>
-                `<button class="welcome-category-chip selected" onclick="toggleWelcomeCategory(this, '${escapeJsString(cat)}')">${escapeHtml(cat)}</button>`
+                `<button class="welcome-category-chip selected" data-action="toggle-welcome-category" data-category="${escapeAttr(cat)}">${escapeHtml(cat)}</button>`
             ).join('');
 
             // Start with all selected
@@ -11376,7 +11440,7 @@
         }
 
         function toggleWelcomeCategory(btn, category) {
-            btn.classList.toggle('selected');
+            if (btn) btn.classList.toggle('selected');
             if (welcomeSelectedCategories.has(category)) {
                 welcomeSelectedCategories.delete(category);
             } else {

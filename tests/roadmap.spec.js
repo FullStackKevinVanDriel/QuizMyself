@@ -97,7 +97,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("progress modal displays product vision section", async ({ page }) => {
     // Mock the API response to ensure vision section renders
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -200,7 +200,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock the API response with a specific date
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -243,7 +243,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock with in-progress item to appear in timeline
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -282,7 +282,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("progress modal shows skeleton loading initially", async ({ page }) => {
     // Delay the response to see loading state
-    await page.route("**/feedback.php**", async (route) => {
+    await page.route("**/*feedback*.php**", async (route) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       route.fulfill({
         status: 200,
@@ -311,7 +311,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock API failure
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 500,
         contentType: "application/json",
@@ -338,7 +338,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("empty filter state shows clear filters button", async ({ page }) => {
     // Mock with items of multiple types
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -443,7 +443,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock the API response with feedback items
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -515,7 +515,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock the API response with in-progress and resolved items
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -704,7 +704,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock the API response with items in various states
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -757,7 +757,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock the API response
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -809,7 +809,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("progress modal displays priority indicators", async ({ page }) => {
     // Mock with a high priority bug
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -852,7 +852,7 @@ test.describe("Roadmap Modal Tests", () => {
     page,
   }) => {
     // Mock with item containing metadata
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -898,7 +898,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("items are sorted by priority (bugs first)", async ({ page }) => {
     // Mock with mixed types - priority should sort bugs higher
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -952,7 +952,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("progress modal displays category filter bar", async ({ page }) => {
     // Mock with multiple item types
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1018,7 +1018,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("category filters toggle correctly", async ({ page }) => {
     // Mock with multiple item types
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1073,7 +1073,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("clicking All filter clears other filters", async ({ page }) => {
     // Mock with multiple item types
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1126,7 +1126,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("roadmap items are expandable", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1164,7 +1164,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("clicking expandable item shows lifecycle details", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1214,7 +1214,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("lifecycle shows birth event", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1252,7 +1252,7 @@ test.describe("Roadmap Modal Tests", () => {
 
   test("lifecycle shows status change events", async ({ page }) => {
     // Use 'reviewed' status (which is in the backlog, not timeline) but shows status changes
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1290,7 +1290,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("expanded item shows completion progress bar", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1386,7 +1386,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("filter chips show correct counts", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1507,7 +1507,7 @@ test.describe("Roadmap Modal Tests", () => {
   test("progress modal shows sign-in prompt for star button when not logged in", async ({
     page,
   }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1544,7 +1544,7 @@ test.describe("Roadmap Modal Tests", () => {
   test("progress modal displays GitHub synced badge for items with GitHub issue", async ({
     page,
   }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1587,7 +1587,7 @@ test.describe("Roadmap Modal Tests", () => {
   test("progress modal displays comments section in expanded items", async ({
     page,
   }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1644,7 +1644,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("progress modal displays assignees section", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1687,7 +1687,7 @@ test.describe("Roadmap Modal Tests", () => {
   test("timeline items include star button and GitHub integration", async ({
     page,
   }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1728,7 +1728,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("comments count shows correct number", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1787,7 +1787,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("no comments shows helpful message", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1903,7 +1903,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("progress modal displays view toggle buttons", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1945,7 +1945,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("clicking By Theme shows themes view", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -1995,7 +1995,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("theme cards show progress bar and item count", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -2084,7 +2084,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("expanded items show custom fields section", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -2154,7 +2154,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("roadmap items have aria-expanded attribute", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -2225,7 +2225,7 @@ test.describe("Roadmap Modal Tests", () => {
   test("vision section has proper accessibility attributes", async ({
     page,
   }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -2261,7 +2261,7 @@ test.describe("Roadmap Modal Tests", () => {
   test("stats section has proper accessibility attributes", async ({
     page,
   }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -2285,7 +2285,7 @@ test.describe("Roadmap Modal Tests", () => {
   });
 
   test("view toggle has tablist role for accessibility", async ({ page }) => {
-    await page.route("**/feedback.php**", (route) => {
+    await page.route("**/*feedback*.php**", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
