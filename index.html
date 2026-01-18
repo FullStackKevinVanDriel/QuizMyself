@@ -3976,6 +3976,13 @@
             currentKeyword = keyword;
             localStorage.setItem('quizmyself_active_keyword', keyword);
 
+            // Clear source viewing state to prevent cross-keyword contamination
+            currentViewingSourceId = null;
+            if (typeof aiGenerationState !== 'undefined') {
+                aiGenerationState.sourceId = null;
+                aiGenerationState.sourceName = null;
+            }
+
             // Load progress for this keyword
             await loadState();
 
