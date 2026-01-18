@@ -1398,6 +1398,8 @@
                             onkeypress="if(event.key==='Enter')submitKeywordFromMenu()">
                         <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
                     </div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
                 <!-- Signed In State -->
                 <div id="menu-account-section" style="display: none;">
@@ -1413,6 +1415,8 @@
                     <div class="menu-divider"></div>
                     <div class="menu-item" onclick="showSourcesModal(); closeHamburgerMenu();">Quiz Data</div>
                     <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
             </div>
         </div>
@@ -1907,6 +1911,53 @@
                 <div style="display: flex; gap: 10px;">
                     <button class="btn" onclick="closeCreateQuizModal()" style="flex: 1;">Cancel</button>
                     <button class="btn btn-primary" onclick="createQuizWithSource()" id="create-quiz-submit" style="flex: 1;">Create Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal-overlay hidden" onclick="closeFeedbackModalOnOverlay(event)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Send Feedback</h2>
+                <button class="modal-close" onclick="closeFeedbackModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: #888; margin-bottom: 15px;">We would love to hear from you! Share your thoughts, report bugs, or suggest new features.</p>
+
+                <!-- Feedback Type -->
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; color: #ccc; margin-bottom: 8px; font-size: 0.9rem;">Type</label>
+                    <select id="feedback-type" style="width: 100%; padding: 12px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white; font-size: 1rem; box-sizing: border-box;">
+                        <option value="feedback">General Feedback</option>
+                        <option value="bug">Bug Report</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="question">Question</option>
+                    </select>
+                </div>
+
+                <!-- Feedback Message -->
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; color: #ccc; margin-bottom: 8px; font-size: 0.9rem;">Message</label>
+                    <textarea id="feedback-message" placeholder="Tell us what's on your mind..."
+                        style="width: 100%; height: 150px; padding: 12px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white; font-size: 1rem; box-sizing: border-box; resize: vertical;"></textarea>
+                </div>
+
+                <!-- Email (optional for non-logged in users) -->
+                <div id="feedback-email-section" style="margin-bottom: 15px;">
+                    <label style="display: block; color: #ccc; margin-bottom: 8px; font-size: 0.9rem;">Email (optional, for follow-up)</label>
+                    <input type="email" id="feedback-email" placeholder="your@email.com"
+                        style="width: 100%; padding: 12px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white; font-size: 1rem; box-sizing: border-box;">
+                </div>
+
+                <!-- Status Message -->
+                <div id="feedback-status" style="display: none; margin-bottom: 15px; padding: 12px; border-radius: 6px;"></div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="closeFeedbackModal()" style="flex: 1;">Cancel</button>
+                    <button class="btn btn-primary" onclick="submitFeedback()" id="feedback-submit" style="flex: 1;">Send Feedback</button>
                 </div>
             </div>
         </div>
@@ -3030,6 +3081,99 @@
         function closeKeywordModal() {
             document.getElementById('keyword-modal').classList.add('hidden');
             document.body.style.overflow = '';
+        }
+
+        // Feedback Modal Functions
+        function showFeedbackModal() {
+            document.getElementById('feedback-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            // Pre-fill email if user is logged in
+            if (currentUserEmail) {
+                document.getElementById('feedback-email').value = currentUserEmail;
+                document.getElementById('feedback-email-section').style.display = 'none';
+            } else {
+                document.getElementById('feedback-email').value = '';
+                document.getElementById('feedback-email-section').style.display = 'block';
+            }
+            // Reset form
+            document.getElementById('feedback-type').value = 'feedback';
+            document.getElementById('feedback-message').value = '';
+            document.getElementById('feedback-status').style.display = 'none';
+            document.getElementById('feedback-submit').disabled = false;
+            document.getElementById('feedback-submit').textContent = 'Send Feedback';
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedback-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeFeedbackModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeFeedbackModal();
+            }
+        }
+
+        async function submitFeedback() {
+            const type = document.getElementById('feedback-type').value;
+            const message = document.getElementById('feedback-message').value.trim();
+            const email = document.getElementById('feedback-email').value.trim() || currentUserEmail || '';
+            const statusEl = document.getElementById('feedback-status');
+            const submitBtn = document.getElementById('feedback-submit');
+
+            // Validate
+            if (!message) {
+                statusEl.style.display = 'block';
+                statusEl.style.background = 'rgba(233,69,96,0.1)';
+                statusEl.style.color = '#e94560';
+                statusEl.textContent = 'Please enter a message.';
+                return;
+            }
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            statusEl.style.display = 'none';
+
+            try {
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product: 'quizmyself',
+                        type: type,
+                        message: message,
+                        email: email,
+                        user_agent: navigator.userAgent,
+                        url: window.location.href,
+                        context: currentKeyword ? { keyword: currentKeyword } : null
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    statusEl.style.display = 'block';
+                    statusEl.style.background = 'rgba(79,195,247,0.1)';
+                    statusEl.style.color = '#4fc3f7';
+                    statusEl.textContent = 'Thank you for your feedback! We will review it soon.';
+                    submitBtn.textContent = 'Sent!';
+                    // Close modal after delay
+                    setTimeout(() => {
+                        closeFeedbackModal();
+                    }, 2000);
+                } else {
+                    throw new Error(result.error || 'Failed to submit feedback');
+                }
+            } catch (error) {
+                console.error('Feedback submission error:', error);
+                statusEl.style.display = 'block';
+                statusEl.style.background = 'rgba(233,69,96,0.1)';
+                statusEl.style.color = '#e94560';
+                statusEl.textContent = 'Failed to send feedback. Please try again or email feedback@vandromeda.com';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Feedback';
+            }
         }
 
         function renderKeywordList() {
