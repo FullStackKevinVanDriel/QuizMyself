@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-18T03:15:34.564Z",
+  "generated": "2026-01-18T03:19:56.265Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 4,
@@ -23,7 +23,8 @@
       "createdAt": "2026-01-18T02:58:40Z",
       "updatedAt": "2026-01-18T03:09:00Z",
       "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/127"
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/127",
+      "feedback_id": 2
     },
     {
       "number": 128,
@@ -36,7 +37,8 @@
       "createdAt": "2026-01-18T02:58:41Z",
       "updatedAt": "2026-01-18T03:08:54Z",
       "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/128"
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/128",
+      "feedback_id": 1
     },
     {
       "number": 126,
@@ -49,7 +51,8 @@
       "createdAt": "2026-01-18T02:58:40Z",
       "updatedAt": "2026-01-18T03:08:52Z",
       "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/126"
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/126",
+      "feedback_id": 3
     },
     {
       "number": 125,
@@ -62,29 +65,38 @@
       "createdAt": "2026-01-18T02:58:39Z",
       "updatedAt": "2026-01-18T03:08:51Z",
       "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/125"
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/125",
+      "feedback_id": 4
     }
   ],
   "recentlyCompleted": [
     {
       "number": 127,
       "title": "[feedback] some stuff works; some stuff does not",
-      "closedAt": "2026-01-18T03:09:00Z"
+      "closedAt": "2026-01-18T03:09:00Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/127",
+      "feedback_id": 2
     },
     {
       "number": 128,
       "title": "[bug] Test feedback from CLI - verifying fix",
-      "closedAt": "2026-01-18T03:08:54Z"
+      "closedAt": "2026-01-18T03:08:54Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/128",
+      "feedback_id": 1
     },
     {
       "number": 126,
       "title": "[bug] when accepting ai imported questions, dev tools ch...",
-      "closedAt": "2026-01-18T03:08:52Z"
+      "closedAt": "2026-01-18T03:08:52Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/126",
+      "feedback_id": 3
     },
     {
       "number": 125,
       "title": "[bug] after AI generates the quiz to create questions an...",
-      "closedAt": "2026-01-18T03:08:51Z"
+      "closedAt": "2026-01-18T03:08:51Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/125",
+      "feedback_id": 4
     }
   ]
 }
