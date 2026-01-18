@@ -1,6 +1,6 @@
 # QuizMyself - Complete Documentation
 
-> **Version:** 0.1.2
+> **Version:** 0.1.4
 > **Live:** https://fullstackkevinvandriel.github.io/QuizMyself/
 > **Repository:** https://github.com/FullStackKevinVanDriel/QuizMyself
 
@@ -989,30 +989,27 @@ Currently no versioning. Future changes should:
 
 ## 12. Security
 
-### Known Vulnerabilities
+### Resolved Vulnerabilities
 
-#### P0 Critical: XSS in onclick Handlers
+#### ~~P0 Critical: XSS in onclick Handlers~~ ✅ FIXED (v0.1.1, PR #228)
 
-**Affected:**
+**Previously Affected:**
+- Keyword onclick handlers
+- Category button onclick handlers
+
+**Resolution:** Implemented event delegation pattern with `data-*` attributes. All user input is now escaped via `escapeAttr()` before insertion into HTML.
+
 ```javascript
-// Keywords (line ~4522)
-onclick="selectKeyword('${kw.keyword}')"
+// Current implementation (secure)
+<div class="keyword-item" data-action="select-keyword" data-keyword="${escapeAttr(kw.keyword)}">
 
-// Categories (similar pattern)
-onclick="toggleCategory('${category}')"
-```
-
-**Risk:** Malicious imported data can execute JavaScript.
-
-**Fix:** Use event delegation with data attributes:
-```javascript
-// HTML
-<div class="keyword-item" data-keyword="${escapeAttr(kw.keyword)}">
-
-// JS
+// Centralized event delegation listener handles all actions
 document.addEventListener('click', e => {
-    const item = e.target.closest('[data-keyword]');
-    if (item) selectKeyword(item.dataset.keyword);
+    const target = e.target.closest('[data-action]');
+    if (!target) return;
+    const action = target.dataset.action;
+    // Safe: dataset values are already decoded by browser
+    if (action === 'select-keyword') selectKeyword(target.dataset.keyword);
 });
 ```
 
@@ -1020,7 +1017,7 @@ document.addEventListener('click', e => {
 
 1. **Input Validation:** All user input sanitized
 2. **SQL Injection:** PDO prepared statements
-3. **XSS:** `escapeHtml()` for output (needs improvement)
+3. **XSS:** Event delegation + `escapeAttr()`/`escapeHtml()` for all user content
 4. **CORS:** Configured for specific origins
 5. **Authentication:** Firebase + custom tokens
 6. **HTTPS:** Enforced on all endpoints
