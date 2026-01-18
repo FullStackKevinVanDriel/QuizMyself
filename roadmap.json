@@ -1,18 +1,63 @@
 {
-  "generated": "2026-01-18T04:45:44.250Z",
+  "generated": "2026-01-18T06:11:59.590Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 18,
-    "open": 8,
-    "closed": 10,
+    "total": 20,
+    "open": 9,
+    "closed": 11,
     "byLabel": {
-      "bug": 9,
-      "enhancement": 4,
-      "feedback": 5
+      "enhancement": 6,
+      "roadmap": 2,
+      "feedback": 5,
+      "bug": 9
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 175,
+      "title": "Hard per-user AI generation caps",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:11:55Z",
+      "updatedAt": "2026-01-18T06:11:55Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/175",
+      "feedback_id": null
+    },
+    {
+      "number": 174,
+      "title": "Multi-provider AI support (Gemini/o3-mini backup)",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:11:50Z",
+      "updatedAt": "2026-01-18T06:11:50Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/174",
+      "feedback_id": null
+    },
+    {
+      "number": 161,
+      "title": "[bug] this is good; now, when i look at the source mater...",
+      "state": "closed",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:33Z",
+      "updatedAt": "2026-01-18T04:52:24Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
+      "feedback_id": 7
+    },
     {
       "number": 159,
       "title": "[bug] when generating a new quiz, when unlinked to sourc...",
@@ -67,20 +112,6 @@
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
       "feedback_id": null
-    },
-    {
-      "number": 161,
-      "title": "[bug] this is good; now, when i look at the source mater...",
-      "state": "open",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:33Z",
-      "updatedAt": "2026-01-18T04:05:33Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
-      "feedback_id": 7
     },
     {
       "number": 160,
@@ -265,6 +296,13 @@
   ],
   "recentlyCompleted": [
     {
+      "number": 161,
+      "title": "[bug] this is good; now, when i look at the source mater...",
+      "closedAt": "2026-01-18T04:52:24Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
+      "feedback_id": 7
+    },
+    {
       "number": 159,
       "title": "[bug] when generating a new quiz, when unlinked to sourc...",
       "closedAt": "2026-01-18T04:45:36Z",
@@ -326,13 +364,6 @@
       "closedAt": "2026-01-18T03:08:52Z",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/126",
       "feedback_id": 3
-    },
-    {
-      "number": 125,
-      "title": "[bug] after AI generates the quiz to create questions an...",
-      "closedAt": "2026-01-18T03:08:51Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/125",
-      "feedback_id": 4
     }
   ]
 }
