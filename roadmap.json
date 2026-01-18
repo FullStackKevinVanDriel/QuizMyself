@@ -1,19 +1,84 @@
 {
-  "generated": "2026-01-18T07:08:28.582Z",
+  "generated": "2026-01-18T07:09:04.501Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 39,
-    "open": 28,
+    "total": 44,
+    "open": 33,
     "closed": 11,
     "byLabel": {
+      "enhancement": 19,
       "bug": 10,
       "roadmap": 20,
-      "enhancement": 14,
       "feedback": 5
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 213,
+      "title": "feat: Improved empty states and loading experience",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:46Z",
+      "updatedAt": "2026-01-18T07:08:46Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/213",
+      "feedback_id": null
+    },
+    {
+      "number": 212,
+      "title": "feat: Sort and search functionality for Progress modal",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:45Z",
+      "updatedAt": "2026-01-18T07:08:45Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
+      "feedback_id": null
+    },
+    {
+      "number": 210,
+      "title": "feat: API endpoint for lifecycle/history data",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:43Z",
+      "updatedAt": "2026-01-18T07:08:43Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/210",
+      "feedback_id": null
+    },
+    {
+      "number": 208,
+      "title": "feat: Expandable lifecycle timeline for progress items",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:28Z",
+      "updatedAt": "2026-01-18T07:08:28Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
+      "feedback_id": null
+    },
+    {
+      "number": 207,
+      "title": "feat: Display accurate timestamps with relative time",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:27Z",
+      "updatedAt": "2026-01-18T07:08:27Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/207",
+      "feedback_id": null
+    },
     {
       "number": 205,
       "title": "bug: Fix overlay click to close Progress modal",
