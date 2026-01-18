@@ -1,10 +1,10 @@
 {
-  "generated": "2026-01-18T08:00:04.075Z",
+  "generated": "2026-01-18T08:10:16.343Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 44,
-    "open": 31,
-    "closed": 13,
+    "open": 30,
+    "closed": 14,
     "byLabel": {
       "enhancement": 19,
       "roadmap": 20,
@@ -14,6 +14,19 @@
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 213,
+      "title": "feat: Improved empty states and loading experience",
+      "state": "closed",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:46Z",
+      "updatedAt": "2026-01-18T08:04:57Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/213",
+      "feedback_id": null
+    },
     {
       "number": 207,
       "title": "feat: Display accurate timestamps with relative time",
@@ -38,19 +51,6 @@
       "updatedAt": "2026-01-18T07:36:59Z",
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/205",
-      "feedback_id": null
-    },
-    {
-      "number": 213,
-      "title": "feat: Improved empty states and loading experience",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:46Z",
-      "updatedAt": "2026-01-18T07:08:46Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/213",
       "feedback_id": null
     },
     {
@@ -634,6 +634,13 @@
   ],
   "recentlyCompleted": [
     {
+      "number": 213,
+      "title": "feat: Improved empty states and loading experience",
+      "closedAt": "2026-01-18T08:04:57Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/213",
+      "feedback_id": null
+    },
+    {
       "number": 207,
       "title": "feat: Display accurate timestamps with relative time",
       "closedAt": "2026-01-18T07:44:13Z",
@@ -695,13 +702,6 @@
       "closedAt": "2026-01-18T03:44:03Z",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
       "feedback_id": null
-    },
-    {
-      "number": 127,
-      "title": "[feedback] some stuff works; some stuff does not",
-      "closedAt": "2026-01-18T03:09:00Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/127",
-      "feedback_id": 2
     }
   ]
 }
