@@ -151,6 +151,18 @@
             font-size: 0.95rem;
         }
 
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-disabled-indicator {
+            font-size: 0.75rem;
+            color: #888;
+            margin-left: 8px;
+        }
+
         .quiz-card {
             background: #16213e;
             border-radius: 15px;
@@ -1686,11 +1698,11 @@
                     <!-- Populated by JavaScript -->
                 </div>
             </div>
-            <button class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
+            <button id="practice-quiz-btn" class="btn btn-primary" onclick="startPractice()">Practice Quiz</button>
             <button id="resume-exam-btn" class="btn hidden" onclick="resumeExam()" style="background: #ff9800; color: #1a1a2e; font-weight: bold;">Resume Exam</button>
-            <button class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
-            <button class="btn" onclick="showProgress()">View Progress</button>
-            <button class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
+            <button id="final-exam-btn" class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
+            <button id="view-progress-btn" class="btn" onclick="showProgress()">View Progress</button>
+            <button id="manage-mastered-btn" class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
             <button id="course-content-btn" class="btn hidden" onclick="showCourseContent()" style="text-align: center;">View Study Material</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
         </div>
@@ -3017,6 +3029,40 @@
             const hasLinkedSource = keywordInfo && keywordInfo.source_id;
             if (rawLink) rawLink.classList.toggle('hidden', !hasLinkedSource);
             if (courseBtn) courseBtn.classList.toggle('hidden', !hasLinkedSource);
+
+            // Update button states based on quiz content
+            updateSourceDependentButtons();
+        }
+
+        // Update menu button states based on quiz content availability
+        function updateSourceDependentButtons() {
+            const practiceBtn = document.getElementById('practice-quiz-btn');
+            const examBtn = document.getElementById('final-exam-btn');
+            const progressBtn = document.getElementById('view-progress-btn');
+            const masteredBtn = document.getElementById('manage-mastered-btn');
+            const courseBtn = document.getElementById('course-content-btn');
+            const rawLink = document.getElementById('raw-content-link');
+
+            const keywordInfo = userKeywords.find(kw => kw.keyword === currentKeyword);
+            const hasLinkedSource = keywordInfo && keywordInfo.source_id;
+            const hasQuestions = questions && questions.length > 0;
+
+            // Show/hide study material buttons based on linked source
+            if (courseBtn) courseBtn.classList.toggle('hidden', !hasLinkedSource);
+            if (rawLink) rawLink.classList.toggle('hidden', !hasLinkedSource);
+
+            // Enable/disable quiz buttons based on whether questions exist
+            const contentButtons = [practiceBtn, examBtn, progressBtn, masteredBtn];
+            contentButtons.forEach(btn => {
+                if (!btn) return;
+                if (hasQuestions) {
+                    btn.classList.remove('btn-disabled');
+                    btn.disabled = false;
+                } else {
+                    btn.classList.add('btn-disabled');
+                    btn.disabled = true;
+                }
+            });
         }
 
         // Update keyword dropdown to reflect current selection
@@ -5456,6 +5502,8 @@
                 showToast(`Source linked to "${selectedKeyword}" successfully!`, 'success');
                 await loadUserKeywords(); // Refresh keywords to update source_id
                 loadSources(); // Refresh the sources list
+                updateKeywordDropdown(); // Refresh dropdown to show paperclip icon
+                updateSourceDependentButtons(); // Update button states
 
             } catch (err) {
                 showToast(`Failed to link: ${err.message}`, 'error');
@@ -5484,6 +5532,9 @@
 
                 showToast('Source unlinked from quiz', 'success');
                 loadSources(); // Refresh the list
+                await loadUserKeywords(); // Refresh keyword data
+                updateKeywordDropdown(); // Refresh dropdown
+                updateSourceDependentButtons(); // Update button states
 
             } catch (err) {
                 showToast(`Failed to unlink: ${err.message}`, 'error');
