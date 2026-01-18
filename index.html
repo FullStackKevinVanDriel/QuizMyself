@@ -2853,27 +2853,92 @@
         .lifecycle-event {
             display: flex;
             gap: 10px;
-            padding: 6px 0;
+            padding: 8px 0;
             font-size: 0.8rem;
             border-left: 2px solid #333;
-            padding-left: 12px;
-            margin-left: 4px;
+            padding-left: 16px;
+            margin-left: 8px;
+            position: relative;
+        }
+
+        /* Timeline dot/node marker */
+        .lifecycle-event::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 12px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+            border: 2px solid #1a1a2e;
         }
 
         .lifecycle-event.birth {
             border-left-color: #4caf50;
         }
 
+        .lifecycle-event.birth::before {
+            background: #4caf50;
+        }
+
         .lifecycle-event.update {
             border-left-color: #ff9800;
+        }
+
+        .lifecycle-event.update::before {
+            background: #ff9800;
         }
 
         .lifecycle-event.status-change {
             border-left-color: #4fc3f7;
         }
 
+        .lifecycle-event.status-change::before {
+            background: #4fc3f7;
+        }
+
         .lifecycle-event.resolved {
             border-left-color: #27ae60;
+        }
+
+        .lifecycle-event.resolved::before {
+            background: #27ae60;
+        }
+
+        /* Collapse button for expanded items */
+        .lifecycle-collapse-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #888;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lifecycle-collapse-btn:hover {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+        }
+
+        .lifecycle-collapse-btn:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        .item-lifecycle {
+            position: relative;
         }
 
         .lifecycle-event-icon {
@@ -7838,6 +7903,9 @@
             // Build lifecycle section (hidden by default, shown when expanded)
             const lifecycleEvents = buildLifecycleEvents(item);
             let lifecycleHtml = '<div class="item-lifecycle">';
+
+            // Collapse button
+            lifecycleHtml += `<button class="lifecycle-collapse-btn" onclick="event.stopPropagation(); toggleItemExpand(${item.id});" aria-label="Collapse details" title="Collapse">×</button>`;
 
             // Lifecycle events history
             lifecycleHtml += '<div class="lifecycle-section">';
