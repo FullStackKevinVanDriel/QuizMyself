@@ -58,8 +58,14 @@ test.describe("Roadmap Modal Tests", () => {
     const roadmapModal = page.locator("#roadmap-modal");
     await expect(roadmapModal).toBeVisible();
 
-    // Click on the overlay (not the content)
-    await page.click("#roadmap-modal", { position: { x: 10, y: 10 } });
+    // Wait for modal content to be stable before clicking overlay
+    await page.waitForSelector("#roadmap-content", { state: "visible" });
+
+    // Click on the overlay background (far from modal content which is centered)
+    // Using a position near bottom-left corner of the overlay
+    const box = await roadmapModal.boundingBox();
+    await page.mouse.click(box.x + 20, box.y + box.height - 20);
+
     await expect(roadmapModal).toBeHidden();
   });
 
@@ -405,11 +411,16 @@ test.describe("Roadmap Modal Tests", () => {
     expect(results.low.level).toBe("low");
   });
 
-  test("getSDLCStageInfo returns correct stage for status", async ({ page }) => {
+  test("getSDLCStageInfo returns correct stage for status", async ({
+    page,
+  }) => {
     const results = await page.evaluate(() => {
       const newItem = window.getSDLCStageInfo({ status: "new" });
       const inProgress = window.getSDLCStageInfo({ status: "in_progress" });
-      const resolved = window.getSDLCStageInfo({ status: "resolved", is_resolved: true });
+      const resolved = window.getSDLCStageInfo({
+        status: "resolved",
+        is_resolved: true,
+      });
       return {
         newStage: newItem.currentStageIndex,
         inProgressStage: inProgress.currentStageIndex,
@@ -621,7 +632,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(apiId).toBeVisible();
 
     // Verify GitHub link is displayed
-    const githubLink = page.locator('.item-registration-entry a:has-text("GitHub #99")');
+    const githubLink = page.locator(
+      '.item-registration-entry a:has-text("GitHub #99")',
+    );
     await expect(githubLink).toBeVisible();
   });
 
@@ -667,8 +680,12 @@ test.describe("Roadmap Modal Tests", () => {
     const items = await page.locator(".roadmap-item").allTextContents();
 
     // Bug should appear before question due to priority
-    const bugIndex = items.findIndex((text) => text.includes("High priority bug"));
-    const questionIndex = items.findIndex((text) => text.includes("Low priority question"));
+    const bugIndex = items.findIndex((text) =>
+      text.includes("High priority bug"),
+    );
+    const questionIndex = items.findIndex((text) =>
+      text.includes("Low priority question"),
+    );
 
     expect(bugIndex).toBeLessThan(questionIndex);
   });
@@ -732,7 +749,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(allChip).toHaveClass(/active/);
 
     // Verify type-specific chips exist
-    const featureChip = page.locator('.progress-filter-chip[data-type="feature"]');
+    const featureChip = page.locator(
+      '.progress-filter-chip[data-type="feature"]',
+    );
     await expect(featureChip).toBeVisible();
 
     const bugChip = page.locator('.progress-filter-chip[data-type="bug"]');
@@ -930,7 +949,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(lifecycleSection).toBeVisible();
 
     // History section should be present
-    const historyTitle = page.locator('.lifecycle-section-title:has-text("History")');
+    const historyTitle = page.locator(
+      '.lifecycle-section-title:has-text("History")',
+    );
     await expect(historyTitle).toBeVisible();
   });
 
@@ -1042,7 +1063,9 @@ test.describe("Roadmap Modal Tests", () => {
     await page.click(".roadmap-item.expandable");
 
     // Verify completion section exists
-    const completionTitle = page.locator('.lifecycle-section-title:has-text("Completion")');
+    const completionTitle = page.locator(
+      '.lifecycle-section-title:has-text("Completion")',
+    );
     await expect(completionTitle).toBeVisible();
 
     // Verify progress bar exists
@@ -1089,8 +1112,13 @@ test.describe("Roadmap Modal Tests", () => {
   test("calculateItemProgress returns correct percentage", async ({ page }) => {
     const results = await page.evaluate(() => {
       const newItem = window.calculateItemProgress({ status: "new" });
-      const inProgress = window.calculateItemProgress({ status: "in_progress" });
-      const resolved = window.calculateItemProgress({ status: "resolved", is_resolved: true });
+      const inProgress = window.calculateItemProgress({
+        status: "in_progress",
+      });
+      const resolved = window.calculateItemProgress({
+        status: "resolved",
+        is_resolved: true,
+      });
       return { newItem, inProgress, resolved };
     });
 
@@ -1107,9 +1135,33 @@ test.describe("Roadmap Modal Tests", () => {
         body: JSON.stringify({
           success: true,
           feedback: [
-            { id: 1, title: "F1", type: "feature", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() },
-            { id: 2, title: "F2", type: "feature", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() },
-            { id: 3, title: "B1", type: "bug", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() },
+            {
+              id: 1,
+              title: "F1",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "F2",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 3,
+              title: "B1",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
           ],
           stats: { open: 3, in_progress: 0, resolved: 0, total: 3 },
         }),
@@ -1126,7 +1178,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(allChip).toContainText("3");
 
     // Feature chip should show 2
-    const featureChip = page.locator('.progress-filter-chip[data-type="feature"]');
+    const featureChip = page.locator(
+      '.progress-filter-chip[data-type="feature"]',
+    );
     await expect(featureChip).toContainText("2");
 
     // Bug chip should show 1
@@ -1192,7 +1246,9 @@ test.describe("Roadmap Modal Tests", () => {
     expect(isDefined).toBe(true);
   });
 
-  test("progress modal shows sign-in prompt for star button when not logged in", async ({ page }) => {
+  test("progress modal shows sign-in prompt for star button when not logged in", async ({
+    page,
+  }) => {
     await page.route("**/feedback.php**", (route) => {
       route.fulfill({
         status: 200,
@@ -1221,11 +1277,15 @@ test.describe("Roadmap Modal Tests", () => {
     await page.waitForSelector(".roadmap-item", { timeout: 10000 });
 
     // Should show sign-in prompt for starring
-    const signinPrompt = page.locator('.feature-signin-prompt:has-text("Sign in")');
+    const signinPrompt = page.locator(
+      '.feature-signin-prompt:has-text("Sign in")',
+    );
     await expect(signinPrompt.first()).toBeVisible();
   });
 
-  test("progress modal displays GitHub synced badge for items with GitHub issue", async ({ page }) => {
+  test("progress modal displays GitHub synced badge for items with GitHub issue", async ({
+    page,
+  }) => {
     await page.route("**/feedback.php**", (route) => {
       route.fulfill({
         status: 200,
@@ -1266,7 +1326,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(automationBadge).toContainText("Auto-sync");
   });
 
-  test("progress modal displays comments section in expanded items", async ({ page }) => {
+  test("progress modal displays comments section in expanded items", async ({
+    page,
+  }) => {
     await page.route("**/feedback.php**", (route) => {
       route.fulfill({
         status: 200,
@@ -1312,7 +1374,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(commentsSection).toBeVisible();
 
     // Should show discussion title
-    const discussionTitle = page.locator('.lifecycle-section-title:has-text("Discussion")');
+    const discussionTitle = page.locator(
+      '.lifecycle-section-title:has-text("Discussion")',
+    );
     await expect(discussionTitle).toBeVisible();
 
     // Should show the comment
@@ -1362,7 +1426,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(assigneeAvatars).toHaveCount(2);
   });
 
-  test("timeline items include star button and GitHub integration", async ({ page }) => {
+  test("timeline items include star button and GitHub integration", async ({
+    page,
+  }) => {
     await page.route("**/feedback.php**", (route) => {
       route.fulfill({
         status: 200,
@@ -1393,7 +1459,9 @@ test.describe("Roadmap Modal Tests", () => {
     await page.waitForSelector(".timeline-item", { timeout: 10000 });
 
     // Should show synced badge in timeline
-    const syncedBadge = page.locator(".timeline-item .github-integration-badge.synced");
+    const syncedBadge = page.locator(
+      ".timeline-item .github-integration-badge.synced",
+    );
     await expect(syncedBadge).toBeVisible();
 
     // Should have data-item-id on timeline item
@@ -1418,9 +1486,21 @@ test.describe("Roadmap Modal Tests", () => {
               is_resolved: false,
               created_at: new Date().toISOString(),
               comments: [
-                { author: "User 1", body: "Comment 1", created_at: new Date().toISOString() },
-                { author: "User 2", body: "Comment 2", created_at: new Date().toISOString() },
-                { author: "User 3", body: "Comment 3", created_at: new Date().toISOString() },
+                {
+                  author: "User 1",
+                  body: "Comment 1",
+                  created_at: new Date().toISOString(),
+                },
+                {
+                  author: "User 2",
+                  body: "Comment 2",
+                  created_at: new Date().toISOString(),
+                },
+                {
+                  author: "User 3",
+                  body: "Comment 3",
+                  created_at: new Date().toISOString(),
+                },
               ],
             },
           ],
@@ -1433,7 +1513,9 @@ test.describe("Roadmap Modal Tests", () => {
     await page.click('.menu-item:has-text("Progress")');
 
     // Wait for expand toggle to appear
-    await page.waitForSelector(".roadmap-item-expand-toggle", { timeout: 10000 });
+    await page.waitForSelector(".roadmap-item-expand-toggle", {
+      timeout: 10000,
+    });
 
     // Expand the item by clicking on the expand toggle
     await page.click(".roadmap-item-expand-toggle");
@@ -1482,7 +1564,9 @@ test.describe("Roadmap Modal Tests", () => {
     await page.waitForSelector(".roadmap-item.expanded", { timeout: 5000 });
 
     // Should show no comments message
-    const noCommentsMsg = page.locator('.item-comments:has-text("No comments yet")');
+    const noCommentsMsg = page.locator(
+      '.item-comments:has-text("No comments yet")',
+    );
     await expect(noCommentsMsg).toBeVisible();
   });
 
@@ -1544,7 +1628,9 @@ test.describe("Roadmap Modal Tests", () => {
     expect(isDefined).toBe(true);
   });
 
-  test("setupProgressModalKeyboardNav function is defined", async ({ page }) => {
+  test("setupProgressModalKeyboardNav function is defined", async ({
+    page,
+  }) => {
     const isDefined = await page.evaluate(() => {
       return typeof window.setupProgressModalKeyboardNav === "function";
     });
@@ -1705,23 +1791,36 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(themeCount.first()).toBeVisible();
   });
 
-  test("classifyItemTheme assigns bugs to reliability theme", async ({ page }) => {
+  test("classifyItemTheme assigns bugs to reliability theme", async ({
+    page,
+  }) => {
     const result = await page.evaluate(() => {
-      return window.classifyItemTheme({ type: "bug", title: "Something broken" });
+      return window.classifyItemTheme({
+        type: "bug",
+        title: "Something broken",
+      });
     });
     expect(result).toBe("reliability");
   });
 
-  test("classifyItemTheme assigns features to growth theme", async ({ page }) => {
+  test("classifyItemTheme assigns features to growth theme", async ({
+    page,
+  }) => {
     const result = await page.evaluate(() => {
-      return window.classifyItemTheme({ type: "feature", title: "New capability" });
+      return window.classifyItemTheme({
+        type: "feature",
+        title: "New capability",
+      });
     });
     expect(result).toBe("growth");
   });
 
   test("classifyItemTheme detects performance keywords", async ({ page }) => {
     const result = await page.evaluate(() => {
-      return window.classifyItemTheme({ type: "feature", title: "Make it faster" });
+      return window.classifyItemTheme({
+        type: "feature",
+        title: "Make it faster",
+      });
     });
     expect(result).toBe("performance");
   });
@@ -1765,9 +1864,15 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(customFields).toBeVisible();
 
     // Should show Sprint, Effort, Team fields
-    await expect(page.locator('.custom-field-label:has-text("Sprint")')).toBeVisible();
-    await expect(page.locator('.custom-field-label:has-text("Effort")')).toBeVisible();
-    await expect(page.locator('.custom-field-label:has-text("Team")')).toBeVisible();
+    await expect(
+      page.locator('.custom-field-label:has-text("Sprint")'),
+    ).toBeVisible();
+    await expect(
+      page.locator('.custom-field-label:has-text("Effort")'),
+    ).toBeVisible();
+    await expect(
+      page.locator('.custom-field-label:has-text("Team")'),
+    ).toBeVisible();
   });
 
   test("roadmap modal has proper ARIA attributes", async ({ page }) => {
@@ -1784,7 +1889,10 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(roadmapModal).toHaveAttribute("aria-modal", "true");
 
     // Check for aria-labelledby
-    await expect(roadmapModal).toHaveAttribute("aria-labelledby", "roadmap-modal-title");
+    await expect(roadmapModal).toHaveAttribute(
+      "aria-labelledby",
+      "roadmap-modal-title",
+    );
   });
 
   test("roadmap items have aria-expanded attribute", async ({ page }) => {
@@ -1826,7 +1934,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(item).toHaveAttribute("aria-expanded", "true");
   });
 
-  test("keyboard navigation works with Escape key to close modal", async ({ page }) => {
+  test("keyboard navigation works with Escape key to close modal", async ({
+    page,
+  }) => {
     await page.click(".hamburger-btn");
     await page.click('.menu-item:has-text("Progress")');
 
@@ -1848,10 +1958,15 @@ test.describe("Roadmap Modal Tests", () => {
     await page.click('.menu-item:has-text("Progress")');
 
     const closeBtn = page.locator("#roadmap-modal .modal-close");
-    await expect(closeBtn).toHaveAttribute("aria-label", "Close progress modal");
+    await expect(closeBtn).toHaveAttribute(
+      "aria-label",
+      "Close progress modal",
+    );
   });
 
-  test("vision section has proper accessibility attributes", async ({ page }) => {
+  test("vision section has proper accessibility attributes", async ({
+    page,
+  }) => {
     await page.route("**/feedback.php**", (route) => {
       route.fulfill({
         status: 200,
@@ -1885,7 +2000,9 @@ test.describe("Roadmap Modal Tests", () => {
     await expect(vision).toHaveAttribute("aria-label", "Product vision");
   });
 
-  test("stats section has proper accessibility attributes", async ({ page }) => {
+  test("stats section has proper accessibility attributes", async ({
+    page,
+  }) => {
     await page.route("**/feedback.php**", (route) => {
       route.fulfill({
         status: 200,
@@ -1916,7 +2033,17 @@ test.describe("Roadmap Modal Tests", () => {
         contentType: "application/json",
         body: JSON.stringify({
           success: true,
-          feedback: [{ id: 1, title: "Test", type: "feature", status: "open", status_label: "Open", is_resolved: false, created_at: new Date().toISOString() }],
+          feedback: [
+            {
+              id: 1,
+              title: "Test",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
           stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
         }),
       });
