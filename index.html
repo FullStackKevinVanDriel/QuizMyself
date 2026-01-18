@@ -759,6 +759,189 @@
             font-weight: bold;
         }
 
+        /* AI Chat Modal Styles */
+        .ai-chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #1a1a2e;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .ai-chat-message {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            max-width: 85%;
+            line-height: 1.5;
+        }
+
+        .ai-chat-message.user {
+            background: #0f3460;
+            color: #fff;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-chat-message.assistant {
+            background: #2a2a4a;
+            color: #ccc;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .ai-chat-message.system {
+            background: #1a3a1a;
+            color: #4caf50;
+            text-align: center;
+            max-width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .ai-chat-message.error {
+            background: #3a1a1a;
+            color: #ff6b6b;
+            text-align: center;
+            max-width: 100%;
+        }
+
+        .ai-chat-input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a2e;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .ai-chat-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        .ai-chat-send {
+            padding: 12px 20px;
+            background: #4fc3f7;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .ai-chat-send:hover {
+            background: #81d4fa;
+        }
+
+        .ai-chat-send:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        /* Usage Counter Badge */
+        .usage-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .usage-badge.warning {
+            border-color: #ffa000;
+            color: #ffa000;
+        }
+
+        .usage-badge.exhausted {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        /* View in Source Button */
+        .view-source-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #0f3460;
+            color: #4fc3f7;
+            border: 1px solid #4fc3f7;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .view-source-btn:hover {
+            background: #1a4a7a;
+        }
+
+        .view-source-btn.visible {
+            display: inline-block;
+        }
+
+        /* Question Preview Card */
+        .question-preview-card {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .question-preview-card .question-text {
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .question-preview-card .choices-preview {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .question-preview-card .correct-choice {
+            color: #4caf50;
+        }
+
+        /* Generate Button */
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-generate:hover {
+            opacity: 0.9;
+        }
+
+        .btn-generate:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
         /* Import Drop Zone */
         .drop-zone {
             border: 2px dashed #4fc3f7;
@@ -1724,6 +1907,7 @@
                     <div class="choices" id="choices-container"></div>
                     <div id="practice-next-btn" class="btn-group hidden" style="margin-top: 20px;">
                         <button class="btn btn-primary" onclick="proceedToNextQuestion()">Next Question</button>
+                        <button id="view-source-btn" class="view-source-btn" onclick="viewQuestionInSource()">📖 View in Source</button>
                     </div>
                 </div>
 
@@ -1897,8 +2081,17 @@
                         <h3 id="source-content-title" style="margin: 0; color: #ffd700;"></h3>
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <span id="source-content-type-badge" style="background: #0f3460; color: #4fc3f7; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem;"></span>
+                            <button class="btn-generate" id="generate-quiz-btn" onclick="generateQuizFromSource()">
+                                <span>✨</span> Generate Quiz
+                            </button>
                             <button class="btn btn-small" onclick="hideSourceContent()">Back to List</button>
                         </div>
+                    </div>
+                    <!-- Generation Usage Counter -->
+                    <div id="generation-usage-display" style="margin-bottom: 15px; display: none;">
+                        <span class="usage-badge" id="generation-usage-badge">
+                            <span id="generation-usage-text">Loading...</span>
+                        </span>
                     </div>
 
                     <!-- Text/JSON/CSV Viewer -->
@@ -2003,6 +2196,113 @@
                 <p id="upgrade-error" style="color: #e94560; margin-top: 10px; display: none;"></p>
                 <p id="upgrade-success" style="color: #27ae60; margin-top: 10px; display: none;"></p>
                 </div><!-- End upgrade-content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Quiz Generation Modal -->
+    <div id="ai-generate-modal" class="modal-overlay hidden" onclick="closeAIGenerateModal()">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>✨ AI Quiz Generation</h2>
+                <button class="modal-close" onclick="closeAIGenerateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Generation State: Initial -->
+                <div id="ai-gen-initial">
+                    <p style="color: #ccc; margin-bottom: 15px;">Generate quiz questions from your source material using AI.</p>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #888; font-size: 0.9rem;">Number of questions:</label>
+                        <select id="ai-question-count" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
+                            <option value="5">5 questions</option>
+                            <option value="10" selected>10 questions</option>
+                            <option value="15">15 questions</option>
+                            <option value="20">20 questions</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #888; font-size: 0.9rem;">Difficulty:</label>
+                        <select id="ai-difficulty" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="color: #888; font-size: 0.9rem;">Focus area (optional):</label>
+                        <input type="text" id="ai-focus-area" placeholder="e.g., Chapter 3, Security concepts"
+                            style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+
+                    <div id="ai-gen-usage" class="usage-badge" style="margin-bottom: 15px;">
+                        <span id="ai-gen-usage-text">Loading usage...</span>
+                    </div>
+
+                    <button class="btn-generate" id="ai-start-generate-btn" onclick="startAIGeneration()" style="width: 100%; justify-content: center;">
+                        <span>✨</span> Generate Questions
+                    </button>
+                </div>
+
+                <!-- Generation State: Loading -->
+                <div id="ai-gen-loading" style="display: none; text-align: center; padding: 40px 0;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🧠</div>
+                    <p style="color: #4fc3f7; font-size: 1.1rem;">Generating questions...</p>
+                    <p style="color: #888; font-size: 0.9rem;">This may take 15-30 seconds</p>
+                </div>
+
+                <!-- Generation State: Preview -->
+                <div id="ai-gen-preview" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; color: #4fc3f7;">Generated <span id="ai-preview-count">0</span> Questions</h3>
+                        <span class="usage-badge" id="ai-preview-usage"></span>
+                    </div>
+
+                    <div id="ai-preview-questions" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;">
+                        <!-- Question previews will be inserted here -->
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <button class="btn btn-success" onclick="acceptGeneratedQuestions()" style="flex: 1;">Accept & Import</button>
+                        <button class="btn" onclick="openRefinementChat()" style="flex: 1;">Refine with Chat</button>
+                    </div>
+
+                    <button class="btn btn-small" onclick="regenerateQuestions()" style="width: 100%; background: #555;">Regenerate All</button>
+                </div>
+
+                <!-- Generation State: Chat Refinement -->
+                <div id="ai-gen-chat" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="margin: 0; color: #4fc3f7;">Refine Questions</h3>
+                        <span class="usage-badge" id="ai-chat-usage"></span>
+                    </div>
+                    <p style="color: #888; font-size: 0.85rem; margin-bottom: 10px;">Tell the AI how to improve the questions. Try: "make harder", "add more about security", "focus on chapter 2"</p>
+
+                    <div class="ai-chat-container">
+                        <div class="ai-chat-messages" id="ai-chat-messages">
+                            <!-- Chat messages will be inserted here -->
+                        </div>
+                        <div class="ai-chat-input-row">
+                            <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Type your refinement request..."
+                                onkeypress="if(event.key === 'Enter') sendChatRefinement()">
+                            <button class="ai-chat-send" id="ai-chat-send-btn" onclick="sendChatRefinement()">Send</button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="btn" onclick="backToPreview()" style="flex: 1; background: #555;">Back to Preview</button>
+                        <button class="btn btn-success" onclick="acceptGeneratedQuestions()" style="flex: 1;">Accept & Import</button>
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div id="ai-gen-error" style="display: none; text-align: center; padding: 20px 0;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">❌</div>
+                    <p style="color: #ff6b6b;" id="ai-gen-error-message">An error occurred</p>
+                    <button class="btn" onclick="resetAIGeneration()" style="margin-top: 15px;">Try Again</button>
+                </div>
             </div>
         </div>
     </div>
@@ -4102,6 +4402,15 @@
             // Store whether the answer was correct and show Next button
             state.lastAnswerCorrect = index === correctShuffledIndex;
             document.getElementById('practice-next-btn').classList.remove('hidden');
+
+            // Show "View in Source" button if answer was wrong AND question has source location
+            const viewSourceBtn = document.getElementById('view-source-btn');
+            const hasSourceLocation = q.sourceId && q.sourceLocation && q.sourceLocation.excerpt;
+            if (!state.lastAnswerCorrect && hasSourceLocation) {
+                viewSourceBtn.classList.add('visible');
+            } else {
+                viewSourceBtn.classList.remove('visible');
+            }
         }
 
         // Proceed to next question after reviewing answer
@@ -4993,6 +5302,18 @@
             return div.innerHTML;
         }
 
+        // Escape string for use in JavaScript onclick handlers
+        function escapeJsString(str) {
+            if (!str) return '';
+            return str
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"')
+                .replace(/</g, '\\x3c')
+                .replace(/>/g, '\\x3e')
+                .replace(/&/g, '\\x26');
+        }
+
         // ========== SOURCE MATERIAL VIEWER ==========
 
         function showSourcesModal() {
@@ -5227,10 +5548,10 @@
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px; flex-shrink: 0;">
-                            ${!source.linkedKeyword ? `<button class="btn btn-small btn-success" onclick="linkSourceToQuiz(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Link</button>` : ''}
-                            ${source.linkedKeyword ? `<button class="btn btn-small" style="background: #555;" onclick="unlinkSourceFromQuiz('${escapeHtml(source.linkedKeyword)}')">Unlink</button>` : ''}
-                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}', '${escapeHtml(source.contentType || 'text/plain')}')">View</button>
-                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeHtml(source.name).replace(/'/g, "\\'")}')">Delete</button>
+                            ${!source.linkedKeyword ? `<button class="btn btn-small btn-success" onclick="linkSourceToQuiz(${source.id}, '${escapeJsString(source.name)}')">Link</button>` : ''}
+                            ${source.linkedKeyword ? `<button class="btn btn-small" style="background: #555;" onclick="unlinkSourceFromQuiz('${escapeJsString(source.linkedKeyword)}')">Unlink</button>` : ''}
+                            <button class="btn btn-small" onclick="viewSourceContent(${source.id}, '${escapeJsString(source.name)}', '${escapeJsString(source.contentType || 'text/plain')}')">View</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteSource(${source.id}, '${escapeJsString(source.name)}')">Delete</button>
                         </div>
                     </div>
                 `).join('');
@@ -5271,6 +5592,9 @@
         }
 
         async function viewSourceContent(id, name, contentType) {
+            // Store current source ID for AI generation
+            currentViewingSourceId = id;
+
             // Hide all viewers first
             document.getElementById('source-viewer-text').style.display = 'none';
             document.getElementById('source-viewer-html').style.display = 'none';
@@ -5450,6 +5774,328 @@
             pdfDoc = null;
             pdfCurrentPage = 1;
             pdfTotalPages = 0;
+        }
+
+        // ========== AI QUIZ GENERATION ==========
+
+        let aiGenerationState = {
+            sourceId: null,
+            sourceName: null,
+            sourceText: null,
+            questions: [],
+            usage: null
+        };
+
+        async function generateQuizFromSource() {
+            if (!currentUser) {
+                showToast('Please sign in to generate quizzes', 'warning');
+                return;
+            }
+
+            // Get current source info from the viewer
+            const sourceTitle = document.getElementById('source-content-title').textContent;
+            const sourceId = currentViewingSourceId;
+
+            if (!sourceId) {
+                showToast('No source selected', 'error');
+                return;
+            }
+
+            aiGenerationState.sourceId = sourceId;
+            aiGenerationState.sourceName = sourceTitle;
+
+            // Open the AI generation modal
+            openAIGenerateModal();
+        }
+
+        let currentViewingSourceId = null;
+
+        function openAIGenerateModal() {
+            document.getElementById('ai-generate-modal').classList.remove('hidden');
+            resetAIGeneration();
+            loadAIUsage();
+        }
+
+        function closeAIGenerateModal() {
+            document.getElementById('ai-generate-modal').classList.add('hidden');
+        }
+
+        function resetAIGeneration() {
+            document.getElementById('ai-gen-initial').style.display = 'block';
+            document.getElementById('ai-gen-loading').style.display = 'none';
+            document.getElementById('ai-gen-preview').style.display = 'none';
+            document.getElementById('ai-gen-chat').style.display = 'none';
+            document.getElementById('ai-gen-error').style.display = 'none';
+            aiGenerationState.questions = [];
+        }
+
+        async function loadAIUsage() {
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/usage.php`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                aiGenerationState.usage = data;
+                updateUsageDisplay(data);
+            } catch (err) {
+                console.error('Failed to load usage:', err);
+            }
+        }
+
+        function updateUsageDisplay(usage) {
+            const gen = usage.generations;
+            let text, className = '';
+
+            if (gen.limit === -1) {
+                text = 'Unlimited generations';
+            } else {
+                text = `${gen.remaining} of ${gen.limit} generations (${gen.period})`;
+                if (gen.remaining === 0) {
+                    className = 'exhausted';
+                } else if (gen.remaining <= 1) {
+                    className = 'warning';
+                }
+            }
+
+            const badge = document.getElementById('ai-gen-usage');
+            badge.className = 'usage-badge ' + className;
+            document.getElementById('ai-gen-usage-text').textContent = text;
+
+            // Also update preview usage
+            const previewUsage = document.getElementById('ai-preview-usage');
+            if (previewUsage) {
+                const ref = usage.refinements;
+                if (ref.limit === -1) {
+                    previewUsage.textContent = 'Unlimited refinements';
+                } else {
+                    previewUsage.textContent = `${ref.remaining}/${ref.limit} refinements`;
+                }
+            }
+        }
+
+        async function startAIGeneration() {
+            const questionCount = document.getElementById('ai-question-count').value;
+            const difficulty = document.getElementById('ai-difficulty').value;
+            const focusArea = document.getElementById('ai-focus-area').value;
+
+            // Show loading
+            document.getElementById('ai-gen-initial').style.display = 'none';
+            document.getElementById('ai-gen-loading').style.display = 'block';
+
+            try {
+                // First, get source text (for non-PDF sources)
+                const token = await currentUser.getIdToken();
+
+                // Call generate endpoint
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/generate-questions.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sourceId: aiGenerationState.sourceId,
+                        questionCount: parseInt(questionCount),
+                        difficulty: difficulty,
+                        focusArea: focusArea || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || data.message || 'Generation failed');
+                }
+
+                aiGenerationState.questions = data.questions;
+                aiGenerationState.usage = data.usage;
+                updateUsageDisplay(data.usage);
+                showQuestionPreview();
+
+            } catch (err) {
+                console.error('Generation error:', err);
+                document.getElementById('ai-gen-loading').style.display = 'none';
+                document.getElementById('ai-gen-error').style.display = 'block';
+                document.getElementById('ai-gen-error-message').textContent = err.message;
+            }
+        }
+
+        function showQuestionPreview() {
+            document.getElementById('ai-gen-loading').style.display = 'none';
+            document.getElementById('ai-gen-preview').style.display = 'block';
+
+            const questions = aiGenerationState.questions;
+            document.getElementById('ai-preview-count').textContent = questions.length;
+
+            const container = document.getElementById('ai-preview-questions');
+            container.innerHTML = questions.map((q, idx) => `
+                <div class="question-preview-card">
+                    <div class="question-text">${idx + 1}. ${escapeHtml(q.q)}</div>
+                    <div class="choices-preview">
+                        ${q.choices.map((c, i) => `
+                            <span class="${i === q.correct ? 'correct-choice' : ''}">${i === q.correct ? '✓ ' : ''}${escapeHtml(c)}</span>
+                        `).join(' | ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openRefinementChat() {
+            document.getElementById('ai-gen-preview').style.display = 'none';
+            document.getElementById('ai-gen-chat').style.display = 'block';
+
+            // Update chat usage
+            const usage = aiGenerationState.usage;
+            if (usage) {
+                const ref = usage.refinements;
+                const chatUsage = document.getElementById('ai-chat-usage');
+                if (ref.limit === -1) {
+                    chatUsage.textContent = 'Unlimited';
+                } else {
+                    chatUsage.textContent = `${ref.remaining}/${ref.limit}`;
+                    chatUsage.className = 'usage-badge' + (ref.remaining <= 1 ? ' warning' : '');
+                }
+            }
+
+            // Clear and add initial system message
+            const messages = document.getElementById('ai-chat-messages');
+            messages.innerHTML = `
+                <div class="ai-chat-message system">
+                    ${aiGenerationState.questions.length} questions loaded. Tell me how to improve them.
+                </div>
+            `;
+        }
+
+        function backToPreview() {
+            document.getElementById('ai-gen-chat').style.display = 'none';
+            document.getElementById('ai-gen-preview').style.display = 'block';
+            showQuestionPreview();
+        }
+
+        async function sendChatRefinement() {
+            const input = document.getElementById('ai-chat-input');
+            const instruction = input.value.trim();
+            if (!instruction) return;
+
+            const sendBtn = document.getElementById('ai-chat-send-btn');
+            sendBtn.disabled = true;
+            input.value = '';
+
+            // Add user message
+            const messages = document.getElementById('ai-chat-messages');
+            messages.innerHTML += `<div class="ai-chat-message user">${escapeHtml(instruction)}</div>`;
+            messages.scrollTop = messages.scrollHeight;
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/refine-questions.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        questions: aiGenerationState.questions,
+                        instruction: instruction,
+                        sourceId: aiGenerationState.sourceId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Refinement failed');
+                }
+
+                aiGenerationState.questions = data.questions;
+                aiGenerationState.usage = data.usage;
+                updateUsageDisplay(data.usage);
+
+                // Add assistant message
+                messages.innerHTML += `
+                    <div class="ai-chat-message assistant">
+                        ${escapeHtml(data.changes || 'Questions refined.')} (${data.questions.length} questions)
+                    </div>
+                `;
+                messages.scrollTop = messages.scrollHeight;
+
+            } catch (err) {
+                messages.innerHTML += `
+                    <div class="ai-chat-message error">
+                        Error: ${escapeHtml(err.message)}
+                    </div>
+                `;
+            }
+
+            sendBtn.disabled = false;
+        }
+
+        async function regenerateQuestions() {
+            document.getElementById('ai-gen-preview').style.display = 'none';
+            document.getElementById('ai-gen-initial').style.display = 'block';
+        }
+
+        async function acceptGeneratedQuestions() {
+            const questions = aiGenerationState.questions;
+            if (!questions || questions.length === 0) {
+                showToast('No questions to import', 'warning');
+                return;
+            }
+
+            // Check free limit
+            if (!state.isPro) {
+                const currentImported = state.importedQuestionCount || 0;
+                const newTotal = currentImported + questions.length;
+                if (newTotal > FREE_IMPORT_LIMIT) {
+                    showToast(`Free limit exceeded. Upgrade to Pro for unlimited imports.`, 'warning');
+                    showUpgradeModal();
+                    return;
+                }
+            }
+
+            // Add to existing questions
+            const startId = window.questions.length > 0 ? Math.max(...window.questions.map(q => q.id)) + 1 : 1;
+            questions.forEach((q, idx) => {
+                q.id = startId + idx;
+                q.category = 'AI Generated';
+                window.questions.push(q);
+            });
+
+            state.importedQuestionCount = (state.importedQuestionCount || 0) + questions.length;
+
+            // Update UI
+            updateStats();
+            initCategoryFilter();
+            saveState();
+
+            showToast(`Imported ${questions.length} AI-generated questions!`, 'success');
+            closeAIGenerateModal();
+            closeSourcesModal();
+        }
+
+        // View the source location for a question (after wrong answer)
+        async function viewQuestionInSource() {
+            const q = state.currentQuestion;
+            if (!q || !q.sourceId || !q.sourceLocation) {
+                showToast('Source location not available', 'warning');
+                return;
+            }
+
+            // Hide the view source button
+            document.getElementById('view-source-btn').classList.remove('visible');
+
+            // Open the sources modal and view the source
+            showSourcesModal();
+            await viewSourceContent(q.sourceId, q.sourceName || 'Source Material', 'text/plain');
+
+            // After source loads, show a highlight of the relevant excerpt
+            setTimeout(() => {
+                const excerpt = q.sourceLocation.excerpt;
+                if (excerpt) {
+                    showToast(`Look for: "${excerpt.substring(0, 50)}..."`, 'info', 5000);
+                }
+            }, 1000);
         }
 
         async function linkSourceToQuiz(sourceId, sourceName) {
