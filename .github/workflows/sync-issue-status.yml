@@ -1,0 +1,256 @@
+# Bidirectional Sync: GitHub Issues <-> Vandromeda Feedback System
+#
+# This workflow syncs issue status changes back to the Vandromeda feedback system.
+# It extracts the feedback ID from the issue body (embedded as HTML comment)
+# and updates the corresponding feedback entry via API calls.
+#
+# Required secrets:
+#   - VANDROMEDA_API_TOKEN: Authentication token for Vandromeda API
+#
+# Feedback ID format in issue body:
+#   <!-- feedback_id: 123 -->
+
+name: Sync Issue Status to Vandromeda
+
+on:
+  issues:
+    types:
+      - closed
+      - reopened
+      - labeled
+
+  issue_comment:
+    types:
+      - created
+
+env:
+  VANDROMEDA_API_BASE: https://vandromeda.com/api
+  # Adjust the base URL as needed for your Vandromeda instance
+
+jobs:
+  sync-feedback-status:
+    name: Sync Feedback Status
+    runs-on: ubuntu-latest
+
+    # Only run if the issue body contains a feedback ID
+    # This prevents running on issues not created from feedback
+    if: contains(github.event.issue.body, '<!-- feedback_id:')
+
+    steps:
+      # ============================================================
+      # Step 1: Extract Feedback ID from Issue Body
+      # ============================================================
+      - name: Extract Feedback ID
+        id: extract
+        run: |
+          echo "::group::Extracting feedback ID from issue body"
+
+          # Extract the feedback ID from the HTML comment in issue body
+          # Format: <!-- feedback_id: 123 -->
+          ISSUE_BODY="${{ github.event.issue.body }}"
+
+          # Use grep and sed to extract the ID
+          FEEDBACK_ID=$(echo "$ISSUE_BODY" | grep -oP '<!-- feedback_id: \K[0-9]+(?= -->)' || echo "")
+
+          if [ -z "$FEEDBACK_ID" ]; then
+            echo "::error::Could not extract feedback ID from issue body"
+            echo "feedback_id=" >> $GITHUB_OUTPUT
+            echo "has_feedback_id=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Found feedback ID: $FEEDBACK_ID"
+          echo "feedback_id=$FEEDBACK_ID" >> $GITHUB_OUTPUT
+          echo "has_feedback_id=true" >> $GITHUB_OUTPUT
+
+          echo "::endgroup::"
+
+      # ============================================================
+      # Step 2: Determine the New Status Based on Event Type
+      # ============================================================
+      - name: Determine Status
+        id: status
+        if: steps.extract.outputs.has_feedback_id == 'true'
+        run: |
+          echo "::group::Determining feedback status"
+
+          EVENT_NAME="${{ github.event_name }}"
+          ACTION="${{ github.event.action }}"
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+
+          echo "Event: $EVENT_NAME"
+          echo "Action: $ACTION"
+          echo "Issue number: $ISSUE_NUMBER"
+
+          STATUS=""
+          SHOULD_NOTIFY="false"
+          NOTIFICATION_MESSAGE=""
+
+          # Handle issue closed/reopened
+          if [ "$EVENT_NAME" = "issues" ]; then
+            if [ "$ACTION" = "closed" ]; then
+              STATUS="resolved"
+              SHOULD_NOTIFY="true"
+              NOTIFICATION_MESSAGE="Great news! Your feedback has been addressed and the related issue (#$ISSUE_NUMBER) has been closed. Thank you for helping us improve!"
+              echo "Issue closed - marking feedback as resolved"
+
+            elif [ "$ACTION" = "reopened" ]; then
+              STATUS="in_progress"
+              SHOULD_NOTIFY="false"
+              echo "Issue reopened - marking feedback as in_progress"
+
+            elif [ "$ACTION" = "labeled" ]; then
+              # Check which label was added
+              LABEL_NAME="${{ github.event.label.name }}"
+              echo "Label added: $LABEL_NAME"
+
+              case "$LABEL_NAME" in
+                "wontfix"|"won't fix"|"wont-fix")
+                  STATUS="wontfix"
+                  SHOULD_NOTIFY="true"
+                  NOTIFICATION_MESSAGE="Thank you for your feedback. After careful consideration, we've decided not to implement this change at this time. We appreciate you taking the time to share your thoughts!"
+                  ;;
+                "duplicate")
+                  STATUS="duplicate"
+                  SHOULD_NOTIFY="true"
+                  NOTIFICATION_MESSAGE="Thank you for your feedback! This has been identified as a duplicate of an existing issue. Rest assured, we're already tracking this and working on it."
+                  ;;
+                "in-progress"|"in progress"|"working")
+                  STATUS="in_progress"
+                  SHOULD_NOTIFY="true"
+                  NOTIFICATION_MESSAGE="Good news! We've started working on your feedback. You can track progress on issue #$ISSUE_NUMBER."
+                  ;;
+                "invalid")
+                  STATUS="invalid"
+                  SHOULD_NOTIFY="true"
+                  NOTIFICATION_MESSAGE="Thank you for your feedback. After review, we've determined this issue doesn't apply to our system. If you believe this was in error, please feel free to submit additional details."
+                  ;;
+                *)
+                  echo "Label '$LABEL_NAME' doesn't require status update"
+                  ;;
+              esac
+            fi
+          fi
+
+          # Handle comments on issues (optional notification)
+          if [ "$EVENT_NAME" = "issue_comment" ] && [ "$ACTION" = "created" ]; then
+            # Only notify on team member comments, not user comments
+            COMMENT_AUTHOR="${{ github.event.comment.user.login }}"
+            COMMENT_AUTHOR_ASSOCIATION="${{ github.event.comment.author_association }}"
+
+            echo "Comment by: $COMMENT_AUTHOR (association: $COMMENT_AUTHOR_ASSOCIATION)"
+
+            # Only send notification if comment is from maintainer/collaborator/owner
+            if [[ "$COMMENT_AUTHOR_ASSOCIATION" == "OWNER" || "$COMMENT_AUTHOR_ASSOCIATION" == "MEMBER" || "$COMMENT_AUTHOR_ASSOCIATION" == "COLLABORATOR" ]]; then
+              SHOULD_NOTIFY="true"
+              NOTIFICATION_MESSAGE="A team member has commented on your feedback (issue #$ISSUE_NUMBER). Check out the update at: ${{ github.event.comment.html_url }}"
+              echo "Team member commented - will notify user"
+            else
+              echo "Comment from non-team member - skipping notification"
+            fi
+          fi
+
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "should_notify=$SHOULD_NOTIFY" >> $GITHUB_OUTPUT
+          echo "notification_message=$NOTIFICATION_MESSAGE" >> $GITHUB_OUTPUT
+
+          echo "::endgroup::"
+
+      # ============================================================
+      # Step 3: Update Feedback Status in Vandromeda
+      # ============================================================
+      - name: Update Feedback Status
+        id: update
+        if: steps.extract.outputs.has_feedback_id == 'true' && steps.status.outputs.status != ''
+        run: |
+          echo "::group::Updating feedback status in Vandromeda"
+
+          FEEDBACK_ID="${{ steps.extract.outputs.feedback_id }}"
+          STATUS="${{ steps.status.outputs.status }}"
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+
+          echo "Updating feedback $FEEDBACK_ID to status: $STATUS"
+
+          # Make API call to update feedback status
+          HTTP_RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X PATCH \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.VANDROMEDA_API_TOKEN }}" \
+            -d "{\"id\": $FEEDBACK_ID, \"status\": \"$STATUS\", \"github_issue\": $ISSUE_NUMBER}" \
+            "${{ env.VANDROMEDA_API_BASE }}/feedback.php" || echo -e "\n000")
+
+          # Split response body and status code
+          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$d')
+          HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)
+
+          echo "API Response Status: $HTTP_STATUS"
+          echo "API Response Body: $HTTP_BODY"
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "::notice::Successfully updated feedback $FEEDBACK_ID to status '$STATUS'"
+            echo "update_success=true" >> $GITHUB_OUTPUT
+          else
+            echo "::error::Failed to update feedback status. HTTP Status: $HTTP_STATUS"
+            echo "update_success=false" >> $GITHUB_OUTPUT
+            # Don't fail the workflow - log the error and continue
+          fi
+
+          echo "::endgroup::"
+
+      # ============================================================
+      # Step 4: Send Notification to User (if email was provided)
+      # ============================================================
+      - name: Notify User
+        if: steps.extract.outputs.has_feedback_id == 'true' && steps.status.outputs.should_notify == 'true'
+        run: |
+          echo "::group::Sending notification to user"
+
+          FEEDBACK_ID="${{ steps.extract.outputs.feedback_id }}"
+          MESSAGE="${{ steps.status.outputs.notification_message }}"
+
+          echo "Sending notification for feedback $FEEDBACK_ID"
+          echo "Message: $MESSAGE"
+
+          # Make API call to send notification
+          # The backend will check if the feedback has an associated email
+          HTTP_RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.VANDROMEDA_API_TOKEN }}" \
+            -d "{\"feedback_id\": $FEEDBACK_ID, \"message\": \"$MESSAGE\"}" \
+            "${{ env.VANDROMEDA_API_BASE }}/feedback-notify.php" || echo -e "\n000")
+
+          # Split response body and status code
+          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$d')
+          HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)
+
+          echo "API Response Status: $HTTP_STATUS"
+          echo "API Response Body: $HTTP_BODY"
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "::notice::Notification sent successfully for feedback $FEEDBACK_ID"
+          elif [ "$HTTP_STATUS" -eq 404 ]; then
+            echo "::notice::No email associated with feedback $FEEDBACK_ID - skipping notification"
+          else
+            echo "::warning::Failed to send notification. HTTP Status: $HTTP_STATUS"
+            # Don't fail the workflow - notification is optional
+          fi
+
+          echo "::endgroup::"
+
+      # ============================================================
+      # Step 5: Summary
+      # ============================================================
+      - name: Job Summary
+        if: always()
+        run: |
+          echo "## Vandromeda Sync Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Issue | #${{ github.event.issue.number }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Event | ${{ github.event_name }} (${{ github.event.action }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| Feedback ID | ${{ steps.extract.outputs.feedback_id || 'Not found' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| New Status | ${{ steps.status.outputs.status || 'No change' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Status Update | ${{ steps.update.outputs.update_success == 'true' && 'Success' || 'Skipped/Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| User Notified | ${{ steps.status.outputs.should_notify }} |" >> $GITHUB_STEP_SUMMARY

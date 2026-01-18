@@ -6478,23 +6478,28 @@
                 title: kw.display_name || kw.keyword,
                 subtitle: kw.display_name ? kw.keyword : null
             }));
+            console.log('[DEBUG] items for modal:', items);
 
             // Show selection modal
+            console.log('[DEBUG] Calling showSelection...');
             const selectedKeyword = await showSelection(
                 'Link Source to Quiz',
                 `Select a quiz to link "${sourceName}" to:`,
                 items,
                 { confirmText: 'Link' }
             );
+            console.log('[DEBUG] selectedKeyword:', selectedKeyword);
 
             if (!selectedKeyword) return;
 
             try {
+                console.log('[DEBUG] Getting token...');
                 const token = await currentUser.getIdToken();
                 const requestBody = {
                     sourceId: sourceId,
                     keyword: selectedKeyword
                 };
+                console.log('[DEBUG] Making API call with:', requestBody);
                 const response = await fetch(`${VANDROMEDA_API}/quizmyself/link-source.php`, {
                     method: 'POST',
                     headers: {
@@ -6505,18 +6510,22 @@
                 });
 
                 const data = await response.json();
+                console.log('[DEBUG] API response:', response.status, data);
 
                 if (!response.ok) {
                     throw new Error(data.error || data.message || 'Failed to link source');
                 }
 
                 showToast(`Source linked to "${selectedKeyword}" successfully!`, 'success');
+                console.log('[DEBUG] Link successful, refreshing data...');
                 await loadUserKeywords(); // Refresh keywords to update source_id
                 loadSources(); // Refresh the sources list
                 updateKeywordDropdown(); // Refresh dropdown to show paperclip icon
                 updateSourceDependentButtons(); // Update button states
+                console.log('[DEBUG] Refresh complete');
 
             } catch (err) {
+                console.error('[DEBUG] Link failed:', err);
                 showToast(`Failed to link: ${err.message}`, 'error');
             }
         }

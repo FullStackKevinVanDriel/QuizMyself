@@ -72,6 +72,14 @@ QuizMyself/
 - [x] Hamburger menu navigation
 - [x] Custom modals for most features
 - [x] Feedback submission system
+- [x] In-app roadmap display (fetches from roadmap.json)
+
+### Automation & CI/CD
+- [x] Playwright test automation
+- [x] GitHub Pages deployment
+- [x] Feedback → GitHub Issues sync (hourly workflow)
+- [x] Roadmap JSON generation from issues
+- [x] Bidirectional issue status sync
 
 ---
 
@@ -205,20 +213,20 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 
 ## Test Coverage
 
-**Existing (59 tests in 8 files):**
+**Existing (79 tests in 10 files):**
 - smoke.spec.js - Page load, welcome screen, hamburger menu
 - guest-mode.spec.js - Demo quiz without login
 - feedback.spec.js - Feedback modal and submission
 - category-filter.spec.js - Category toggle, All/None buttons, quiz filtering
 - exam-mode.spec.js - Start exam, progress tracking, 100% requirement display
 - import.spec.js - CSV, JSON, Q&A import flows, preview, file upload
-- modal-stacking.spec.js - Modal z-index and stacking behavior
 - ai-generation.spec.js - AI quiz generation features
+- link-source.spec.js - Source-to-quiz linking, selection modal, HTML escaping
+- roadmap.spec.js - Roadmap modal display and interaction
 
 **Needed:**
 - Auth flows (login, register, reset)
 - Progress sync
-- Source material linking
 - Pro tier activation
 
 ---

@@ -1,0 +1,284 @@
+# =============================================================================
+# Roadmap Generator Workflow
+# =============================================================================
+# This workflow generates a roadmap.json file from GitHub issues for in-app
+# display. It fetches issues, milestones, and organizes them into a structured
+# JSON format that can be consumed by the application.
+#
+# Triggers:
+#   - Push to main branch
+#   - Issue events (opened, closed, labeled, unlabeled)
+#   - Manual trigger via workflow_dispatch
+#   - Daily schedule at midnight UTC
+# =============================================================================
+
+name: Update Roadmap
+
+on:
+  # Trigger on push to main branch
+  push:
+    branches:
+      - main
+
+  # Trigger on issue events
+  issues:
+    types:
+      - opened
+      - closed
+      - labeled
+      - unlabeled
+
+  # Manual trigger
+  workflow_dispatch:
+
+  # Daily schedule at midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+
+# Prevent concurrent runs to avoid race conditions when committing
+concurrency:
+  group: roadmap-update
+  cancel-in-progress: true
+
+jobs:
+  update-roadmap:
+    runs-on: ubuntu-latest
+
+    # Grant write permissions for committing the roadmap.json file
+    permissions:
+      contents: write
+      issues: read
+
+    steps:
+      # =======================================================================
+      # Step 1: Checkout Repository
+      # =======================================================================
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch with a token that has write access
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # =======================================================================
+      # Step 2: Generate Roadmap JSON
+      # =======================================================================
+      - name: Generate roadmap.json
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // Configuration: Labels to include in the roadmap
+            const INCLUDED_LABELS = ['bug', 'enhancement', 'feature', 'question', 'feedback', 'roadmap'];
+
+            // Repository information
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const repoFullName = `${owner}/${repo}`;
+
+            console.log(`Generating roadmap for ${repoFullName}...`);
+
+            try {
+              // -------------------------------------------------------------------
+              // Fetch all open issues with pagination
+              // -------------------------------------------------------------------
+              console.log('Fetching open issues...');
+              const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100
+              });
+
+              // -------------------------------------------------------------------
+              // Fetch recently closed issues (last 30 days)
+              // -------------------------------------------------------------------
+              console.log('Fetching recently closed issues...');
+              const thirtyDaysAgo = new Date();
+              thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+              const closedIssues = await github.paginate(github.rest.issues.listForRepo, {
+                owner,
+                repo,
+                state: 'closed',
+                since: thirtyDaysAgo.toISOString(),
+                per_page: 100
+              });
+
+              // -------------------------------------------------------------------
+              // Fetch all milestones
+              // -------------------------------------------------------------------
+              console.log('Fetching milestones...');
+              const milestones = await github.paginate(github.rest.issues.listMilestones, {
+                owner,
+                repo,
+                state: 'all',
+                per_page: 100
+              });
+
+              // -------------------------------------------------------------------
+              // Filter issues: exclude pull requests and filter by labels
+              // -------------------------------------------------------------------
+              const filterIssues = (issues) => {
+                return issues.filter(issue => {
+                  // Exclude pull requests (they have a pull_request property)
+                  if (issue.pull_request) return false;
+
+                  // Check if issue has at least one included label
+                  const issueLabels = issue.labels.map(l =>
+                    typeof l === 'string' ? l : l.name
+                  );
+
+                  return issueLabels.some(label =>
+                    INCLUDED_LABELS.includes(label.toLowerCase())
+                  );
+                });
+              };
+
+              const filteredOpenIssues = filterIssues(openIssues);
+              const filteredClosedIssues = filterIssues(closedIssues);
+              const allFilteredIssues = [...filteredOpenIssues, ...filteredClosedIssues];
+
+              console.log(`Found ${filteredOpenIssues.length} open issues and ${filteredClosedIssues.length} closed issues with matching labels`);
+
+              // -------------------------------------------------------------------
+              // Calculate statistics
+              // -------------------------------------------------------------------
+              const stats = {
+                total: allFilteredIssues.length,
+                open: filteredOpenIssues.length,
+                closed: filteredClosedIssues.length,
+                byLabel: {}
+              };
+
+              // Count issues by label
+              allFilteredIssues.forEach(issue => {
+                const issueLabels = issue.labels.map(l =>
+                  typeof l === 'string' ? l : l.name
+                );
+
+                issueLabels.forEach(label => {
+                  const labelLower = label.toLowerCase();
+                  if (INCLUDED_LABELS.includes(labelLower)) {
+                    stats.byLabel[labelLower] = (stats.byLabel[labelLower] || 0) + 1;
+                  }
+                });
+              });
+
+              // -------------------------------------------------------------------
+              // Format milestones with progress
+              // -------------------------------------------------------------------
+              const formattedMilestones = milestones.map(milestone => {
+                const openCount = milestone.open_issues || 0;
+                const closedCount = milestone.closed_issues || 0;
+                const totalCount = openCount + closedCount;
+                const progress = totalCount > 0
+                  ? Math.round((closedCount / totalCount) * 100)
+                  : 0;
+
+                return {
+                  title: milestone.title,
+                  description: milestone.description || '',
+                  dueDate: milestone.due_on || null,
+                  progress,
+                  openIssues: openCount,
+                  closedIssues: closedCount
+                };
+              }).sort((a, b) => {
+                // Sort by due date (null dates at the end)
+                if (!a.dueDate && !b.dueDate) return 0;
+                if (!a.dueDate) return 1;
+                if (!b.dueDate) return -1;
+                return new Date(a.dueDate) - new Date(b.dueDate);
+              });
+
+              // -------------------------------------------------------------------
+              // Format issues for output
+              // -------------------------------------------------------------------
+              const formatIssue = (issue) => ({
+                number: issue.number,
+                title: issue.title,
+                state: issue.state,
+                labels: issue.labels.map(l => typeof l === 'string' ? l : l.name),
+                createdAt: issue.created_at,
+                updatedAt: issue.updated_at,
+                milestone: issue.milestone ? issue.milestone.title : null,
+                url: issue.html_url
+              });
+
+              const formattedIssues = allFilteredIssues
+                .map(formatIssue)
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+              // -------------------------------------------------------------------
+              // Get recently completed issues (last 30 days)
+              // -------------------------------------------------------------------
+              const recentlyCompleted = filteredClosedIssues
+                .map(issue => ({
+                  number: issue.number,
+                  title: issue.title,
+                  closedAt: issue.closed_at
+                }))
+                .sort((a, b) => new Date(b.closedAt) - new Date(a.closedAt))
+                .slice(0, 10); // Limit to 10 most recently completed
+
+              // -------------------------------------------------------------------
+              // Build the final roadmap object
+              // -------------------------------------------------------------------
+              const roadmap = {
+                generated: new Date().toISOString(),
+                repository: repoFullName,
+                stats,
+                milestones: formattedMilestones,
+                issues: formattedIssues,
+                recentlyCompleted
+              };
+
+              // -------------------------------------------------------------------
+              // Write roadmap.json to file
+              // -------------------------------------------------------------------
+              const roadmapJson = JSON.stringify(roadmap, null, 2);
+              fs.writeFileSync('roadmap.json', roadmapJson);
+
+              console.log('Successfully generated roadmap.json');
+              console.log(`Stats: ${stats.total} total issues (${stats.open} open, ${stats.closed} closed)`);
+              console.log(`Milestones: ${formattedMilestones.length}`);
+              console.log(`Recently completed: ${recentlyCompleted.length}`);
+
+            } catch (error) {
+              console.error('Error generating roadmap:', error.message);
+              core.setFailed(`Failed to generate roadmap: ${error.message}`);
+            }
+
+      # =======================================================================
+      # Step 3: Check for Changes
+      # =======================================================================
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [ -f roadmap.json ]; then
+            git add roadmap.json
+            if git diff --staged --quiet; then
+              echo "changed=false" >> $GITHUB_OUTPUT
+              echo "No changes to roadmap.json"
+            else
+              echo "changed=true" >> $GITHUB_OUTPUT
+              echo "Changes detected in roadmap.json"
+            fi
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "roadmap.json was not generated"
+          fi
+
+      # =======================================================================
+      # Step 4: Commit and Push Changes
+      # =======================================================================
+      - name: Commit and push roadmap.json
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "chore: update roadmap.json [skip ci]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
