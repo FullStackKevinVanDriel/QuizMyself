@@ -1,10 +1,10 @@
 {
-  "generated": "2026-01-18T07:37:07.690Z",
+  "generated": "2026-01-18T07:44:22.633Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 44,
-    "open": 32,
-    "closed": 12,
+    "open": 31,
+    "closed": 13,
     "byLabel": {
       "enhancement": 19,
       "roadmap": 20,
@@ -14,6 +14,19 @@
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 207,
+      "title": "feat: Display accurate timestamps with relative time",
+      "state": "closed",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:27Z",
+      "updatedAt": "2026-01-18T07:44:13Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/207",
+      "feedback_id": null
+    },
     {
       "number": 205,
       "title": "bug: Fix overlay click to close Progress modal",
@@ -77,19 +90,6 @@
       "updatedAt": "2026-01-18T07:08:28Z",
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
-      "feedback_id": null
-    },
-    {
-      "number": 207,
-      "title": "feat: Display accurate timestamps with relative time",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:27Z",
-      "updatedAt": "2026-01-18T07:08:27Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/207",
       "feedback_id": null
     },
     {
@@ -634,6 +634,13 @@
   ],
   "recentlyCompleted": [
     {
+      "number": 207,
+      "title": "feat: Display accurate timestamps with relative time",
+      "closedAt": "2026-01-18T07:44:13Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/207",
+      "feedback_id": null
+    },
+    {
       "number": 205,
       "title": "bug: Fix overlay click to close Progress modal",
       "closedAt": "2026-01-18T07:36:59Z",
@@ -695,13 +702,6 @@
       "closedAt": "2026-01-18T03:09:00Z",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/127",
       "feedback_id": 2
-    },
-    {
-      "number": 128,
-      "title": "[bug] Test feedback from CLI - verifying fix",
-      "closedAt": "2026-01-18T03:08:54Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/128",
-      "feedback_id": 1
     }
   ]
 }
