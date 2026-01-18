@@ -1,18 +1,32 @@
 {
-  "generated": "2026-01-18T04:31:04.513Z",
+  "generated": "2026-01-18T04:39:02.758Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 18,
-    "open": 11,
-    "closed": 7,
+    "open": 10,
+    "closed": 8,
     "byLabel": {
       "bug": 9,
-      "feedback": 5,
-      "enhancement": 4
+      "enhancement": 4,
+      "feedback": 5
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 162,
+      "title": "[feedback] Test - verifying feedback ID is returned",
+      "state": "closed",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:34Z",
+      "updatedAt": "2026-01-18T04:38:54Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
+      "feedback_id": 6
+    },
     {
       "number": 140,
       "title": "P1: Integrate Plausible analytics",
@@ -39,20 +53,6 @@
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/163",
       "feedback_id": 5
-    },
-    {
-      "number": 162,
-      "title": "[feedback] Test - verifying feedback ID is returned",
-      "state": "open",
-      "labels": [
-        "user-feedback",
-        "feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:34Z",
-      "updatedAt": "2026-01-18T04:05:34Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
-      "feedback_id": 6
     },
     {
       "number": 161,
@@ -264,6 +264,13 @@
     }
   ],
   "recentlyCompleted": [
+    {
+      "number": 162,
+      "title": "[feedback] Test - verifying feedback ID is returned",
+      "closedAt": "2026-01-18T04:38:54Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
+      "feedback_id": 6
+    },
     {
       "number": 140,
       "title": "P1: Integrate Plausible analytics",
