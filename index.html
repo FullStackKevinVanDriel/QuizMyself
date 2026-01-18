@@ -1793,6 +1793,8 @@
             outline-offset: 2px;
         }
 
+        /* Enhanced focus-visible handled in ACCESSIBILITY section */
+
         .roadmap-stats .stat-btn.active {
             background: rgba(79, 195, 247, 0.2);
             border-color: #4fc3f7;
@@ -3470,6 +3472,8 @@
             outline-offset: 2px;
         }
 
+        /* Enhanced focus-visible handled in ACCESSIBILITY section */
+
         /* Themes Section */
         .progress-themes {
             margin-bottom: 20px;
@@ -3489,6 +3493,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
+        /* Base focus-within style - enhanced version in ACCESSIBILITY section */
         .theme-card:focus-within {
             outline: 2px solid #4fc3f7;
             outline-offset: 2px;
@@ -3753,7 +3758,101 @@
             top: 0;
         }
 
-        /* Accessibility: Focus Indicators */
+        /* ========== ACCESSIBILITY: ENHANCED FOCUS INDICATORS ========== */
+        /* WCAG 2.4.7 Focus Visible (Level AA) - Highly visible focus indicators */
+
+        /* Base focus style for all interactive elements in modals */
+        /* Uses double-ring effect: white inner ring + colored outer ring for maximum visibility */
+        .modal button:focus-visible,
+        .modal a:focus-visible,
+        .modal select:focus-visible,
+        .modal input:focus-visible,
+        .modal textarea:focus-visible,
+        .modal [role="button"]:focus-visible,
+        .modal [tabindex="0"]:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Specific focus styles for roadmap/progress modal elements */
+        .roadmap-item:focus-visible,
+        .timeline-item:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        .progress-filter-chip:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Stats buttons focus */
+        .roadmap-stats .stat-btn:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* View toggle buttons focus */
+        .progress-view-btn:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Theme card focus */
+        .theme-card:focus-visible,
+        .theme-card:focus-within {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Milestone card focus */
+        .milestone-card:focus-visible,
+        .milestone-card-clickable:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Search and sort controls focus */
+        .progress-search-input:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 0;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3), 0 0 0 5px rgba(79, 195, 247, 0.5);
+        }
+
+        .progress-sort-select:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 0;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3), 0 0 0 5px rgba(79, 195, 247, 0.5);
+        }
+
+        .progress-search-clear:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Link button focus (used in no-results message) */
+        .link-btn:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Modal close button focus */
+        .modal-close:focus-visible {
+            outline: 3px solid #4fc3f7;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3), 0 0 0 7px rgba(79, 195, 247, 0.5);
+        }
+
+        /* Legacy :focus styles for older browsers (fallback) */
         .roadmap-item:focus,
         .timeline-item:focus {
             outline: 2px solid #4fc3f7;
@@ -3864,13 +3963,7 @@
             border: 0;
         }
 
-        /* Focus visible for keyboard users */
-        .roadmap-item:focus-visible,
-        .timeline-item:focus-visible,
-        .theme-card:focus-visible {
-            outline: 3px solid #4fc3f7;
-            outline-offset: 3px;
-        }
+        /* Focus visible styles moved to ENHANCED FOCUS INDICATORS section above */
 
         /* ========== ACCESSIBILITY: TOUCH TARGET SIZES ========== */
         /* WCAG 2.5.5 (AAA) recommends 44x44px touch targets */
