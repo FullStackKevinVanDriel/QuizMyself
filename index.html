@@ -6,6 +6,9 @@
     <meta name="deployed-sha" content="__COMMIT_SHA__">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
     <title>QuizMyself - Quiz Yourself on Anything</title>
+    <!-- Plausible Analytics - privacy-friendly, no cookies -->
+    <script defer data-domain="fullstackkevinvandriel.github.io" src="https://plausible.io/js/script.js"></script>
+    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
     <style>
         * {
             margin: 0;
@@ -947,6 +950,238 @@
             cursor: not-allowed;
         }
 
+        /* Coverage Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px 16px;
+            background: #1a1a2e;
+            color: #888;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .mode-btn:first-child {
+            border-right: 1px solid #333;
+        }
+
+        .mode-btn:hover {
+            background: #0f3460;
+            color: #ccc;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .mode-btn .pro-badge {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        /* Coverage Options Panel */
+        .coverage-options {
+            background: #0d1117;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .coverage-estimate {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .estimate-item {
+            text-align: center;
+        }
+
+        .estimate-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+
+        .estimate-label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* Coverage Progress UI */
+        .coverage-progress {
+            text-align: left;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-title {
+            color: #4fc3f7;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .progress-stats {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .progress-bar-container {
+            background: #1a1a2e;
+            border-radius: 8px;
+            height: 24px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 8px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            min-width: 40px;
+        }
+
+        .progress-bar-text {
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .section-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .section-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #1a1a2e;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        .section-item.completed {
+            border-left: 3px solid #4caf50;
+        }
+
+        .section-item.active {
+            border-left: 3px solid #4fc3f7;
+            background: #0f3460;
+        }
+
+        .section-item.pending {
+            border-left: 3px solid #555;
+            opacity: 0.7;
+        }
+
+        .section-item.failed {
+            border-left: 3px solid #ff6b6b;
+        }
+
+        .section-status {
+            font-size: 1rem;
+        }
+
+        .section-name {
+            flex: 1;
+            font-size: 0.85rem;
+            color: #ccc;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .section-questions {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .coverage-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-pause {
+            background: #f39c12;
+            color: #1a1a2e;
+        }
+
+        .btn-pause:hover {
+            background: #e67e22;
+        }
+
+        .btn-cancel-coverage {
+            background: #555;
+        }
+
+        .btn-cancel-coverage:hover {
+            background: #666;
+        }
+
+        /* Rate limit warning */
+        .rate-limit-warning {
+            background: #1a1a2e;
+            border: 1px solid #f39c12;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .rate-limit-warning .warning-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .rate-limit-warning .warning-message {
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .rate-limit-warning .resume-time {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
         /* Import Drop Zone */
         .drop-zone {
             border: 2px dashed #4fc3f7;
@@ -1586,6 +1821,11 @@
 
         .roadmap-item-refs a:hover {
             text-decoration: underline;
+        }
+
+        .roadmap-status {
+            font-size: 0.8rem;
+            font-weight: 500;
         }
 
         .roadmap-item-meta {
@@ -2393,38 +2633,158 @@
                 <div id="ai-gen-initial">
                     <p style="color: #ccc; margin-bottom: 15px;">Generate quiz questions from your source material using AI.</p>
 
-                    <div style="margin-bottom: 15px;">
-                        <label style="color: #888; font-size: 0.9rem;">Number of questions:</label>
-                        <select id="ai-question-count" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
-                            <option value="5">5 questions</option>
-                            <option value="10" selected>10 questions</option>
-                            <option value="15">15 questions</option>
-                            <option value="20">20 questions</option>
-                        </select>
+                    <!-- Mode Toggle -->
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="mode-btn-quick" onclick="setGenerationMode('quick')">Quick Quiz</button>
+                        <button class="mode-btn" id="mode-btn-coverage" onclick="setGenerationMode('coverage')">
+                            Full Coverage <span class="pro-badge">PRO</span>
+                        </button>
                     </div>
 
-                    <div style="margin-bottom: 15px;">
-                        <label style="color: #888; font-size: 0.9rem;">Difficulty:</label>
-                        <select id="ai-difficulty" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
-                            <option value="easy">Easy</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
+                    <!-- Quick Quiz Options -->
+                    <div id="quick-quiz-options">
+                        <div style="margin-bottom: 15px;">
+                            <label style="color: #888; font-size: 0.9rem;">Number of questions:</label>
+                            <select id="ai-question-count" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
+                                <option value="5">5 questions</option>
+                                <option value="10" selected>10 questions</option>
+                                <option value="15">15 questions</option>
+                                <option value="20">20 questions</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="color: #888; font-size: 0.9rem;">Difficulty:</label>
+                            <select id="ai-difficulty" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="color: #888; font-size: 0.9rem;">Focus area (optional):</label>
+                            <input type="text" id="ai-focus-area" placeholder="e.g., Chapter 3, Security concepts"
+                                style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; box-sizing: border-box;">
+                        </div>
+
+                        <div id="ai-gen-usage" class="usage-badge" style="margin-bottom: 15px;">
+                            <span id="ai-gen-usage-text">Loading usage...</span>
+                        </div>
+
+                        <button class="btn-generate" id="ai-start-generate-btn" onclick="startAIGeneration()" style="width: 100%; justify-content: center;">
+                            <span>✨</span> Generate Questions
+                        </button>
                     </div>
 
-                    <div style="margin-bottom: 20px;">
-                        <label style="color: #888; font-size: 0.9rem;">Focus area (optional):</label>
-                        <input type="text" id="ai-focus-area" placeholder="e.g., Chapter 3, Security concepts"
-                            style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; box-sizing: border-box;">
+                    <!-- Full Coverage Options -->
+                    <div id="coverage-options" style="display: none;">
+                        <div class="coverage-options">
+                            <p style="color: #888; font-size: 0.85rem; margin-bottom: 15px;">
+                                Generate questions from <strong style="color: #4fc3f7;">every section</strong> of your source material. Perfect for comprehensive exam prep.
+                            </p>
+
+                            <div style="margin-bottom: 15px;">
+                                <label style="color: #888; font-size: 0.9rem;">Questions per section:</label>
+                                <select id="coverage-questions-per-section" onchange="loadCoverageEstimate()" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
+                                    <option value="5" selected>5 questions</option>
+                                    <option value="7">7 questions</option>
+                                    <option value="10">10 questions</option>
+                                </select>
+                            </div>
+
+                            <div style="margin-bottom: 15px;">
+                                <label style="color: #888; font-size: 0.9rem;">Difficulty:</label>
+                                <select id="coverage-difficulty" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px;">
+                                    <option value="easy">Easy</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="hard">Hard</option>
+                                </select>
+                            </div>
+
+                            <!-- Estimate Display -->
+                            <div id="coverage-estimate-container" style="display: none;">
+                                <div class="coverage-estimate">
+                                    <div class="estimate-item">
+                                        <div class="estimate-value" id="estimate-sections">-</div>
+                                        <div class="estimate-label">Sections</div>
+                                    </div>
+                                    <div class="estimate-item">
+                                        <div class="estimate-value" id="estimate-questions">-</div>
+                                        <div class="estimate-label">Est. Questions</div>
+                                    </div>
+                                    <div class="estimate-item">
+                                        <div class="estimate-value" id="estimate-calls">-</div>
+                                        <div class="estimate-label">API Calls</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="coverage-estimate-loading" style="text-align: center; padding: 15px; color: #888; display: none;">
+                                Analyzing source...
+                            </div>
+
+                            <div id="coverage-block-reason" style="display: none; margin-top: 15px; padding: 12px; background: #1a1a2e; border: 1px solid #ff6b6b; border-radius: 8px; color: #ff6b6b; font-size: 0.85rem;"></div>
+                        </div>
+
+                        <div id="coverage-usage" class="usage-badge" style="margin-bottom: 15px;">
+                            <span id="coverage-usage-text">Loading usage...</span>
+                        </div>
+
+                        <button class="btn-generate" id="coverage-start-btn" onclick="startFullCoverage()" style="width: 100%; justify-content: center;">
+                            <span>📚</span> Start Full Coverage
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Generation State: Coverage Progress -->
+                <div id="ai-gen-coverage-progress" style="display: none;">
+                    <div class="coverage-progress">
+                        <div class="progress-header">
+                            <span class="progress-title">Full Coverage Generation</span>
+                            <span class="progress-stats"><span id="coverage-questions-count">0</span> questions</span>
+                        </div>
+
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="coverage-progress-bar" style="width: 0%;">
+                                <span class="progress-bar-text" id="coverage-progress-text">0%</span>
+                            </div>
+                        </div>
+
+                        <div class="section-list" id="coverage-section-list">
+                            <!-- Section items will be inserted here -->
+                        </div>
+
+                        <div id="coverage-rate-limit-warning" class="rate-limit-warning" style="display: none;">
+                            <div class="warning-icon">⏳</div>
+                            <div class="warning-message">Rate limit reached. Generation paused.</div>
+                            <div class="resume-time">Resume in <span id="rate-limit-countdown">6:00</span></div>
+                            <button class="btn" onclick="resumeCoverage()" style="margin-top: 10px;">Resume Now</button>
+                        </div>
+
+                        <div class="coverage-actions">
+                            <button class="btn btn-pause" id="coverage-pause-btn" onclick="pauseCoverage()" style="flex: 1;">Pause</button>
+                            <button class="btn btn-cancel-coverage" onclick="cancelCoverage()" style="flex: 1;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generation State: Coverage Complete -->
+                <div id="ai-gen-coverage-complete" style="display: none;">
+                    <div style="text-align: center; padding: 20px 0;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">✅</div>
+                        <h3 style="color: #4caf50; margin-bottom: 10px;">Full Coverage Complete!</h3>
+                        <p style="color: #888; margin-bottom: 20px;">Generated <span id="coverage-final-count">0</span> questions from <span id="coverage-final-sections">0</span> sections</p>
                     </div>
 
-                    <div id="ai-gen-usage" class="usage-badge" style="margin-bottom: 15px;">
-                        <span id="ai-gen-usage-text">Loading usage...</span>
+                    <div id="coverage-preview-questions" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                        <!-- Question previews will be inserted here -->
                     </div>
 
-                    <button class="btn-generate" id="ai-start-generate-btn" onclick="startAIGeneration()" style="width: 100%; justify-content: center;">
-                        <span>✨</span> Generate Questions
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-success" onclick="acceptCoverageQuestions()" style="flex: 1;">Accept & Import</button>
+                        <button class="btn" onclick="resetAIGeneration()" style="flex: 1; background: #555;">Start Over</button>
+                    </div>
                 </div>
 
                 <!-- Generation State: Loading -->
@@ -3327,9 +3687,11 @@
 
         const VANDROMEDA_API = 'https://www.vandromeda.com/api';
         const FREE_IMPORT_LIMIT = 50;
+        // TODO: Replace with LIVE Stripe price IDs before launch
+        // Current: TEST mode prices - Create live products in Stripe Dashboard first
         const STRIPE_PRICES = {
-            monthly: 'price_1SosTEE0LClU4PH9magrG0Bo',
-            yearly: 'price_1SosUDE0LClU4PH9ycCWqpQ5'
+            monthly: 'price_1SosTEE0LClU4PH9magrG0Bo',  // TODO: Replace with live price ID
+            yearly: 'price_1SosUDE0LClU4PH9ycCWqpQ5'   // TODO: Replace with live price ID
         };
         let currentKeyword = '';
 
@@ -3613,6 +3975,13 @@
         async function selectKeyword(keyword) {
             currentKeyword = keyword;
             localStorage.setItem('quizmyself_active_keyword', keyword);
+
+            // Clear source viewing state to prevent cross-keyword contamination
+            currentViewingSourceId = null;
+            if (typeof aiGenerationState !== 'undefined') {
+                aiGenerationState.sourceId = null;
+                aiGenerationState.sourceName = null;
+            }
 
             // Load progress for this keyword
             await loadState();
@@ -4295,13 +4664,18 @@
             document.body.style.overflow = 'hidden';
             document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading">Loading roadmap...</div>';
 
-            fetch('./roadmap.json')
+            // Fetch live feedback from Vandromeda API
+            fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`)
                 .then(response => {
-                    if (!response.ok) throw new Error('Roadmap not found');
+                    if (!response.ok) throw new Error('Failed to load roadmap');
                     return response.json();
                 })
                 .then(data => {
-                    renderRoadmap(data);
+                    if (data.success) {
+                        renderRoadmapFromFeedback(data);
+                    } else {
+                        throw new Error(data.error || 'Failed to load');
+                    }
                 })
                 .catch(error => {
                     console.error('Failed to load roadmap:', error);
@@ -4477,6 +4851,120 @@
             `;
         }
 
+        function renderRoadmapFromFeedback(data) {
+            const container = document.getElementById('roadmap-content');
+            const feedback = data.feedback || [];
+            const stats = data.stats || {};
+            let html = '';
+
+            // Stats bar
+            html += `
+                <div class="roadmap-stats">
+                    <div class="stat">
+                        <div class="stat-value">${stats.open || 0}</div>
+                        <div class="stat-label">Open</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${stats.in_progress || 0}</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${stats.resolved || 0}</div>
+                        <div class="stat-label">Resolved</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${stats.total || 0}</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                </div>
+            `;
+
+            // Group feedback by status
+            const openItems = feedback.filter(f => !f.is_resolved && f.status !== 'in_progress');
+            const inProgressItems = feedback.filter(f => f.status === 'in_progress');
+            const resolvedItems = feedback.filter(f => f.is_resolved);
+
+            // In Progress section
+            if (inProgressItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>In Progress</h3>';
+                inProgressItems.forEach(item => {
+                    html += renderFeedbackItem(item);
+                });
+                html += '</div>';
+            }
+
+            // Open section
+            if (openItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>Open</h3>';
+                openItems.forEach(item => {
+                    html += renderFeedbackItem(item);
+                });
+                html += '</div>';
+            }
+
+            // Resolved section
+            if (resolvedItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>Resolved</h3>';
+                resolvedItems.forEach(item => {
+                    html += renderFeedbackItem(item);
+                });
+                html += '</div>';
+            }
+
+            if (feedback.length === 0) {
+                html = `
+                    <div class="roadmap-empty">
+                        <p>No feedback yet! Be the first to help shape our priorities.</p>
+                        <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderFeedbackItem(item) {
+            const typeColors = {
+                'bug': 'bug',
+                'feature': 'enhancement',
+                'question': 'question',
+                'feedback': 'default'
+            };
+
+            const statusColors = {
+                'new': '#888',
+                'reviewed': '#4fc3f7',
+                'in_progress': '#ffa726',
+                'resolved': '#4caf50',
+                'wont_fix': '#666'
+            };
+
+            const colorClass = typeColors[item.type] || 'default';
+            const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
+
+            // Build reference numbers
+            let refHtml = `<span class="roadmap-item-refs">#${item.id}`;
+            if (item.github_issue && item.github_issue_url) {
+                refHtml += ` | <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7;">GH-${item.github_issue}</a>`;
+            }
+            refHtml += '</span>';
+
+            // Status badge
+            const statusHtml = `<span class="roadmap-status" style="color: ${statusColors[item.status] || '#888'};">${escapeHtml(item.status_label)}</span>`;
+
+            return `
+                <div class="roadmap-item">
+                    <div class="roadmap-item-header">
+                        <div class="roadmap-item-title">${refHtml}${escapeHtml(item.title)}</div>
+                        <div class="roadmap-item-meta">${statusHtml} | ${timeAgo}</div>
+                    </div>
+                    <div class="roadmap-labels">
+                        <span class="roadmap-label ${colorClass}">${escapeHtml(item.type)}</span>
+                    </div>
+                </div>
+            `;
+        }
+
         async function submitFeedback() {
             const type = document.getElementById('feedback-type').value;
             const message = document.getElementById('feedback-message').value.trim();
@@ -4562,9 +5050,9 @@
                     </div>
                     <div class="keyword-item-actions">
                         ${currentKeyword !== kw.keyword ?
-                            `<button class="btn btn-small btn-primary" onclick="selectKeyword('${kw.keyword}'); renderKeywordList();">Use</button>` :
+                            `<button class="btn btn-small btn-primary" onclick="selectKeyword('${escapeJsString(kw.keyword)}'); renderKeywordList();">Use</button>` :
                             '<span style="color: #4fc3f7; font-size: 0.8rem; padding: 5px 10px;">Active</span>'}
-                        <button class="btn btn-small btn-danger" onclick="confirmDeleteKeyword('${kw.keyword}')">Delete</button>
+                        <button class="btn btn-small btn-danger" onclick="confirmDeleteKeyword('${escapeJsString(kw.keyword)}')">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -4907,7 +5395,7 @@
                 const isActive = selectedCategories.has(cat);
                 const count = questions.filter(q => q.category === cat).length;
                 return `<button class="category-chip ${isActive ? 'active' : ''}"
-                    onclick="toggleCategory('${cat}')">${cat} (${count})</button>`;
+                    onclick="toggleCategory('${escapeJsString(cat)}')">${escapeHtml(cat)} (${count})</button>`;
             }).join('');
         }
 
@@ -4967,7 +5455,7 @@
                     const isActive = courseContentCategory === cat;
                     const count = questions.filter(q => q.category === cat).length;
                     return `<button class="category-chip ${isActive ? 'active' : ''}"
-                        onclick="filterCourseContent('${cat}')">${cat} (${count})</button>`;
+                        onclick="filterCourseContent('${escapeJsString(cat)}')">${escapeHtml(cat)} (${count})</button>`;
                 }).join('');
         }
 
@@ -5032,6 +5520,7 @@
                 showToast('No questions available. Select at least one category or import some questions!', 'warning');
                 return;
             }
+            plausible('Quiz Start', { props: { mode: 'practice', questions: filteredQuestions.length } });
             state.currentMode = 'practice';
             showScreen('quiz-screen');
             loadNextQuestion();
@@ -6286,6 +6775,8 @@
             updateStats();
             saveState(true);
 
+            plausible('Import', { props: { count: importCount, mode: replaceMode ? 'replace' : 'append' } });
+
             // Reset the form
             document.getElementById('import-textarea-modal').value = '';
             document.getElementById('import-preview-section-modal').style.display = 'none';
@@ -6604,7 +7095,20 @@
             sourceName: null,
             sourceText: null,
             questions: [],
-            usage: null
+            usage: null,
+            // Coverage mode state
+            coverageState: {
+                mode: 'quick',
+                jobId: null,
+                chunks: [],
+                currentChunk: 0,
+                completedChunks: [],
+                totalQuestions: 0,
+                status: 'idle',
+                isCancelled: false,
+                estimate: null,
+                allQuestions: []
+            }
         };
 
         async function generateQuizFromSource() {
@@ -6647,7 +7151,392 @@
             document.getElementById('ai-gen-preview').style.display = 'none';
             document.getElementById('ai-gen-chat').style.display = 'none';
             document.getElementById('ai-gen-error').style.display = 'none';
+            document.getElementById('ai-gen-coverage-progress').style.display = 'none';
+            document.getElementById('ai-gen-coverage-complete').style.display = 'none';
             aiGenerationState.questions = [];
+
+            // Reset coverage state
+            aiGenerationState.coverageState = {
+                mode: 'quick',
+                jobId: null,
+                chunks: [],
+                currentChunk: 0,
+                completedChunks: [],
+                totalQuestions: 0,
+                status: 'idle',
+                isCancelled: false,
+                estimate: null,
+                allQuestions: []
+            };
+
+            // Reset mode toggle to quick
+            setGenerationMode('quick');
+        }
+
+        // ========== COVERAGE MODE FUNCTIONS ==========
+
+        function setGenerationMode(mode) {
+            const quickBtn = document.getElementById('mode-btn-quick');
+            const coverageBtn = document.getElementById('mode-btn-coverage');
+            const quickOptions = document.getElementById('quick-quiz-options');
+            const coverageOptions = document.getElementById('coverage-options');
+
+            aiGenerationState.coverageState.mode = mode;
+
+            if (mode === 'quick') {
+                quickBtn.classList.add('active');
+                coverageBtn.classList.remove('active');
+                quickOptions.style.display = 'block';
+                coverageOptions.style.display = 'none';
+            } else {
+                quickBtn.classList.remove('active');
+                coverageBtn.classList.add('active');
+                quickOptions.style.display = 'none';
+                coverageOptions.style.display = 'block';
+                loadCoverageEstimate();
+            }
+        }
+
+        async function loadCoverageEstimate() {
+            const sourceId = aiGenerationState.sourceId;
+            if (!sourceId) return;
+
+            const questionsPerSection = document.getElementById('coverage-questions-per-section').value;
+
+            document.getElementById('coverage-estimate-loading').style.display = 'block';
+            document.getElementById('coverage-estimate-container').style.display = 'none';
+            document.getElementById('coverage-block-reason').style.display = 'none';
+            document.getElementById('coverage-start-btn').disabled = true;
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(
+                    `${VANDROMEDA_API}/quizmyself/coverage-estimate.php?sourceId=${sourceId}&questionsPerSection=${questionsPerSection}`,
+                    { headers: { 'Authorization': `Bearer ${token}` } }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to analyze source');
+                }
+
+                aiGenerationState.coverageState.estimate = data;
+                aiGenerationState.coverageState.chunks = data.sections;
+
+                document.getElementById('estimate-sections').textContent = data.sectionCount;
+                document.getElementById('estimate-questions').textContent = data.estimatedQuestions;
+                document.getElementById('estimate-calls').textContent = data.estimatedCalls;
+
+                document.getElementById('coverage-estimate-loading').style.display = 'none';
+                document.getElementById('coverage-estimate-container').style.display = 'block';
+
+                const usageText = `${data.usage.remaining} of ${data.usage.limit} coverage jobs (${data.usage.period})`;
+                document.getElementById('coverage-usage-text').textContent = usageText;
+
+                if (!data.canProceed) {
+                    document.getElementById('coverage-block-reason').textContent = data.blockReason;
+                    document.getElementById('coverage-block-reason').style.display = 'block';
+                    document.getElementById('coverage-start-btn').disabled = true;
+                } else {
+                    document.getElementById('coverage-start-btn').disabled = false;
+                }
+
+            } catch (err) {
+                console.error('Coverage estimate error:', err);
+                document.getElementById('coverage-estimate-loading').style.display = 'none';
+                document.getElementById('coverage-block-reason').textContent = err.message;
+                document.getElementById('coverage-block-reason').style.display = 'block';
+            }
+        }
+
+        async function startFullCoverage() {
+            const sourceId = aiGenerationState.sourceId;
+            const questionsPerSection = parseInt(document.getElementById('coverage-questions-per-section').value);
+            const difficulty = document.getElementById('coverage-difficulty').value;
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/coverage-init.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sourceId: sourceId,
+                        questionsPerSection: questionsPerSection,
+                        difficulty: difficulty
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || data.message || 'Failed to initialize coverage job');
+                }
+
+                aiGenerationState.coverageState.jobId = data.jobId;
+                aiGenerationState.coverageState.chunks = data.chunks;
+                aiGenerationState.coverageState.currentChunk = 0;
+                aiGenerationState.coverageState.completedChunks = [];
+                aiGenerationState.coverageState.totalQuestions = 0;
+                aiGenerationState.coverageState.allQuestions = [];
+                aiGenerationState.coverageState.status = 'generating';
+                aiGenerationState.coverageState.isCancelled = false;
+
+                showCoverageProgress();
+                processNextChunk();
+
+            } catch (err) {
+                console.error('Coverage init error:', err);
+                showToast(err.message, 'error');
+            }
+        }
+
+        function showCoverageProgress() {
+            document.getElementById('ai-gen-initial').style.display = 'none';
+            document.getElementById('ai-gen-coverage-progress').style.display = 'block';
+
+            const sectionList = document.getElementById('coverage-section-list');
+            sectionList.innerHTML = aiGenerationState.coverageState.chunks.map((chunk, idx) => `
+                <div class="section-item pending" id="section-item-${idx}">
+                    <span class="section-status">⏳</span>
+                    <span class="section-name">${escapeHtml(chunk.sectionName)}</span>
+                    <span class="section-questions" id="section-questions-${idx}">-</span>
+                </div>
+            `).join('');
+
+            updateCoverageProgress();
+        }
+
+        function updateCoverageProgress() {
+            const cs = aiGenerationState.coverageState;
+            const completed = cs.completedChunks.length;
+            const total = cs.chunks.length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('coverage-progress-bar').style.width = `${Math.max(percentage, 5)}%`;
+            document.getElementById('coverage-progress-text').textContent = `${percentage}%`;
+            document.getElementById('coverage-questions-count').textContent = cs.totalQuestions;
+        }
+
+        async function processNextChunk() {
+            const cs = aiGenerationState.coverageState;
+
+            if (cs.isCancelled || cs.status === 'paused') return;
+
+            if (cs.currentChunk >= cs.chunks.length) {
+                coverageComplete();
+                return;
+            }
+
+            const chunkIndex = cs.currentChunk;
+            const sectionItem = document.getElementById(`section-item-${chunkIndex}`);
+            if (sectionItem) {
+                sectionItem.className = 'section-item active';
+                sectionItem.querySelector('.section-status').textContent = '🔄';
+            }
+
+            try {
+                const token = await currentUser.getIdToken();
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/coverage-chunk.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        jobId: cs.jobId,
+                        chunkIndex: chunkIndex
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (response.status === 429) {
+                        handleRateLimit(data);
+                        return;
+                    }
+                    throw new Error(data.error || 'Failed to generate questions for section');
+                }
+
+                cs.completedChunks.push(chunkIndex);
+                cs.totalQuestions += data.questionsGenerated;
+                cs.allQuestions = cs.allQuestions.concat(data.questions);
+
+                if (sectionItem) {
+                    sectionItem.className = 'section-item completed';
+                    sectionItem.querySelector('.section-status').textContent = '✅';
+                    document.getElementById(`section-questions-${chunkIndex}`).textContent = `${data.questionsGenerated} Q`;
+                }
+
+                updateCoverageProgress();
+
+                if (data.progress && data.progress.jobComplete) {
+                    coverageComplete();
+                    return;
+                }
+
+                cs.currentChunk++;
+                setTimeout(() => processNextChunk(), 6000);
+
+            } catch (err) {
+                console.error('Chunk processing error:', err);
+                if (sectionItem) {
+                    sectionItem.className = 'section-item failed';
+                    sectionItem.querySelector('.section-status').textContent = '❌';
+                }
+                cs.currentChunk++;
+                setTimeout(() => processNextChunk(), 2000);
+            }
+        }
+
+        function handleRateLimit(data) {
+            const cs = aiGenerationState.coverageState;
+            cs.status = 'rate_limited';
+
+            document.getElementById('coverage-rate-limit-warning').style.display = 'block';
+            document.getElementById('coverage-pause-btn').style.display = 'none';
+
+            let seconds = data.retry_after || 360;
+            const countdownEl = document.getElementById('rate-limit-countdown');
+
+            const interval = setInterval(() => {
+                seconds--;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                countdownEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    resumeCoverage();
+                }
+            }, 1000);
+
+            cs.rateLimitInterval = interval;
+        }
+
+        function pauseCoverage() {
+            const cs = aiGenerationState.coverageState;
+            cs.status = 'paused';
+            document.getElementById('coverage-pause-btn').textContent = 'Resume';
+            document.getElementById('coverage-pause-btn').onclick = resumeCoverage;
+            updateCoverageJobStatus('pause');
+        }
+
+        function resumeCoverage() {
+            const cs = aiGenerationState.coverageState;
+            if (cs.rateLimitInterval) clearInterval(cs.rateLimitInterval);
+
+            cs.status = 'generating';
+            document.getElementById('coverage-rate-limit-warning').style.display = 'none';
+            document.getElementById('coverage-pause-btn').style.display = 'block';
+            document.getElementById('coverage-pause-btn').textContent = 'Pause';
+            document.getElementById('coverage-pause-btn').onclick = pauseCoverage;
+
+            processNextChunk();
+        }
+
+        async function cancelCoverage() {
+            if (!confirm('Are you sure you want to cancel? Generated questions will be lost.')) return;
+
+            const cs = aiGenerationState.coverageState;
+            cs.isCancelled = true;
+            cs.status = 'cancelled';
+            if (cs.rateLimitInterval) clearInterval(cs.rateLimitInterval);
+
+            await updateCoverageJobStatus('cancel');
+            resetAIGeneration();
+            showToast('Coverage generation cancelled', 'info');
+        }
+
+        async function updateCoverageJobStatus(action) {
+            try {
+                const token = await currentUser.getIdToken();
+                await fetch(`${VANDROMEDA_API}/quizmyself/coverage-status.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        jobId: aiGenerationState.coverageState.jobId,
+                        action: action
+                    })
+                });
+            } catch (err) {
+                console.error('Failed to update job status:', err);
+            }
+        }
+
+        function coverageComplete() {
+            const cs = aiGenerationState.coverageState;
+            cs.status = 'complete';
+
+            document.getElementById('ai-gen-coverage-progress').style.display = 'none';
+            document.getElementById('ai-gen-coverage-complete').style.display = 'block';
+
+            document.getElementById('coverage-final-count').textContent = cs.totalQuestions;
+            document.getElementById('coverage-final-sections').textContent = cs.completedChunks.length;
+
+            const container = document.getElementById('coverage-preview-questions');
+            const questions = cs.allQuestions.slice(0, 5);
+            container.innerHTML = questions.map((q, idx) => `
+                <div class="question-preview-card">
+                    <div class="question-text">${idx + 1}. ${escapeHtml(q.q)}</div>
+                    <div class="choices-preview">
+                        ${q.choices.map((c, i) => `
+                            <span class="${i === q.correct ? 'correct-choice' : ''}">${i === q.correct ? '✓ ' : ''}${escapeHtml(c)}</span>
+                        `).join(' | ')}
+                    </div>
+                </div>
+            `).join('');
+
+            if (cs.allQuestions.length > 5) {
+                container.innerHTML += `<p style="color: #888; text-align: center; padding: 10px;">... and ${cs.allQuestions.length - 5} more questions</p>`;
+            }
+        }
+
+        async function acceptCoverageQuestions() {
+            const cs = aiGenerationState.coverageState;
+            const generatedQuestions = cs.allQuestions;
+
+            if (!generatedQuestions || generatedQuestions.length === 0) {
+                showToast('No questions to import', 'warning');
+                return;
+            }
+
+            if (!state.isPro) {
+                const currentImported = state.importedQuestionCount || 0;
+                const newTotal = currentImported + generatedQuestions.length;
+                if (newTotal > FREE_IMPORT_LIMIT) {
+                    showToast('Free limit exceeded. Upgrade to Pro for unlimited imports.', 'warning');
+                    showUpgradeModal();
+                    return;
+                }
+            }
+
+            const startId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
+            generatedQuestions.forEach((q, idx) => {
+                q.id = startId + idx;
+                q.category = 'AI Generated';
+                // Add source reference so "View in Source" button works
+                q.sourceId = aiGenerationState.sourceId;
+                q.sourceName = aiGenerationState.sourceName;
+                questions.push(q);
+            });
+
+            state.importedQuestionCount = (state.importedQuestionCount || 0) + generatedQuestions.length;
+
+            updateStats();
+            initCategoryFilter();
+            saveState();
+
+            showToast(`Imported ${generatedQuestions.length} AI-generated questions!`, 'success');
+            closeAIGenerateModal();
+            closeSourcesModal();
         }
 
         async function loadAIUsage() {
@@ -6732,6 +7621,7 @@
                 aiGenerationState.questions = data.questions;
                 aiGenerationState.usage = data.usage;
                 updateUsageDisplay(data.usage);
+                plausible('AI Generate', { props: { questions: data.questions.length, difficulty: difficulty } });
                 showQuestionPreview();
 
             } catch (err) {
@@ -6880,6 +7770,9 @@
             generatedQuestions.forEach((q, idx) => {
                 q.id = startId + idx;
                 q.category = 'AI Generated';
+                // Add source reference so "View in Source" button works
+                q.sourceId = aiGenerationState.sourceId;
+                q.sourceName = aiGenerationState.sourceName;
                 questions.push(q);
             });
 
@@ -7151,6 +8044,7 @@
         }
 
         function showUpgradeModal(options = {}) {
+            plausible('Upgrade Click');
             document.getElementById('upgrade-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             document.getElementById('upgrade-error').style.display = 'none';
@@ -7542,7 +8436,7 @@
             const categories = [...new Set(demoQuestions.map(q => q.category))];
 
             container.innerHTML = categories.map(cat =>
-                `<button class="welcome-category-chip selected" onclick="toggleWelcomeCategory(this, '${cat}')">${cat}</button>`
+                `<button class="welcome-category-chip selected" onclick="toggleWelcomeCategory(this, '${escapeJsString(cat)}')">${escapeHtml(cat)}</button>`
             ).join('');
 
             // Start with all selected

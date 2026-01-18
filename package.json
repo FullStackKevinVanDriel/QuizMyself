@@ -1,6 +1,6 @@
 {
   "name": "quizmyself",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "Self-study quiz tool with custom content imports",
   "private": true,
   "scripts": {
@@ -8,7 +8,10 @@
     "version:check": "node tools/version-check.mjs",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "beta:guide": "node scripts/generate-beta-testing-guide.js",
+    "beta:email": "node scripts/generate-beta-email.js",
+    "beta:preview": "node scripts/generate-beta-email.js --preview"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",

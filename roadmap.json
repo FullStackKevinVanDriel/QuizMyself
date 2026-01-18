@@ -2,16 +2,501 @@
   "generated": "2026-01-18T03:19:56.265Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 4,
-    "open": 0,
-    "closed": 4,
+    "total": 38,
+    "open": 27,
+    "closed": 11,
     "byLabel": {
-      "bug": 3,
-      "feedback": 1
+      "roadmap": 20,
+      "enhancement": 14,
+      "feedback": 5,
+      "bug": 9
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 199,
+      "title": "[ABANDON] Web-first / desktop-priority mindset",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:34Z",
+      "updatedAt": "2026-01-18T06:13:34Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/199",
+      "feedback_id": null
+    },
+    {
+      "number": 197,
+      "title": "[ABANDON] Seasonal-only features",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:33Z",
+      "updatedAt": "2026-01-18T06:13:33Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/197",
+      "feedback_id": null
+    },
+    {
+      "number": 196,
+      "title": "[ABANDON] Organic-only acquisition strategy",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:32Z",
+      "updatedAt": "2026-01-18T06:13:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/196",
+      "feedback_id": null
+    },
+    {
+      "number": 195,
+      "title": "[ABANDON] Lax data handling practices",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:31Z",
+      "updatedAt": "2026-01-18T06:13:31Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/195",
+      "feedback_id": null
+    },
+    {
+      "number": 194,
+      "title": "[ABANDON] No quality controls on AI output",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:29Z",
+      "updatedAt": "2026-01-18T06:13:29Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/194",
+      "feedback_id": null
+    },
+    {
+      "number": 192,
+      "title": "[ABANDON] Ignoring retention mechanics",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:08Z",
+      "updatedAt": "2026-01-18T06:13:08Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/192",
+      "feedback_id": null
+    },
+    {
+      "number": 191,
+      "title": "[ABANDON] Broad market approach",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:07Z",
+      "updatedAt": "2026-01-18T06:13:07Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/191",
+      "feedback_id": null
+    },
+    {
+      "number": 190,
+      "title": "[ABANDON] Storing user-uploaded content long-term",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:06Z",
+      "updatedAt": "2026-01-18T06:13:06Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/190",
+      "feedback_id": null
+    },
+    {
+      "number": 189,
+      "title": "[ABANDON] Sole reliance on OpenAI",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:05Z",
+      "updatedAt": "2026-01-18T06:13:05Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/189",
+      "feedback_id": null
+    },
+    {
+      "number": 188,
+      "title": "[ABANDON] Unlimited AI generations without caps",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:03Z",
+      "updatedAt": "2026-01-18T06:13:03Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/188",
+      "feedback_id": null
+    },
+    {
+      "number": 185,
+      "title": "Responsive design + native app investment",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:34Z",
+      "updatedAt": "2026-01-18T06:12:34Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/185",
+      "feedback_id": null
+    },
+    {
+      "number": 184,
+      "title": "Evergreen content + community features",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:33Z",
+      "updatedAt": "2026-01-18T06:12:33Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/184",
+      "feedback_id": null
+    },
+    {
+      "number": 183,
+      "title": "Focus on teacher communities/Reddit/TikTok edu marketing",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:medium"
+      ],
+      "createdAt": "2026-01-18T06:12:32Z",
+      "updatedAt": "2026-01-18T06:12:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/183",
+      "feedback_id": null
+    },
+    {
+      "number": 182,
+      "title": "Audit data privacy/GDPR + consent flows",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:31Z",
+      "updatedAt": "2026-01-18T06:12:31Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/182",
+      "feedback_id": null
+    },
+    {
+      "number": 181,
+      "title": "Human review queue + user reports + quality scores",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:30Z",
+      "updatedAt": "2026-01-18T06:12:30Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/181",
+      "feedback_id": null
+    },
+    {
+      "number": 179,
+      "title": "Spaced repetition, streaks, and daily goals",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:high"
+      ],
+      "createdAt": "2026-01-18T06:12:03Z",
+      "updatedAt": "2026-01-18T06:12:03Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/179",
+      "feedback_id": null
+    },
+    {
+      "number": 177,
+      "title": "Niche specialization: Pick one vertical (e.g., med school)",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:12:02Z",
+      "updatedAt": "2026-01-18T06:12:02Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/177",
+      "feedback_id": null
+    },
+    {
+      "number": 176,
+      "title": "Fair-use policy + no long-term storage + copyright disclaimers",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:12:00Z",
+      "updatedAt": "2026-01-18T06:12:00Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/176",
+      "feedback_id": null
+    },
+    {
+      "number": 175,
+      "title": "Hard per-user AI generation caps",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:11:55Z",
+      "updatedAt": "2026-01-18T06:11:55Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/175",
+      "feedback_id": null
+    },
+    {
+      "number": 174,
+      "title": "Multi-provider AI support (Gemini/o3-mini backup)",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "roadmap",
+        "priority:critical"
+      ],
+      "createdAt": "2026-01-18T06:11:50Z",
+      "updatedAt": "2026-01-18T06:11:50Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/174",
+      "feedback_id": null
+    },
+    {
+      "number": 161,
+      "title": "[bug] this is good; now, when i look at the source mater...",
+      "state": "closed",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:33Z",
+      "updatedAt": "2026-01-18T04:52:24Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
+      "feedback_id": 7
+    },
+    {
+      "number": 159,
+      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
+      "state": "closed",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:32Z",
+      "updatedAt": "2026-01-18T04:45:36Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
+      "feedback_id": 9
+    },
+    {
+      "number": 163,
+      "title": "[bug] after my quiz questions have been AI generated, i ...",
+      "state": "closed",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:34Z",
+      "updatedAt": "2026-01-18T04:40:54Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/163",
+      "feedback_id": 5
+    },
+    {
+      "number": 162,
+      "title": "[feedback] Test - verifying feedback ID is returned",
+      "state": "closed",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:34Z",
+      "updatedAt": "2026-01-18T04:38:54Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
+      "feedback_id": 6
+    },
+    {
+      "number": 140,
+      "title": "P1: Integrate Plausible analytics",
+      "state": "closed",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T03:36:57Z",
+      "updatedAt": "2026-01-18T04:28:46Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
+      "feedback_id": null
+    },
+    {
+      "number": 160,
+      "title": "[feature] Test feature request - live roadmap should show th...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:32Z",
+      "updatedAt": "2026-01-18T04:05:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/160",
+      "feedback_id": 8
+    },
+    {
+      "number": 158,
+      "title": "[feedback] we need to upgrade the UI with something non-AI lo...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:31Z",
+      "updatedAt": "2026-01-18T04:05:31Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/158",
+      "feedback_id": 10
+    },
+    {
+      "number": 157,
+      "title": "[bug] Ensure all screens and modals are friendly for mon...",
+      "state": "open",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:30Z",
+      "updatedAt": "2026-01-18T04:05:30Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/157",
+      "feedback_id": 11
+    },
+    {
+      "number": 156,
+      "title": "[feature] Find a way to read YouTube transcripts to import a...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:30Z",
+      "updatedAt": "2026-01-18T04:05:30Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/156",
+      "feedback_id": 12
+    },
+    {
+      "number": 155,
+      "title": "[feature] For Claude cli agent generation to analyze this si...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:29Z",
+      "updatedAt": "2026-01-18T04:05:29Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/155",
+      "feedback_id": 13
+    },
+    {
+      "number": 154,
+      "title": "[feedback] When taking a quiz you are not being shown how man...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:28Z",
+      "updatedAt": "2026-01-18T04:05:28Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/154",
+      "feedback_id": 14
+    },
+    {
+      "number": 153,
+      "title": "[feedback] In the roadmap, everything says “just now”. Pr...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:27Z",
+      "updatedAt": "2026-01-18T04:05:27Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/153",
+      "feedback_id": 15
+    },
+    {
+      "number": 144,
+      "title": "P0: Fix XSS vulnerability in category onclick handlers",
+      "state": "closed",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T03:37:32Z",
+      "updatedAt": "2026-01-18T03:44:03Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
+      "feedback_id": null
+    },
+    {
+      "number": 143,
+      "title": "P0: Fix XSS vulnerability in keyword onclick handlers",
+      "state": "closed",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T03:37:30Z",
+      "updatedAt": "2026-01-18T03:44:03Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
+      "feedback_id": null
+    },
     {
       "number": 127,
       "title": "[feedback] some stuff works; some stuff does not",
@@ -70,6 +555,55 @@
     }
   ],
   "recentlyCompleted": [
+    {
+      "number": 161,
+      "title": "[bug] this is good; now, when i look at the source mater...",
+      "closedAt": "2026-01-18T04:52:24Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
+      "feedback_id": 7
+    },
+    {
+      "number": 159,
+      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
+      "closedAt": "2026-01-18T04:45:36Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
+      "feedback_id": 9
+    },
+    {
+      "number": 163,
+      "title": "[bug] after my quiz questions have been AI generated, i ...",
+      "closedAt": "2026-01-18T04:40:54Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/163",
+      "feedback_id": 5
+    },
+    {
+      "number": 162,
+      "title": "[feedback] Test - verifying feedback ID is returned",
+      "closedAt": "2026-01-18T04:38:54Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
+      "feedback_id": 6
+    },
+    {
+      "number": 140,
+      "title": "P1: Integrate Plausible analytics",
+      "closedAt": "2026-01-18T04:28:46Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
+      "feedback_id": null
+    },
+    {
+      "number": 144,
+      "title": "P0: Fix XSS vulnerability in category onclick handlers",
+      "closedAt": "2026-01-18T03:44:03Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
+      "feedback_id": null
+    },
+    {
+      "number": 143,
+      "title": "P0: Fix XSS vulnerability in keyword onclick handlers",
+      "closedAt": "2026-01-18T03:44:03Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
+      "feedback_id": null
+    },
     {
       "number": 127,
       "title": "[feedback] some stuff works; some stuff does not",
