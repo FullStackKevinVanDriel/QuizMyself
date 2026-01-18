@@ -192,6 +192,8 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 - [ ] Move inline styles to CSS classes
 - [ ] Add JSDoc comments to functions
 - [ ] Expand test coverage:
+  - [x] Category filtering
+  - [x] Exam mode
   - [ ] Auth flows (login, register, reset)
   - [ ] Import functionality
   - [ ] Progress sync
@@ -201,16 +203,17 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 
 ## Test Coverage
 
-**Existing:**
-- smoke.spec.js - Page load, navigation
+**Existing (19 tests):**
+- smoke.spec.js - Page load, welcome screen, hamburger menu
 - guest-mode.spec.js - Demo quiz without login
 - feedback.spec.js - Feedback modal and submission
+- category-filter.spec.js - Category toggle, All/None buttons, quiz filtering
+- exam-mode.spec.js - Start exam, progress tracking, 100% requirement display
 
 **Needed:**
-- Auth flows
+- Auth flows (login, register, reset)
 - Import (CSV, JSON, Q&A)
 - Progress sync
-- Category filtering
 - Source material linking
 - Pro tier activation
 
