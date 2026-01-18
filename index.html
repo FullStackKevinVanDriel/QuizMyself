@@ -6897,13 +6897,14 @@
                 return;
             }
 
+            // Close Sources modal first so selection modal is visible
+            document.getElementById('sources-modal').classList.add('hidden');
+
             let selectedKeyword;
 
             if (unlinkedQuizzes.length === 1) {
-                // Only one option - just use it directly, no modal needed
+                // Only one option - just use it directly
                 selectedKeyword = unlinkedQuizzes[0].keyword;
-                const displayName = unlinkedQuizzes[0].display_name || selectedKeyword;
-                showToast(`Linking "${sourceName}" to "${displayName}"...`, 'info');
             } else {
                 // Multiple options - show selection modal
                 const items = unlinkedQuizzes.map(kw => ({
