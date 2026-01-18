@@ -1573,6 +1573,21 @@
             flex: 1;
         }
 
+        .roadmap-item-refs {
+            color: #888;
+            font-size: 0.85rem;
+            font-weight: normal;
+            margin-right: 8px;
+        }
+
+        .roadmap-item-refs a {
+            text-decoration: none;
+        }
+
+        .roadmap-item-refs a:hover {
+            text-decoration: underline;
+        }
+
         .roadmap-item-meta {
             color: #666;
             font-size: 0.8rem;
@@ -4438,10 +4453,23 @@
 
             const timeAgo = issue.created_at ? formatRelativeTime(issue.created_at) : '';
 
+            // Build reference numbers (feedback ID and/or GitHub issue)
+            let refHtml = '';
+            if (issue.feedback_id || issue.number) {
+                const refs = [];
+                if (issue.feedback_id) refs.push(`#${issue.feedback_id}`);
+                if (issue.number && issue.url) {
+                    refs.push(`<a href="${escapeAttr(issue.url)}" target="_blank" rel="noopener" style="color: #4fc3f7;">GH-${issue.number}</a>`);
+                } else if (issue.number) {
+                    refs.push(`GH-${issue.number}`);
+                }
+                refHtml = `<span class="roadmap-item-refs">${refs.join(' | ')}</span>`;
+            }
+
             return `
                 <div class="roadmap-item">
                     <div class="roadmap-item-header">
-                        <div class="roadmap-item-title">${escapeHtml(issue.title)}</div>
+                        <div class="roadmap-item-title">${refHtml}${escapeHtml(issue.title)}</div>
                         <div class="roadmap-item-meta">${timeAgo}</div>
                     </div>
                     ${labelsHtml}
@@ -4491,7 +4519,10 @@
                     statusEl.style.display = 'block';
                     statusEl.style.background = 'rgba(79,195,247,0.1)';
                     statusEl.style.color = '#4fc3f7';
-                    statusEl.textContent = 'Thank you for your feedback! We will review it soon.';
+                    const feedbackId = result.feedback_id || result.id;
+                    statusEl.textContent = feedbackId
+                        ? `Thank you! Your feedback #${feedbackId} has been submitted.`
+                        : 'Thank you for your feedback! We will review it soon.';
                     submitBtn.textContent = 'Sent!';
                     // Close modal after delay
                     setTimeout(() => {

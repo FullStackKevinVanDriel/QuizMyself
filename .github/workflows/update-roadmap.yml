@@ -196,16 +196,29 @@ jobs:
               // -------------------------------------------------------------------
               // Format issues for output
               // -------------------------------------------------------------------
-              const formatIssue = (issue) => ({
-                number: issue.number,
-                title: issue.title,
-                state: issue.state,
-                labels: issue.labels.map(l => typeof l === 'string' ? l : l.name),
-                createdAt: issue.created_at,
-                updatedAt: issue.updated_at,
-                milestone: issue.milestone ? issue.milestone.title : null,
-                url: issue.html_url
-              });
+              const formatIssue = (issue) => {
+                // Extract feedback_id from issue body if present
+                // Format: <!-- feedback_id: 123 -->
+                let feedbackId = null;
+                if (issue.body) {
+                  const match = issue.body.match(/<!--\s*feedback_id:\s*(\d+)\s*-->/);
+                  if (match) {
+                    feedbackId = parseInt(match[1], 10);
+                  }
+                }
+
+                return {
+                  number: issue.number,
+                  title: issue.title,
+                  state: issue.state,
+                  labels: issue.labels.map(l => typeof l === 'string' ? l : l.name),
+                  createdAt: issue.created_at,
+                  updatedAt: issue.updated_at,
+                  milestone: issue.milestone ? issue.milestone.title : null,
+                  url: issue.html_url,
+                  feedback_id: feedbackId
+                };
+              };
 
               const formattedIssues = allFilteredIssues
                 .map(formatIssue)
@@ -215,11 +228,20 @@ jobs:
               // Get recently completed issues (last 30 days)
               // -------------------------------------------------------------------
               const recentlyCompleted = filteredClosedIssues
-                .map(issue => ({
-                  number: issue.number,
-                  title: issue.title,
-                  closedAt: issue.closed_at
-                }))
+                .map(issue => {
+                  let feedbackId = null;
+                  if (issue.body) {
+                    const match = issue.body.match(/<!--\s*feedback_id:\s*(\d+)\s*-->/);
+                    if (match) feedbackId = parseInt(match[1], 10);
+                  }
+                  return {
+                    number: issue.number,
+                    title: issue.title,
+                    closedAt: issue.closed_at,
+                    url: issue.html_url,
+                    feedback_id: feedbackId
+                  };
+                })
                 .sort((a, b) => new Date(b.closedAt) - new Date(a.closedAt))
                 .slice(0, 10); // Limit to 10 most recently completed
 
