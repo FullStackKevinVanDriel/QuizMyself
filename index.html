@@ -1773,6 +1773,39 @@
             text-transform: uppercase;
         }
 
+        .roadmap-stats .stat-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+
+        .roadmap-stats .stat-btn:hover {
+            background: rgba(79, 195, 247, 0.1);
+            border-color: rgba(79, 195, 247, 0.3);
+        }
+
+        .roadmap-stats .stat-btn:focus {
+            outline: 2px solid #4fc3f7;
+            outline-offset: 2px;
+        }
+
+        .roadmap-stats .stat-btn.active {
+            background: rgba(79, 195, 247, 0.2);
+            border-color: #4fc3f7;
+        }
+
+        .roadmap-stats .stat-btn.active .stat-value {
+            color: #fff;
+        }
+
+        .roadmap-stats .stat-btn.active .stat-label {
+            color: #4fc3f7;
+        }
+
         .roadmap-section {
             margin-bottom: 20px;
         }
@@ -6418,6 +6451,7 @@
         // Store current feedback data for filtering
         let currentFeedbackData = null;
         let activeFilters = new Set();
+        let activeStatusFilter = null; // null = all, or 'new', 'in_progress', 'resolved', 'reviewed', 'wont_fix'
 
         function renderRoadmapFromFeedback(data) {
             currentFeedbackData = data;
@@ -6447,29 +6481,34 @@
             // View Toggle (Story 6: themes vs status view)
             html += renderViewToggle();
 
-            // Stats bar with accessibility
+            // Stats bar with clickable status filters
+            const statusCounts = stats.by_status || {};
+            const openCount = (statusCounts.new || 0) + (statusCounts.reviewed || 0);
+            const inProgressCount = statusCounts.in_progress || 0;
+            const resolvedCount = (statusCounts.resolved || 0) + (statusCounts.wont_fix || 0);
+
             html += `
                 <div class="roadmap-stats" role="region" aria-label="Progress statistics">
-                    <div class="stat" role="group" aria-label="Open items">
-                        <div class="stat-value" aria-hidden="true">${stats.open || 0}</div>
+                    <button class="stat stat-btn ${activeStatusFilter === 'open' ? 'active' : ''}" role="group" aria-label="Open items" onclick="toggleStatusFilter('open')" aria-pressed="${activeStatusFilter === 'open'}">
+                        <div class="stat-value" aria-hidden="true">${openCount}</div>
                         <div class="stat-label">Open</div>
-                        <span class="sr-only">${stats.open || 0} open items</span>
-                    </div>
-                    <div class="stat" role="group" aria-label="Items in progress">
-                        <div class="stat-value" aria-hidden="true">${stats.in_progress || 0}</div>
+                        <span class="sr-only">${openCount} open items. Click to filter.</span>
+                    </button>
+                    <button class="stat stat-btn ${activeStatusFilter === 'in_progress' ? 'active' : ''}" role="group" aria-label="Items in progress" onclick="toggleStatusFilter('in_progress')" aria-pressed="${activeStatusFilter === 'in_progress'}">
+                        <div class="stat-value" aria-hidden="true">${inProgressCount}</div>
                         <div class="stat-label">In Progress</div>
-                        <span class="sr-only">${stats.in_progress || 0} items in progress</span>
-                    </div>
-                    <div class="stat" role="group" aria-label="Resolved items">
-                        <div class="stat-value" aria-hidden="true">${stats.resolved || 0}</div>
+                        <span class="sr-only">${inProgressCount} items in progress. Click to filter.</span>
+                    </button>
+                    <button class="stat stat-btn ${activeStatusFilter === 'resolved' ? 'active' : ''}" role="group" aria-label="Resolved items" onclick="toggleStatusFilter('resolved')" aria-pressed="${activeStatusFilter === 'resolved'}">
+                        <div class="stat-value" aria-hidden="true">${resolvedCount}</div>
                         <div class="stat-label">Resolved</div>
-                        <span class="sr-only">${stats.resolved || 0} resolved items</span>
-                    </div>
-                    <div class="stat" role="group" aria-label="Total items">
+                        <span class="sr-only">${resolvedCount} resolved items. Click to filter.</span>
+                    </button>
+                    <button class="stat stat-btn ${activeStatusFilter === null ? 'active' : ''}" role="group" aria-label="Total items" onclick="toggleStatusFilter(null)" aria-pressed="${activeStatusFilter === null}">
                         <div class="stat-value" aria-hidden="true">${stats.total || 0}</div>
                         <div class="stat-label">Total</div>
-                        <span class="sr-only">${stats.total || 0} total items</span>
-                    </div>
+                        <span class="sr-only">${stats.total || 0} total items. Click to show all.</span>
+                    </button>
                 </div>
             `;
 
@@ -6522,10 +6561,23 @@
                 return [...items].sort((a, b) => calculatePriorityScore(b) - calculatePriorityScore(a));
             };
 
-            // Apply category filter
-            const filteredFeedback = activeFilters.size === 0
+            // Apply category filter (type)
+            let filteredFeedback = activeFilters.size === 0
                 ? feedback
                 : feedback.filter(f => activeFilters.has(f.type));
+
+            // Apply status filter
+            if (activeStatusFilter) {
+                filteredFeedback = filteredFeedback.filter(f => {
+                    if (activeStatusFilter === 'open') {
+                        return f.status === 'new' || f.status === 'reviewed';
+                    } else if (activeStatusFilter === 'resolved') {
+                        return f.status === 'resolved' || f.status === 'wont_fix';
+                    } else {
+                        return f.status === activeStatusFilter;
+                    }
+                });
+            }
 
             // Group feedback by status and sort by priority
             const openItems = sortByPriority(filteredFeedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
@@ -6631,7 +6683,7 @@
             container.innerHTML = html;
         }
 
-        // Toggle category filter
+        // Toggle category filter (type: feature, bug, etc.)
         function toggleProgressFilter(type) {
             if (type === 'all') {
                 activeFilters.clear();
@@ -6644,6 +6696,23 @@
             if (currentFeedbackData) {
                 renderRoadmapFromFeedback(currentFeedbackData);
             }
+        }
+
+        // Toggle status filter (open, in_progress, resolved)
+        function toggleStatusFilter(status) {
+            if (activeStatusFilter === status) {
+                // Clicking same filter again clears it (show all)
+                activeStatusFilter = null;
+            } else {
+                activeStatusFilter = status;
+            }
+            // Re-render with current data
+            if (currentFeedbackData) {
+                renderRoadmapFromFeedback(currentFeedbackData);
+            }
+            // Announce change to screen readers
+            const label = status === 'open' ? 'open' : status === 'in_progress' ? 'in progress' : status === 'resolved' ? 'resolved' : 'all';
+            announceToScreenReader(`Showing ${label} items`);
         }
 
         // Toggle item expansion
