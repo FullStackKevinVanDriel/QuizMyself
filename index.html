@@ -9102,7 +9102,7 @@
         });
 
         // Event delegation for dynamically created elements (XSS-safe)
-        document.addEventListener('click', function(e) {
+        function handleDataAction(e) {
             const target = e.target.closest('[data-action]');
             if (!target) return;
 
@@ -9160,7 +9160,12 @@
                     filterCourseContent(category || null);
                     break;
             }
-        });
+        }
+
+        document.addEventListener('click', handleDataAction);
+
+        // Also handle clicks inside modals with stopPropagation (sources-modal, etc.)
+        document.getElementById('sources-modal').addEventListener('click', handleDataAction);
 
         // Load state from server
         async function loadState() {
