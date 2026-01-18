@@ -118,6 +118,15 @@ test.describe("AI Quiz Generation", () => {
   };
 
   test.beforeEach(async ({ page }) => {
+    // Inject currentUser mock before page loads
+    await page.addInitScript(() => {
+      window.currentUser = {
+        uid: "test-user-123",
+        email: "test@example.com",
+        getIdToken: async () => "mock-firebase-token",
+      };
+    });
+
     // Set up API mocks
     await page.route("**/api/quizmyself/usage.php", async (route) => {
       await route.fulfill({
@@ -260,6 +269,15 @@ test.describe("AI Quiz Generation", () => {
       await page.reload();
       await page.waitForLoadState("networkidle");
 
+      // Mock the currentUser object for Firebase auth
+      await page.evaluate(() => {
+        window.currentUser = {
+          uid: "test-user-123",
+          email: "test@example.com",
+          getIdToken: async () => "mock-firebase-token",
+        };
+      });
+
       // Dismiss welcome
       const welcomeScreen = page.locator("#welcome-screen");
       if (await welcomeScreen.isVisible()) {
@@ -321,7 +339,7 @@ test.describe("AI Quiz Generation", () => {
       );
     });
 
-    // Skip: timing-dependent test that's flaky
+    // Skip: requires Firebase auth mocking which is complex in E2E
     test.skip("shows loading state during generation", async ({ page }) => {
       await page.evaluate(() => {
         if (typeof window.openAIGenerateModal === "function") {
@@ -341,9 +359,15 @@ test.describe("AI Quiz Generation", () => {
       await expect(loadingState).toBeVisible({ timeout: 2000 });
     });
 
-    // Skip: requires API route mock to be active
+    // Skip: requires Firebase auth mocking which is complex in E2E
     test.skip("displays generated questions in preview", async ({ page }) => {
+      // Ensure currentUser mock is set before opening modal
       await page.evaluate(() => {
+        window.currentUser = {
+          uid: "test-user-123",
+          email: "test@example.com",
+          getIdToken: async () => "mock-firebase-token",
+        };
         if (typeof window.openAIGenerateModal === "function") {
           window.openAIGenerateModal(1, "Test Source Material");
         }
@@ -385,7 +409,7 @@ test.describe("AI Quiz Generation", () => {
     });
   });
 
-  // Skip: requires API mocking that's flaky in parallel runs
+  // Skip: requires Firebase auth mocking - test manually
   test.describe.skip("Chat Refinement", () => {
     test.beforeEach(async ({ page }) => {
       await page.evaluate(() => {
@@ -401,6 +425,15 @@ test.describe("AI Quiz Generation", () => {
 
       await page.reload();
       await page.waitForLoadState("networkidle");
+
+      // Mock Firebase currentUser
+      await page.evaluate(() => {
+        window.currentUser = {
+          uid: "test-user-123",
+          email: "test@example.com",
+          getIdToken: async () => "mock-firebase-token",
+        };
+      });
 
       const welcomeScreen = page.locator("#welcome-screen");
       if (await welcomeScreen.isVisible()) {
@@ -516,7 +549,7 @@ test.describe("AI Quiz Generation", () => {
     });
   });
 
-  // Skip: requires API mocking that's flaky in parallel runs
+  // Skip: requires Firebase auth mocking - test manually
   test.describe.skip("Accept Questions", () => {
     test.beforeEach(async ({ page }) => {
       await page.evaluate(() => {
@@ -534,6 +567,15 @@ test.describe("AI Quiz Generation", () => {
 
       await page.reload();
       await page.waitForLoadState("networkidle");
+
+      // Mock Firebase currentUser
+      await page.evaluate(() => {
+        window.currentUser = {
+          uid: "test-user-123",
+          email: "test@example.com",
+          getIdToken: async () => "mock-firebase-token",
+        };
+      });
 
       const welcomeScreen = page.locator("#welcome-screen");
       if (await welcomeScreen.isVisible()) {
@@ -597,7 +639,7 @@ test.describe("AI Quiz Generation", () => {
     });
   });
 
-  // Skip: requires API mocking that's flaky in parallel runs
+  // Skip: requires Firebase auth mocking - test manually
   test.describe.skip("Usage Limits", () => {
     test("displays current usage in modal", async ({ page }) => {
       await page.evaluate(() => {
@@ -613,6 +655,15 @@ test.describe("AI Quiz Generation", () => {
 
       await page.reload();
       await page.waitForLoadState("networkidle");
+
+      // Mock Firebase currentUser
+      await page.evaluate(() => {
+        window.currentUser = {
+          uid: "test-user-123",
+          email: "test@example.com",
+          getIdToken: async () => "mock-firebase-token",
+        };
+      });
 
       const welcomeScreen = page.locator("#welcome-screen");
       if (await welcomeScreen.isVisible()) {
@@ -665,6 +716,15 @@ test.describe("AI Quiz Generation", () => {
 
       await page.reload();
       await page.waitForLoadState("networkidle");
+
+      // Mock Firebase currentUser
+      await page.evaluate(() => {
+        window.currentUser = {
+          uid: "test-user-123",
+          email: "test@example.com",
+          getIdToken: async () => "mock-firebase-token",
+        };
+      });
 
       const welcomeScreen = page.locator("#welcome-screen");
       if (await welcomeScreen.isVisible()) {
@@ -735,7 +795,7 @@ test.describe("AI Quiz Generation", () => {
     });
   });
 
-  // Skip: requires API mocking that's flaky in parallel runs
+  // Skip: requires Firebase auth mocking - test manually
   test.describe.skip("Regenerate Questions", () => {
     test("can regenerate questions from preview", async ({ page }) => {
       await page.evaluate(() => {
@@ -751,6 +811,15 @@ test.describe("AI Quiz Generation", () => {
 
       await page.reload();
       await page.waitForLoadState("networkidle");
+
+      // Mock Firebase currentUser
+      await page.evaluate(() => {
+        window.currentUser = {
+          uid: "test-user-123",
+          email: "test@example.com",
+          getIdToken: async () => "mock-firebase-token",
+        };
+      });
 
       const welcomeScreen = page.locator("#welcome-screen");
       if (await welcomeScreen.isVisible()) {
