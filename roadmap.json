@@ -1,10 +1,10 @@
 {
-  "generated": "2026-01-18T08:51:28.575Z",
+  "generated": "2026-01-18T09:15:55.802Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 48,
-    "open": 33,
-    "closed": 15,
+    "open": 32,
+    "closed": 16,
     "byLabel": {
       "bug": 13,
       "enhancement": 20,
@@ -25,17 +25,17 @@
       "title": "M2: Beta Stability",
       "description": "Address beta feedback and stabilize the product.\n\n**Goals:**\n- Fix bugs reported by beta users\n- Improve data handling reliability\n- Mobile experience polished\n- Parser edge cases resolved\n\n**Exit Criteria:**\n- No critical bugs open\n- saveState race condition fixed\n- Mobile-friendly across all screens\n- Import reliability >95%",
       "dueDate": "2026-02-14T00:00:00Z",
-      "progress": 25,
-      "openIssues": 6,
-      "closedIssues": 2
+      "progress": 38,
+      "openIssues": 5,
+      "closedIssues": 3
     },
     {
       "title": "M3: Product-Market Fit",
       "description": "Validate product-market fit with retention features.\n\n**Goals:**\n- Spaced repetition algorithm live\n- Streaks and daily goals driving engagement\n- Niche vertical identified and targeted\n- GDPR/privacy compliance\n\n**Exit Criteria:**\n- 7-day retention >40%\n- Daily active users metric established\n- Privacy policy and consent flows compliant\n- Clear target audience defined",
       "dueDate": "2026-02-28T00:00:00Z",
-      "progress": 17,
-      "openIssues": 5,
-      "closedIssues": 1
+      "progress": 33,
+      "openIssues": 4,
+      "closedIssues": 2
     },
     {
       "title": "M4: Scale Ready",
@@ -52,9 +52,170 @@
       "progress": 0,
       "openIssues": 7,
       "closedIssues": 0
+    },
+    {
+      "title": "🚫 Anti-Patterns (DO NOT DO)",
+      "description": "Strategic anti-patterns to AVOID. These are not work items - they are reminders of approaches that will hurt the product.\n\n**Purpose:**\n- Document decisions we've consciously rejected\n- Prevent regression to bad patterns\n- Guide future development decisions\n\n**These issues should remain OPEN as permanent reminders.**",
+      "dueDate": null,
+      "progress": 0,
+      "openIssues": 10,
+      "closedIssues": 0
     }
   ],
   "issues": [
+    {
+      "number": 208,
+      "title": "feat: Expandable lifecycle timeline for progress items",
+      "state": "closed",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:28Z",
+      "updatedAt": "2026-01-18T09:15:47Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
+      "feedback_id": null
+    },
+    {
+      "number": 199,
+      "title": "[ABANDON] Web-first / desktop-priority mindset",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:34Z",
+      "updatedAt": "2026-01-18T09:04:42Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/199",
+      "feedback_id": null
+    },
+    {
+      "number": 197,
+      "title": "[ABANDON] Seasonal-only features",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:33Z",
+      "updatedAt": "2026-01-18T09:04:41Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/197",
+      "feedback_id": null
+    },
+    {
+      "number": 196,
+      "title": "[ABANDON] Organic-only acquisition strategy",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:32Z",
+      "updatedAt": "2026-01-18T09:04:39Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/196",
+      "feedback_id": null
+    },
+    {
+      "number": 195,
+      "title": "[ABANDON] Lax data handling practices",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:31Z",
+      "updatedAt": "2026-01-18T09:04:38Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/195",
+      "feedback_id": null
+    },
+    {
+      "number": 194,
+      "title": "[ABANDON] No quality controls on AI output",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:29Z",
+      "updatedAt": "2026-01-18T09:04:36Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/194",
+      "feedback_id": null
+    },
+    {
+      "number": 192,
+      "title": "[ABANDON] Ignoring retention mechanics",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:08Z",
+      "updatedAt": "2026-01-18T09:04:35Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/192",
+      "feedback_id": null
+    },
+    {
+      "number": 191,
+      "title": "[ABANDON] Broad market approach",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:07Z",
+      "updatedAt": "2026-01-18T09:04:34Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/191",
+      "feedback_id": null
+    },
+    {
+      "number": 190,
+      "title": "[ABANDON] Storing user-uploaded content long-term",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:06Z",
+      "updatedAt": "2026-01-18T09:04:32Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/190",
+      "feedback_id": null
+    },
+    {
+      "number": 189,
+      "title": "[ABANDON] Sole reliance on OpenAI",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:05Z",
+      "updatedAt": "2026-01-18T09:04:31Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/189",
+      "feedback_id": null
+    },
+    {
+      "number": 188,
+      "title": "[ABANDON] Unlimited AI generations without caps",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:03Z",
+      "updatedAt": "2026-01-18T09:04:29Z",
+      "milestone": "🚫 Anti-Patterns (DO NOT DO)",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/188",
+      "feedback_id": null
+    },
     {
       "number": 212,
       "title": "feat: Sort and search functionality for Progress modal",
@@ -135,19 +296,6 @@
       "updatedAt": "2026-01-18T08:38:02Z",
       "milestone": "M3: Product-Market Fit",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/210",
-      "feedback_id": null
-    },
-    {
-      "number": 208,
-      "title": "feat: Expandable lifecycle timeline for progress items",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:28Z",
-      "updatedAt": "2026-01-18T08:38:00Z",
-      "milestone": "M3: Product-Market Fit",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
       "feedback_id": null
     },
     {
@@ -434,146 +582,6 @@
       "feedback_id": null
     },
     {
-      "number": 199,
-      "title": "[ABANDON] Web-first / desktop-priority mindset",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:34Z",
-      "updatedAt": "2026-01-18T06:13:34Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/199",
-      "feedback_id": null
-    },
-    {
-      "number": 197,
-      "title": "[ABANDON] Seasonal-only features",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:33Z",
-      "updatedAt": "2026-01-18T06:13:33Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/197",
-      "feedback_id": null
-    },
-    {
-      "number": 196,
-      "title": "[ABANDON] Organic-only acquisition strategy",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:32Z",
-      "updatedAt": "2026-01-18T06:13:32Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/196",
-      "feedback_id": null
-    },
-    {
-      "number": 195,
-      "title": "[ABANDON] Lax data handling practices",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:31Z",
-      "updatedAt": "2026-01-18T06:13:31Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/195",
-      "feedback_id": null
-    },
-    {
-      "number": 194,
-      "title": "[ABANDON] No quality controls on AI output",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:29Z",
-      "updatedAt": "2026-01-18T06:13:29Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/194",
-      "feedback_id": null
-    },
-    {
-      "number": 192,
-      "title": "[ABANDON] Ignoring retention mechanics",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:08Z",
-      "updatedAt": "2026-01-18T06:13:08Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/192",
-      "feedback_id": null
-    },
-    {
-      "number": 191,
-      "title": "[ABANDON] Broad market approach",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:07Z",
-      "updatedAt": "2026-01-18T06:13:07Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/191",
-      "feedback_id": null
-    },
-    {
-      "number": 190,
-      "title": "[ABANDON] Storing user-uploaded content long-term",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:06Z",
-      "updatedAt": "2026-01-18T06:13:06Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/190",
-      "feedback_id": null
-    },
-    {
-      "number": 189,
-      "title": "[ABANDON] Sole reliance on OpenAI",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:05Z",
-      "updatedAt": "2026-01-18T06:13:05Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/189",
-      "feedback_id": null
-    },
-    {
-      "number": 188,
-      "title": "[ABANDON] Unlimited AI generations without caps",
-      "state": "open",
-      "labels": [
-        "roadmap",
-        "abandon"
-      ],
-      "createdAt": "2026-01-18T06:13:03Z",
-      "updatedAt": "2026-01-18T06:13:03Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/188",
-      "feedback_id": null
-    },
-    {
       "number": 161,
       "title": "[bug] this is good; now, when i look at the source mater...",
       "state": "closed",
@@ -727,6 +735,13 @@
   ],
   "recentlyCompleted": [
     {
+      "number": 208,
+      "title": "feat: Expandable lifecycle timeline for progress items",
+      "closedAt": "2026-01-18T09:15:47Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
+      "feedback_id": null
+    },
+    {
       "number": 212,
       "title": "feat: Sort and search functionality for Progress modal",
       "closedAt": "2026-01-18T08:51:17Z",
@@ -787,13 +802,6 @@
       "title": "P1: Integrate Plausible analytics",
       "closedAt": "2026-01-18T04:28:46Z",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
-      "feedback_id": null
-    },
-    {
-      "number": 144,
-      "title": "P0: Fix XSS vulnerability in category onclick handlers",
-      "closedAt": "2026-01-18T03:44:03Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
       "feedback_id": null
     }
   ]
