@@ -689,6 +689,10 @@
             z-index: 1000;
         }
 
+        .modal-overlay.modal-top {
+            z-index: 1500;
+        }
+
         .modal-content {
             background: #16213e;
             border-radius: 15px;
@@ -1702,7 +1706,7 @@
     <div id="toast-container" class="toast-container"></div>
 
     <!-- Confirm Modal -->
-    <div id="confirm-modal" class="modal-overlay hidden">
+    <div id="confirm-modal" class="modal-overlay modal-top hidden">
         <div class="confirm-modal-content">
             <div id="confirm-modal-icon" class="confirm-modal-icon"></div>
             <div id="confirm-modal-title" class="confirm-modal-title"></div>
@@ -1714,7 +1718,7 @@
     </div>
 
     <!-- Selection Modal -->
-    <div id="selection-modal" class="modal-overlay hidden">
+    <div id="selection-modal" class="modal-overlay modal-top hidden">
         <div class="selection-modal-content">
             <div class="selection-modal-header">
                 <h3 id="selection-modal-title">Select an Option</h3>
