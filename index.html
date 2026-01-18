@@ -6827,8 +6827,8 @@
         }
 
         async function acceptGeneratedQuestions() {
-            const questions = aiGenerationState.questions;
-            if (!questions || questions.length === 0) {
+            const generatedQuestions = aiGenerationState.questions;
+            if (!generatedQuestions || generatedQuestions.length === 0) {
                 showToast('No questions to import', 'warning');
                 return;
             }
@@ -6836,7 +6836,7 @@
             // Check free limit
             if (!state.isPro) {
                 const currentImported = state.importedQuestionCount || 0;
-                const newTotal = currentImported + questions.length;
+                const newTotal = currentImported + generatedQuestions.length;
                 if (newTotal > FREE_IMPORT_LIMIT) {
                     showToast(`Free limit exceeded. Upgrade to Pro for unlimited imports.`, 'warning');
                     showUpgradeModal();
@@ -6844,15 +6844,15 @@
                 }
             }
 
-            // Add to existing questions (questions is the global array)
+            // Add to global questions array
             const startId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
-            aiGenerationState.questions.forEach((q, idx) => {
+            generatedQuestions.forEach((q, idx) => {
                 q.id = startId + idx;
                 q.category = 'AI Generated';
                 questions.push(q);
             });
 
-            state.importedQuestionCount = (state.importedQuestionCount || 0) + aiGenerationState.questions.length;
+            state.importedQuestionCount = (state.importedQuestionCount || 0) + generatedQuestions.length;
 
             // Update UI
             updateStats();
