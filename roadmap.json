@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-18T08:33:18.114Z",
+  "generated": "2026-01-18T08:40:49.851Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 48,
@@ -25,16 +25,16 @@
       "title": "M2: Beta Stability",
       "description": "Address beta feedback and stabilize the product.\n\n**Goals:**\n- Fix bugs reported by beta users\n- Improve data handling reliability\n- Mobile experience polished\n- Parser edge cases resolved\n\n**Exit Criteria:**\n- No critical bugs open\n- saveState race condition fixed\n- Mobile-friendly across all screens\n- Import reliability >95%",
       "dueDate": "2026-02-14T00:00:00Z",
-      "progress": 0,
-      "openIssues": 3,
-      "closedIssues": 0
+      "progress": 13,
+      "openIssues": 7,
+      "closedIssues": 1
     },
     {
       "title": "M3: Product-Market Fit",
       "description": "Validate product-market fit with retention features.\n\n**Goals:**\n- Spaced repetition algorithm live\n- Streaks and daily goals driving engagement\n- Niche vertical identified and targeted\n- GDPR/privacy compliance\n\n**Exit Criteria:**\n- 7-day retention >40%\n- Daily active users metric established\n- Privacy policy and consent flows compliant\n- Clear target audience defined",
       "dueDate": "2026-02-28T00:00:00Z",
       "progress": 0,
-      "openIssues": 3,
+      "openIssues": 6,
       "closedIssues": 0
     },
     {
@@ -42,7 +42,7 @@
       "description": "Prepare infrastructure for growth and monetization.\n\n**Goals:**\n- Multi-provider AI (reduce OpenAI dependency)\n- Usage caps and fair-use policy\n- Content quality controls\n- Cost-sustainable AI operations\n\n**Exit Criteria:**\n- Gemini/Claude fallback working\n- Per-user AI caps enforced\n- Copyright disclaimers in place\n- Human review queue for flagged content",
       "dueDate": "2026-03-14T00:00:00Z",
       "progress": 0,
-      "openIssues": 4,
+      "openIssues": 5,
       "closedIssues": 0
     },
     {
@@ -50,11 +50,134 @@
       "description": "Public launch with full feature set.\n\n**Goals:**\n- PWA for mobile app experience\n- Quiz sharing via public links\n- Progress dashboard\n- Marketing-ready landing page\n\n**Exit Criteria:**\n- App installable on mobile\n- Shareable quiz links working\n- User dashboard with insights\n- Ready for public marketing push",
       "dueDate": "2026-03-31T00:00:00Z",
       "progress": 0,
-      "openIssues": 3,
+      "openIssues": 7,
       "closedIssues": 0
     }
   ],
   "issues": [
+    {
+      "number": 160,
+      "title": "[feature] Test feature request - live roadmap should show th...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:32Z",
+      "updatedAt": "2026-01-18T08:38:15Z",
+      "milestone": "M5: v1.0 Public Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/160",
+      "feedback_id": 8
+    },
+    {
+      "number": 158,
+      "title": "[feedback] we need to upgrade the UI with something non-AI lo...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:31Z",
+      "updatedAt": "2026-01-18T08:38:13Z",
+      "milestone": "M5: v1.0 Public Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/158",
+      "feedback_id": 10
+    },
+    {
+      "number": 156,
+      "title": "[feature] Find a way to read YouTube transcripts to import a...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:30Z",
+      "updatedAt": "2026-01-18T08:38:12Z",
+      "milestone": "M5: v1.0 Public Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/156",
+      "feedback_id": 12
+    },
+    {
+      "number": 155,
+      "title": "[feature] For Claude cli agent generation to analyze this si...",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:29Z",
+      "updatedAt": "2026-01-18T08:38:10Z",
+      "milestone": "M5: v1.0 Public Launch",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/155",
+      "feedback_id": 13
+    },
+    {
+      "number": 212,
+      "title": "feat: Sort and search functionality for Progress modal",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:45Z",
+      "updatedAt": "2026-01-18T08:38:03Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
+      "feedback_id": null
+    },
+    {
+      "number": 210,
+      "title": "feat: API endpoint for lifecycle/history data",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:43Z",
+      "updatedAt": "2026-01-18T08:38:02Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/210",
+      "feedback_id": null
+    },
+    {
+      "number": 208,
+      "title": "feat: Expandable lifecycle timeline for progress items",
+      "state": "open",
+      "labels": [
+        "enhancement"
+      ],
+      "createdAt": "2026-01-18T07:08:28Z",
+      "updatedAt": "2026-01-18T08:38:00Z",
+      "milestone": "M3: Product-Market Fit",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
+      "feedback_id": null
+    },
+    {
+      "number": 154,
+      "title": "[feedback] When taking a quiz you are not being shown how man...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:28Z",
+      "updatedAt": "2026-01-18T08:37:55Z",
+      "milestone": "M2: Beta Stability",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/154",
+      "feedback_id": 14
+    },
+    {
+      "number": 153,
+      "title": "[feedback] In the roadmap, everything says “just now”. Pr...",
+      "state": "open",
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:27Z",
+      "updatedAt": "2026-01-18T08:37:54Z",
+      "milestone": "M2: Beta Stability",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/153",
+      "feedback_id": 15
+    },
     {
       "number": 183,
       "title": "Focus on teacher communities/Reddit/TikTok edu marketing",
@@ -311,45 +434,6 @@
       "feedback_id": null
     },
     {
-      "number": 212,
-      "title": "feat: Sort and search functionality for Progress modal",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:45Z",
-      "updatedAt": "2026-01-18T07:08:45Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
-      "feedback_id": null
-    },
-    {
-      "number": 210,
-      "title": "feat: API endpoint for lifecycle/history data",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:43Z",
-      "updatedAt": "2026-01-18T07:08:43Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/210",
-      "feedback_id": null
-    },
-    {
-      "number": 208,
-      "title": "feat: Expandable lifecycle timeline for progress items",
-      "state": "open",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:28Z",
-      "updatedAt": "2026-01-18T07:08:28Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
-      "feedback_id": null
-    },
-    {
       "number": 199,
       "title": "[ABANDON] Web-first / desktop-priority mindset",
       "state": "open",
@@ -557,90 +641,6 @@
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
       "feedback_id": null
-    },
-    {
-      "number": 160,
-      "title": "[feature] Test feature request - live roadmap should show th...",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:32Z",
-      "updatedAt": "2026-01-18T04:05:32Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/160",
-      "feedback_id": 8
-    },
-    {
-      "number": 158,
-      "title": "[feedback] we need to upgrade the UI with something non-AI lo...",
-      "state": "open",
-      "labels": [
-        "user-feedback",
-        "feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:31Z",
-      "updatedAt": "2026-01-18T04:05:31Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/158",
-      "feedback_id": 10
-    },
-    {
-      "number": 156,
-      "title": "[feature] Find a way to read YouTube transcripts to import a...",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:30Z",
-      "updatedAt": "2026-01-18T04:05:30Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/156",
-      "feedback_id": 12
-    },
-    {
-      "number": 155,
-      "title": "[feature] For Claude cli agent generation to analyze this si...",
-      "state": "open",
-      "labels": [
-        "enhancement",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:29Z",
-      "updatedAt": "2026-01-18T04:05:29Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/155",
-      "feedback_id": 13
-    },
-    {
-      "number": 154,
-      "title": "[feedback] When taking a quiz you are not being shown how man...",
-      "state": "open",
-      "labels": [
-        "user-feedback",
-        "feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:28Z",
-      "updatedAt": "2026-01-18T04:05:28Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/154",
-      "feedback_id": 14
-    },
-    {
-      "number": 153,
-      "title": "[feedback] In the roadmap, everything says “just now”. Pr...",
-      "state": "open",
-      "labels": [
-        "user-feedback",
-        "feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:27Z",
-      "updatedAt": "2026-01-18T04:05:27Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/153",
-      "feedback_id": 15
     },
     {
       "number": 144,
