@@ -1,0 +1,184 @@
+# Sync Feedback Workflow
+# Fetches user feedback from Vandromeda API and creates GitHub issues for tracking
+# Runs hourly and can be triggered manually
+
+name: Sync Feedback to Issues
+
+on:
+  # Run every hour to check for new feedback
+  schedule:
+    - cron: '0 * * * *'
+
+  # Allow manual triggering from the Actions tab
+  workflow_dispatch:
+
+# Permissions needed to create issues in this repository
+permissions:
+  issues: write
+
+jobs:
+  sync-feedback:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Fetch unprocessed feedback from Vandromeda API
+      # The API returns feedback items that haven't been converted to issues yet
+      - name: Fetch and process feedback
+        env:
+          VANDROMEDA_API_TOKEN: ${{ secrets.VANDROMEDA_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fetching unprocessed feedback from Vandromeda API..."
+
+          # Fetch unprocessed feedback from the API
+          # The API requires authentication via Bearer token
+          RESPONSE=$(curl -s -f \
+            -H "Authorization: Bearer $VANDROMEDA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://www.vandromeda.com/api/feedback.php?product=quizmyself&unprocessed=true") || {
+            echo "Error: Failed to fetch feedback from API"
+            exit 1
+          }
+
+          echo "API Response received"
+
+          # Check if response is valid JSON and contains feedback items
+          FEEDBACK_COUNT=$(echo "$RESPONSE" | jq -r '.feedback | length // 0')
+
+          if [ "$FEEDBACK_COUNT" -eq 0 ]; then
+            echo "No unprocessed feedback found. Exiting."
+            exit 0
+          fi
+
+          echo "Found $FEEDBACK_COUNT unprocessed feedback item(s)"
+
+          # Process each feedback item
+          echo "$RESPONSE" | jq -c '.feedback[]' | while read -r ITEM; do
+            # Extract feedback details
+            FEEDBACK_ID=$(echo "$ITEM" | jq -r '.id')
+            FEEDBACK_TYPE=$(echo "$ITEM" | jq -r '.type // "feedback"')
+            MESSAGE=$(echo "$ITEM" | jq -r '.message // "No message provided"')
+            EMAIL=$(echo "$ITEM" | jq -r '.email // "Not provided"')
+            USER_AGENT=$(echo "$ITEM" | jq -r '.user_agent // "Unknown"')
+            URL=$(echo "$ITEM" | jq -r '.url // "Not provided"')
+            CONTEXT=$(echo "$ITEM" | jq -r '.context // "None"')
+            SUBMITTED_DATE=$(echo "$ITEM" | jq -r '.submitted_at // .created_at // "Unknown"')
+
+            echo "Processing feedback ID: $FEEDBACK_ID (type: $FEEDBACK_TYPE)"
+
+            # Create issue title: [{type}] {first 50 chars of message}...
+            # Truncate message to 50 characters for the title
+            TITLE_MESSAGE=$(echo "$MESSAGE" | head -c 50)
+            if [ ${#MESSAGE} -gt 50 ]; then
+              TITLE_MESSAGE="${TITLE_MESSAGE}..."
+            fi
+            ISSUE_TITLE="[${FEEDBACK_TYPE}] ${TITLE_MESSAGE}"
+
+            # Map feedback type to GitHub label
+            # bug -> bug, feature -> enhancement, question -> question, feedback -> feedback
+            case "$FEEDBACK_TYPE" in
+              "bug")
+                LABEL="bug"
+                ;;
+              "feature")
+                LABEL="enhancement"
+                ;;
+              "question")
+                LABEL="question"
+                ;;
+              *)
+                LABEL="feedback"
+                ;;
+            esac
+
+            # Create the issue body with all feedback details
+            # Using heredoc for proper formatting
+            ISSUE_BODY=$(cat << EOF
+          ## Feedback Details
+
+          **Type:** ${FEEDBACK_TYPE}
+          **Submitted:** ${SUBMITTED_DATE}
+
+          ### Message
+
+          ${MESSAGE}
+
+          ---
+
+          ### Additional Information
+
+          | Field | Value |
+          |-------|-------|
+          | Email | ${EMAIL} |
+          | URL | ${URL} |
+          | User Agent | ${USER_AGENT} |
+
+          ### Context
+
+          \`\`\`
+          ${CONTEXT}
+          \`\`\`
+
+          ---
+          *This issue was automatically created from user feedback via the Vandromeda API.*
+
+          <!-- feedback_id: ${FEEDBACK_ID} -->
+          EOF
+          )
+
+            # Step 2: Create GitHub issue using the GitHub API
+            # We use the gh CLI or direct API call with GITHUB_TOKEN
+            echo "Creating GitHub issue..."
+
+            ISSUE_RESPONSE=$(curl -s -f -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Content-Type: application/json" \
+              "https://api.github.com/repos/${{ github.repository }}/issues" \
+              -d "$(jq -n \
+                --arg title "$ISSUE_TITLE" \
+                --arg body "$ISSUE_BODY" \
+                --argjson labels "[\"$LABEL\", \"user-feedback\"]" \
+                '{title: $title, body: $body, labels: $labels}')" 2>&1) || {
+              echo "Warning: Failed to create issue for feedback ID $FEEDBACK_ID"
+              echo "Error: $ISSUE_RESPONSE"
+              # Continue processing other feedback items
+              continue
+            }
+
+            ISSUE_NUMBER=$(echo "$ISSUE_RESPONSE" | jq -r '.number')
+            ISSUE_URL=$(echo "$ISSUE_RESPONSE" | jq -r '.html_url')
+
+            if [ "$ISSUE_NUMBER" != "null" ] && [ -n "$ISSUE_NUMBER" ]; then
+              echo "Created issue #$ISSUE_NUMBER: $ISSUE_URL"
+
+              # Step 3: Mark feedback as processed in Vandromeda API
+              # This prevents the same feedback from being processed again
+              echo "Marking feedback $FEEDBACK_ID as processed..."
+
+              MARK_RESPONSE=$(curl -s -f -X POST \
+                -H "Authorization: Bearer $VANDROMEDA_API_TOKEN" \
+                -H "Content-Type: application/json" \
+                "https://www.vandromeda.com/api/feedback.php" \
+                -d "$(jq -n \
+                  --arg id "$FEEDBACK_ID" \
+                  --arg issue_number "$ISSUE_NUMBER" \
+                  --arg issue_url "$ISSUE_URL" \
+                  '{action: "mark_processed", id: $id, github_issue: $issue_number, github_issue_url: $issue_url}')" 2>&1) || {
+                echo "Warning: Failed to mark feedback $FEEDBACK_ID as processed"
+                echo "Error: $MARK_RESPONSE"
+                # Continue - the issue was created, we'll skip this feedback next time
+                # or it may be processed again (duplicate issue possible)
+                continue
+              }
+
+              echo "Successfully processed feedback ID: $FEEDBACK_ID"
+            else
+              echo "Warning: Issue creation returned unexpected response for feedback ID $FEEDBACK_ID"
+              echo "Response: $ISSUE_RESPONSE"
+            fi
+
+            echo "---"
+          done
+
+          echo "Feedback sync complete!"
