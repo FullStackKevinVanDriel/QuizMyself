@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="deployed-sha" content="__COMMIT_SHA__">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
     <title>QuizMyself - Quiz Yourself on Anything</title>
     <style>
         * {
@@ -3728,8 +3729,8 @@
             document.getElementById('feedback-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             // Pre-fill email if user is logged in
-            if (currentUserEmail) {
-                document.getElementById('feedback-email').value = currentUserEmail;
+            if (currentUser?.email) {
+                document.getElementById('feedback-email').value = currentUser.email;
                 document.getElementById('feedback-email-section').style.display = 'none';
             } else {
                 document.getElementById('feedback-email').value = '';
@@ -3757,7 +3758,7 @@
         async function submitFeedback() {
             const type = document.getElementById('feedback-type').value;
             const message = document.getElementById('feedback-message').value.trim();
-            const email = document.getElementById('feedback-email').value.trim() || currentUserEmail || '';
+            const email = document.getElementById('feedback-email').value.trim() || currentUser?.email || '';
             const statusEl = document.getElementById('feedback-status');
             const submitBtn = document.getElementById('feedback-submit');
 
@@ -4046,7 +4047,6 @@
                     } else {
                         // No questions for this keyword yet
                         state.importedQuestionCount = 0;
-                        console.log(`No custom questions for keyword: ${currentKeyword}`);
                     }
 
                     // Restore exam progress if exists
@@ -6782,7 +6782,7 @@
 
         // Check if there's a newer version being deployed
         async function checkDeploymentStatus() {
-            const REPO = 'FullStackKevinVanDriel/quizlet';
+            const REPO = 'FullStackKevinVanDriel/QuizMyself';
             const deployedSha = document.querySelector('meta[name="deployed-sha"]')?.content;
 
             try {
