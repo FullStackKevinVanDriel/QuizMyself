@@ -1,19 +1,32 @@
 {
-  "generated": "2026-01-18T06:56:32.865Z",
+  "generated": "2026-01-18T07:08:17.151Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 38,
-    "open": 27,
+    "total": 39,
+    "open": 28,
     "closed": 11,
     "byLabel": {
+      "bug": 10,
       "roadmap": 20,
       "enhancement": 14,
-      "feedback": 5,
-      "bug": 9
+      "feedback": 5
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 205,
+      "title": "bug: Fix overlay click to close Progress modal",
+      "state": "open",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T07:08:08Z",
+      "updatedAt": "2026-01-18T07:08:08Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/205",
+      "feedback_id": null
+    },
     {
       "number": 199,
       "title": "[ABANDON] Web-first / desktop-priority mindset",
