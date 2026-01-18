@@ -171,17 +171,17 @@ Magic numbers scattered throughout:
 
 ### Sprint 1: Security & Beta Launch
 
-- [ ] **Fix XSS vulnerabilities** (P0 Critical)
-  - [ ] Escape keyword onclick handlers
-  - [ ] Escape category button onclick handlers
-  - [ ] Consider event delegation pattern
+- [x] **Fix XSS vulnerabilities** (P0 Critical) ✅ PR #228
+  - [x] Escape keyword onclick handlers
+  - [x] Escape category button onclick handlers
+  - [x] Implemented event delegation pattern
 - [ ] **Recruit 5-10 beta users** (P1 High)
   - [ ] Personal outreach
   - [ ] Offer free Pro tier for feedback
-- [ ] **Integrate analytics** (P1 High)
-  - [ ] Choose provider (GA4 / Plausible / Mixpanel)
-  - [ ] Add page views and key event tracking
-  - [ ] Track: quiz starts, completions, imports, AI generations
+- [x] **Integrate analytics** (P1 High) ✅ PR #229
+  - [x] Choose provider (Plausible - privacy-friendly)
+  - [x] Add page views and key event tracking
+  - [x] Track: quiz starts, exam starts/completions, imports, AI generations
 
 ### Sprint 2: Stability
 
