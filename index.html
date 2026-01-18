@@ -2560,6 +2560,7 @@
             authToken = null;
             userKeywords = [];
             currentKeyword = '';
+            questions = [];
             state.isPro = false;
             state.licenseKey = null;
             state.email = null;
@@ -2568,6 +2569,7 @@
             localStorage.removeItem('quizmyself_active_keyword');
             document.getElementById('stats-bar').style.display = 'none';
             document.getElementById('hamburger-dropdown').classList.remove('show');
+            updateKeywordDropdown();
             updateHamburgerMenu();
             updateProUI();
             showScreen('menu-screen');
