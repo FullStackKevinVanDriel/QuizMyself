@@ -3559,11 +3559,62 @@
                 animation: none;
             }
 
+            /* Disable spinner animation - show static indicator instead */
+            .spinner {
+                animation: none;
+                border-top-color: #4fc3f7;
+                opacity: 0.7;
+            }
+
+            /* Disable skeleton loading animations */
+            .skeleton-item {
+                animation: none;
+            }
+
+            .skeleton-title,
+            .skeleton-badge,
+            .skeleton-content,
+            .skeleton-progress {
+                animation: none;
+                background: #2a2a4e;
+            }
+
+            /* Disable toast slide animations - show instantly */
+            .toast {
+                animation: none;
+            }
+
+            .toast.hiding {
+                animation: none;
+                opacity: 0;
+            }
+
+            /* Disable all non-essential transitions */
             .theme-card,
             .roadmap-item,
             .item-progress-fill,
-            .theme-progress-fill {
-                transition: none;
+            .theme-progress-fill,
+            .progress-view-btn,
+            .progress-filter-chip,
+            .automation-toggle-slider,
+            .automation-toggle-slider:before,
+            .skip-link,
+            .milestone-progress-circle,
+            .toast-close,
+            .feature-signin-prompt a,
+            button,
+            a,
+            input,
+            select {
+                transition: none !important;
+            }
+
+            /* Preserve essential visual feedback without animation */
+            .progress-bar-fill,
+            .item-progress-fill,
+            .theme-progress-fill,
+            #sources-storage-bar {
+                transition: none !important;
             }
         }
 
