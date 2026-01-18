@@ -1512,6 +1512,152 @@
             font-size: 0.85rem;
         }
 
+        /* Roadmap Modal Styles */
+        .roadmap-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #0f3460;
+            border-radius: 8px;
+        }
+
+        .roadmap-stats .stat {
+            text-align: center;
+        }
+
+        .roadmap-stats .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+
+        .roadmap-stats .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .roadmap-section {
+            margin-bottom: 20px;
+        }
+
+        .roadmap-section h3 {
+            color: #4fc3f7;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+
+        .roadmap-item {
+            background: #0f3460;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #4fc3f7;
+        }
+
+        .roadmap-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .roadmap-item-title {
+            color: #eaeaea;
+            font-weight: 500;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .roadmap-item-meta {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .roadmap-labels {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .roadmap-label {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .roadmap-label.bug {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+        }
+
+        .roadmap-label.enhancement {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .roadmap-label.question {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+        }
+
+        .roadmap-label.feature {
+            background: rgba(156, 39, 176, 0.2);
+            color: #ce93d8;
+        }
+
+        .roadmap-label.default {
+            background: rgba(158, 158, 158, 0.2);
+            color: #9e9e9e;
+        }
+
+        .roadmap-progress {
+            margin-top: 10px;
+        }
+
+        .roadmap-progress-bar {
+            height: 6px;
+            background: #1a1a2e;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .roadmap-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4fc3f7, #81d4fa);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .roadmap-progress-text {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .roadmap-empty {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+        }
+
+        .roadmap-empty p {
+            margin-bottom: 15px;
+        }
+
+        .roadmap-loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -1814,6 +1960,7 @@
                         <button class="menu-signin-btn" onclick="submitKeywordFromMenu()">Go</button>
                     </div>
                     <div class="menu-divider"></div>
+                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Roadmap</div>
                     <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
                 <!-- Signed In State -->
@@ -1831,6 +1978,7 @@
                     <div class="menu-item" onclick="showSourcesModal(); closeHamburgerMenu();">Quiz Data</div>
                     <div class="menu-item" onclick="handleSignOut();">Sign Out</div>
                     <div class="menu-divider"></div>
+                    <div class="menu-item" onclick="showRoadmapModal(); closeHamburgerMenu();">Roadmap</div>
                     <div class="menu-item" onclick="showFeedbackModal(); closeHamburgerMenu();">Send Feedback</div>
                 </div>
             </div>
@@ -2480,6 +2628,19 @@
                     <button class="btn" onclick="closeFeedbackModal()" style="flex: 1;">Cancel</button>
                     <button class="btn btn-primary" onclick="submitFeedback()" id="feedback-submit" style="flex: 1;">Send Feedback</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roadmap Modal -->
+    <div id="roadmap-modal" class="modal-overlay hidden" onclick="closeRoadmapModalOnOverlay(event)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>Roadmap & Issues</h2>
+                <button class="modal-close" onclick="closeRoadmapModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="roadmap-content">
+                <!-- Dynamic content loaded here -->
             </div>
         </div>
     </div>
@@ -3765,6 +3926,181 @@
             if (event.target === event.currentTarget) {
                 closeFeedbackModal();
             }
+        }
+
+        // Roadmap Modal Functions
+        function showRoadmapModal() {
+            document.getElementById('roadmap-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading">Loading roadmap...</div>';
+
+            fetch('./roadmap.json')
+                .then(response => {
+                    if (!response.ok) throw new Error('Roadmap not found');
+                    return response.json();
+                })
+                .then(data => {
+                    renderRoadmap(data);
+                })
+                .catch(error => {
+                    console.error('Failed to load roadmap:', error);
+                    document.getElementById('roadmap-content').innerHTML = `
+                        <div class="roadmap-empty">
+                            <p>Roadmap coming soon! Submit feedback to help shape our priorities.</p>
+                            <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
+                        </div>
+                    `;
+                });
+        }
+
+        function closeRoadmapModal() {
+            document.getElementById('roadmap-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeRoadmapModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeRoadmapModal();
+            }
+        }
+
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSecs = Math.floor(diffMs / 1000);
+            const diffMins = Math.floor(diffSecs / 60);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+            const diffWeeks = Math.floor(diffDays / 7);
+            const diffMonths = Math.floor(diffDays / 30);
+
+            if (diffDays < 1) {
+                if (diffHours < 1) return 'just now';
+                return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            } else if (diffDays === 1) {
+                return 'yesterday';
+            } else if (diffDays < 7) {
+                return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            } else if (diffWeeks < 4) {
+                return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
+            } else {
+                return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+            }
+        }
+
+        function renderRoadmap(data) {
+            const container = document.getElementById('roadmap-content');
+            let html = '';
+
+            // Stats bar
+            const openCount = data.issues?.filter(i => i.state === 'open').length || 0;
+            const closedCount = data.issues?.filter(i => i.state === 'closed').length || 0;
+            const totalCount = openCount + closedCount;
+
+            html += `
+                <div class="roadmap-stats">
+                    <div class="stat">
+                        <div class="stat-value">${openCount}</div>
+                        <div class="stat-label">Open</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${closedCount}</div>
+                        <div class="stat-label">Closed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${totalCount}</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                </div>
+            `;
+
+            // Milestones section
+            if (data.milestones && data.milestones.length > 0) {
+                html += '<div class="roadmap-section"><h3>Milestones</h3>';
+                data.milestones.forEach(milestone => {
+                    const progress = milestone.open_issues + milestone.closed_issues > 0
+                        ? Math.round((milestone.closed_issues / (milestone.open_issues + milestone.closed_issues)) * 100)
+                        : 0;
+                    html += `
+                        <div class="roadmap-item">
+                            <div class="roadmap-item-header">
+                                <div class="roadmap-item-title">${escapeHtml(milestone.title)}</div>
+                                <div class="roadmap-item-meta">${progress}%</div>
+                            </div>
+                            ${milestone.description ? `<div style="color: #888; font-size: 0.85rem;">${escapeHtml(milestone.description)}</div>` : ''}
+                            <div class="roadmap-progress">
+                                <div class="roadmap-progress-bar">
+                                    <div class="roadmap-progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="roadmap-progress-text">${milestone.closed_issues} of ${milestone.open_issues + milestone.closed_issues} completed</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            // Open issues section
+            const openIssues = data.issues?.filter(i => i.state === 'open') || [];
+            if (openIssues.length > 0) {
+                html += '<div class="roadmap-section"><h3>Open Issues</h3>';
+                openIssues.forEach(issue => {
+                    html += renderIssueItem(issue);
+                });
+                html += '</div>';
+            }
+
+            // Recently completed section
+            const closedIssues = data.issues?.filter(i => i.state === 'closed').slice(0, 5) || [];
+            if (closedIssues.length > 0) {
+                html += '<div class="roadmap-section"><h3>Recently Completed</h3>';
+                closedIssues.forEach(issue => {
+                    html += renderIssueItem(issue);
+                });
+                html += '</div>';
+            }
+
+            if (!data.milestones?.length && !data.issues?.length) {
+                html = `
+                    <div class="roadmap-empty">
+                        <p>Roadmap coming soon! Submit feedback to help shape our priorities.</p>
+                        <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderIssueItem(issue) {
+            const labelColors = {
+                'bug': 'bug',
+                'enhancement': 'enhancement',
+                'question': 'question',
+                'feature': 'feature'
+            };
+
+            let labelsHtml = '';
+            if (issue.labels && issue.labels.length > 0) {
+                labelsHtml = '<div class="roadmap-labels">' + issue.labels.map(label => {
+                    const labelName = typeof label === 'string' ? label : label.name;
+                    const colorClass = labelColors[labelName.toLowerCase()] || 'default';
+                    return `<span class="roadmap-label ${colorClass}">${escapeHtml(labelName)}</span>`;
+                }).join('') + '</div>';
+            }
+
+            const timeAgo = issue.created_at ? formatRelativeTime(issue.created_at) : '';
+
+            return `
+                <div class="roadmap-item">
+                    <div class="roadmap-item-header">
+                        <div class="roadmap-item-title">${escapeHtml(issue.title)}</div>
+                        <div class="roadmap-item-meta">${timeAgo}</div>
+                    </div>
+                    ${labelsHtml}
+                </div>
+            `;
         }
 
         async function submitFeedback() {
@@ -5332,6 +5668,9 @@
                 .replace(/\\/g, '\\\\')
                 .replace(/'/g, "\\'")
                 .replace(/"/g, '\\"')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r')
+                .replace(/\t/g, '\\t')
                 .replace(/</g, '\\x3c')
                 .replace(/>/g, '\\x3e')
                 .replace(/&/g, '\\x26');
@@ -6122,8 +6461,11 @@
         }
 
         async function linkSourceToQuiz(sourceId, sourceName) {
+            console.log('[DEBUG] linkSourceToQuiz called:', sourceId, sourceName);
+
             // Find quizzes without a linked source
             const unlinkedQuizzes = userKeywords.filter(kw => !kw.source_id);
+            console.log('[DEBUG] unlinkedQuizzes:', unlinkedQuizzes);
 
             if (unlinkedQuizzes.length === 0) {
                 showToast('All your quizzes already have sources linked. Create a new quiz first.', 'info');
