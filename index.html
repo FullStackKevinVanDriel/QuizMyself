@@ -9164,8 +9164,8 @@
 
         document.addEventListener('click', handleDataAction);
 
-        // Also handle clicks inside modals with stopPropagation (sources-modal, etc.)
-        document.getElementById('sources-modal').addEventListener('click', handleDataAction);
+        // Handle clicks inside sources-list (inside modal-content which has stopPropagation)
+        document.getElementById('sources-list').addEventListener('click', handleDataAction);
 
         // Load state from server
         async function loadState() {
