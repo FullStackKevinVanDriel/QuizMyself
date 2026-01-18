@@ -1,0 +1,166 @@
+# =============================================================================
+# Sync GitHub Issues to Vandromeda Feedback Database
+# =============================================================================
+# This workflow ensures all GitHub issues have a corresponding entry in the
+# Vandromeda feedback database, creating a 1:1 relationship.
+#
+# Triggers:
+#   - Issue opened (creates feedback entry)
+#   - Issue edited (updates feedback entry)
+#
+# Required secrets:
+#   - VANDROMEDA_API_TOKEN: Authentication token for Vandromeda API
+# =============================================================================
+
+name: Sync Issues to Feedback DB
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+
+permissions:
+  issues: write
+
+jobs:
+  sync-to-feedback:
+    runs-on: ubuntu-latest
+
+    # Skip if issue already has a feedback_id (was created from user feedback)
+    if: "!contains(github.event.issue.body || '', '<!-- feedback_id:')"
+
+    steps:
+      # =======================================================================
+      # Step 1: Determine feedback type from labels
+      # =======================================================================
+      - name: Determine Type
+        id: type
+        run: |
+          LABELS='${{ toJson(github.event.issue.labels.*.name) }}'
+
+          # Default type
+          TYPE="feedback"
+
+          # Check labels for type hints
+          if echo "$LABELS" | grep -qi '"bug"'; then
+            TYPE="bug"
+          elif echo "$LABELS" | grep -qi '"enhancement"'; then
+            TYPE="feature"
+          elif echo "$LABELS" | grep -qi '"feature"'; then
+            TYPE="feature"
+          elif echo "$LABELS" | grep -qi '"question"'; then
+            TYPE="question"
+          fi
+
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "Determined type: $TYPE"
+
+      # =======================================================================
+      # Step 2: Create feedback entry in Vandromeda
+      # =======================================================================
+      - name: Create Feedback Entry
+        id: create
+        env:
+          VANDROMEDA_API_TOKEN: ${{ secrets.VANDROMEDA_API_TOKEN }}
+        run: |
+          echo "Creating feedback entry for issue #${{ github.event.issue.number }}..."
+
+          # Prepare the message (issue body, truncated if very long)
+          BODY='${{ github.event.issue.body }}'
+          if [ ${#BODY} -gt 5000 ]; then
+            BODY="${BODY:0:5000}..."
+          fi
+
+          # Create feedback entry via API
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Authorization: Bearer $VANDROMEDA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://www.vandromeda.com/api/feedback.php" \
+            -d "$(jq -n \
+              --arg action "create_from_issue" \
+              --arg product "quizmyself" \
+              --arg type "${{ steps.type.outputs.type }}" \
+              --arg title "${{ github.event.issue.title }}" \
+              --arg message "$BODY" \
+              --argjson github_issue "${{ github.event.issue.number }}" \
+              --arg github_issue_url "${{ github.event.issue.html_url }}" \
+              '{
+                action: $action,
+                product: $product,
+                type: $type,
+                title: $title,
+                message: $message,
+                github_issue: $github_issue,
+                github_issue_url: $github_issue_url
+              }')" 2>&1)
+
+          # Split response
+          HTTP_BODY=$(echo "$RESPONSE" | sed '$d')
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+
+          echo "API Response Status: $HTTP_STATUS"
+          echo "API Response: $HTTP_BODY"
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            FEEDBACK_ID=$(echo "$HTTP_BODY" | jq -r '.feedback_id // .id // empty')
+            if [ -n "$FEEDBACK_ID" ] && [ "$FEEDBACK_ID" != "null" ]; then
+              echo "feedback_id=$FEEDBACK_ID" >> $GITHUB_OUTPUT
+              echo "success=true" >> $GITHUB_OUTPUT
+              echo "Created feedback entry with ID: $FEEDBACK_ID"
+            else
+              echo "success=false" >> $GITHUB_OUTPUT
+              echo "::warning::API returned success but no feedback_id"
+            fi
+          else
+            echo "success=false" >> $GITHUB_OUTPUT
+            echo "::error::Failed to create feedback entry. Status: $HTTP_STATUS"
+          fi
+
+      # =======================================================================
+      # Step 3: Update issue body with feedback_id tag
+      # =======================================================================
+      - name: Update Issue with Feedback ID
+        if: steps.create.outputs.success == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FEEDBACK_ID="${{ steps.create.outputs.feedback_id }}"
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+
+          echo "Updating issue #$ISSUE_NUMBER with feedback_id: $FEEDBACK_ID"
+
+          # Get current issue body
+          CURRENT_BODY='${{ github.event.issue.body }}'
+
+          # Append feedback_id tag
+          NEW_BODY="${CURRENT_BODY}
+
+---
+<!-- feedback_id: ${FEEDBACK_ID} -->"
+
+          # Update the issue
+          curl -s -X PATCH \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER" \
+            -d "$(jq -n --arg body "$NEW_BODY" '{body: $body}')"
+
+          echo "Issue updated with feedback_id tag"
+
+      # =======================================================================
+      # Step 4: Summary
+      # =======================================================================
+      - name: Job Summary
+        if: always()
+        run: |
+          echo "## Issue → Feedback Sync" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Issue | #${{ github.event.issue.number }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Title | ${{ github.event.issue.title }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Type | ${{ steps.type.outputs.type }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Feedback ID | ${{ steps.create.outputs.feedback_id || 'Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | ${{ steps.create.outputs.success == 'true' && '✅ Synced' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
