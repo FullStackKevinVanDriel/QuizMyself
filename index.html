@@ -2039,6 +2039,7 @@
             <button id="final-exam-btn" class="btn" onclick="startFinalExam()">Final Exam (100% Required)</button>
             <button id="view-progress-btn" class="btn" onclick="showProgress()">View Progress</button>
             <button id="manage-mastered-btn" class="btn" onclick="showMasteredList()">Manage Mastered Questions</button>
+            <button id="edit-quiz-btn" class="btn" onclick="showQuizEditor()">✏️ Edit Quiz</button>
             <button id="course-content-btn" class="btn hidden" onclick="showCourseContent()" style="text-align: center;">View Study Material</button>
             <button class="btn btn-danger btn-small" onclick="resetProgress()">Reset All Progress</button>
         </div>
@@ -2592,6 +2593,88 @@
                 <div style="display: flex; gap: 10px;">
                     <button class="btn" onclick="closeCreateQuizModal()" style="flex: 1;">Cancel</button>
                     <button class="btn btn-primary" onclick="createQuizWithSource()" id="create-quiz-submit" style="flex: 1;">Create Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Editor Modal -->
+    <div id="quiz-editor-modal" class="modal-overlay hidden" onclick="closeQuizEditorModalOnOverlay(event)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-header">
+                <h2>✏️ Edit Quiz</h2>
+                <button class="modal-close" onclick="closeQuizEditorModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="flex: 1; overflow-y: auto;">
+                <!-- Quiz Info -->
+                <div id="quiz-editor-info" style="margin-bottom: 20px; padding: 15px; background: #2a2a2a; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span id="quiz-editor-name" style="font-weight: bold; color: #ffd700;"></span>
+                            <span id="quiz-editor-count" style="color: #888; margin-left: 10px;"></span>
+                        </div>
+                        <button class="btn btn-primary btn-small" onclick="showAddQuestionForm()">+ Add Question</button>
+                    </div>
+                </div>
+
+                <!-- Add/Edit Question Form (hidden by default) -->
+                <div id="question-form" style="display: none; margin-bottom: 20px; padding: 20px; background: #1a3a1a; border-radius: 8px; border: 1px solid #4CAF50;">
+                    <h3 id="question-form-title" style="color: #4CAF50; margin-bottom: 15px;">Add New Question</h3>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; color: #ccc; margin-bottom: 5px; font-size: 0.9rem;">Category</label>
+                        <input type="text" id="question-form-category" placeholder="e.g., Math, History, Science"
+                            style="width: 100%; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white; box-sizing: border-box;">
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; color: #ccc; margin-bottom: 5px; font-size: 0.9rem;">Question *</label>
+                        <textarea id="question-form-text" placeholder="Enter your question..."
+                            style="width: 100%; height: 80px; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white; box-sizing: border-box; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; color: #ccc; margin-bottom: 5px; font-size: 0.9rem;">Full Answer / Explanation</label>
+                        <textarea id="question-form-answer" placeholder="Detailed answer or explanation (optional)..."
+                            style="width: 100%; height: 60px; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white; box-sizing: border-box; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; color: #ccc; margin-bottom: 10px; font-size: 0.9rem;">Answer Choices * (select the correct one)</label>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <input type="radio" name="correct-choice" value="0" checked style="width: 20px; height: 20px;">
+                                <input type="text" id="question-form-choice-0" placeholder="Choice A"
+                                    style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white;">
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <input type="radio" name="correct-choice" value="1" style="width: 20px; height: 20px;">
+                                <input type="text" id="question-form-choice-1" placeholder="Choice B"
+                                    style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white;">
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <input type="radio" name="correct-choice" value="2" style="width: 20px; height: 20px;">
+                                <input type="text" id="question-form-choice-2" placeholder="Choice C"
+                                    style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white;">
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <input type="radio" name="correct-choice" value="3" style="width: 20px; height: 20px;">
+                                <input type="text" id="question-form-choice-3" placeholder="Choice D"
+                                    style="flex: 1; padding: 10px; background: #0f3460; border: 1px solid #333; border-radius: 6px; color: white;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn" onclick="hideQuestionForm()">Cancel</button>
+                        <button class="btn btn-primary" onclick="saveQuestionFromForm()">Save Question</button>
+                    </div>
+                    <input type="hidden" id="question-form-edit-id" value="">
+                </div>
+
+                <!-- Questions List -->
+                <div id="quiz-editor-questions" style="max-height: 400px; overflow-y: auto;">
+                    <div style="text-align: center; padding: 40px; color: #888;">Loading questions...</div>
                 </div>
             </div>
         </div>
@@ -3644,6 +3727,239 @@
             if (event.target === event.currentTarget) {
                 closeCreateQuizModal();
             }
+        }
+
+        // ========== QUIZ EDITOR MODAL ==========
+
+        function showQuizEditor() {
+            if (!currentUser) {
+                showToast('Please sign in to edit quizzes.', 'warning');
+                return;
+            }
+            if (!currentKeyword) {
+                showToast('Please select or create a quiz first.', 'warning');
+                return;
+            }
+
+            const keywordInfo = userKeywords.find(kw => kw.keyword === currentKeyword);
+            const displayName = keywordInfo?.display_name || currentKeyword;
+
+            document.getElementById('quiz-editor-name').textContent = displayName;
+            document.getElementById('quiz-editor-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            hideQuestionForm();
+            renderQuizEditorQuestions();
+        }
+
+        function closeQuizEditorModal() {
+            document.getElementById('quiz-editor-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeQuizEditorModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeQuizEditorModal();
+            }
+        }
+
+        function renderQuizEditorQuestions() {
+            const listEl = document.getElementById('quiz-editor-questions');
+            const countEl = document.getElementById('quiz-editor-count');
+
+            countEl.textContent = `(${questions.length} question${questions.length !== 1 ? 's' : ''})`;
+
+            if (questions.length === 0) {
+                listEl.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">📝</div>
+                        <p>No questions yet.</p>
+                        <p style="font-size: 0.9rem;">Click "Add Question" to create your first question.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group by category
+            const categories = {};
+            questions.forEach((q, idx) => {
+                const cat = q.category || 'Uncategorized';
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push({ ...q, _index: idx });
+            });
+
+            let html = '';
+            Object.keys(categories).sort().forEach(cat => {
+                html += `<div style="margin-bottom: 15px;">
+                    <div style="color: #4fc3f7; font-size: 0.85rem; font-weight: bold; margin-bottom: 8px; padding: 5px 10px; background: #0f3460; border-radius: 4px;">
+                        ${escapeHtml(cat)} (${categories[cat].length})
+                    </div>`;
+
+                categories[cat].forEach(q => {
+                    const correctChoice = q.choices && q.choices[q.correct] ? q.choices[q.correct] : 'N/A';
+                    html += `
+                    <div class="quiz-editor-question" style="padding: 12px; background: #2a2a2a; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid #4CAF50;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="color: #fff; font-size: 0.95rem; margin-bottom: 5px;">${escapeHtml(q.q)}</div>
+                                <div style="color: #4CAF50; font-size: 0.85rem;">✓ ${escapeHtml(correctChoice)}</div>
+                            </div>
+                            <div style="display: flex; gap: 5px; flex-shrink: 0;">
+                                <button class="btn btn-small" onclick="editQuestion(${q.id})" style="padding: 5px 10px;">Edit</button>
+                                <button class="btn btn-danger btn-small" onclick="deleteQuestion(${q.id})" style="padding: 5px 10px;">Delete</button>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                html += '</div>';
+            });
+
+            listEl.innerHTML = html;
+        }
+
+        function showAddQuestionForm() {
+            document.getElementById('question-form-title').textContent = 'Add New Question';
+            document.getElementById('question-form-edit-id').value = '';
+            document.getElementById('question-form-category').value = '';
+            document.getElementById('question-form-text').value = '';
+            document.getElementById('question-form-answer').value = '';
+            document.getElementById('question-form-choice-0').value = '';
+            document.getElementById('question-form-choice-1').value = '';
+            document.getElementById('question-form-choice-2').value = '';
+            document.getElementById('question-form-choice-3').value = '';
+            document.querySelector('input[name="correct-choice"][value="0"]').checked = true;
+
+            document.getElementById('question-form').style.display = 'block';
+            document.getElementById('question-form-text').focus();
+        }
+
+        function hideQuestionForm() {
+            document.getElementById('question-form').style.display = 'none';
+        }
+
+        function editQuestion(id) {
+            const question = questions.find(q => q.id === id);
+            if (!question) {
+                showToast('Question not found.', 'error');
+                return;
+            }
+
+            document.getElementById('question-form-title').textContent = 'Edit Question';
+            document.getElementById('question-form-edit-id').value = id;
+            document.getElementById('question-form-category').value = question.category || '';
+            document.getElementById('question-form-text').value = question.q || '';
+            document.getElementById('question-form-answer').value = question.a || '';
+
+            // Fill in choices
+            const choices = question.choices || ['', '', '', ''];
+            document.getElementById('question-form-choice-0').value = choices[0] || '';
+            document.getElementById('question-form-choice-1').value = choices[1] || '';
+            document.getElementById('question-form-choice-2').value = choices[2] || '';
+            document.getElementById('question-form-choice-3').value = choices[3] || '';
+
+            // Set correct answer radio
+            const correctIndex = question.correct || 0;
+            const radio = document.querySelector(`input[name="correct-choice"][value="${correctIndex}"]`);
+            if (radio) radio.checked = true;
+
+            document.getElementById('question-form').style.display = 'block';
+            document.getElementById('question-form-text').focus();
+        }
+
+        async function deleteQuestion(id) {
+            const question = questions.find(q => q.id === id);
+            if (!question) return;
+
+            const confirmed = confirm(`Delete this question?\n\n"${question.q.substring(0, 100)}..."`);
+            if (!confirmed) return;
+
+            // Remove from questions array
+            const idx = questions.findIndex(q => q.id === id);
+            if (idx !== -1) {
+                questions.splice(idx, 1);
+                state.importedQuestionCount = questions.length;
+
+                // Also remove from mastered if it was mastered
+                const masteredIdx = state.mastered.indexOf(id);
+                if (masteredIdx !== -1) {
+                    state.mastered.splice(masteredIdx, 1);
+                }
+
+                // Remove from answerCounts
+                delete state.answerCounts[id];
+
+                // Save changes
+                saveState(true);
+                renderQuizEditorQuestions();
+                updateStats();
+                updateKeywords(); // Update question count in dropdown
+                showToast('Question deleted.', 'success');
+            }
+        }
+
+        function saveQuestionFromForm() {
+            const editId = document.getElementById('question-form-edit-id').value;
+            const category = document.getElementById('question-form-category').value.trim();
+            const questionText = document.getElementById('question-form-text').value.trim();
+            const answerText = document.getElementById('question-form-answer').value.trim();
+            const choice0 = document.getElementById('question-form-choice-0').value.trim();
+            const choice1 = document.getElementById('question-form-choice-1').value.trim();
+            const choice2 = document.getElementById('question-form-choice-2').value.trim();
+            const choice3 = document.getElementById('question-form-choice-3').value.trim();
+            const correctChoice = parseInt(document.querySelector('input[name="correct-choice"]:checked').value);
+
+            // Validation
+            if (!questionText) {
+                showToast('Please enter a question.', 'error');
+                return;
+            }
+
+            // Need at least 2 choices
+            const choices = [choice0, choice1, choice2, choice3].filter(c => c);
+            if (choices.length < 2) {
+                showToast('Please enter at least 2 answer choices.', 'error');
+                return;
+            }
+
+            // Make sure the correct answer exists
+            const allChoices = [choice0, choice1, choice2, choice3];
+            if (!allChoices[correctChoice]) {
+                showToast('The correct answer choice cannot be empty.', 'error');
+                return;
+            }
+
+            // Build the question object
+            const questionData = {
+                category: category || 'General',
+                q: questionText,
+                a: answerText || allChoices[correctChoice],
+                choices: allChoices,
+                correct: correctChoice
+            };
+
+            if (editId) {
+                // Update existing question
+                const idx = questions.findIndex(q => q.id === parseInt(editId));
+                if (idx !== -1) {
+                    questions[idx] = { ...questions[idx], ...questionData };
+                    showToast('Question updated!', 'success');
+                }
+            } else {
+                // Add new question
+                const maxId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) : 0;
+                questionData.id = maxId + 1;
+                questions.push(questionData);
+                state.importedQuestionCount = questions.length;
+                showToast('Question added!', 'success');
+            }
+
+            // Save and refresh
+            saveState(true);
+            hideQuestionForm();
+            renderQuizEditorQuestions();
+            updateStats();
+            updateKeywords(); // Update question count in dropdown
+            initCategoryFilter(); // Refresh category filter
         }
 
         async function loadSourcesForPicker() {
@@ -6573,71 +6889,63 @@
         }
 
         async function linkSourceToQuiz(sourceId, sourceName) {
-            console.log('[DEBUG] linkSourceToQuiz called:', sourceId, sourceName);
-
             // Find quizzes without a linked source
             const unlinkedQuizzes = userKeywords.filter(kw => !kw.source_id);
-            console.log('[DEBUG] unlinkedQuizzes:', unlinkedQuizzes);
 
             if (unlinkedQuizzes.length === 0) {
                 showToast('All your quizzes already have sources linked. Create a new quiz first.', 'info');
                 return;
             }
 
-            // Build items for selection modal
-            const items = unlinkedQuizzes.map(kw => ({
-                value: kw.keyword,
-                title: kw.display_name || kw.keyword,
-                subtitle: kw.display_name ? kw.keyword : null
-            }));
-            console.log('[DEBUG] items for modal:', items);
+            let selectedKeyword;
 
-            // Show selection modal
-            console.log('[DEBUG] Calling showSelection...');
-            const selectedKeyword = await showSelection(
-                'Link Source to Quiz',
-                `Select a quiz to link "${sourceName}" to:`,
-                items,
-                { confirmText: 'Link' }
-            );
-            console.log('[DEBUG] selectedKeyword:', selectedKeyword);
+            if (unlinkedQuizzes.length === 1) {
+                // Only one option - just use it directly, no modal needed
+                selectedKeyword = unlinkedQuizzes[0].keyword;
+                const displayName = unlinkedQuizzes[0].display_name || selectedKeyword;
+                showToast(`Linking "${sourceName}" to "${displayName}"...`, 'info');
+            } else {
+                // Multiple options - show selection modal
+                const items = unlinkedQuizzes.map(kw => ({
+                    value: kw.keyword,
+                    title: kw.display_name || kw.keyword,
+                    subtitle: kw.display_name ? kw.keyword : null
+                }));
 
-            if (!selectedKeyword) return;
+                selectedKeyword = await showSelection(
+                    'Link Source to Quiz',
+                    `Select a quiz to link "${sourceName}" to:`,
+                    items,
+                    { confirmText: 'Link' }
+                );
+
+                if (!selectedKeyword) return;
+            }
 
             try {
-                console.log('[DEBUG] Getting token...');
                 const token = await currentUser.getIdToken();
-                const requestBody = {
-                    sourceId: sourceId,
-                    keyword: selectedKeyword
-                };
-                console.log('[DEBUG] Making API call with:', requestBody);
                 const response = await fetch(`${VANDROMEDA_API}/quizmyself/link-source.php`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(requestBody)
+                    body: JSON.stringify({ sourceId, keyword: selectedKeyword })
                 });
 
                 const data = await response.json();
-                console.log('[DEBUG] API response:', response.status, data);
 
                 if (!response.ok) {
                     throw new Error(data.error || data.message || 'Failed to link source');
                 }
 
-                showToast(`Source linked to "${selectedKeyword}" successfully!`, 'success');
-                console.log('[DEBUG] Link successful, refreshing data...');
-                await loadUserKeywords(); // Refresh keywords to update source_id
-                loadSources(); // Refresh the sources list
-                updateKeywordDropdown(); // Refresh dropdown to show paperclip icon
-                updateSourceDependentButtons(); // Update button states
-                console.log('[DEBUG] Refresh complete');
+                showToast(`Source linked successfully!`, 'success');
+                await loadUserKeywords();
+                loadSources();
+                updateKeywordDropdown();
+                updateSourceDependentButtons();
 
             } catch (err) {
-                console.error('[DEBUG] Link failed:', err);
                 showToast(`Failed to link: ${err.message}`, 'error');
             }
         }
