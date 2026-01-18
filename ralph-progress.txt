@@ -1,0 +1,121 @@
+# Ralph Wiggum Loop Progress
+# Started: Sat Jan 17 21:00:36 PST 2026
+# PRD: ./prd.json
+
+
+## Iteration 1 - Story #1
+- **Time:** Sat Jan 17 21:00:36 PST 2026
+- **Status:** DRY_RUN
+- **Notes:** Would implement: Rename Roadmap to Progress
+
+## Iteration 2 - Story #1
+- **Time:** Sat Jan 17 21:00:41 PST 2026
+- **Status:** DRY_RUN
+- **Notes:** Would implement: Rename Roadmap to Progress
+
+## Iteration 3 - Story #1
+- **Time:** Sat Jan 17 21:00:46 PST 2026
+- **Status:** DRY_RUN
+- **Notes:** Would implement: Rename Roadmap to Progress
+
+## Iteration 4 - Story #1
+- **Time:** Sat Jan 17 21:05:00 PST 2026
+- **Status:** COMPLETED
+- **Notes:** Implemented: Rename Roadmap to Progress
+- **Changes:**
+  - Updated hamburger menu items (both signed-in and signed-out states) to show "Progress"
+  - Changed modal title from "Roadmap & Issues" to "Progress"
+  - Updated loading text: "Loading roadmap..." → "Loading progress..."
+  - Updated empty state message: "Roadmap coming soon!" → "No progress items yet."
+  - Updated tests/roadmap.spec.js to match new UI text
+  - All 9 tests pass
+  - Commit: feat/rename-roadmap-to-progress branch
+
+## Iteration 1 - Story #1
+- **Time:** Sat Jan 17 21:03:27 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-1-story-1.log
+
+## Iteration 5 - Story #2
+- **Time:** Sat Jan 17 21:06:26 PST 2026
+- **Status:** COMPLETED
+- **Notes:** Implemented: Display dual reference numbers
+- **Changes:**
+  - Updated renderFeedbackItem() in index.html to support three display formats:
+    - "#123 | GH-456" when both internal ID and GitHub issue exist
+    - "#123" when no GitHub issue linked
+    - "GH-456" when no internal ID exists
+  - Added CSS styling for GitHub links (color: #4fc3f7, hover: #81d4fa)
+  - GitHub links open in new tab with target="_blank" and rel="noopener"
+  - Added 4 new tests for reference number display scenarios
+  - All 13 tests pass
+  - Commit: a924651
+
+## Iteration 2 - Story #2
+- **Time:** Sat Jan 17 21:06:50 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-2-story-2.log
+
+## Iteration 6 - Story #3
+- **Time:** Sat Jan 17 21:10:00 PST 2026
+- **Status:** COMPLETED
+- **Notes:** Implemented: Show description and status for each item
+- **Changes:**
+  - Added CSS for description truncation (2-line clamp with ellipsis via -webkit-line-clamp)
+  - Added CSS for status-badge with 5 color-coded variants (Open, In Progress, In Review, Resolved, Closed)
+  - Updated renderFeedbackItem() to display description when present
+  - Added statusMapping to map API status values to UI labels and CSS classes
+  - Status is now displayed as a styled pill/badge instead of plain text
+  - Added 8 new tests for description and status badge functionality
+  - All 79 tests pass (12 skipped AI tests)
+  - Commit: ac275bd
+
+## Iteration 3 - Story #3
+- **Time:** Sat Jan 17 21:11:24 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-3-story-3.log
+
+## Iteration 7 - Story #4
+- **Time:** Fri Jan 17 21:15:00 PST 2026
+- **Status:** COMPLETED
+- **Notes:** Implemented: Add progress bar for each item
+- **Changes:**
+  - Added CSS for item-level progress bar (.item-progress, .item-progress-bar, .item-progress-fill, .item-progress-text)
+  - Progress bar uses gradient colors that change based on percentage:
+    - progress-10: red gradient (#e94560 → #ff6b6b)
+    - progress-40: red to orange gradient (#e94560 → #ffa726)
+    - progress-70: orange to yellow-green gradient (#ffa726 → #c0ca33)
+    - progress-100: green gradient (#8bc34a → #4caf50)
+  - Added progressMapping to calculate percentage from SDLC status:
+    - Open=10%, In Progress=40%, In Review=70%, Resolved=100%, Closed=100%
+  - Progress percentage displayed next to the bar (e.g., "40%")
+  - Added 5 new tests for progress bar functionality
+  - All 84 tests pass (12 skipped AI tests)
+  - Commit: 6c99a39
+
+## Iteration 4 - Story #4
+- **Time:** Sat Jan 17 21:15:02 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-4-story-4.log
+
+## Iteration 5 - Story #5
+- **Time:** Sat Jan 17 21:19:26 PST 2026
+- **Status:** COMPLETED
+- **Notes:** Implemented: Add category filters
+- **Changes:**
+  - Added CSS for .progress-filters and .progress-filter-chip classes
+  - Added filter chips UI: All, Bugs, Features, Requests, Feedback
+  - Each chip shows item count (e.g., 'Bugs (3)')
+  - Active filters have highlighted styling (cyan border/color)
+  - Clicking a category toggles it; clicking All resets to show everything
+  - Multiple categories can be selected simultaneously
+  - Filters update instantly without page reload
+  - Added 9 new tests covering filter functionality
+  - All 93 tests pass (12 skipped AI tests)
+  - Commit: f79d408
+
+
+## Iteration 5 - Story #5
+- **Time:** Sat Jan 17 21:19:37 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-5-story-5.log

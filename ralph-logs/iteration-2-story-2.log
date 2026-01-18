@@ -1,0 +1,32 @@
+Story #2 has been implemented successfully. Here's a summary of what was done:
+
+## Summary
+
+**Story #2: Display dual reference numbers** - ✅ COMPLETED
+
+### Changes Made:
+
+1. **index.html** - Updated `renderFeedbackItem()` function to support three display formats:
+   - `#123 | GH-456` - when both internal ID and GitHub issue exist
+   - `#123` - when no GitHub issue is linked
+   - `GH-456` - when no internal ID exists
+
+2. **CSS styling** - Added proper styling for GitHub links:
+   - Link color: `#4fc3f7` (cyan)
+   - Hover color: `#81d4fa` (lighter cyan)
+   - Links open in new tab with `target="_blank"` and `rel="noopener"` for security
+
+3. **Tests** - Added 4 new tests in `tests/roadmap.spec.js`:
+   - Test for dual reference display (#123 | GH-456)
+   - Test for internal ID only display (#123)
+   - Test for GitHub issue only display (GH-456)
+   - Test for link opening in new tab
+
+### Acceptance Criteria Met:
+- ✅ Items display format: '#123 | GH-456' when both exist
+- ✅ Items display '#123' only when no GitHub issue linked
+- ✅ Items display 'GH-456' only when no internal ID exists
+- ✅ GitHub number is a clickable link that opens GitHub issue in new tab
+
+### Commit:
+`a924651` - feat: display dual reference numbers in Progress modal

@@ -1,0 +1,19 @@
+Story #5 "Add category filters" has been implemented. Here's a summary:
+
+## Implementation Complete
+
+**Story #5: Add category filters** - All acceptance criteria met:
+
+1. **Filter buttons for: All, Bugs, Features, Requests, Feedback** - Added filter chip buttons in the Progress modal header
+2. **Active filter visually highlighted** - Active chips have cyan border and text color with highlighted background
+3. **Filters work instantly (no reload)** - JavaScript toggles filter state and re-renders items without API calls
+4. **Item count shown per category in filter buttons** - Each chip displays count (e.g., "Bugs (3)")
+5. **Multiple filters can be active simultaneously** - Selecting Bug + Feature shows items from both categories
+
+**Changes made:**
+- `index.html`: Added CSS for `.progress-filters` and `.progress-filter-chip` classes, plus new functions `renderProgressItems()` and `toggleProgressFilter()`
+- `tests/roadmap.spec.js`: Added 9 new tests covering all filter functionality
+
+**Test results:** 93 tests passing (12 skipped AI tests)
+
+**Commit:** f79d408 - `feat: add category filters to Progress modal`
