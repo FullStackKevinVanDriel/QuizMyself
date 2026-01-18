@@ -1,10 +1,10 @@
 {
-  "generated": "2026-01-18T04:42:15.524Z",
+  "generated": "2026-01-18T04:45:44.250Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 18,
-    "open": 9,
-    "closed": 9,
+    "open": 8,
+    "closed": 10,
     "byLabel": {
       "bug": 9,
       "enhancement": 4,
@@ -13,6 +13,20 @@
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 159,
+      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
+      "state": "closed",
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T04:05:32Z",
+      "updatedAt": "2026-01-18T04:45:36Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
+      "feedback_id": 9
+    },
     {
       "number": 163,
       "title": "[bug] after my quiz questions have been AI generated, i ...",
@@ -81,20 +95,6 @@
       "milestone": null,
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/160",
       "feedback_id": 8
-    },
-    {
-      "number": 159,
-      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
-      "state": "open",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:32Z",
-      "updatedAt": "2026-01-18T04:05:32Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
-      "feedback_id": 9
     },
     {
       "number": 158,
@@ -264,6 +264,13 @@
     }
   ],
   "recentlyCompleted": [
+    {
+      "number": 159,
+      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
+      "closedAt": "2026-01-18T04:45:36Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
+      "feedback_id": 9
+    },
     {
       "number": 163,
       "title": "[bug] after my quiz questions have been AI generated, i ...",
