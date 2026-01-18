@@ -1,12 +1,12 @@
 {
-  "generated": "2026-01-18T06:13:15.163Z",
+  "generated": "2026-01-18T06:13:45.902Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 33,
-    "open": 22,
+    "total": 38,
+    "open": 27,
     "closed": 11,
     "byLabel": {
-      "roadmap": 15,
+      "roadmap": 20,
       "enhancement": 14,
       "feedback": 5,
       "bug": 9
@@ -14,6 +14,76 @@
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 199,
+      "title": "[ABANDON] Web-first / desktop-priority mindset",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:34Z",
+      "updatedAt": "2026-01-18T06:13:34Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/199",
+      "feedback_id": null
+    },
+    {
+      "number": 197,
+      "title": "[ABANDON] Seasonal-only features",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:33Z",
+      "updatedAt": "2026-01-18T06:13:33Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/197",
+      "feedback_id": null
+    },
+    {
+      "number": 196,
+      "title": "[ABANDON] Organic-only acquisition strategy",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:32Z",
+      "updatedAt": "2026-01-18T06:13:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/196",
+      "feedback_id": null
+    },
+    {
+      "number": 195,
+      "title": "[ABANDON] Lax data handling practices",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:31Z",
+      "updatedAt": "2026-01-18T06:13:31Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/195",
+      "feedback_id": null
+    },
+    {
+      "number": 194,
+      "title": "[ABANDON] No quality controls on AI output",
+      "state": "open",
+      "labels": [
+        "roadmap",
+        "abandon"
+      ],
+      "createdAt": "2026-01-18T06:13:29Z",
+      "updatedAt": "2026-01-18T06:13:29Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/194",
+      "feedback_id": null
+    },
     {
       "number": 192,
       "title": "[ABANDON] Ignoring retention mechanics",
