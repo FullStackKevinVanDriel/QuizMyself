@@ -194,8 +194,10 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 - [ ] Expand test coverage:
   - [x] Category filtering
   - [x] Exam mode
+  - [x] Import functionality (CSV, JSON, Q&A)
+  - [x] Modal stacking
+  - [x] AI generation
   - [ ] Auth flows (login, register, reset)
-  - [ ] Import functionality
   - [ ] Progress sync
   - [ ] Pro tier features
 
@@ -203,16 +205,18 @@ Multiple `console.log('[DEBUG ...]')` statements left in code:
 
 ## Test Coverage
 
-**Existing (19 tests):**
+**Existing (59 tests in 8 files):**
 - smoke.spec.js - Page load, welcome screen, hamburger menu
 - guest-mode.spec.js - Demo quiz without login
 - feedback.spec.js - Feedback modal and submission
 - category-filter.spec.js - Category toggle, All/None buttons, quiz filtering
 - exam-mode.spec.js - Start exam, progress tracking, 100% requirement display
+- import.spec.js - CSV, JSON, Q&A import flows, preview, file upload
+- modal-stacking.spec.js - Modal z-index and stacking behavior
+- ai-generation.spec.js - AI quiz generation features
 
 **Needed:**
 - Auth flows (login, register, reset)
-- Import (CSV, JSON, Q&A)
 - Progress sync
 - Source material linking
 - Pro tier activation
