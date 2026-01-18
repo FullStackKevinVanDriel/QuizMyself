@@ -6844,29 +6844,35 @@
 
         async function loadRoadmapData() {
             try {
-                // Fetch both feedback API and roadmap.json in parallel
-                const [feedbackResult, roadmapResult] = await Promise.allSettled([
-                    fetchFeedbackData(),
-                    fetch('roadmap.json').then(r => r.ok ? r.json() : null)
-                ]);
-
-                // Get feedback data
-                let data = feedbackResult.status === 'fulfilled' ? feedbackResult.value : null;
+                // Fetch feedback data from API (now includes milestones directly)
+                let data = await fetchFeedbackData();
                 if (!data) {
                     throw new Error('Failed to load feedback data');
                 }
 
-                // Get roadmap data (milestones + issue-milestone mapping)
-                const roadmapData = roadmapResult.status === 'fulfilled' ? roadmapResult.value : null;
-                if (roadmapData) {
-                    currentRoadmapData = roadmapData;
-                    console.log('Loaded roadmap.json:', {
-                        milestones: roadmapData.milestones?.length || 0,
-                        issues: roadmapData.issues?.length || 0
-                    });
-
-                    // Merge milestone info into feedback items
-                    data = mergeMilestoneData(data, roadmapData);
+                // Check if API returned milestones (new reconcile endpoint)
+                if (data.milestones && data.milestones.length > 0) {
+                    console.log('Using milestones from API:', data.milestones.length);
+                    currentRoadmapData = { milestones: data.milestones };
+                } else {
+                    // Fallback: fetch roadmap.json for milestones (old path)
+                    try {
+                        const roadmapResponse = await fetch('roadmap.json');
+                        if (roadmapResponse.ok) {
+                            const roadmapData = await roadmapResponse.json();
+                            if (roadmapData) {
+                                currentRoadmapData = roadmapData;
+                                console.log('Loaded roadmap.json fallback:', {
+                                    milestones: roadmapData.milestones?.length || 0,
+                                    issues: roadmapData.issues?.length || 0
+                                });
+                                // Merge milestone info into feedback items
+                                data = mergeMilestoneData(data, roadmapData);
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('roadmap.json fallback failed:', e.message);
+                    }
                 }
 
                 renderRoadmapFromFeedback(data);
