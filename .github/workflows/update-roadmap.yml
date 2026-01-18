@@ -44,10 +44,11 @@ jobs:
   update-roadmap:
     runs-on: ubuntu-latest
 
-    # Grant write permissions for committing the roadmap.json file
+    # Grant write permissions for creating PRs and committing
     permissions:
       contents: write
       issues: read
+      pull-requests: write
 
     steps:
       # =======================================================================
@@ -271,14 +272,33 @@ jobs:
           fi
 
       # =======================================================================
-      # Step 4: Commit and Push Changes
+      # Step 4: Create PR with Changes
       # =======================================================================
-      - name: Commit and push roadmap.json
+      - name: Create PR for roadmap.json
         if: steps.check-changes.outputs.changed == 'true'
         run: |
+          BRANCH_NAME="chore/update-roadmap-$(date +%Y%m%d-%H%M%S)"
+
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "chore: update roadmap.json [skip ci]"
-          git push
+
+          # Create and switch to new branch
+          git checkout -b "$BRANCH_NAME"
+          git commit -m "chore: update roadmap.json"
+          git push -u origin "$BRANCH_NAME"
+
+          # Create PR
+          gh pr create \
+            --title "chore: update roadmap.json" \
+            --body "Automated update of roadmap.json with latest issues and milestones." \
+            --base main \
+            --head "$BRANCH_NAME"
+
+          # Auto-merge the PR
+          PR_URL=$(gh pr view "$BRANCH_NAME" --json url -q '.url')
+          gh pr merge "$BRANCH_NAME" --squash --auto --delete-branch
+
+          echo "Created and auto-merged PR: $PR_URL"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
