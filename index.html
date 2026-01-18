@@ -1588,6 +1588,11 @@
             text-decoration: underline;
         }
 
+        .roadmap-status {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
         .roadmap-item-meta {
             color: #666;
             font-size: 0.8rem;
@@ -4295,13 +4300,18 @@
             document.body.style.overflow = 'hidden';
             document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading">Loading roadmap...</div>';
 
-            fetch('./roadmap.json')
+            // Fetch live feedback from Vandromeda API
+            fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`)
                 .then(response => {
-                    if (!response.ok) throw new Error('Roadmap not found');
+                    if (!response.ok) throw new Error('Failed to load roadmap');
                     return response.json();
                 })
                 .then(data => {
-                    renderRoadmap(data);
+                    if (data.success) {
+                        renderRoadmapFromFeedback(data);
+                    } else {
+                        throw new Error(data.error || 'Failed to load');
+                    }
                 })
                 .catch(error => {
                     console.error('Failed to load roadmap:', error);
@@ -4473,6 +4483,120 @@
                         <div class="roadmap-item-meta">${timeAgo}</div>
                     </div>
                     ${labelsHtml}
+                </div>
+            `;
+        }
+
+        function renderRoadmapFromFeedback(data) {
+            const container = document.getElementById('roadmap-content');
+            const feedback = data.feedback || [];
+            const stats = data.stats || {};
+            let html = '';
+
+            // Stats bar
+            html += `
+                <div class="roadmap-stats">
+                    <div class="stat">
+                        <div class="stat-value">${stats.open || 0}</div>
+                        <div class="stat-label">Open</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${stats.in_progress || 0}</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${stats.resolved || 0}</div>
+                        <div class="stat-label">Resolved</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${stats.total || 0}</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                </div>
+            `;
+
+            // Group feedback by status
+            const openItems = feedback.filter(f => !f.is_resolved && f.status !== 'in_progress');
+            const inProgressItems = feedback.filter(f => f.status === 'in_progress');
+            const resolvedItems = feedback.filter(f => f.is_resolved);
+
+            // In Progress section
+            if (inProgressItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>In Progress</h3>';
+                inProgressItems.forEach(item => {
+                    html += renderFeedbackItem(item);
+                });
+                html += '</div>';
+            }
+
+            // Open section
+            if (openItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>Open</h3>';
+                openItems.forEach(item => {
+                    html += renderFeedbackItem(item);
+                });
+                html += '</div>';
+            }
+
+            // Resolved section
+            if (resolvedItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>Resolved</h3>';
+                resolvedItems.forEach(item => {
+                    html += renderFeedbackItem(item);
+                });
+                html += '</div>';
+            }
+
+            if (feedback.length === 0) {
+                html = `
+                    <div class="roadmap-empty">
+                        <p>No feedback yet! Be the first to help shape our priorities.</p>
+                        <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderFeedbackItem(item) {
+            const typeColors = {
+                'bug': 'bug',
+                'feature': 'enhancement',
+                'question': 'question',
+                'feedback': 'default'
+            };
+
+            const statusColors = {
+                'new': '#888',
+                'reviewed': '#4fc3f7',
+                'in_progress': '#ffa726',
+                'resolved': '#4caf50',
+                'wont_fix': '#666'
+            };
+
+            const colorClass = typeColors[item.type] || 'default';
+            const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
+
+            // Build reference numbers
+            let refHtml = `<span class="roadmap-item-refs">#${item.id}`;
+            if (item.github_issue && item.github_issue_url) {
+                refHtml += ` | <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7;">GH-${item.github_issue}</a>`;
+            }
+            refHtml += '</span>';
+
+            // Status badge
+            const statusHtml = `<span class="roadmap-status" style="color: ${statusColors[item.status] || '#888'};">${escapeHtml(item.status_label)}</span>`;
+
+            return `
+                <div class="roadmap-item">
+                    <div class="roadmap-item-header">
+                        <div class="roadmap-item-title">${refHtml}${escapeHtml(item.title)}</div>
+                        <div class="roadmap-item-meta">${statusHtml} | ${timeAgo}</div>
+                    </div>
+                    <div class="roadmap-labels">
+                        <span class="roadmap-label ${colorClass}">${escapeHtml(item.type)}</span>
+                    </div>
                 </div>
             `;
         }
