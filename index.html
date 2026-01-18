@@ -1923,6 +1923,156 @@
             color: #888;
         }
 
+        .roadmap-loading-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #1a1a2e;
+            border-top-color: #4fc3f7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .roadmap-loading-text {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Skeleton Loading */
+        .skeleton-container {
+            padding: 20px;
+        }
+
+        .skeleton-item {
+            background: #1a1a2e;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            animation: skeleton-pulse 1.5s ease-in-out infinite;
+        }
+
+        .skeleton-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-title {
+            height: 20px;
+            width: 60%;
+            background: linear-gradient(90deg, #2a2a4e 25%, #3a3a5e 50%, #2a2a4e 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        .skeleton-badge {
+            height: 20px;
+            width: 60px;
+            background: linear-gradient(90deg, #2a2a4e 25%, #3a3a5e 50%, #2a2a4e 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s infinite;
+            border-radius: 10px;
+        }
+
+        .skeleton-content {
+            height: 14px;
+            width: 80%;
+            background: linear-gradient(90deg, #2a2a4e 25%, #3a3a5e 50%, #2a2a4e 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s infinite;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-progress {
+            height: 8px;
+            width: 100%;
+            background: linear-gradient(90deg, #2a2a4e 25%, #3a3a5e 50%, #2a2a4e 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s infinite;
+            border-radius: 4px;
+            margin-top: 12px;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @keyframes skeleton-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Error State */
+        .roadmap-error {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+
+        .roadmap-error-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .roadmap-error-title {
+            color: #ff6b6b;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .roadmap-error-message {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .roadmap-error-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Empty State Improvements */
+        .roadmap-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+
+        .roadmap-empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .roadmap-empty-title {
+            color: #ccc;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .roadmap-empty-message {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
         /* Progress Modal Vision Section */
         .progress-vision {
             background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
@@ -5985,10 +6135,67 @@
         }
 
         // Roadmap Modal Functions
+        function renderSkeletonLoading() {
+            return `
+                <div class="skeleton-container" role="status" aria-live="polite" aria-label="Loading progress items">
+                    <div class="roadmap-loading-spinner">
+                        <div class="spinner"></div>
+                        <div class="roadmap-loading-text">Loading progress...</div>
+                    </div>
+                    <div class="skeleton-item">
+                        <div class="skeleton-header">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-badge"></div>
+                        </div>
+                        <div class="skeleton-content"></div>
+                        <div class="skeleton-progress"></div>
+                    </div>
+                    <div class="skeleton-item">
+                        <div class="skeleton-header">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-badge"></div>
+                        </div>
+                        <div class="skeleton-content"></div>
+                        <div class="skeleton-progress"></div>
+                    </div>
+                    <div class="skeleton-item">
+                        <div class="skeleton-header">
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-badge"></div>
+                        </div>
+                        <div class="skeleton-content"></div>
+                        <div class="skeleton-progress"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderErrorState(error) {
+            return `
+                <div class="roadmap-error" role="alert">
+                    <div class="roadmap-error-icon">⚠️</div>
+                    <div class="roadmap-error-title">Unable to load progress</div>
+                    <div class="roadmap-error-message">
+                        ${error.message === 'Failed to fetch'
+                            ? 'Please check your internet connection and try again.'
+                            : 'Something went wrong. Please try again.'}
+                    </div>
+                    <div class="roadmap-error-actions">
+                        <button class="btn btn-primary" onclick="retryLoadRoadmap()">
+                            Try Again
+                        </button>
+                        <button class="btn" onclick="closeRoadmapModal(); showFeedbackModal();">
+                            Send Feedback
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
         async function showRoadmapModal() {
             document.getElementById('roadmap-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            document.getElementById('roadmap-content').innerHTML = '<div class="roadmap-loading" role="status" aria-live="polite">Loading roadmap...</div>';
+            document.getElementById('roadmap-content').innerHTML = renderSkeletonLoading();
 
             // Setup keyboard navigation (Story 6: Accessibility)
             setupProgressModalKeyboardNav();
@@ -6001,30 +6208,33 @@
                 fetchUserStarredItems();
             }
 
-            // Fetch live feedback from Vandromeda API
-            fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`)
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to load roadmap');
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        renderRoadmapFromFeedback(data);
-                        // Announce to screen readers
-                        announceToScreenReader(`Loaded ${data.feedback?.length || 0} progress items`);
-                    } else {
-                        throw new Error(data.error || 'Failed to load');
-                    }
-                })
-                .catch(error => {
-                    console.error('Failed to load roadmap:', error);
-                    document.getElementById('roadmap-content').innerHTML = `
-                        <div class="roadmap-empty" role="alert">
-                            <p>Progress updates coming soon! Submit feedback to help shape our priorities.</p>
-                            <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
-                        </div>
-                    `;
-                });
+            // Load the roadmap data
+            await loadRoadmapData();
+        }
+
+        async function loadRoadmapData() {
+            try {
+                const response = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`);
+                if (!response.ok) throw new Error('Failed to load roadmap');
+
+                const data = await response.json();
+                if (data.success) {
+                    renderRoadmapFromFeedback(data);
+                    // Announce to screen readers
+                    announceToScreenReader(`Loaded ${data.feedback?.length || 0} progress items`);
+                } else {
+                    throw new Error(data.error || 'Failed to load');
+                }
+            } catch (error) {
+                console.error('Failed to load roadmap:', error);
+                document.getElementById('roadmap-content').innerHTML = renderErrorState(error);
+                announceToScreenReader('Failed to load progress items');
+            }
+        }
+
+        function retryLoadRoadmap() {
+            document.getElementById('roadmap-content').innerHTML = renderSkeletonLoading();
+            loadRoadmapData();
         }
 
         function closeRoadmapModal() {
@@ -6399,15 +6609,19 @@
 
             if (filteredFeedback.length === 0 && feedback.length > 0) {
                 html += `
-                    <div class="roadmap-empty">
-                        <p>No items match the selected filters.</p>
+                    <div class="roadmap-empty" role="status">
+                        <div class="roadmap-empty-icon">🔍</div>
+                        <div class="roadmap-empty-title">No matching items</div>
+                        <div class="roadmap-empty-message">No items match the selected filters. Try adjusting your filters or clear them to see all items.</div>
                         <button class="btn" onclick="toggleProgressFilter('all')">Clear Filters</button>
                     </div>
                 `;
             } else if (feedback.length === 0) {
                 html += `
-                    <div class="roadmap-empty">
-                        <p>No feedback yet! Be the first to help shape our priorities.</p>
+                    <div class="roadmap-empty" role="status">
+                        <div class="roadmap-empty-icon">📋</div>
+                        <div class="roadmap-empty-title">No progress items yet</div>
+                        <div class="roadmap-empty-message">Be the first to help shape our priorities! Submit feedback to get started.</div>
                         <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
                     </div>
                 `;
