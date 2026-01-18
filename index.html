@@ -2159,6 +2159,157 @@
             font-size: 0.9rem;
         }
 
+        /* SDLC Stage Tracking */
+        .sdlc-stages {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 10px;
+            padding: 8px 0;
+        }
+
+        .sdlc-stage {
+            flex: 1;
+            height: 4px;
+            background: #1a1a2e;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .sdlc-stage.completed {
+            background: linear-gradient(90deg, #4caf50, #81c784);
+        }
+
+        .sdlc-stage.current {
+            background: linear-gradient(90deg, #ffa726, #ffcc80);
+            animation: stagePulse 2s infinite;
+        }
+
+        @keyframes stagePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .sdlc-stage-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: #666;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .sdlc-stage-labels span {
+            flex: 1;
+            text-align: center;
+        }
+
+        .sdlc-stage-labels span.completed {
+            color: #4caf50;
+        }
+
+        .sdlc-stage-labels span.current {
+            color: #ffa726;
+            font-weight: 600;
+        }
+
+        /* Item Priority Indicator */
+        .item-priority {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .item-priority.high {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+        }
+
+        .item-priority.medium {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .item-priority.low {
+            background: rgba(158, 158, 158, 0.2);
+            color: #9e9e9e;
+        }
+
+        /* Unique Type ID Badge */
+        .type-id-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .type-id-badge.bug {
+            background: rgba(233, 69, 96, 0.15);
+            color: #e94560;
+        }
+
+        .type-id-badge.feature {
+            background: rgba(76, 175, 80, 0.15);
+            color: #4caf50;
+        }
+
+        .type-id-badge.question {
+            background: rgba(79, 195, 247, 0.15);
+            color: #4fc3f7;
+        }
+
+        .type-id-badge.request {
+            background: rgba(156, 39, 176, 0.15);
+            color: #ce93d8;
+        }
+
+        .type-id-badge.feedback {
+            background: rgba(158, 158, 158, 0.15);
+            color: #9e9e9e;
+        }
+
+        /* Enhanced Item Meta Section */
+        .item-registration {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .item-registration-entry {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .item-registration-entry a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+
+        .item-registration-entry a:hover {
+            text-decoration: underline;
+        }
+
+        .item-registration-entry .icon {
+            opacity: 0.7;
+        }
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -5143,10 +5294,15 @@
                 </div>
             `;
 
-            // Group feedback by status
-            const openItems = feedback.filter(f => !f.is_resolved && f.status !== 'in_progress');
-            const inProgressItems = feedback.filter(f => f.status === 'in_progress');
-            const resolvedItems = feedback.filter(f => f.is_resolved);
+            // Sort feedback by priority (highest first) for data-driven prioritization
+            const sortByPriority = (items) => {
+                return [...items].sort((a, b) => calculatePriorityScore(b) - calculatePriorityScore(a));
+            };
+
+            // Group feedback by status and sort by priority
+            const openItems = sortByPriority(feedback.filter(f => !f.is_resolved && f.status !== 'in_progress'));
+            const inProgressItems = sortByPriority(feedback.filter(f => f.status === 'in_progress'));
+            const resolvedItems = sortByPriority(feedback.filter(f => f.is_resolved));
 
             // Milestone summary card (shows overall progress)
             if (feedback.length > 0) {
@@ -5236,34 +5392,147 @@
             container.innerHTML = html;
         }
 
+        // Generate unique type-prefixed ID (e.g., F-1 for feature, B-2 for bug)
+        function getTypePrefixedId(item) {
+            const typePrefixes = {
+                'feature': 'F',
+                'bug': 'B',
+                'question': 'Q',
+                'request': 'R',
+                'feedback': 'FB'
+            };
+            const prefix = typePrefixes[item.type] || 'I';
+            return `${prefix}-${item.id}`;
+        }
+
+        // Calculate item priority score based on engagement metrics
+        function calculatePriorityScore(item) {
+            let score = 0;
+
+            // Higher score for bugs (critical)
+            if (item.type === 'bug') score += 30;
+            // Features get moderate boost
+            else if (item.type === 'feature') score += 20;
+            // Questions/requests are lower priority
+            else if (item.type === 'question') score += 10;
+            else if (item.type === 'request') score += 15;
+
+            // Engagement metrics boost
+            if (item.stars_count) score += item.stars_count * 5;
+            if (item.comments_count) score += item.comments_count * 3;
+            if (item.views_count) score += Math.min(item.views_count, 100) / 10;
+
+            // Age factor - newer items get slight boost
+            if (item.created_at) {
+                const daysSinceCreation = (Date.now() - new Date(item.created_at).getTime()) / (1000 * 60 * 60 * 24);
+                if (daysSinceCreation < 7) score += 10;
+                else if (daysSinceCreation < 30) score += 5;
+            }
+
+            // GitHub linkage indicates importance
+            if (item.github_issue) score += 10;
+
+            return score;
+        }
+
+        // Get priority level from score
+        function getPriorityLevel(score) {
+            if (score >= 40) return { level: 'high', label: 'High' };
+            if (score >= 20) return { level: 'medium', label: 'Med' };
+            return { level: 'low', label: 'Low' };
+        }
+
+        // Get SDLC stage info for an item
+        function getSDLCStageInfo(item) {
+            const stages = ['submitted', 'triaged', 'development', 'testing', 'deployed'];
+            const stageLabels = ['Submit', 'Triage', 'Dev', 'Test', 'Deploy'];
+
+            // Map status to SDLC stage
+            const statusToStage = {
+                'new': 0,           // Submitted
+                'reviewed': 1,      // Triaged
+                'in_progress': 2,   // Development
+                'testing': 3,       // Testing
+                'resolved': 4       // Deployed
+            };
+
+            // Use sdlc_stage from API if available, otherwise infer from status
+            let currentStageIndex = item.sdlc_stage !== undefined
+                ? item.sdlc_stage
+                : (statusToStage[item.status] !== undefined ? statusToStage[item.status] : 0);
+
+            // Resolved items are at the final stage
+            if (item.is_resolved) currentStageIndex = 4;
+
+            return {
+                stages,
+                stageLabels,
+                currentStageIndex,
+                totalStages: stages.length
+            };
+        }
+
+        // Render SDLC progress bar for an item
+        function renderSDLCProgress(item) {
+            const { stages, stageLabels, currentStageIndex, totalStages } = getSDLCStageInfo(item);
+
+            let stagesHtml = '<div class="sdlc-stages">';
+            let labelsHtml = '<div class="sdlc-stage-labels">';
+
+            for (let i = 0; i < totalStages; i++) {
+                let stageClass = '';
+                let labelClass = '';
+
+                if (i < currentStageIndex) {
+                    stageClass = 'completed';
+                    labelClass = 'completed';
+                } else if (i === currentStageIndex) {
+                    stageClass = 'current';
+                    labelClass = 'current';
+                }
+
+                stagesHtml += `<div class="sdlc-stage ${stageClass}"></div>`;
+                labelsHtml += `<span class="${labelClass}">${stageLabels[i]}</span>`;
+            }
+
+            stagesHtml += '</div>';
+            labelsHtml += '</div>';
+
+            return stagesHtml + labelsHtml;
+        }
+
         function renderTimelineItem(item) {
             const statusClass = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in-progress' : 'pending');
             const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
-            const typeColors = {
-                'bug': 'bug',
-                'feature': 'enhancement',
-                'question': 'question',
-                'feedback': 'default'
-            };
-            const colorClass = typeColors[item.type] || 'default';
+            const typeIdBadgeClass = item.type || 'feedback';
+            const typeId = getTypePrefixedId(item);
+
+            // Priority indicator
+            const priorityScore = calculatePriorityScore(item);
+            const priority = getPriorityLevel(priorityScore);
 
             // Build reference numbers
-            let refHtml = `#${item.id}`;
+            let refHtml = '';
             if (item.github_issue && item.github_issue_url) {
-                refHtml += ` | <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7;">GH-${item.github_issue}</a>`;
+                refHtml = ` <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7; font-size: 0.75rem;">GH-${item.github_issue}</a>`;
             }
 
             return `
                 <div class="timeline-item ${statusClass}">
                     <div class="timeline-content">
                         <div class="timeline-header">
-                            <span class="timeline-title">${escapeHtml(item.title)}</span>
+                            <span class="timeline-title">
+                                <span class="type-id-badge ${typeIdBadgeClass}">${typeId}</span>
+                                ${escapeHtml(item.title)}
+                                <span class="item-priority ${priority.level}">${priority.label}</span>
+                            </span>
                             <span class="timeline-date">${timeAgo}</span>
                         </div>
                         <div class="timeline-description">
-                            <span class="roadmap-label ${colorClass}" style="margin-right: 8px;">${escapeHtml(item.type)}</span>
-                            <span style="color: #888; font-size: 0.8rem;">${refHtml}</span>
+                            <span class="roadmap-label ${typeIdBadgeClass === 'feature' ? 'enhancement' : typeIdBadgeClass}" style="margin-right: 8px;">${escapeHtml(item.type)}</span>
+                            ${refHtml}
                         </div>
+                        ${renderSDLCProgress(item)}
                     </div>
                 </div>
             `;
@@ -5286,27 +5555,80 @@
             };
 
             const colorClass = typeColors[item.type] || 'default';
+            const typeIdBadgeClass = item.type || 'feedback';
+            const typeId = getTypePrefixedId(item);
             const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
 
-            // Build reference numbers
-            let refHtml = `<span class="roadmap-item-refs">#${item.id}`;
-            if (item.github_issue && item.github_issue_url) {
-                refHtml += ` | <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7;">GH-${item.github_issue}</a>`;
-            }
-            refHtml += '</span>';
+            // Priority indicator
+            const priorityScore = calculatePriorityScore(item);
+            const priority = getPriorityLevel(priorityScore);
 
             // Status badge
             const statusHtml = `<span class="roadmap-status" style="color: ${statusColors[item.status] || '#888'};">${escapeHtml(item.status_label)}</span>`;
 
+            // Build registration/metadata section
+            let registrationHtml = '<div class="item-registration">';
+
+            // API Registration ID
+            registrationHtml += `
+                <div class="item-registration-entry">
+                    <span class="icon">📝</span>
+                    <span>API #${item.id}</span>
+                </div>
+            `;
+
+            // GitHub Issue Link
+            if (item.github_issue && item.github_issue_url) {
+                registrationHtml += `
+                    <div class="item-registration-entry">
+                        <span class="icon">🔗</span>
+                        <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener">GitHub #${item.github_issue}</a>
+                    </div>
+                `;
+            }
+
+            // Created timestamp
+            if (item.created_at) {
+                const createdDate = new Date(item.created_at).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                registrationHtml += `
+                    <div class="item-registration-entry">
+                        <span class="icon">📅</span>
+                        <span>${createdDate}</span>
+                    </div>
+                `;
+            }
+
+            // Updated timestamp (if different from created)
+            if (item.updated_at && item.updated_at !== item.created_at) {
+                registrationHtml += `
+                    <div class="item-registration-entry">
+                        <span class="icon">🔄</span>
+                        <span>Updated ${formatRelativeTime(item.updated_at)}</span>
+                    </div>
+                `;
+            }
+
+            registrationHtml += '</div>';
+
             return `
                 <div class="roadmap-item">
                     <div class="roadmap-item-header">
-                        <div class="roadmap-item-title">${refHtml}${escapeHtml(item.title)}</div>
+                        <div class="roadmap-item-title">
+                            <span class="type-id-badge ${typeIdBadgeClass}">${typeId}</span>
+                            ${escapeHtml(item.title)}
+                            <span class="item-priority ${priority.level}">${priority.label}</span>
+                        </div>
                         <div class="roadmap-item-meta">${statusHtml} | ${timeAgo}</div>
                     </div>
                     <div class="roadmap-labels">
                         <span class="roadmap-label ${colorClass}">${escapeHtml(item.type)}</span>
                     </div>
+                    ${renderSDLCProgress(item)}
+                    ${registrationHtml}
                 </div>
             `;
         }

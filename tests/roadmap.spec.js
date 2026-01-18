@@ -314,4 +314,362 @@ test.describe("Roadmap Modal Tests", () => {
     });
     expect(isDefined).toBe(true);
   });
+
+  test("getTypePrefixedId generates correct unique IDs for each type", async ({
+    page,
+  }) => {
+    const results = await page.evaluate(() => {
+      return {
+        feature: window.getTypePrefixedId({ type: "feature", id: 1 }),
+        bug: window.getTypePrefixedId({ type: "bug", id: 2 }),
+        question: window.getTypePrefixedId({ type: "question", id: 3 }),
+        request: window.getTypePrefixedId({ type: "request", id: 4 }),
+        feedback: window.getTypePrefixedId({ type: "feedback", id: 5 }),
+        unknown: window.getTypePrefixedId({ type: "other", id: 6 }),
+      };
+    });
+
+    expect(results.feature).toBe("F-1");
+    expect(results.bug).toBe("B-2");
+    expect(results.question).toBe("Q-3");
+    expect(results.request).toBe("R-4");
+    expect(results.feedback).toBe("FB-5");
+    expect(results.unknown).toBe("I-6");
+  });
+
+  test("calculatePriorityScore assigns higher scores to bugs", async ({
+    page,
+  }) => {
+    const results = await page.evaluate(() => {
+      const bugScore = window.calculatePriorityScore({
+        type: "bug",
+        id: 1,
+        created_at: new Date().toISOString(),
+      });
+      const featureScore = window.calculatePriorityScore({
+        type: "feature",
+        id: 2,
+        created_at: new Date().toISOString(),
+      });
+      const questionScore = window.calculatePriorityScore({
+        type: "question",
+        id: 3,
+        created_at: new Date().toISOString(),
+      });
+      return { bugScore, featureScore, questionScore };
+    });
+
+    expect(results.bugScore).toBeGreaterThan(results.featureScore);
+    expect(results.featureScore).toBeGreaterThan(results.questionScore);
+  });
+
+  test("calculatePriorityScore boosts items with engagement", async ({
+    page,
+  }) => {
+    const results = await page.evaluate(() => {
+      const baseScore = window.calculatePriorityScore({
+        type: "feature",
+        id: 1,
+        created_at: new Date().toISOString(),
+      });
+      const withStars = window.calculatePriorityScore({
+        type: "feature",
+        id: 2,
+        created_at: new Date().toISOString(),
+        stars_count: 5,
+      });
+      const withComments = window.calculatePriorityScore({
+        type: "feature",
+        id: 3,
+        created_at: new Date().toISOString(),
+        comments_count: 3,
+      });
+      return { baseScore, withStars, withComments };
+    });
+
+    expect(results.withStars).toBeGreaterThan(results.baseScore);
+    expect(results.withComments).toBeGreaterThan(results.baseScore);
+  });
+
+  test("getPriorityLevel returns correct levels", async ({ page }) => {
+    const results = await page.evaluate(() => {
+      return {
+        high: window.getPriorityLevel(50),
+        medium: window.getPriorityLevel(25),
+        low: window.getPriorityLevel(10),
+      };
+    });
+
+    expect(results.high.level).toBe("high");
+    expect(results.medium.level).toBe("medium");
+    expect(results.low.level).toBe("low");
+  });
+
+  test("getSDLCStageInfo returns correct stage for status", async ({ page }) => {
+    const results = await page.evaluate(() => {
+      const newItem = window.getSDLCStageInfo({ status: "new" });
+      const inProgress = window.getSDLCStageInfo({ status: "in_progress" });
+      const resolved = window.getSDLCStageInfo({ status: "resolved", is_resolved: true });
+      return {
+        newStage: newItem.currentStageIndex,
+        inProgressStage: inProgress.currentStageIndex,
+        resolvedStage: resolved.currentStageIndex,
+        totalStages: resolved.totalStages,
+      };
+    });
+
+    expect(results.newStage).toBe(0);
+    expect(results.inProgressStage).toBe(2);
+    expect(results.resolvedStage).toBe(4);
+    expect(results.totalStages).toBe(5);
+  });
+
+  test("renderSDLCProgress function is defined", async ({ page }) => {
+    const isDefined = await page.evaluate(() => {
+      return typeof window.renderSDLCProgress === "function";
+    });
+    expect(isDefined).toBe(true);
+  });
+
+  test("progress modal displays SDLC progress bars for items", async ({
+    page,
+  }) => {
+    // Mock the API response with items in various states
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Feature in development",
+              type: "feature",
+              status: "in_progress",
+              status_label: "In Progress",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "Bug fix deployed",
+              type: "bug",
+              status: "resolved",
+              status_label: "Resolved",
+              is_resolved: true,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 0, in_progress: 1, resolved: 1, total: 2 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    const roadmapModal = page.locator("#roadmap-modal");
+    await expect(roadmapModal).toBeVisible();
+
+    // Wait for SDLC stages to render
+    await page.waitForSelector(".sdlc-stages", { timeout: 10000 });
+
+    // Verify SDLC stages exist
+    const sdlcStages = page.locator(".sdlc-stages");
+    await expect(sdlcStages.first()).toBeVisible();
+
+    // Verify stage labels
+    const stageLabels = page.locator(".sdlc-stage-labels");
+    await expect(stageLabels.first()).toBeVisible();
+  });
+
+  test("progress modal displays unique type IDs with badges", async ({
+    page,
+  }) => {
+    // Mock the API response
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 10,
+              title: "Test feature",
+              type: "feature",
+              status: "in_progress",
+              status_label: "In Progress",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 20,
+              title: "Test bug",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 1, in_progress: 1, resolved: 0, total: 2 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".type-id-badge", { timeout: 10000 });
+
+    // Verify type ID badges exist
+    const typeIdBadges = page.locator(".type-id-badge");
+    const count = await typeIdBadges.count();
+    expect(count).toBeGreaterThan(0);
+
+    // Check for F- prefix (feature)
+    const featureBadge = page.locator('.type-id-badge:has-text("F-10")');
+    await expect(featureBadge).toBeVisible();
+
+    // Check for B- prefix (bug)
+    const bugBadge = page.locator('.type-id-badge:has-text("B-20")');
+    await expect(bugBadge).toBeVisible();
+  });
+
+  test("progress modal displays priority indicators", async ({ page }) => {
+    // Mock with a high priority bug
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Critical bug with engagement",
+              type: "bug",
+              status: "in_progress",
+              status_label: "In Progress",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+              github_issue: 123,
+              github_issue_url: "https://github.com/test/repo/issues/123",
+              stars_count: 5,
+            },
+          ],
+          stats: { open: 0, in_progress: 1, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".item-priority", { timeout: 10000 });
+
+    // Verify priority indicator exists
+    const priorityIndicators = page.locator(".item-priority");
+    await expect(priorityIndicators.first()).toBeVisible();
+
+    // High priority bug with engagement should be marked high
+    const highPriority = page.locator(".item-priority.high");
+    await expect(highPriority.first()).toBeVisible();
+  });
+
+  test("progress modal displays API registration and metadata", async ({
+    page,
+  }) => {
+    // Mock with item containing metadata
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 42,
+              title: "Feature with full metadata",
+              type: "feature",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: "2025-01-15T10:00:00Z",
+              github_issue: 99,
+              github_issue_url: "https://github.com/test/repo/issues/99",
+            },
+          ],
+          stats: { open: 1, in_progress: 0, resolved: 0, total: 1 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".item-registration", { timeout: 10000 });
+
+    // Verify registration section exists
+    const registrationSection = page.locator(".item-registration");
+    await expect(registrationSection).toBeVisible();
+
+    // Verify API ID is displayed
+    const apiId = page.locator('.item-registration-entry:has-text("API #42")');
+    await expect(apiId).toBeVisible();
+
+    // Verify GitHub link is displayed
+    const githubLink = page.locator('.item-registration-entry a:has-text("GitHub #99")');
+    await expect(githubLink).toBeVisible();
+  });
+
+  test("items are sorted by priority (bugs first)", async ({ page }) => {
+    // Mock with mixed types - priority should sort bugs higher
+    await page.route("**/feedback.php**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          feedback: [
+            {
+              id: 1,
+              title: "Low priority question",
+              type: "question",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: 2,
+              title: "High priority bug",
+              type: "bug",
+              status: "open",
+              status_label: "Open",
+              is_resolved: false,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          stats: { open: 2, in_progress: 0, resolved: 0, total: 2 },
+        }),
+      });
+    });
+
+    await page.click(".hamburger-btn");
+    await page.click('.menu-item:has-text("Progress")');
+
+    await page.waitForSelector(".roadmap-item", { timeout: 10000 });
+
+    // Get the order of items in the backlog
+    const items = await page.locator(".roadmap-item").allTextContents();
+
+    // Bug should appear before question due to priority
+    const bugIndex = items.findIndex((text) => text.includes("High priority bug"));
+    const questionIndex = items.findIndex((text) => text.includes("Low priority question"));
+
+    expect(bugIndex).toBeLessThan(questionIndex);
+  });
 });
