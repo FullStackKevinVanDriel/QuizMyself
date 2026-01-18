@@ -6110,7 +6110,7 @@
 
             try {
                 const token = await currentUser.getIdToken();
-                const response = await fetch(`${API_BASE}/quizmyself/scrape-url.php`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/scrape-url.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
