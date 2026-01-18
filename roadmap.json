@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-18T06:13:45.902Z",
+  "generated": "2026-01-18T03:19:56.265Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
     "total": 38,
@@ -624,6 +624,13 @@
       "closedAt": "2026-01-18T03:08:52Z",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/126",
       "feedback_id": 3
+    },
+    {
+      "number": 125,
+      "title": "[bug] after AI generates the quiz to create questions an...",
+      "closedAt": "2026-01-18T03:08:51Z",
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/125",
+      "feedback_id": 4
     }
   ]
 }
