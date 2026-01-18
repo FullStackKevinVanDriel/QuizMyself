@@ -1967,6 +1967,198 @@
             text-align: right;
         }
 
+        /* Progress Timeline */
+        .progress-timeline {
+            position: relative;
+            padding: 15px 0 15px 25px;
+            margin-bottom: 20px;
+        }
+
+        .progress-timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #4fc3f7 0%, #0f3460 100%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -17px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4fc3f7;
+            border: 3px solid #1a1a2e;
+            z-index: 1;
+        }
+
+        .timeline-item.completed::before {
+            background: #4caf50;
+        }
+
+        .timeline-item.in-progress::before {
+            background: #ffa726;
+            box-shadow: 0 0 8px rgba(255, 167, 38, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 167, 38, 0.5); }
+            50% { box-shadow: 0 0 16px rgba(255, 167, 38, 0.8); }
+        }
+
+        .timeline-item.pending::before {
+            background: #666;
+        }
+
+        .timeline-content {
+            background: #0f3460;
+            border-radius: 8px;
+            padding: 12px 15px;
+            border-left: 3px solid #4fc3f7;
+        }
+
+        .timeline-item.completed .timeline-content {
+            border-left-color: #4caf50;
+        }
+
+        .timeline-item.in-progress .timeline-content {
+            border-left-color: #ffa726;
+        }
+
+        .timeline-item.pending .timeline-content {
+            border-left-color: #666;
+            opacity: 0.7;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .timeline-title {
+            color: #eaeaea;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .timeline-date {
+            color: #888;
+            font-size: 0.75rem;
+        }
+
+        .timeline-description {
+            color: #aaa;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Milestone Progress */
+        .milestone-card {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+
+        .milestone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .milestone-title {
+            color: #4fc3f7;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .milestone-title-icon {
+            font-size: 1.1rem;
+        }
+
+        .milestone-progress-ring {
+            width: 50px;
+            height: 50px;
+            position: relative;
+        }
+
+        .milestone-progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .milestone-progress-ring circle {
+            fill: none;
+            stroke-width: 5;
+        }
+
+        .milestone-progress-ring .bg {
+            stroke: #1a1a2e;
+        }
+
+        .milestone-progress-ring .progress {
+            stroke: #4fc3f7;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .milestone-progress-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #eaeaea;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .milestone-description {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .milestone-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .milestone-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .milestone-stat-icon {
+            font-size: 0.9rem;
+        }
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -4956,35 +5148,84 @@
             const inProgressItems = feedback.filter(f => f.status === 'in_progress');
             const resolvedItems = feedback.filter(f => f.is_resolved);
 
-            // In Progress section
-            if (inProgressItems.length > 0) {
-                html += '<div class="roadmap-section"><h3>In Progress</h3>';
-                inProgressItems.forEach(item => {
-                    html += renderFeedbackItem(item);
-                });
-                html += '</div>';
+            // Milestone summary card (shows overall progress)
+            if (feedback.length > 0) {
+                const totalItems = feedback.length;
+                const completedItems = resolvedItems.length;
+                const progressPercent = Math.round((completedItems / totalItems) * 100);
+                const circumference = 2 * Math.PI * 18; // radius = 18
+                const dashOffset = circumference - (progressPercent / 100) * circumference;
+
+                html += `
+                    <div class="milestone-card">
+                        <div class="milestone-header">
+                            <div class="milestone-title">
+                                <span class="milestone-title-icon">🎯</span>
+                                Current Milestone
+                            </div>
+                            <div class="milestone-progress-ring">
+                                <svg width="50" height="50">
+                                    <circle class="bg" cx="25" cy="25" r="18"></circle>
+                                    <circle class="progress" cx="25" cy="25" r="18"
+                                        stroke-dasharray="${circumference}"
+                                        stroke-dashoffset="${dashOffset}"></circle>
+                                </svg>
+                                <div class="milestone-progress-percent">${progressPercent}%</div>
+                            </div>
+                        </div>
+                        <div class="milestone-description">
+                            Tracking ${totalItems} items across the product lifecycle
+                        </div>
+                        <div class="milestone-stats">
+                            <span class="milestone-stat">
+                                <span class="milestone-stat-icon">📋</span>
+                                ${openItems.length} open
+                            </span>
+                            <span class="milestone-stat">
+                                <span class="milestone-stat-icon">🔧</span>
+                                ${inProgressItems.length} in progress
+                            </span>
+                            <span class="milestone-stat">
+                                <span class="milestone-stat-icon">✅</span>
+                                ${completedItems} resolved
+                            </span>
+                        </div>
+                    </div>
+                `;
             }
 
-            // Open section
+            // Timeline view for active items (in progress + recently resolved)
+            const timelineItems = [...inProgressItems, ...resolvedItems.slice(0, 3)];
+            if (timelineItems.length > 0) {
+                html += '<div class="roadmap-section"><h3>Timeline</h3>';
+                html += '<div class="progress-timeline">';
+                timelineItems.forEach(item => {
+                    html += renderTimelineItem(item);
+                });
+                html += '</div></div>';
+            }
+
+            // Open section (items awaiting work)
             if (openItems.length > 0) {
-                html += '<div class="roadmap-section"><h3>Open</h3>';
+                html += '<div class="roadmap-section"><h3>Backlog</h3>';
                 openItems.forEach(item => {
                     html += renderFeedbackItem(item);
                 });
                 html += '</div>';
             }
 
-            // Resolved section
-            if (resolvedItems.length > 0) {
-                html += '<div class="roadmap-section"><h3>Resolved</h3>';
-                resolvedItems.forEach(item => {
+            // Additional resolved items (beyond the 3 shown in timeline)
+            const additionalResolved = resolvedItems.slice(3);
+            if (additionalResolved.length > 0) {
+                html += '<div class="roadmap-section"><h3>Previously Completed</h3>';
+                additionalResolved.forEach(item => {
                     html += renderFeedbackItem(item);
                 });
                 html += '</div>';
             }
 
             if (feedback.length === 0) {
-                html = `
+                html += `
                     <div class="roadmap-empty">
                         <p>No feedback yet! Be the first to help shape our priorities.</p>
                         <button class="btn btn-primary" onclick="closeRoadmapModal(); showFeedbackModal();">Send Feedback</button>
@@ -4993,6 +5234,39 @@
             }
 
             container.innerHTML = html;
+        }
+
+        function renderTimelineItem(item) {
+            const statusClass = item.is_resolved ? 'completed' : (item.status === 'in_progress' ? 'in-progress' : 'pending');
+            const timeAgo = item.created_at ? formatRelativeTime(item.created_at) : '';
+            const typeColors = {
+                'bug': 'bug',
+                'feature': 'enhancement',
+                'question': 'question',
+                'feedback': 'default'
+            };
+            const colorClass = typeColors[item.type] || 'default';
+
+            // Build reference numbers
+            let refHtml = `#${item.id}`;
+            if (item.github_issue && item.github_issue_url) {
+                refHtml += ` | <a href="${escapeAttr(item.github_issue_url)}" target="_blank" rel="noopener" style="color: #4fc3f7;">GH-${item.github_issue}</a>`;
+            }
+
+            return `
+                <div class="timeline-item ${statusClass}">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-title">${escapeHtml(item.title)}</span>
+                            <span class="timeline-date">${timeAgo}</span>
+                        </div>
+                        <div class="timeline-description">
+                            <span class="roadmap-label ${colorClass}" style="margin-right: 8px;">${escapeHtml(item.type)}</span>
+                            <span style="color: #888; font-size: 0.8rem;">${refHtml}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         function renderFeedbackItem(item) {
