@@ -1,107 +1,69 @@
 {
-  "generated": "2026-01-17T18:30:00Z",
+  "generated": "2026-01-18T03:03:52.884Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 12,
-    "open": 8,
-    "closed": 4,
+    "total": 4,
+    "open": 4,
+    "closed": 0,
     "byLabel": {
       "bug": 3,
-      "enhancement": 5,
-      "question": 2,
-      "feedback": 2
+      "feedback": 1
     }
   },
-  "milestones": [
-    {
-      "title": "v1.1 - UX Improvements",
-      "description": "Focus on user experience enhancements and bug fixes",
-      "dueDate": "2026-02-01T00:00:00Z",
-      "progress": 40,
-      "openIssues": 3,
-      "closedIssues": 2
-    },
-    {
-      "title": "v1.2 - New Features",
-      "description": "Flashcard mode, theme toggle, and export functionality",
-      "dueDate": "2026-03-01T00:00:00Z",
-      "progress": 10,
-      "openIssues": 5,
-      "closedIssues": 0
-    }
-  ],
+  "milestones": [],
   "issues": [
     {
-      "number": 112,
-      "title": "Progress dashboard showing completion percentage",
+      "number": 128,
+      "title": "[bug] Test feedback from CLI - verifying fix",
       "state": "open",
-      "labels": ["enhancement", "roadmap"],
-      "createdAt": "2026-01-15T10:00:00Z",
-      "updatedAt": "2026-01-16T14:30:00Z",
-      "milestone": "v1.1 - UX Improvements",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/112"
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T02:58:41Z",
+      "updatedAt": "2026-01-18T02:58:41Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/128"
     },
     {
-      "number": 113,
-      "title": "Search functionality across questions",
+      "number": 127,
+      "title": "[feedback] some stuff works; some stuff does not",
       "state": "open",
-      "labels": ["enhancement"],
-      "createdAt": "2026-01-14T09:00:00Z",
-      "updatedAt": "2026-01-14T09:00:00Z",
-      "milestone": "v1.1 - UX Improvements",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/113"
+      "labels": [
+        "user-feedback",
+        "feedback"
+      ],
+      "createdAt": "2026-01-18T02:58:40Z",
+      "updatedAt": "2026-01-18T02:58:40Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/127"
     },
     {
-      "number": 114,
-      "title": "Selection modal hidden behind sources modal",
+      "number": 126,
+      "title": "[bug] when accepting ai imported questions, dev tools ch...",
       "state": "open",
-      "labels": ["bug"],
-      "createdAt": "2026-01-17T12:00:00Z",
-      "updatedAt": "2026-01-17T18:00:00Z",
-      "milestone": "v1.1 - UX Improvements",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/114"
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T02:58:40Z",
+      "updatedAt": "2026-01-18T02:58:40Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/126"
     },
     {
-      "number": 115,
-      "title": "Flashcard mode for term memorization",
+      "number": 125,
+      "title": "[bug] after AI generates the quiz to create questions an...",
       "state": "open",
-      "labels": ["enhancement", "feature"],
-      "createdAt": "2026-01-10T08:00:00Z",
-      "updatedAt": "2026-01-10T08:00:00Z",
-      "milestone": "v1.2 - New Features",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/115"
-    },
-    {
-      "number": 116,
-      "title": "Dark/light theme toggle",
-      "state": "open",
-      "labels": ["enhancement"],
-      "createdAt": "2026-01-08T11:00:00Z",
-      "updatedAt": "2026-01-08T11:00:00Z",
-      "milestone": "v1.2 - New Features",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/116"
+      "labels": [
+        "bug",
+        "user-feedback"
+      ],
+      "createdAt": "2026-01-18T02:58:39Z",
+      "updatedAt": "2026-01-18T02:58:39Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/125"
     }
   ],
-  "recentlyCompleted": [
-    {
-      "number": 109,
-      "title": "Replace native dialogs with custom modals",
-      "closedAt": "2026-01-17T17:50:00Z"
-    },
-    {
-      "number": 108,
-      "title": "Add E2E tests for AI generation",
-      "closedAt": "2026-01-17T17:45:00Z"
-    },
-    {
-      "number": 107,
-      "title": "Fix modal z-index stacking issues",
-      "closedAt": "2026-01-17T17:40:00Z"
-    },
-    {
-      "number": 106,
-      "title": "Remove debug console.log statements",
-      "closedAt": "2026-01-16T15:00:00Z"
-    }
-  ]
+  "recentlyCompleted": []
 }
