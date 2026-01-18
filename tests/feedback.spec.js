@@ -11,6 +11,32 @@ test.describe("Feedback Process", () => {
     }
   });
 
+  test("feedback modal opens without console errors", async ({ page }) => {
+    const errors = [];
+    page.on("pageerror", (error) => {
+      errors.push(error.message);
+    });
+
+    // Open hamburger menu
+    await page.click(".hamburger-btn");
+    await expect(page.locator("#hamburger-dropdown")).toBeVisible();
+
+    // Click Send Feedback
+    await page
+      .locator('.menu-item:has-text("Send Feedback"):visible')
+      .first()
+      .click();
+
+    // Wait for modal
+    await expect(page.locator("#feedback-modal")).toBeVisible();
+
+    // Give time for any async errors to surface
+    await page.waitForTimeout(500);
+
+    // Should have no JS errors (especially "currentUserEmail is not defined")
+    expect(errors).toHaveLength(0);
+  });
+
   async function openFeedbackModal(page) {
     // Open hamburger menu
     await page.click(".hamburger-btn");
