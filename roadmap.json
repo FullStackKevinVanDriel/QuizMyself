@@ -1,18 +1,44 @@
 {
-  "generated": "2026-01-18T03:37:07.777Z",
+  "generated": "2026-01-18T03:37:39.617Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 5,
-    "open": 1,
+    "total": 7,
+    "open": 3,
     "closed": 4,
     "byLabel": {
+      "bug": 5,
       "enhancement": 1,
-      "bug": 3,
       "feedback": 1
     }
   },
   "milestones": [],
   "issues": [
+    {
+      "number": 144,
+      "title": "P0: Fix XSS vulnerability in category onclick handlers",
+      "state": "open",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T03:37:32Z",
+      "updatedAt": "2026-01-18T03:37:32Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
+      "feedback_id": null
+    },
+    {
+      "number": 143,
+      "title": "P0: Fix XSS vulnerability in keyword onclick handlers",
+      "state": "open",
+      "labels": [
+        "bug"
+      ],
+      "createdAt": "2026-01-18T03:37:30Z",
+      "updatedAt": "2026-01-18T03:37:30Z",
+      "milestone": null,
+      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
+      "feedback_id": null
+    },
     {
       "number": 140,
       "title": "P1: Integrate Plausible analytics",
