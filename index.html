@@ -6906,7 +6906,7 @@
             }
 
             // Fall back to simple feedback endpoint
-            const feedbackResponse = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&public=true`);
+            const feedbackResponse = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php?product=quizmyself&public=true`);
             if (!feedbackResponse.ok) throw new Error('Failed to load roadmap');
             const data = await feedbackResponse.json();
             if (!data.success) throw new Error(data.error || 'Failed to load');
@@ -8045,7 +8045,7 @@
                 const isCurrentlyStarred = userStarredItems.has(itemId);
                 const action = isCurrentlyStarred ? 'unstar' : 'star';
 
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8098,7 +8098,7 @@
 
             try {
                 const token = await currentUser.getIdToken();
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php?product=quizmyself&action=starred`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php?product=quizmyself&action=starred`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const result = await response.json();
@@ -8154,7 +8154,7 @@
                 const token = await currentUser.getIdToken();
 
                 // Call Vandromeda API to create GitHub issue
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8255,7 +8255,7 @@
             try {
                 const token = await currentUser.getIdToken();
 
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8382,7 +8382,7 @@
             try {
                 const token = await currentUser.getIdToken();
 
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8674,7 +8674,7 @@
             if (currentUser) {
                 try {
                     const token = await currentUser.getIdToken();
-                    await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                    await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -8714,7 +8714,7 @@
 
             try {
                 const token = await currentUser.getIdToken();
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8855,7 +8855,7 @@
             statusEl.style.display = 'none';
 
             try {
-                const response = await fetch(`${VANDROMEDA_API}/feedback.php`, {
+                const response = await fetch(`${VANDROMEDA_API}/quizmyself/feedback.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
