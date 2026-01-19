@@ -10325,7 +10325,21 @@
 
             // Check if first line looks like a header
             const firstLine = lines[0].toLowerCase();
-            const hasHeader = firstLine.includes('question') || firstLine.includes('q,') || firstLine.includes('"q"');
+            const hasHeader = firstLine.includes('question') || firstLine.includes('q,') || firstLine.includes('"q"') || firstLine.includes('category');
+
+            // Detect column positions from header
+            let categoryCol = -1;
+            let questionCol = 0;
+            let answerCol = 1;
+
+            if (hasHeader) {
+                const headerParts = parseCSVLine(lines[0].toLowerCase());
+                categoryCol = headerParts.findIndex(h => h === 'category' || h === 'cat');
+                const qCol = headerParts.findIndex(h => h === 'question' || h === 'q');
+                const aCol = headerParts.findIndex(h => h === 'answer' || h === 'a');
+                if (qCol !== -1) questionCol = qCol;
+                if (aCol !== -1) answerCol = aCol;
+            }
 
             const dataLines = hasHeader ? lines.slice(1) : lines;
             const questions = [];
@@ -10333,12 +10347,13 @@
             for (let i = 0; i < dataLines.length; i++) {
                 const parsed = parseCSVLine(dataLines[i]);
                 if (parsed.length >= 2) {
+                    const category = categoryCol !== -1 && parsed[categoryCol] ? parsed[categoryCol] : 'Imported';
                     const q = {
                         id: questions.length + 1,
-                        category: 'Imported',
-                        q: parsed[0],
-                        a: parsed[1],
-                        choices: parsed.length >= 6 ? [parsed[2], parsed[3], parsed[4], parsed[5]] : generateChoices(parsed[1]),
+                        category: category,
+                        q: parsed[questionCol] || parsed[0],
+                        a: parsed[answerCol] || parsed[1],
+                        choices: parsed.length >= 6 ? [parsed[2], parsed[3], parsed[4], parsed[5]] : generateChoices(parsed[answerCol] || parsed[1]),
                         correct: parsed.length >= 7 ? parseInt(parsed[6]) || 0 : 0
                     };
                     questions.push(q);
