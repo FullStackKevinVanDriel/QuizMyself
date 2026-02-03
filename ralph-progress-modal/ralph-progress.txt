@@ -1,0 +1,371 @@
+# Ralph Wiggum Loop Progress
+# Started: Sat Jan 17 21:58:47 PST 2026
+# PRD: /Users/kevinvandriel/Developer/QuizMyself/ralph-progress-modal/prd.json
+
+## Story 1: Align with Strategic Goals and Vision - COMPLETED
+
+### What was done:
+- Renamed "Roadmap" menu item to "Progress" for clearer user-facing terminology
+- Added product vision section at top of Progress modal with:
+  - Vision statement: "Empower learners to master any subject..."
+  - Four goal badges: Fast quiz creation, Track progress, AI-powered learning, Sync across devices
+  - "Updated iteratively based on user feedback" message
+- Added CSS for progress-vision section with gradient background and goal badges
+- Updated tests to verify vision section renders correctly
+- Changed playwright port from 8080 to 8095 (8080 had nginx conflict)
+
+### Acceptance Criteria Met:
+1. ✅ Define clear product vision tied to business objectives
+   - Vision text aligns with QuizMyself's core value proposition
+2. ✅ Incorporate goals/benefits in modal display
+   - Four goals displayed as styled badges at top of modal
+3. ✅ Ensure roadmap supports iterative updates
+   - Already fetches from Vandromeda API dynamically
+   - Added "Updated iteratively" message to communicate this
+
+### Learnings:
+- Port 8080 was occupied by nginx on this system - changed playwright config to 8095
+- Mock route pattern needed to match actual API endpoint pattern (**/feedback.php**)
+- Need to return feedback data in mock for vision section to render (not empty fallback)
+
+### Commit: 33e1ed6
+
+## Story 2: Hamburger Button and Modal Setup - COMPLETED
+
+### What was done:
+- Verified 'Progress' item already exists in hamburger menu (both signed-in and signed-out states)
+- Added timeline visualization for active items:
+  - Visual timeline with vertical line connecting items
+  - Status-based styling: in-progress (pulsing orange), completed (green), pending (gray)
+  - Timeline items show title, type badge, ID, and relative timestamp
+- Added milestone card with circular progress ring:
+  - SVG-based progress ring with percentage display
+  - Stats showing open/in-progress/resolved counts
+  - Tracks overall completion across all feedback items
+- Added CSS for timeline and milestone components (~150 lines)
+- Added 3 new Playwright tests for timeline and milestone features
+- Reorganized modal sections: Milestone Card > Timeline > Backlog > Previously Completed
+
+### Acceptance Criteria Met:
+1. ✅ Add 'Progress' item to hamburger menu
+   - Already existed at lines 2272 (signed out) and 2290 (signed in)
+2. ✅ Load modal on click with flexible, visual layout (timelines, milestones)
+   - Timeline view shows in-progress and recently resolved items
+   - Milestone card with progress ring shows overall completion
+   - Visual indicators for status (colors, animation)
+3. ✅ Support frequent reviews/updates per best practices
+   - Fetches dynamically from Vandromeda API
+   - Shows relative timestamps (e.g., "2 hours ago")
+   - In-progress items have pulsing animation to draw attention
+
+### Technical Details:
+- SVG progress ring uses stroke-dasharray/stroke-dashoffset for animation
+- Timeline uses ::before pseudo-elements for connecting line and status dots
+- CSS @keyframes pulse for in-progress item animation
+- renderTimelineItem() function added for timeline-specific rendering
+
+### Learnings:
+- Existing modal already had good infrastructure - mainly needed visual enhancements
+- SVG stroke-dashoffset technique effective for circular progress indicators
+- Timeline pattern (vertical line with dots) works well for showing workflow state
+
+### Commit: f9f11c2
+
+
+## Story 3: Comprehensive Issue Tracking - COMPLETED
+
+### What was done:
+- Added unique type-prefixed IDs for all issue types:
+  - F-{id} for features, B-{id} for bugs, Q-{id} for questions
+  - R-{id} for requests, FB-{id} for feedback, I-{id} for unknown types
+  - Displayed in styled badges with type-specific colors
+- Added comprehensive item metadata section showing:
+  - API registration number (API #id)
+  - GitHub issue link (clickable, opens in new tab)
+  - Created timestamp (formatted as "Jan 15, 2026")
+  - Updated timestamp (relative, e.g., "2 hours ago")
+- Implemented 5-stage SDLC progress tracking:
+  - Stages: Submit → Triage → Dev → Test → Deploy
+  - Visual progress bar with completed (green) and current (orange pulsing) states
+  - Stage labels shown below progress bar
+  - Maps status to SDLC stage (new=0, reviewed=1, in_progress=2, testing=3, resolved=4)
+- Added data-driven prioritization:
+  - calculatePriorityScore() considers type (bugs=30, features=20, requests=15, questions=10)
+  - Engagement boost: stars (5pts each), comments (3pts each), views (up to 10pts)
+  - Recency boost: <7 days (+10), <30 days (+5)
+  - GitHub linkage bonus (+10)
+  - Items sorted by priority within each status category
+  - Priority badges shown: High (red), Med (orange), Low (gray)
+- Added ~150 lines of CSS for SDLC stages, priority indicators, type badges, and metadata
+- Added 11 new Playwright tests for all new functionality
+
+### Acceptance Criteria Met:
+1. ✅ Unique IDs for features, bugs, requests, questions
+   - Type-prefixed IDs (F-1, B-2, Q-3, R-4, FB-5) with styled badges
+2. ✅ Include API registration, GitHub issue links, timestamps
+   - Metadata section shows API ID, GitHub link, created/updated timestamps
+3. ✅ Track SDLC stages with progress bars per item
+   - 5-stage progress bar with visual indicators per item
+4. ✅ Prioritize based on data (engagement metrics, user feedback)
+   - Priority scoring algorithm with sorting by priority within categories
+
+### Technical Details:
+- getTypePrefixedId() generates unique type-prefixed IDs
+- calculatePriorityScore() computes engagement-based priority
+- getPriorityLevel() maps score to high/medium/low
+- getSDLCStageInfo() maps status to SDLC stage
+- renderSDLCProgress() renders the 5-stage progress bar
+- sortByPriority() sorts items within renderRoadmapFromFeedback()
+
+### Learnings:
+- Inferred SDLC stage from status works well when API doesn't provide explicit stage
+- Priority scoring can be tuned by adjusting weights for different factors
+- CSS animations (stagePulse) draw attention to current stage effectively
+
+### Commit: 659ebb0
+
+## Iteration 1 - Story #2
+- **Time:** Sat Jan 17 22:13:21 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-1-story-2.log
+
+## Iteration 2 - Story #3
+- **Time:** Sat Jan 17 22:19:50 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-2-story-3.log
+
+## Story 4: Advanced UI and Filters - COMPLETED
+
+### What was done:
+- Added category filter bar to Progress modal:
+  - Filter chips for each item type (Features, Bugs, Questions, Requests, Feedback)
+  - "All" filter to show everything (active by default)
+  - Type-specific colors for active chips matching type badges
+  - Item counts shown in each chip
+  - Filters toggle on click; clicking "All" clears other filters
+- Made roadmap items expandable with lifecycle details:
+  - Items have "View lifecycle details" toggle with arrow indicator
+  - Click to expand/collapse with CSS transitions
+  - Arrow rotates when expanded
+- Added lifecycle history section when expanded:
+  - Birth event: Shows when item was submitted with timestamp
+  - Status change events: Reviewed/triaged, Development started, Testing
+  - Events shown with colored left border and icons
+  - Full timestamps formatted as "Jan 15, 2026, 10:00 AM"
+- Added completion progress bar per item:
+  - Shows percentage completion based on SDLC stage (0%, 25%, 50%, 75%, 100%)
+  - Gradient fill from blue to green
+  - Visible in expanded lifecycle section
+- Added dependencies rendering (when item.dependencies exists):
+  - Shows linked items with resolved/pending status
+  - Type badges for dependencies
+  - Checkmark for resolved, circle for pending
+- Added ~260 lines of CSS for filter bar, expandable items, lifecycle events, dependencies
+- Added 15 new Playwright tests for all new functionality
+
+### Acceptance Criteria Met:
+1. ✅ Category filters in modal (feature, bug, etc.)
+   - Filter bar with type-specific chips, counts, and toggle behavior
+2. ✅ Expandable items showing full lifecycle: birth, events, timestamps, history
+   - Items expand to show birth event, status changes, and full timestamps
+3. ✅ Visual elements: progress bars, dependencies, milestones
+   - Item-level completion progress bar
+   - Dependencies section with status indicators
+   - Milestone card already existed from Story 2
+
+### Technical Details:
+- currentFeedbackData stores data for re-rendering on filter change
+- activeFilters Set tracks which types are selected
+- toggleProgressFilter(type) handles filter toggle logic
+- toggleItemExpand(itemId) handles expand/collapse
+- buildLifecycleEvents(item) constructs event history from status
+- calculateItemProgress(item) returns percentage based on SDLC stage
+- renderDependencies(item) renders dependency list if present
+
+### Learnings:
+- Items with in_progress status go to Timeline view (renderTimelineItem), not Backlog
+- Tests needed to use "open" or "reviewed" status for expandable items
+- Progress fill at 0% width is not "visible" - use toBeAttached() in tests
+- Filter state persists across re-renders using module-level variable
+
+### Commit: 7b249ac
+
+## Iteration 3 - Story #4
+- **Time:** Sat Jan 17 22:27:35 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-3-story-4.log
+
+## Story 5: Integrations and Automation - COMPLETED
+
+### What was done:
+- Added user starring for personalized tracking:
+  - renderStarButton() renders star button with count for each item
+  - toggleStar() calls Vandromeda API to star/unstar items
+  - fetchUserStarredItems() loads user's starred items on modal open
+  - Shows "Sign in to star" prompt for non-authenticated users
+  - Star count displayed next to star icon
+  - userStarredItems Set tracks current user's starred items
+- Added GitHub issue creation automation:
+  - renderGitHubIntegration() shows synced badge or "Create Issue" button
+  - createGitHubIssue() calls Vandromeda API to create GitHub issue
+  - Items with GitHub issues show green "synced" badge (GH-XX)
+  - Automation badge with pulsing animation indicates active sync
+- Added stakeholder collaboration features:
+  - renderCollaborationSection() renders comments section in expanded items
+  - addComment() posts comments to Vandromeda API
+  - renderAssignees() shows assigned team members with avatar initials
+  - assignToItem() allows self-assignment via API
+  - Add comment form with input and Post button for logged-in users
+  - Comment display shows author, timestamp, and body
+- Added ~250 lines of CSS for new features:
+  - Star button with hover and starred states
+  - GitHub integration badges (synced, automation)
+  - Comments section with avatar, author, timestamp styling
+  - Assignees section with overlapping avatars
+  - Add assignee button with plus icon
+  - Sign-in prompts for non-authenticated users
+- Added 15 new Playwright tests for Story 5:
+  - Function definition tests (8 functions)
+  - Sign-in prompt visibility test
+  - GitHub synced badge display test
+  - Comments section in expanded items test
+  - Assignees section display test
+  - Timeline items with integration features test
+  - Comments count display test
+  - No comments message test
+
+### Acceptance Criteria Met:
+1. ✅ Automate feedback to Vandromeda API on GitHub issue creation
+   - createGitHubIssue() calls API with action: 'create_github_issue'
+   - Updates item with github_issue and github_issue_url on success
+   - Shows automation badge for synced items
+2. ✅ User starring for personalized tracking in API
+   - toggleStar() calls API with action: 'star' or 'unstar'
+   - fetchUserStarredItems() loads starred items on modal open
+   - Visual feedback with filled/unfilled star icons
+3. ✅ Enable stakeholder collaboration (comments, assignments)
+   - Comments section with add comment form
+   - Assignees display with self-assignment
+   - API integration for comments and assignments
+
+### Technical Details:
+- renderStarButton(item) - renders star with count, sign-in prompt if not logged in
+- toggleStar(itemId) - calls API, updates local state, re-renders
+- fetchUserStarredItems() - fetches starred items for current user
+- renderGitHubIntegration(item) - synced badge or create issue button
+- createGitHubIssue(feedbackId) - creates GitHub issue via API
+- renderAssignees(item) - shows assignee avatars with initials
+- assignToItem(feedbackId) - self-assigns via API
+- renderCollaborationSection(item) - renders full comments UI
+- addComment(feedbackId) - posts comment via API
+
+### Learnings:
+- onclick="event.stopPropagation();" on collaboration section prevents toggling item when clicking comments
+- Tests need to click on expand toggle specifically to avoid hitting the stopPropagation areas
+- showRoadmapModal is now async to allow fetching user's starred items
+- Timeline items also include star buttons and GitHub integration for consistency
+- API actions use consistent pattern: action, feedback_id, product, plus action-specific params
+
+### Commit: 85bd136
+
+## Iteration 4 - Story #5
+- **Time:** Sat Jan 17 22:36:22 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-4-story-5.log
+
+## Story 6: Flexibility and Iteration - COMPLETED
+
+### What was done:
+- Added view toggle for agile themes vs status view:
+  - renderViewToggle() creates tablist with "By Status" and "By Theme" buttons
+  - switchProgressView(view) toggles between status and themes views
+  - currentProgressView tracks active view mode
+- Added strategic themes for goal-oriented organization:
+  - Four themes: Performance, UX, Reliability, Growth
+  - classifyItemTheme() auto-classifies items by keywords in title/message
+  - renderThemesView() groups items by theme with progress bars
+  - Theme cards show icon, description, item count, and completion percentage
+  - Theme-specific border colors for visual distinction
+- Added custom fields for agile iteration:
+  - defaultCustomFields defines Sprint, Effort, Team fields
+  - renderCustomFields() renders editable field values
+  - editCustomField() allows logged-in users to update via API
+  - Fields shown in expanded item view
+- Added automation rules configuration:
+  - automationRules object tracks auto-triage, notifications, GitHub sync
+  - renderAutomationRules() shows toggle switches for each rule
+  - toggleAutomationRule() updates rule state and persists to API
+  - Rules section shown in expanded items for logged-in users
+- Added comprehensive accessibility features:
+  - ARIA roles: dialog, tablist, tab, article, region, list, listitem, progressbar
+  - aria-expanded, aria-selected, aria-label, aria-labelledby, aria-modal
+  - Skip link for keyboard users
+  - setupProgressModalKeyboardNav() enables Escape to close, Tab trap, arrow keys
+  - focusProgressModal() manages focus on modal open
+  - announceToScreenReader() for live region announcements
+  - .sr-only utility class for screen reader only content
+  - prefers-reduced-motion media query (disables animations)
+  - prefers-contrast: high media query (adds visible borders)
+  - Focus indicators (:focus, :focus-visible, :focus-within)
+  - Keyboard-accessible expand/collapse with Enter/Space
+- Added ~390 lines of CSS for Story 6 features
+- Added 24 new Playwright tests for Story 6:
+  - 10 function definition tests
+  - 3 theme view tests
+  - 3 theme classification tests
+  - 8 accessibility tests (ARIA attributes, keyboard nav)
+
+### Acceptance Criteria Met:
+1. ✅ Support agile updates: themes, goals over rigid timelines
+   - Strategic themes group items by goals (Performance, UX, Reliability, Growth)
+   - Theme view shows progress per theme rather than status
+   - Items auto-classified by content keywords
+2. ✅ Integrate custom fields, automation rules
+   - Custom fields (Sprint, Effort, Team) per item
+   - Automation rules (auto-triage, notifications, GitHub sync) with toggles
+   - API integration for persistence
+3. ✅ Ensure accessibility for all users/teams
+   - Full ARIA implementation
+   - Keyboard navigation (Escape, Tab trap, arrow keys, Enter/Space)
+   - Screen reader announcements
+   - Reduced motion and high contrast support
+   - Skip links and focus management
+
+### Technical Details:
+- strategicThemes object defines themes with name, icon, description, keywords
+- classifyItemTheme() checks keywords in title/message for theme assignment
+- currentProgressView global tracks active view ('status' or 'themes')
+- automationRules object tracks enabled/disabled rules
+- defaultCustomFields array defines available custom fields
+- escapeAttr() added for safe attribute value escaping
+- All interactive elements have tabindex and proper roles
+- Event listeners use keydown for keyboard navigation
+
+### Learnings:
+- aria-expanded must be updated programmatically on toggle, not just CSS
+- Keyboard focus needs to be within modal for Escape handler to work
+- Theme classification by keywords works well for automatic organization
+- Custom fields are most useful when editable (for logged-in users)
+- Automation rules provide user control over automatic behaviors
+- prefers-reduced-motion and prefers-contrast are essential for accessibility
+- sr-only class pattern is standard for screen reader-only content
+
+### Commit: 67877c9
+
+## ALL STORIES COMPLETED!
+
+Total:
+- 6 stories implemented
+- 77 Playwright tests passing
+- ~1300 lines of code added
+- Full accessibility implementation
+
+## Iteration 5 - Story #6
+- **Time:** Sat Jan 17 22:44:34 PST 2026
+- **Status:** ATTEMPTED
+- **Notes:** Ran Claude Code - see ./ralph-logs/iteration-5-story-6.log
+
+## Iteration 6 - Story #N/A
+- **Time:** Sat Jan 17 22:44:34 PST 2026
+- **Status:** COMPLETE
+- **Notes:** All stories implemented successfully

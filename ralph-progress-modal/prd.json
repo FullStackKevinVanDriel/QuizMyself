@@ -1,0 +1,67 @@
+{
+  "name": "Ralph Loop",
+  "description": "Enhanced progress tracking modal in QuizMyself repo, via hamburger button (replacing roadmap). Aligns with best practices from Jira, Trello, GitHub: agile roadmaps with goals, flexible iteration, data-driven prioritization, visual timelines/milestones, stakeholder collaboration, automated integrations. Tracks issues (features, bugs, requests, questions) with IDs, API numbers, GitHub links, timestamps, SDLC progress. Features category filters, per-item progress bars, Vandromeda API feedback on GitHub opens. Items expand for lifecycle details (birth, events, timestamps). Logged-in users star items for API-tracked personalization.",
+  "stories": [
+    {
+      "id": 1,
+      "title": "Align with Strategic Goals and Vision",
+      "acceptance_criteria": [
+        "Define clear product vision tied to business objectives",
+        "Incorporate goals/benefits in modal display",
+        "Ensure roadmap supports iterative updates"
+      ],
+      "passes": true
+    },
+    {
+      "id": 2,
+      "title": "Hamburger Button and Modal Setup",
+      "acceptance_criteria": [
+        "Add 'Progress' item to hamburger menu",
+        "Load modal on click with flexible, visual layout (timelines, milestones)",
+        "Support frequent reviews/updates per best practices"
+      ],
+      "passes": true
+    },
+    {
+      "id": 3,
+      "title": "Comprehensive Issue Tracking",
+      "acceptance_criteria": [
+        "Unique IDs for features, bugs, requests, questions",
+        "Include API registration, GitHub issue links, timestamps",
+        "Track SDLC stages with progress bars per item",
+        "Prioritize based on data (engagement metrics, user feedback)"
+      ],
+      "passes": true
+    },
+    {
+      "id": 4,
+      "title": "Advanced UI and Filters",
+      "acceptance_criteria": [
+        "Category filters in modal (feature, bug, etc.)",
+        "Expandable items showing full lifecycle: birth, events, timestamps, history",
+        "Visual elements: progress bars, dependencies, milestones"
+      ],
+      "passes": true
+    },
+    {
+      "id": 5,
+      "title": "Integrations and Automation",
+      "acceptance_criteria": [
+        "Automate feedback to Vandromeda API on GitHub issue creation",
+        "User starring for personalized tracking in API",
+        "Enable stakeholder collaboration (comments, assignments)"
+      ],
+      "passes": true
+    },
+    {
+      "id": 6,
+      "title": "Flexibility and Iteration",
+      "acceptance_criteria": [
+        "Support agile updates: themes, goals over rigid timelines",
+        "Integrate custom fields, automation rules",
+        "Ensure accessibility for all users/teams"
+      ],
+      "passes": true
+    }
+  ]
+}

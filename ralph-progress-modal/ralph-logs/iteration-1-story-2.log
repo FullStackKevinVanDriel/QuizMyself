@@ -1,0 +1,25 @@
+Story 2 is complete. Here's a summary of what was implemented:
+
+## Story 2: Hamburger Button and Modal Setup - COMPLETED
+
+### Acceptance Criteria Met:
+
+1. **Add 'Progress' item to hamburger menu** - Already existed in both signed-in and signed-out menu states (index.html:2272, 2290)
+
+2. **Load modal on click with flexible, visual layout (timelines, milestones)**:
+   - Added **timeline visualization** with vertical connecting line and status dots
+   - In-progress items have pulsing orange animation
+   - Completed items show green dots
+   - Added **milestone card** with SVG circular progress ring showing overall completion percentage
+   - Milestone stats display open/in-progress/resolved counts
+
+3. **Support frequent reviews/updates per best practices**:
+   - Modal fetches data dynamically from Vandromeda API
+   - Shows relative timestamps ("2 hours ago", "yesterday", etc.)
+   - In-progress items are visually prominent with animation
+
+### Files Changed:
+- `index.html` - Added ~150 lines of CSS for timeline and milestone components, plus JavaScript for `renderTimelineItem()` function
+- `tests/roadmap.spec.js` - Added 3 new tests for milestone card, timeline view, and renderTimelineItem function
+
+### Commit: f9f11c2
