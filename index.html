@@ -4494,8 +4494,9 @@
                     </div>
                 </div>
 
-                <!-- I Already Know This Button -->
-                <div style="margin-top: 20px;">
+                <!-- Skip / I Already Know This Buttons -->
+                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-small" onclick="skipQuestion()" style="opacity: 0.7;">Skip ⏭</button>
                     <button class="btn btn-small" onclick="markAlwaysKnow()" style="opacity: 0.7;">I already know this</button>
                 </div>
             </div>
@@ -9699,6 +9700,13 @@
             saveState();
             updateStats();
             loadNextQuestion();
+        }
+
+        // Skip question (no penalty, just move on)
+        function skipQuestion() {
+            if (state.currentQuestion) {
+                loadNextQuestion();
+            }
         }
 
         // Mark as always know
