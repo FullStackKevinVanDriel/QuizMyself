@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="600.0" height="406.0" viewBox="0 0 600.0 406.0">
+  <rect width="600.0" height="406.0" fill="#1a1a2e"/>
+    <rect x="509.0" y="208.0" width="64.0" height="2.0" style="fill:#aabbcc;stroke:none" transform="rotate(90.0 541.0 209.0)"/>
+  <rect x="141.0" y="273.0" width="39.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(40.0 160.5 274.0)"/>
+  <rect x="142.0" y="235.0" width="39.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(-40.0 161.5 236.0)"/>
+  <rect x="207.0" y="275.0" width="61.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(-30.0 237.5 276.0)"/>
+  <rect x="56.0" y="254.0" width="45.0" height="2.0" style="fill:#8899bb;stroke:none"/>
+  <rect x="206.0" y="232.0" width="64.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(29.0 238.0 233.0)"/>
+  <rect x="54.0" y="225.0" width="119.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(-17.0 113.5 226.0)"/>
+  <rect x="59.0" y="106.0" width="45.0" height="2.0" style="fill:#8899bb;stroke:none"/>
+  <rect x="130.0" y="79.0" width="39.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(-40.0 149.5 80.0)"/>
+  <rect x="67.0" y="68.0" width="103.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(-23.0 118.5 69.0)"/>
+  <rect x="129.0" y="121.0" width="39.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(40.0 148.5 122.0)"/>
+  <rect x="181.0" y="79.0" width="64.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(29.0 213.0 80.0)"/>
+  <rect x="183.0" y="122.0" width="61.0" height="2.0" style="fill:#8899bb;stroke:none" transform="rotate(-30.0 213.5 123.0)"/>
+  <rect x="12.0" y="78.0" width="60.0" height="40.0" style="fill:#2d2d44;stroke:#aabbcc;stroke-width:1.0"/>
+  <rect x="17.0" y="83.0" width="50.0" height="30.0" rx="4.0" ry="4.0" style="fill:none;stroke:#aabbcc;stroke-width:1.0"/>
+  <rect x="9.0" y="121.0" width="2.0" height="23.0" style="fill:#aabbcc;stroke:none" transform="rotate(12.0 10.0 132.5)"/>
+  <rect x="77.0" y="121.0" width="2.0" height="23.0" style="fill:#aabbcc;stroke:none" transform="rotate(-12.0 78.0 132.5)"/>
+  <rect x="7.0" y="144.0" width="74.0" height="2.0" style="fill:#aabbcc;stroke:none"/>
+  <rect x="238.0" y="78.0" width="60.0" height="40.0" style="fill:#2d2d44;stroke:#aabbcc;stroke-width:1.0"/>
+  <rect x="243.0" y="83.0" width="50.0" height="30.0" rx="4.0" ry="4.0" style="fill:none;stroke:#aabbcc;stroke-width:1.0"/>
+  <rect x="235.0" y="121.0" width="2.0" height="23.0" style="fill:#aabbcc;stroke:none" transform="rotate(12.0 236.0 132.5)"/>
+  <rect x="303.0" y="121.0" width="2.0" height="23.0" style="fill:#aabbcc;stroke:none" transform="rotate(-12.0 304.0 132.5)"/>
+  <rect x="233.0" y="144.0" width="74.0" height="2.0" style="fill:#aabbcc;stroke:none"/>
+  <rect x="103.0" y="82.0" width="28.0" height="40.0" style="fill:#2d2d44;stroke:#aabbcc;stroke-width:1.0"/>
+  <rect x="163.0" y="42.0" width="28.0" height="40.0" style="fill:#2d2d44;stroke:#aabbcc;stroke-width:1.0"/>
+  <rect x="163.0" y="116.0" width="28.0" height="40.0" style="fill:#2d2d44;stroke:#aabbcc;stroke-width:1.0"/>
+  <rect x="32.0" y="148.0" width="29.200000000000003" height="21.599999999999998" rx="0.0" ry="0.0" style="fill:none;stroke:#aabbcc;stroke-width:1.0"/>
+  <text x="46.6" y="163.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">PC1</text>
+  <rect x="253.0" y="148.0" width="29.200000000000003" height="21.599999999999998" rx="0.0" ry="0.0" style="fill:none;stroke:#aabbcc;stroke-width:1.0"/>
+  <text x="267.6" y="163.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">PC2</text>
+  <rect x="93.0" y="124.0" width="62.800000000000004" height="21.599999999999998" rx="0.0" ry="0.0" style="fill:none;stroke:#aabbcc;stroke-width:1.0"/>
+  <text x="124.4" y="139.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Server1</text>
+  <rect x="153.0" y="84.0" width="62.800000000000004" height="21.599999999999998" rx="0.0" ry="0.0" style="fill:none;stroke:#aabbcc;stroke-width:1.0"/>
+  <text x="184.4" y="99.7" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Server2</text>
+  <rect x="153.0" y="158.0" width="62.800000000000004" height="21.599999999999998" rx="0.0" ry="0.0" style="fill:none;stroke:#aabbcc;stroke-width:1.0"/>
+  <text x="184.4" y="173.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Server3</text>
+  <rect x="19.0" y="238.0" width="35.2" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="36.6" y="256.7" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">PC1</text>
+  <rect x="246.0" y="239.0" width="35.2" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="263.6" y="257.7" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">PC2</text>
+  <rect x="83.0" y="239.0" width="68.80000000000001" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="117.4" y="257.7" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Server1</text>
+  <rect x="154.0" y="202.0" width="68.80000000000001" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="188.4" y="220.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Server2</text>
+  <rect x="155.0" y="273.0" width="68.80000000000001" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="189.4" y="291.7" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Server3</text>
+  <rect x="481.0" y="167.0" width="39.0" height="2.0" style="fill:#aabbcc;stroke:none"/>
+  <rect x="422.0" y="206.0" width="64.0" height="2.0" style="fill:#aabbcc;stroke:none" transform="rotate(90.0 454.0 207.0)"/>
+  <rect x="513.0" y="220.0" width="43.6" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="534.8" y="238.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Thuy</text>
+  <rect x="421.0" y="153.0" width="43.6" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="442.8" y="171.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Maya</text>
+  <rect x="516.0" y="153.0" width="35.2" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="533.6" y="171.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Jen</text>
+  <rect x="429.0" y="220.0" width="35.2" height="27.599999999999998" rx="11.0" ry="11.0" style="fill:#2d2d44;stroke:#6b94f0;stroke-width:2.0"/>
+  <text x="446.6" y="238.70000000000002" style="fill:#e8e8f0;font-size:14.0px;font-weight:400;font-family:arial, sans-serif" text-anchor="middle">Raj</text>
+  <text x="300.0" y="386.0" style="fill:#aabbcc;font-size:12px;font-family:Arial,sans-serif;font-style:italic" text-anchor="middle">A graph represents connections among items, like among computers, or people.</text>
+</svg>
