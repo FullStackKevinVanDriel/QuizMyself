@@ -9627,7 +9627,8 @@
             const contextFallback = questionText.match(/^Context:\s*([\s\S]+)\n\n([\s\S]+)$/);
 
             if (figureMatch && figureMatch[2].trim()) {
-                contextContent = figureMatch[1].trim();
+                // If we have an actual image, don't show the alt_text wall — the image IS the reference
+                contextContent = q.image ? '' : figureMatch[1].trim();
                 displayQuestion = figureMatch[2].trim();
             } else if (contextWithQ && contextWithQ[2].trim()) {
                 contextContent = contextWithQ[1].trim();
@@ -9660,14 +9661,14 @@
                 // Add figure image if available
                 let imageHtml = '';
                 if (q.image) {
-                    imageHtml = `<img src="${q.image}" alt="Figure" style="max-width:100%; height:auto; border-radius:8px; margin:8px 0; display:block;">`;
+                    imageHtml = `<img src="${q.image}" alt="Figure" style="max-width:100%; height:auto; border-radius:8px; margin:8px 0; display:block; background:#fff; padding:4px;">`;
                 }
                 contextEl.innerHTML = '<span class="context-label">📖 Reference</span>' + imageHtml + formatted;
                 contextEl.classList.remove('hidden');
                 contextEl.classList.add('collapsed');
             } else if (q.image) {
-                // No text context but has a figure image
-                const imgHtml = `<img src="${q.image}" alt="Figure" style="max-width:100%; height:auto; border-radius:8px; margin:8px 0; display:block;">`;
+                // No text context but has a figure image — show it prominently
+                const imgHtml = `<img src="${q.image}" alt="Figure" style="max-width:100%; height:auto; border-radius:8px; margin:8px 0; display:block; background:#fff;">`;
                 contextEl.innerHTML = '<span class="context-label">📖 Reference</span>' + imgHtml;
                 contextEl.classList.remove('hidden');
                 contextEl.classList.add('collapsed');
