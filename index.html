@@ -10418,11 +10418,48 @@
                         <p style="color: #aab; font-size: 0.9rem;">Opens the zyBooks textbook to this chapter. You'll need to be logged into WGU.</p>
                     `;
                 } else {
-                    document.getElementById('modal-title').textContent = 'Study Material';
-                    document.getElementById('modal-body').innerHTML = `
-                        <p>No study material available for this category: <strong>${category || 'Unknown'}</strong></p>
-                        <p style="margin-top: 15px;">For the full course content, return to the menu and click "View Course Content".</p>
-                    `;
+                    // Map pre-assessment categories to zyBooks chapters
+                    const categoryChapterMap = {
+                        'Sorting Algorithms': [11, 'Searching and Sorting Algorithms'],
+                        'Search Algorithms': [11, 'Searching and Sorting Algorithms'],
+                        'Trees': [5, 'Trees'],
+                        'Graphs': [9, 'Graphs'],
+                        'Hash Tables': [6, 'Hash Tables'],
+                        'Linked Lists': [2, 'Lists'],
+                        'Stacks': [3, 'Stacks and Queues'],
+                        'Queues': [3, 'Stacks and Queues'],
+                        'Recursion': [7, 'Recursion'],
+                        'Sets': [8, 'Sets'],
+                        'Abstract Data Types': [4, 'Abstract Data Types'],
+                        'Data Structures': [1, 'Introduction to Data Structures and Algorithms'],
+                        'Algorithm Fundamentals': [1, 'Introduction to Data Structures and Algorithms'],
+                        'Complexity Analysis': [12, 'Algorithm Analysis'],
+                        'OOP Fundamentals': [17, 'Object-Oriented Programming'],
+                        'Python': [18, 'Functions'],
+                        'Logic & Control Flow': [19, 'Expressions and Operators']
+                    };
+                    const mapped = category ? categoryChapterMap[category] : null;
+                    if (mapped) {
+                        const [mapChNum, mapChTitle] = mapped;
+                        const mapUrl = `https://learn.zybooks.com/zybook/WGUC949DataStructuresv4/chapter/${mapChNum}/section/1`;
+                        document.getElementById('modal-title').textContent = `${category}`;
+                        document.getElementById('modal-body').innerHTML = `
+                            <p style="margin-bottom: 10px;">📚 <strong>${category}</strong> → Chapter ${mapChNum}: ${mapChTitle}</p>
+                            <a href="${mapUrl}" target="_blank" rel="noopener"
+                               onclick="window.open('${mapUrl}', '_blank'); return false;"
+                               style="display: inline-block; padding: 12px 24px; background: #2563eb; color: white;
+                                      border-radius: 8px; text-decoration: none; font-weight: 600; margin-bottom: 15px;">
+                                📖 Open in zyBooks
+                            </a>
+                            <p style="color: #aab; font-size: 0.9rem;">Opens the zyBooks textbook to the relevant chapter.</p>
+                        `;
+                    } else {
+                        document.getElementById('modal-title').textContent = 'Study Material';
+                        document.getElementById('modal-body').innerHTML = `
+                            <p>No study material available for this category: <strong>${category || 'Unknown'}</strong></p>
+                            <p style="margin-top: 15px;">For the full course content, return to the menu and click "View Course Content".</p>
+                        `;
+                    }
                 }
             }
             document.getElementById('study-modal').classList.remove('hidden');
