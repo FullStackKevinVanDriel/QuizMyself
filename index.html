@@ -440,15 +440,6 @@
             border-color: #4fc3f7;
             color: #4fc3f7;
         }
-        .category-chip.mastered {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.1);
-        }
-        .category-chip.mastered.active {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-        }
 
         /* Course Content Items */
         .course-item {
@@ -4493,7 +4484,6 @@
                     <span class="category-filter-title">Filter by Category</span>
                     <div class="category-filter-actions">
                         <button onclick="selectAllCategories()">All</button>
-                        <button onclick="selectUnmasteredCategories()">Unmastered</button>
                         <button onclick="clearAllCategories()">None</button>
                     </div>
                 </div>
@@ -9441,13 +9431,9 @@
 
             container.innerHTML = allCategories.map(cat => {
                 const isActive = selectedCategories.has(cat);
-                const catQuestions = questions.filter(q => q.category === cat);
-                const count = catQuestions.length;
-                const masteredCount = catQuestions.filter(q => state.mastered.includes(q.id)).length;
-                const allMastered = masteredCount === count && count > 0;
-                const medal = allMastered ? ' 🏅' : (masteredCount > 0 ? ` ✅${masteredCount}` : '');
-                return `<button class="category-chip ${isActive ? 'active' : ''} ${allMastered ? 'mastered' : ''}"
-                    data-action="toggle-category" data-category="${escapeAttr(cat)}">${escapeHtml(cat)} (${count})${medal}</button>`;
+                const count = questions.filter(q => q.category === cat).length;
+                return `<button class="category-chip ${isActive ? 'active' : ''}"
+                    data-action="toggle-category" data-category="${escapeAttr(cat)}">${escapeHtml(cat)} (${count})</button>`;
             }).join('');
         }
 
@@ -9465,20 +9451,6 @@
         // Select all categories
         function selectAllCategories() {
             selectedCategories = new Set(allCategories);
-            renderCategoryChips();
-            updateStats();
-        }
-
-        // Select only categories with unmastered questions
-        function selectUnmasteredCategories() {
-            selectedCategories.clear();
-            allCategories.forEach(cat => {
-                const catQuestions = questions.filter(q => q.category === cat);
-                const masteredCount = catQuestions.filter(q => state.mastered.includes(q.id)).length;
-                if (masteredCount < catQuestions.length) {
-                    selectedCategories.add(cat);
-                }
-            });
             renderCategoryChips();
             updateStats();
         }
@@ -9673,40 +9645,34 @@
             if (contextContent) {
                 let formatted = contextContent;
                 
-                // --- Table detection: [Table] marker followed by rows ---
+                // --- Table detection: [Table] marker followed by newline-separated rows ---
                 if (formatted.includes('[Table]')) {
-                    formatted = formatted.replace(/\[Table\]\s*([\s\S]*?)(?=\n\n(?:[A-Z]|\[|$)|$)/g, function(match, tableContent) {
+                    formatted = formatted.replace(/\[Table\]\s*([\s\S]*?)(?=\n\n(?:[A-Z]|\[)|$)/g, function(match, tableContent) {
                         const lines = tableContent.trim().split('\n');
-                        // First group of lines (before first blank line) are headers
+                        // Group lines by blank-line separators: first group = headers, rest = data rows
                         const groups = [];
                         let current = [];
                         for (const line of lines) {
                             if (line.trim() === '') {
-                                if (current.length > 0) {
-                                    groups.push(current);
-                                    current = [];
-                                }
+                                if (current.length > 0) { groups.push(current); current = []; }
                             } else {
                                 current.push(line.trim());
                             }
                         }
                         if (current.length > 0) groups.push(current);
-                        if (groups.length < 2) return match; // Not enough data for a table
+                        if (groups.length < 2) return match; // Not enough for a table
                         
                         const numCols = groups[0].length;
                         let html = '<table style="border-collapse:collapse;width:100%;margin:8px 0;font-size:0.9em;">';
-                        // Header row
                         html += '<tr>';
                         for (const h of groups[0]) {
                             html += '<th style="border:1px solid #555;padding:4px 8px;background:#2a2a3a;text-align:left;">' + h + '</th>';
                         }
                         html += '</tr>';
-                        // Data rows
                         for (let i = 1; i < groups.length; i++) {
                             html += '<tr>';
                             for (let j = 0; j < numCols; j++) {
-                                const cell = (groups[i][j] || '').trim();
-                                html += '<td style="border:1px solid #555;padding:4px 8px;">' + cell + '</td>';
+                                html += '<td style="border:1px solid #555;padding:4px 8px;">' + (groups[i][j] || '') + '</td>';
                             }
                             html += '</tr>';
                         }
@@ -9715,12 +9681,12 @@
                     });
                 }
                 
-                // --- Code block detection (expanded for Python patterns) ---
+                // --- Code block detection (expanded for Python control flow & pseudocode) ---
                 const hasCode = /(?:def \w+\(|class \w+[:(]|import \w|from \w+ import|print\(|self\.\w+\(|node\.\w+\(|(?:^|\n)\s*if .+:|(?:^|\n)\s*elif .+:|(?:^|\n)\s*else\s*:|(?:^|\n)\s*for \w+ in .+:|(?:^|\n)\s*while .+:|(?:^|\n)\s*return |(?:^|\n)\s*(?:Begin |End )?pseudocode)/.test(formatted);
                 const hasTable = formatted.includes('<table');
                 const hasIndentation = /\n {2,}\w/.test(formatted) || /\n\t\w/.test(formatted);
                 if (hasTable) {
-                    // Already has rendered table, just handle inline code
+                    // Table already rendered as HTML — just handle inline code markers
                     formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
                 } else if (hasCode && hasIndentation) {
                     formatted = '<pre>' + formatted + '</pre>';
