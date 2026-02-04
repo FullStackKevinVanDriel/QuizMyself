@@ -199,13 +199,13 @@
             font-size: 0.9rem;
             line-height: 1.6;
             color: #aab;
-            max-height: 200px;
-            overflow-y: auto;
+            max-height: none;
+            overflow-y: visible;
             cursor: pointer;
             position: relative;
         }
         .question-context.collapsed {
-            max-height: 60px;
+            max-height: 80px;
             overflow: hidden;
         }
         .question-context.collapsed::after {
@@ -242,15 +242,20 @@
             border-radius: 4px;
             padding: 2px 6px;
             font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #7ec;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .question-context pre {
             padding: 10px;
             overflow-x: auto;
-            white-space: pre;
+            white-space: pre-wrap;
+            word-break: break-word;
             display: block;
             margin: 8px 0;
+            font-size: 0.7rem;
+            line-height: 1.5;
         }
 
 
