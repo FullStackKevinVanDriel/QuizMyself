@@ -440,6 +440,16 @@
             border-color: #4fc3f7;
             color: #4fc3f7;
         }
+        .category-chip.cat-mastered {
+            border-color: #4caf50;
+            opacity: 0.6;
+        }
+        .category-chip.cat-mastered.active {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.15);
+            color: #4caf50;
+            opacity: 1;
+        }
 
         /* Course Content Items */
         .course-item {
@@ -9407,8 +9417,12 @@
             const categories = [...new Set(questions.map(q => q.category).filter(c => c))];
             allCategories = categories;
 
-            // Default: all categories selected
-            selectedCategories = new Set(categories);
+            // Default: exclude fully mastered categories
+            selectedCategories = new Set(categories.filter(cat => {
+                const catQs = questions.filter(q => q.category === cat);
+                const masteredCount = catQs.filter(q => state.mastered.includes(q.id)).length;
+                return masteredCount < catQs.length || catQs.length === 0;
+            }));
 
             // Hide category filter if no meaningful categories (0 or 1 category)
             const filterEl = document.getElementById('category-filter');
@@ -9431,9 +9445,13 @@
 
             container.innerHTML = allCategories.map(cat => {
                 const isActive = selectedCategories.has(cat);
-                const count = questions.filter(q => q.category === cat).length;
-                return `<button class="category-chip ${isActive ? 'active' : ''}"
-                    data-action="toggle-category" data-category="${escapeAttr(cat)}">${escapeHtml(cat)} (${count})</button>`;
+                const catQuestions = questions.filter(q => q.category === cat);
+                const count = catQuestions.length;
+                const masteredCount = catQuestions.filter(q => state.mastered.includes(q.id)).length;
+                const allMastered = masteredCount === count && count > 0;
+                const badge = allMastered ? ' ✓' : (masteredCount > 0 ? ` ${masteredCount}/${count}` : '');
+                return `<button class="category-chip ${isActive ? 'active' : ''} ${allMastered ? 'cat-mastered' : ''}"
+                    data-action="toggle-category" data-category="${escapeAttr(cat)}">${escapeHtml(cat)} (${count})${badge}</button>`;
             }).join('');
         }
 
