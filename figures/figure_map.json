@@ -1,0 +1,1850 @@
+{
+  "61871062": {
+    "chapter": 1,
+    "section": 1,
+    "filename": "ch1_s1_fig61871062.png",
+    "caption": "A linked list avoids the shifting problem.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61871078": {
+    "chapter": 1,
+    "section": 4,
+    "filename": "ch1_s4_fig61871078.png",
+    "caption": "A list avoids the shifting problem.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61871086": {
+    "chapter": 1,
+    "section": 5,
+    "filename": "ch1_s5_fig61871086.png",
+    "caption": "List ADT using array and linked lists data structures.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872112": {
+    "chapter": 1,
+    "section": 8,
+    "filename": "ch1_s8_fig61872112.png",
+    "caption": "The basic idea of compression is to use fewer bits for frequent items (and more bits for less-frequent items).",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872116": {
+    "chapter": 1,
+    "section": 8,
+    "filename": "ch1_s8_fig61872116.png",
+    "caption": "Building a character frequency table",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872120": {
+    "chapter": 1,
+    "section": 8,
+    "filename": "ch1_s8_fig61872120.png",
+    "caption": "A binary tree can be used to determine the Huffman coding.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872125": {
+    "chapter": 1,
+    "section": 8,
+    "filename": "ch1_s8_fig61872125.png",
+    "caption": "Building a Huffman tree",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872130": {
+    "chapter": 1,
+    "section": 8,
+    "filename": "ch1_s8_fig61872130.png",
+    "caption": "Getting Huffman codes",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872138": {
+    "chapter": 1,
+    "section": 8,
+    "filename": "ch1_s8_fig61872138.png",
+    "caption": "Decompression with a Huffman tree.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872144": {
+    "chapter": 1,
+    "section": 9,
+    "filename": "ch1_s9_fig61872144.png",
+    "caption": "Introduction to the knapsack problem.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872149": {
+    "chapter": 1,
+    "section": 9,
+    "filename": "ch1_s9_fig61872149.png",
+    "caption": "Non-optimal, heuristic algorithm to solve the 0-1 knapsack.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872153": {
+    "chapter": 1,
+    "section": 9,
+    "filename": "ch1_s9_fig61872153.png",
+    "caption": "Move-to-front self-adjusting heuristic",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872169": {
+    "chapter": 1,
+    "section": 12,
+    "filename": "ch1_s12_fig61872169.png",
+    "caption": "FibonacciNumber algorithm: Recursion vs. dynamic programming",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872174": {
+    "chapter": 1,
+    "section": 12,
+    "filename": "ch1_s12_fig61872174.png",
+    "caption": "Longest common substring algorithm",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61872179": {
+    "chapter": 1,
+    "section": 12,
+    "filename": "ch1_s12_fig61872179.png",
+    "caption": "Finding longest common substrings in DNA.",
+    "category": "C949 - Chapter 1: Introduction to Data Structures and Algorithms"
+  },
+  "61871326": {
+    "chapter": 2,
+    "section": 1,
+    "filename": "ch2_s1_fig61871326.png",
+    "caption": "List ADT.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61872269": {
+    "chapter": 2,
+    "section": 2,
+    "filename": "ch2_s2_fig61872269.png",
+    "caption": "Linked lists can be stored with or without a list data structure.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871334": {
+    "chapter": 2,
+    "section": 3,
+    "filename": "ch2_s3_fig61871334.png",
+    "caption": "Singly-linked list: Each node points to the next node.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871338": {
+    "chapter": 2,
+    "section": 3,
+    "filename": "ch2_s3_fig61871338.png",
+    "caption": "Singly-linked list: Appending a node.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871342": {
+    "chapter": 2,
+    "section": 3,
+    "filename": "ch2_s3_fig61871342.png",
+    "caption": "Singly-linked list: Prepending a node.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871346": {
+    "chapter": 2,
+    "section": 4,
+    "filename": "ch2_s4_fig61871346.png",
+    "caption": "Singly-linked list: Insert nodes.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871351": {
+    "chapter": 2,
+    "section": 5,
+    "filename": "ch2_s5_fig61871351.png",
+    "caption": "Singly-linked list remove-node-after operation",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871357": {
+    "chapter": 2,
+    "section": 6,
+    "filename": "ch2_s6_fig61871357.png",
+    "caption": "Singly-linked list: Searching.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871366": {
+    "chapter": 2,
+    "section": 8,
+    "filename": "ch2_s8_fig61871366.png",
+    "caption": "Doubly-linked list: Appending a node.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871370": {
+    "chapter": 2,
+    "section": 8,
+    "filename": "ch2_s8_fig61871370.png",
+    "caption": "Doubly-linked list: Prepending a node.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871374": {
+    "chapter": 2,
+    "section": 9,
+    "filename": "ch2_s9_fig61871374.png",
+    "caption": "Doubly-linked list: Inserting nodes.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871378": {
+    "chapter": 2,
+    "section": 10,
+    "filename": "ch2_s10_fig61871378.png",
+    "caption": "Doubly-linked list: Node removal.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61872273": {
+    "chapter": 2,
+    "section": 12,
+    "filename": "ch2_s12_fig61872273.png",
+    "caption": "Circular list structure and traversal.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871386": {
+    "chapter": 2,
+    "section": 13,
+    "filename": "ch2_s13_fig61871386.png",
+    "caption": "Singly-linked list: List traversal.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871394": {
+    "chapter": 2,
+    "section": 14,
+    "filename": "ch2_s14_fig61871394.png",
+    "caption": "Sorting a doubly-linked list with insertion sort.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871399": {
+    "chapter": 2,
+    "section": 14,
+    "filename": "ch2_s14_fig61871399.png",
+    "caption": "Sorting a singly-linked list with insertion sort",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871410": {
+    "chapter": 2,
+    "section": 16,
+    "filename": "ch2_s16_fig61871410.png",
+    "caption": "Singly-linked lists with and without a dummy node.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871424": {
+    "chapter": 2,
+    "section": 16,
+    "filename": "ch2_s16_fig61871424.png",
+    "caption": "Doubly-linked list append and prepend with 2 dummy nodes.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871430": {
+    "chapter": 2,
+    "section": 17,
+    "filename": "ch2_s17_fig61871430.png",
+    "caption": "Recursive forward traversal",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871439": {
+    "chapter": 2,
+    "section": 17,
+    "filename": "ch2_s17_fig61871439.png",
+    "caption": "Recursive reverse traversal",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871478": {
+    "chapter": 2,
+    "section": 18,
+    "filename": "ch2_s18_fig61871478.png",
+    "caption": "Appending to array-based lists.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871482": {
+    "chapter": 2,
+    "section": 18,
+    "filename": "ch2_s18_fig61871482.png",
+    "caption": "Array-based list resize operation.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871487": {
+    "chapter": 2,
+    "section": 18,
+    "filename": "ch2_s18_fig61871487.png",
+    "caption": "Array-based list prepend and insert after operations.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871491": {
+    "chapter": 2,
+    "section": 18,
+    "filename": "ch2_s18_fig61871491.png",
+    "caption": "Array-based list search and remove-at operations.",
+    "category": "C949 - Chapter 2: Lists"
+  },
+  "61871443": {
+    "chapter": 3,
+    "section": 1,
+    "filename": "ch3_s1_fig61871443.png",
+    "caption": "Stack ADT.",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "61871451": {
+    "chapter": 3,
+    "section": 2,
+    "filename": "ch3_s2_fig61871451.png",
+    "caption": "Stack implementation using a linked list.",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "67650739": {
+    "chapter": 3,
+    "section": 3,
+    "filename": "ch3_s3_fig67650739.png",
+    "caption": "Array-based stack storage",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "67650742": {
+    "chapter": 3,
+    "section": 3,
+    "filename": "ch3_s3_fig67650742.png",
+    "caption": "Unbounded, array-based stack",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "67899003": {
+    "chapter": 3,
+    "section": 3,
+    "filename": "ch3_s3_fig67899003.png",
+    "caption": "Bounded, array-based stack",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "61871456": {
+    "chapter": 3,
+    "section": 4,
+    "filename": "ch3_s4_fig61871456.png",
+    "caption": "Queue ADT.",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "61871464": {
+    "chapter": 3,
+    "section": 5,
+    "filename": "ch3_s5_fig61871464.png",
+    "caption": "Queue implemented using a linked list.",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "78384472": {
+    "chapter": 3,
+    "section": 6,
+    "filename": "ch3_s6_fig78384472.png",
+    "caption": "Array-based queue storage",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "78085890": {
+    "chapter": 3,
+    "section": 6,
+    "filename": "ch3_s6_fig78085890.png",
+    "caption": "Bounded vs. unbounded queue",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "78391079": {
+    "chapter": 3,
+    "section": 6,
+    "filename": "ch3_s6_fig78391079.png",
+    "caption": "Array-based queue resize operation",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "78750701": {
+    "chapter": 3,
+    "section": 6,
+    "filename": "ch3_s6_fig78750701.png",
+    "caption": "Array-based queue enqueue and dequeue operations",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "61871469": {
+    "chapter": 3,
+    "section": 8,
+    "filename": "ch3_s8_fig61871469.png",
+    "caption": "Deque ADT",
+    "category": "C949 - Chapter 3: Stacks and Queues"
+  },
+  "61871497": {
+    "chapter": 4,
+    "section": 1,
+    "filename": "ch4_s1_fig61871497.png",
+    "caption": "Hash table data structure.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871510": {
+    "chapter": 4,
+    "section": 2,
+    "filename": "ch4_s2_fig61871510.png",
+    "caption": "Hash table with chaining.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871517": {
+    "chapter": 4,
+    "section": 3,
+    "filename": "ch4_s3_fig61871517.png",
+    "caption": "Hash table with linear probing.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871524": {
+    "chapter": 4,
+    "section": 3,
+    "filename": "ch4_s3_fig61871524.png",
+    "caption": "Insert with linear probing.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871528": {
+    "chapter": 4,
+    "section": 3,
+    "filename": "ch4_s3_fig61871528.png",
+    "caption": "Remove with linear probing.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871533": {
+    "chapter": 4,
+    "section": 3,
+    "filename": "ch4_s3_fig61871533.png",
+    "caption": "Search with linear probing.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871538": {
+    "chapter": 4,
+    "section": 4,
+    "filename": "ch4_s4_fig61871538.png",
+    "caption": "Hash table insertion using quadratic probing: c1 = 1 and c2 = 1.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871543": {
+    "chapter": 4,
+    "section": 4,
+    "filename": "ch4_s4_fig61871543.png",
+    "caption": "Search and removal with quadratic probing: c1 = 1 and c2 = 1.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871550": {
+    "chapter": 4,
+    "section": 5,
+    "filename": "ch4_s5_fig61871550.png",
+    "caption": "Hash table insertion using double hashing",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871554": {
+    "chapter": 4,
+    "section": 5,
+    "filename": "ch4_s5_fig61871554.png",
+    "caption": "Hash table insertion, search, and removal using double hashing",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871560": {
+    "chapter": 4,
+    "section": 6,
+    "filename": "ch4_s6_fig61871560.png",
+    "caption": "Hash table resize operation",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871564": {
+    "chapter": 4,
+    "section": 6,
+    "filename": "ch4_s6_fig61871564.png",
+    "caption": "Resizing when a chaining bucket is too large.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871565": {
+    "chapter": 4,
+    "section": 6,
+    "filename": "ch4_s6_fig61871565.png",
+    "caption": "Resizing when the load factor is \u2265 0.6.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871566": {
+    "chapter": 4,
+    "section": 6,
+    "filename": "ch4_s6_fig61871566.png",
+    "caption": "Resizing when an insertion causes more than N / 3 collisions.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871591": {
+    "chapter": 4,
+    "section": 8,
+    "filename": "ch4_s8_fig61871591.png",
+    "caption": "Direct hash function.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871599": {
+    "chapter": 4,
+    "section": 9,
+    "filename": "ch4_s9_fig61871599.png",
+    "caption": "Basic encryption: Caesar cipher.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871604": {
+    "chapter": 4,
+    "section": 9,
+    "filename": "ch4_s9_fig61871604.png",
+    "caption": "A hash value can help identify corrupted data downloaded from the internet.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871608": {
+    "chapter": 4,
+    "section": 9,
+    "filename": "ch4_s9_fig61871608.png",
+    "caption": "Password hashing function.",
+    "category": "C949 - Chapter 4: Hash Tables"
+  },
+  "61871625": {
+    "chapter": 5,
+    "section": 2,
+    "filename": "ch5_s2_fig61871625.png",
+    "caption": "A file system is a hierarchy that can be represented by a tree.",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871630": {
+    "chapter": 5,
+    "section": 2,
+    "filename": "ch5_s2_fig61871630.png",
+    "caption": "A BSP tree is used to quickly determine which objects do not need to be rendered.",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871636": {
+    "chapter": 5,
+    "section": 3,
+    "filename": "ch5_s3_fig61871636.png",
+    "caption": "BST ordering properties",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871647": {
+    "chapter": 5,
+    "section": 3,
+    "filename": "ch5_s3_fig61871647.png",
+    "caption": "Searching a perfect BST with N nodes requires only \\(O(log N)\\) comparisons.",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871662": {
+    "chapter": 5,
+    "section": 5,
+    "filename": "ch5_s5_fig61871662.png",
+    "caption": "Binary search tree insertions.",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871678": {
+    "chapter": 5,
+    "section": 7,
+    "filename": "ch5_s7_fig61871678.png",
+    "caption": "BST inorder print algorithm.",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871683": {
+    "chapter": 5,
+    "section": 8,
+    "filename": "ch5_s8_fig61871683.png",
+    "caption": "Inserting in random order keeps tree height near the minimum. Inserting in sorted order yields the maximum.",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871687": {
+    "chapter": 5,
+    "section": 8,
+    "filename": "ch5_s8_fig61871687.png",
+    "caption": "BSTGetHeight algorithm",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871696": {
+    "chapter": 5,
+    "section": 10,
+    "filename": "ch5_s10_fig61871696.png",
+    "caption": "BST recursive search algorithm",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871708": {
+    "chapter": 5,
+    "section": 11,
+    "filename": "ch5_s11_fig61871708.png",
+    "caption": "Trie representing the set of strings: BAT, CAT, and CATS.",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871712": {
+    "chapter": 5,
+    "section": 11,
+    "filename": "ch5_s11_fig61871712.png",
+    "caption": "Trie insert algorithm",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871716": {
+    "chapter": 5,
+    "section": 11,
+    "filename": "ch5_s11_fig61871716.png",
+    "caption": "Trie search algorithm",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871720": {
+    "chapter": 5,
+    "section": 11,
+    "filename": "ch5_s11_fig61871720.png",
+    "caption": "Trie remove algorithm",
+    "category": "C949 - Chapter 5: Trees"
+  },
+  "61871734": {
+    "chapter": 6,
+    "section": 1,
+    "filename": "ch6_s1_fig61871734.png",
+    "caption": "Storing height at each AVL node",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871740": {
+    "chapter": 6,
+    "section": 2,
+    "filename": "ch6_s2_fig61871740.png",
+    "caption": "A simple right rotation in an AVL tree.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871754": {
+    "chapter": 6,
+    "section": 2,
+    "filename": "ch6_s2_fig61871754.png",
+    "caption": "Right rotation algorithm.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871769": {
+    "chapter": 6,
+    "section": 3,
+    "filename": "ch6_s3_fig61871769.png",
+    "caption": "Four AVL imbalance cases are possible after inserting a new node.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871785": {
+    "chapter": 6,
+    "section": 4,
+    "filename": "ch6_s4_fig61871785.png",
+    "caption": "AVL tree removal.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871789": {
+    "chapter": 6,
+    "section": 4,
+    "filename": "ch6_s4_fig61871789.png",
+    "caption": "AVL tree removal algorithm",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871796": {
+    "chapter": 6,
+    "section": 6,
+    "filename": "ch6_s6_fig61871796.png",
+    "caption": "Red-black tree rules",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871801": {
+    "chapter": 6,
+    "section": 7,
+    "filename": "ch6_s7_fig61871801.png",
+    "caption": "A simple left rotation in a red-black tree.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871812": {
+    "chapter": 6,
+    "section": 7,
+    "filename": "ch6_s7_fig61871812.png",
+    "caption": "RBTreeRotateRight algorithm.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871820": {
+    "chapter": 6,
+    "section": 8,
+    "filename": "ch6_s8_fig61871820.png",
+    "caption": "RBTreeBalance algorithm.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871846": {
+    "chapter": 6,
+    "section": 9,
+    "filename": "ch6_s9_fig61871846.png",
+    "caption": "Removal preparation, case 4",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871847": {
+    "chapter": 6,
+    "section": 9,
+    "filename": "ch6_s9_fig61871847.png",
+    "caption": "Removal preparation for a node can encounter more than 1 case.",
+    "category": "C949 - Chapter 6: Balanced Trees"
+  },
+  "61871864": {
+    "chapter": 7,
+    "section": 2,
+    "filename": "ch7_s2_fig61871864.png",
+    "caption": "Max-heap stored using an array.",
+    "category": "C949 - Chapter 7: Heaps and Treaps"
+  },
+  "61871878": {
+    "chapter": 7,
+    "section": 4,
+    "filename": "ch7_s4_fig61871878.png",
+    "caption": "Heapify operation.",
+    "category": "C949 - Chapter 7: Heaps and Treaps"
+  },
+  "61871885": {
+    "chapter": 7,
+    "section": 4,
+    "filename": "ch7_s4_fig61871885.png",
+    "caption": "Heapsort.",
+    "category": "C949 - Chapter 7: Heaps and Treaps"
+  },
+  "61871894": {
+    "chapter": 7,
+    "section": 6,
+    "filename": "ch7_s6_fig61871894.png",
+    "caption": "Priority queue enqueue and dequeue",
+    "category": "C949 - Chapter 7: Heaps and Treaps"
+  },
+  "61871902": {
+    "chapter": 7,
+    "section": 6,
+    "filename": "ch7_s6_fig61871902.png",
+    "caption": "Priority queue EnqueueWithPriority operation.",
+    "category": "C949 - Chapter 7: Heaps and Treaps"
+  },
+  "61871911": {
+    "chapter": 7,
+    "section": 7,
+    "filename": "ch7_s7_fig61871911.png",
+    "caption": "Treap insert operation.",
+    "category": "C949 - Chapter 7: Heaps and Treaps"
+  },
+  "61871917": {
+    "chapter": 7,
+    "section": 7,
+    "filename": "ch7_s7_fig61871917.png",
+    "caption": "Treap delete operation.",
+    "category": "C949 - Chapter 7: Heaps and Treaps"
+  },
+  "61871922": {
+    "chapter": 8,
+    "section": 1,
+    "filename": "ch8_s1_fig61871922.png",
+    "caption": "Set abstract data type",
+    "category": "C949 - Chapter 8: Sets"
+  },
+  "61871926": {
+    "chapter": 8,
+    "section": 1,
+    "filename": "ch8_s1_fig61871926.png",
+    "caption": "Element keys and removal",
+    "category": "C949 - Chapter 8: Sets"
+  },
+  "61871930": {
+    "chapter": 8,
+    "section": 1,
+    "filename": "ch8_s1_fig61871930.png",
+    "caption": "SetIsSubset algorithm.",
+    "category": "C949 - Chapter 8: Sets"
+  },
+  "61871935": {
+    "chapter": 8,
+    "section": 2,
+    "filename": "ch8_s2_fig61871935.png",
+    "caption": "Set union, intersection, and difference.",
+    "category": "C949 - Chapter 8: Sets"
+  },
+  "61871939": {
+    "chapter": 8,
+    "section": 2,
+    "filename": "ch8_s2_fig61871939.png",
+    "caption": "SetFilter and SetMap algorithms.",
+    "category": "C949 - Chapter 8: Sets"
+  },
+  "61871952": {
+    "chapter": 9,
+    "section": 1,
+    "filename": "ch9_s1_fig61871952.png",
+    "caption": "A graph represents connections among items, like among computers, or people.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61871957": {
+    "chapter": 9,
+    "section": 1,
+    "filename": "ch9_s1_fig61871957.png",
+    "caption": "Graphs: adjacency, paths, and distance.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61871961": {
+    "chapter": 9,
+    "section": 2,
+    "filename": "ch9_s2_fig61871961.png",
+    "caption": "Driving directions use graphs and shortest path algorithms to determine the best route from start to destination.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61871966": {
+    "chapter": 9,
+    "section": 2,
+    "filename": "ch9_s2_fig61871966.png",
+    "caption": "A graph of product relationships can be used to produce recommendations based on purchase history.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61871970": {
+    "chapter": 9,
+    "section": 2,
+    "filename": "ch9_s2_fig61871970.png",
+    "caption": "Professional networks represented by graphs help people establish business connections.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61871974": {
+    "chapter": 9,
+    "section": 3,
+    "filename": "ch9_s3_fig61871974.png",
+    "caption": "Adjacency list graph representation.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61871982": {
+    "chapter": 9,
+    "section": 4,
+    "filename": "ch9_s4_fig61871982.png",
+    "caption": "Adjacency matrix representation.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61871990": {
+    "chapter": 9,
+    "section": 5,
+    "filename": "ch9_s5_fig61871990.png",
+    "caption": "Breadth-first search.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872000": {
+    "chapter": 9,
+    "section": 5,
+    "filename": "ch9_s5_fig61872000.png",
+    "caption": "BFS algorithm.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872006": {
+    "chapter": 9,
+    "section": 6,
+    "filename": "ch9_s6_fig61872006.png",
+    "caption": "Depth-first search.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872010": {
+    "chapter": 9,
+    "section": 6,
+    "filename": "ch9_s6_fig61872010.png",
+    "caption": "Depth-first search traversal with starting vertex A",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872020": {
+    "chapter": 9,
+    "section": 7,
+    "filename": "ch9_s7_fig61872020.png",
+    "caption": "A directed graph represents connections among items, like links between web pages, or airline routes.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872024": {
+    "chapter": 9,
+    "section": 7,
+    "filename": "ch9_s7_fig61872024.png",
+    "caption": "Directed graph: Paths and cycles.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872030": {
+    "chapter": 9,
+    "section": 8,
+    "filename": "ch9_s8_fig61872030.png",
+    "caption": "Weighted graphs associate weight with each edge.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872034": {
+    "chapter": 9,
+    "section": 8,
+    "filename": "ch9_s8_fig61872034.png",
+    "caption": "Path length is the sum of edge weights.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872043": {
+    "chapter": 9,
+    "section": 13,
+    "filename": "ch9_s13_fig61872043.png",
+    "caption": "Dijkstra's algorithm finds the shortest path from a start vertex to each vertex in a graph.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872047": {
+    "chapter": 9,
+    "section": 13,
+    "filename": "ch9_s13_fig61872047.png",
+    "caption": "Determining the shortest path from Dijkstra's algorithm.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872052": {
+    "chapter": 9,
+    "section": 13,
+    "filename": "ch9_s13_fig61872052.png",
+    "caption": "Dijkstra's algorithm may not find the shortest path for a graph with negative edge weights.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872057": {
+    "chapter": 9,
+    "section": 14,
+    "filename": "ch9_s14_fig61872057.png",
+    "caption": "The Bellman-Ford algorithm finds the shortest path from a source vertex to all other vertices in a graph.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872063": {
+    "chapter": 9,
+    "section": 14,
+    "filename": "ch9_s14_fig61872063.png",
+    "caption": "Bellman-Ford: Checking for negative edge weight cycles.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872069": {
+    "chapter": 9,
+    "section": 16,
+    "filename": "ch9_s16_fig61872069.png",
+    "caption": "Topological sort.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872074": {
+    "chapter": 9,
+    "section": 16,
+    "filename": "ch9_s16_fig61872074.png",
+    "caption": "Topological sorting can be used to order course prerequisites.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872078": {
+    "chapter": 9,
+    "section": 16,
+    "filename": "ch9_s16_fig61872078.png",
+    "caption": "Topological sort algorithm.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872086": {
+    "chapter": 9,
+    "section": 18,
+    "filename": "ch9_s18_fig61872086.png",
+    "caption": "Using the minimum spanning to minimize total length of power lines connecting cities.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872090": {
+    "chapter": 9,
+    "section": 18,
+    "filename": "ch9_s18_fig61872090.png",
+    "caption": "Minimum spanning tree algorithm",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872097": {
+    "chapter": 9,
+    "section": 20,
+    "filename": "ch9_s20_fig61872097.png",
+    "caption": "Shortest path lengths matrix.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872102": {
+    "chapter": 9,
+    "section": 20,
+    "filename": "ch9_s20_fig61872102.png",
+    "caption": "Floyd-Warshall algorithm.",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872106": {
+    "chapter": 9,
+    "section": 20,
+    "filename": "ch9_s20_fig61872106.png",
+    "caption": "Path reconstruction",
+    "category": "C949 - Chapter 9: Graphs"
+  },
+  "61872185": {
+    "chapter": 10,
+    "section": 1,
+    "filename": "ch10_s1_fig61872185.png",
+    "caption": "Order 3 B-trees",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872199": {
+    "chapter": 10,
+    "section": 2,
+    "filename": "ch10_s2_fig61872199.png",
+    "caption": "2-3-4 tree search algorithm",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872206": {
+    "chapter": 10,
+    "section": 3,
+    "filename": "ch10_s3_fig61872206.png",
+    "caption": "Split operation",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872210": {
+    "chapter": 10,
+    "section": 3,
+    "filename": "ch10_s3_fig61872210.png",
+    "caption": "2-3-4 tree split operation",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872220": {
+    "chapter": 10,
+    "section": 3,
+    "filename": "ch10_s3_fig61872220.png",
+    "caption": "B-tree insertion with preemptive split algorithm",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872224": {
+    "chapter": 10,
+    "section": 4,
+    "filename": "ch10_s4_fig61872224.png",
+    "caption": "Left and right rotations",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872232": {
+    "chapter": 10,
+    "section": 4,
+    "filename": "ch10_s4_fig61872232.png",
+    "caption": "Left rotation pseudocode",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872235": {
+    "chapter": 10,
+    "section": 4,
+    "filename": "ch10_s4_fig61872235.png",
+    "caption": "Root fusion",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872239": {
+    "chapter": 10,
+    "section": 4,
+    "filename": "ch10_s4_fig61872239.png",
+    "caption": "Non-root fusion",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872243": {
+    "chapter": 10,
+    "section": 5,
+    "filename": "ch10_s5_fig61872243.png",
+    "caption": "Merge algorithm",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872252": {
+    "chapter": 10,
+    "section": 5,
+    "filename": "ch10_s5_fig61872252.png",
+    "caption": "BTreeRemove algorithm: leaf case.",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "61872253": {
+    "chapter": 10,
+    "section": 5,
+    "filename": "ch10_s5_fig61872253.png",
+    "caption": "BTreeRemove algorithm: non-leaf case.",
+    "category": "C949 - Chapter 10: B-trees"
+  },
+  "100943991": {
+    "chapter": 11,
+    "section": 1,
+    "filename": "ch11_s1_fig100943991.png",
+    "caption": "Linear search algorithm checks each element until key is found.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100943999": {
+    "chapter": 11,
+    "section": 2,
+    "filename": "ch11_s2_fig100943999.png",
+    "caption": "Using binary search to search contacts on your phone.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944003": {
+    "chapter": 11,
+    "section": 2,
+    "filename": "ch11_s2_fig100944003.png",
+    "caption": "Binary search efficiently searches the sorted list by reducing the search space by half of each iteration.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944008": {
+    "chapter": 11,
+    "section": 2,
+    "filename": "ch11_s2_fig100944008.png",
+    "caption": "Speed of linear search vs. binary search to find a number within a sorted list.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871138": {
+    "chapter": 11,
+    "section": 5,
+    "filename": "ch11_s5_fig61871138.png",
+    "caption": "Constant time vs. non-constant time operations",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871147": {
+    "chapter": 11,
+    "section": 6,
+    "filename": "ch11_s6_fig61871147.png",
+    "caption": "Upper and lower bounds with \\(N_0\\) = 1.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944014": {
+    "chapter": 11,
+    "section": 7,
+    "filename": "ch11_s7_fig100944014.png",
+    "caption": "Determining Big O notation of a function.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944030": {
+    "chapter": 11,
+    "section": 8,
+    "filename": "ch11_s8_fig100944030.png",
+    "caption": "Runtime analysis: Finding the max value",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944034": {
+    "chapter": 11,
+    "section": 8,
+    "filename": "ch11_s8_fig100944034.png",
+    "caption": "Simplified runtime analysis: A constant number of constant time operations is O(1)",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944038": {
+    "chapter": 11,
+    "section": 8,
+    "filename": "ch11_s8_fig100944038.png",
+    "caption": "Runtime analysis of nested loop: Selection sort algorithm.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871101": {
+    "chapter": 11,
+    "section": 9,
+    "filename": "ch11_s9_fig61871101.png",
+    "caption": "Computational complexity",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871106": {
+    "chapter": 11,
+    "section": 9,
+    "filename": "ch11_s9_fig61871106.png",
+    "caption": "Linear search best and worst cases.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871111": {
+    "chapter": 11,
+    "section": 9,
+    "filename": "ch11_s9_fig61871111.png",
+    "caption": "FindMax space complexity and auxiliary space complexity.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871185": {
+    "chapter": 11,
+    "section": 10,
+    "filename": "ch11_s10_fig61871185.png",
+    "caption": "Recursive factorial algorithm for positive numbers.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871202": {
+    "chapter": 11,
+    "section": 12,
+    "filename": "ch11_s12_fig61871202.png",
+    "caption": "Worst case binary search runtime complexity.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871206": {
+    "chapter": 11,
+    "section": 12,
+    "filename": "ch11_s12_fig61871206.png",
+    "caption": "Recursion trees.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944046": {
+    "chapter": 11,
+    "section": 15,
+    "filename": "ch11_s15_fig100944046.png",
+    "caption": "Selection sort.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944057": {
+    "chapter": 11,
+    "section": 17,
+    "filename": "ch11_s17_fig100944057.png",
+    "caption": "Insertion sort.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944069": {
+    "chapter": 11,
+    "section": 17,
+    "filename": "ch11_s17_fig100944069.png",
+    "caption": "Using insertion sort for nearly sorted list",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871243": {
+    "chapter": 11,
+    "section": 19,
+    "filename": "ch11_s19_fig61871243.png",
+    "caption": "Sorting interleaved lists with shell sort speeds up insertion sort.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871247": {
+    "chapter": 11,
+    "section": 19,
+    "filename": "ch11_s19_fig61871247.png",
+    "caption": "Interleaved insertion sort.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871251": {
+    "chapter": 11,
+    "section": 19,
+    "filename": "ch11_s19_fig61871251.png",
+    "caption": "Shell sort algorithm.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944074": {
+    "chapter": 11,
+    "section": 21,
+    "filename": "ch11_s21_fig100944074.png",
+    "caption": "Quicksort partitions data into a low part with data less than or equal to a pivot value and a high part with data greater than or equal to a pivot value.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944092": {
+    "chapter": 11,
+    "section": 23,
+    "filename": "ch11_s23_fig100944092.png",
+    "caption": "Merge sort recursively divides the input into two halves, sorts each half, and merges the lists together.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100944097": {
+    "chapter": 11,
+    "section": 23,
+    "filename": "ch11_s23_fig100944097.png",
+    "caption": "Merging partitions: Smallest element from the left or right partition is added one at a time to a temporary merged list. Once merged, the temporary list is copied back to the original list.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871294": {
+    "chapter": 11,
+    "section": 26,
+    "filename": "ch11_s26_fig61871294.png",
+    "caption": "A particular single digit in an integer can determine the integer's bucket.",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "61871301": {
+    "chapter": 11,
+    "section": 26,
+    "filename": "ch11_s26_fig61871301.png",
+    "caption": "Radix sort algorithm (for non-negative integers).",
+    "category": "C949 - Chapter 11: Searching and Sorting Algorithms"
+  },
+  "100942101": {
+    "chapter": 12,
+    "section": 1,
+    "filename": "ch12_s1_fig100942101.png",
+    "caption": "A basic computer program",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942118": {
+    "chapter": 12,
+    "section": 2,
+    "filename": "ch12_s2_fig100942118.png",
+    "caption": "The Python interpreter.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942119": {
+    "chapter": 12,
+    "section": 2,
+    "filename": "ch12_s2_fig100942119.png",
+    "caption": "Executing a simple Python program",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "106477225": {
+    "chapter": 12,
+    "section": 3,
+    "filename": "ch12_s3_fig106477225.png",
+    "caption": "Executing a simple Python program.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "106477236": {
+    "chapter": 12,
+    "section": 3,
+    "filename": "ch12_s3_fig106477236.png",
+    "caption": "Printing variables and multiple values.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "107139937": {
+    "chapter": 12,
+    "section": 3,
+    "filename": "ch12_s3_fig107139937.png",
+    "caption": "Newline characters and escape sequences.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942159": {
+    "chapter": 12,
+    "section": 3,
+    "filename": "ch12_s3_fig100942159.png",
+    "caption": "A program can get an input value from the keyboard.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "107244267": {
+    "chapter": 12,
+    "section": 3,
+    "filename": "ch12_s3_fig107244267.png",
+    "caption": "Converting input to integers to perform calculations.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942172": {
+    "chapter": 12,
+    "section": 4,
+    "filename": "ch12_s4_fig100942172.png",
+    "caption": "Run code frequently to avoid many errors.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942207": {
+    "chapter": 12,
+    "section": 6,
+    "filename": "ch12_s6_fig100942207.png",
+    "caption": "Computer processor and memory.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942213": {
+    "chapter": 12,
+    "section": 6,
+    "filename": "ch12_s6_fig100942213.png",
+    "caption": "Memory stores instructions and data as 0s and 1s.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942215": {
+    "chapter": 12,
+    "section": 6,
+    "filename": "ch12_s6_fig100942215.png",
+    "caption": "Processor executing instructions.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942219": {
+    "chapter": 12,
+    "section": 6,
+    "filename": "ch12_s6_fig100942219.png",
+    "caption": "Program compilation and execution.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942225": {
+    "chapter": 12,
+    "section": 7,
+    "filename": "ch12_s7_fig100942225.png",
+    "caption": "Some computer components.",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942236": {
+    "chapter": 12,
+    "section": 9,
+    "filename": "ch12_s9_fig100942236.png",
+    "caption": "Precisely formatting a meeting invite",
+    "category": "C949 - Chapter 12: Introduction to Python "
+  },
+  "100942257": {
+    "chapter": 13,
+    "section": 1,
+    "filename": "ch13_s1_fig100942257.png",
+    "caption": "Variables and assignments.",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942265": {
+    "chapter": 13,
+    "section": 1,
+    "filename": "ch13_s1_fig100942265.png",
+    "caption": "A variable may appear on the left side and right side of an assignment statement.",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942280": {
+    "chapter": 13,
+    "section": 3,
+    "filename": "ch13_s3_fig100942280.png",
+    "caption": "Creating new objects.",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942284": {
+    "chapter": 13,
+    "section": 3,
+    "filename": "ch13_s3_fig100942284.png",
+    "caption": "Manipulating variables.",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942309": {
+    "chapter": 13,
+    "section": 4,
+    "filename": "ch13_s4_fig100942309.png",
+    "caption": "Reducing the output of Pi",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942321": {
+    "chapter": 13,
+    "section": 5,
+    "filename": "ch13_s5_fig100942321.png",
+    "caption": "Evaluating expressions.",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942360": {
+    "chapter": 13,
+    "section": 8,
+    "filename": "ch13_s8_fig100942360.png",
+    "caption": "Scripts are files executed by the interpreter",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942362": {
+    "chapter": 13,
+    "section": 8,
+    "filename": "ch13_s8_fig100942362.png",
+    "caption": "Importing modules.",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942389": {
+    "chapter": 13,
+    "section": 10,
+    "filename": "ch13_s10_fig100942389.png",
+    "caption": "Restricting random integers to a specific number of values",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942404": {
+    "chapter": 13,
+    "section": 10,
+    "filename": "ch13_s10_fig100942404.png",
+    "caption": "Generating random integers in a defined range not starting from 0.",
+    "category": "C949 - Chapter 13: Variables and Expressions "
+  },
+  "100942475": {
+    "chapter": 14,
+    "section": 2,
+    "filename": "ch14_s2_fig100942475.png",
+    "caption": "Creating lists.",
+    "category": "C949 - Chapter 14: Types "
+  },
+  "100942487": {
+    "chapter": 14,
+    "section": 2,
+    "filename": "ch14_s2_fig100942487.png",
+    "caption": "Adding and removing list elements",
+    "category": "C949 - Chapter 14: Types "
+  },
+  "100942517": {
+    "chapter": 14,
+    "section": 4,
+    "filename": "ch14_s4_fig100942517.png",
+    "caption": "Modifying sets",
+    "category": "C949 - Chapter 14: Types "
+  },
+  "100942522": {
+    "chapter": 14,
+    "section": 4,
+    "filename": "ch14_s4_fig100942522.png",
+    "caption": "Set theory operations",
+    "category": "C949 - Chapter 14: Types "
+  },
+  "100942457": {
+    "chapter": 14,
+    "section": 10,
+    "filename": "ch14_s10_fig100942457.png",
+    "caption": "Creating literal strings with embedded expressions.",
+    "category": "C949 - Chapter 14: Types "
+  },
+  "100942602": {
+    "chapter": 15,
+    "section": 1,
+    "filename": "ch15_s1_fig100942602.png",
+    "caption": "Branching concept.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942581": {
+    "chapter": 15,
+    "section": 1,
+    "filename": "ch15_s1_fig100942581.png",
+    "caption": "Branches: Hotel rate example.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942599": {
+    "chapter": 15,
+    "section": 1,
+    "filename": "ch15_s1_fig100942599.png",
+    "caption": "If-elseif example: Anniversaries.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942605": {
+    "chapter": 15,
+    "section": 2,
+    "filename": "ch15_s2_fig100942605.png",
+    "caption": "Detecting if two items are equal: Hotel discount.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942614": {
+    "chapter": 15,
+    "section": 2,
+    "filename": "ch15_s2_fig100942614.png",
+    "caption": "If-else statement: Determining if a number is even or odd.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942627": {
+    "chapter": 15,
+    "section": 3,
+    "filename": "ch15_s3_fig100942627.png",
+    "caption": "An if-elseif-else structure can elegantly detect ranges.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942644": {
+    "chapter": 15,
+    "section": 4,
+    "filename": "ch15_s4_fig100942644.png",
+    "caption": "Using the sequential nature of multi-branch if-else for ranges: Insurance prices",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942657": {
+    "chapter": 15,
+    "section": 5,
+    "filename": "ch15_s5_fig100942657.png",
+    "caption": "Logical operators: AND, OR, and NOT",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942662": {
+    "chapter": 15,
+    "section": 5,
+    "filename": "ch15_s5_fig100942662.png",
+    "caption": "Using AND to detect if a value is within a range.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942679": {
+    "chapter": 15,
+    "section": 5,
+    "filename": "ch15_s5_fig100942679.png",
+    "caption": "Detecting ranges implicitly vs. explicitly.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942684": {
+    "chapter": 15,
+    "section": 6,
+    "filename": "ch15_s6_fig100942684.png",
+    "caption": "Using multi-branch if-else for detecting ranges with gaps: Movie ticket prices",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942688": {
+    "chapter": 15,
+    "section": 6,
+    "filename": "ch15_s6_fig100942688.png",
+    "caption": "Explicit ranges with gaps detection using logical AND and OR",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942714": {
+    "chapter": 15,
+    "section": 9,
+    "filename": "ch15_s9_fig100942714.png",
+    "caption": "Membership operators: Checking for a value in a list.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942732": {
+    "chapter": 15,
+    "section": 10,
+    "filename": "ch15_s10_fig100942732.png",
+    "caption": "Applying the precedence rules to an expression can be thought of as a tree.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100942754": {
+    "chapter": 15,
+    "section": 12,
+    "filename": "ch15_s12_fig100942754.png",
+    "caption": "Conditional expression.",
+    "category": "C949 - Chapter 15: Branching"
+  },
+  "100943156": {
+    "chapter": 16,
+    "section": 1,
+    "filename": "ch16_s1_fig100943156.png",
+    "caption": "Slicing.",
+    "category": "C949 - Chapter 16: Strings "
+  },
+  "100943178": {
+    "chapter": 16,
+    "section": 2,
+    "filename": "ch16_s2_fig100943178.png",
+    "caption": "Field width",
+    "category": "C949 - Chapter 16: Strings "
+  },
+  "100943204": {
+    "chapter": 16,
+    "section": 3,
+    "filename": "ch16_s3_fig100943204.png",
+    "caption": "String comparison.",
+    "category": "C949 - Chapter 16: Strings "
+  },
+  "100943220": {
+    "chapter": 16,
+    "section": 4,
+    "filename": "ch16_s4_fig100943220.png",
+    "caption": "Splitting a string into tokens.",
+    "category": "C949 - Chapter 16: Strings "
+  },
+  "100943227": {
+    "chapter": 16,
+    "section": 4,
+    "filename": "ch16_s4_fig100943227.png",
+    "caption": "String join() method.",
+    "category": "C949 - Chapter 16: Strings "
+  },
+  "100942764": {
+    "chapter": 17,
+    "section": 1,
+    "filename": "ch17_s1_fig100942764.png",
+    "caption": "Loop concept: Driving a baby around the block",
+    "category": "C949 - Chapter 17: Loops "
+  },
+  "100942768": {
+    "chapter": 17,
+    "section": 1,
+    "filename": "ch17_s1_fig100942768.png",
+    "caption": "A simple loop: Summing the input values.",
+    "category": "C949 - Chapter 17: Loops "
+  },
+  "100942771": {
+    "chapter": 17,
+    "section": 1,
+    "filename": "ch17_s1_fig100942771.png",
+    "caption": "Loop example: Computing an average",
+    "category": "C949 - Chapter 17: Loops "
+  },
+  "100942784": {
+    "chapter": 17,
+    "section": 2,
+    "filename": "ch17_s2_fig100942784.png",
+    "caption": "While loop.",
+    "category": "C949 - Chapter 17: Loops "
+  },
+  "100942792": {
+    "chapter": 17,
+    "section": 2,
+    "filename": "ch17_s2_fig100942792.png",
+    "caption": "While loop step-by-step.",
+    "category": "C949 - Chapter 17: Loops "
+  },
+  "100942843": {
+    "chapter": 17,
+    "section": 5,
+    "filename": "ch17_s5_fig100942843.png",
+    "caption": "Iterating over a list using a for loop.",
+    "category": "C949 - Chapter 17: Loops "
+  },
+  "100942868": {
+    "chapter": 17,
+    "section": 7,
+    "filename": "ch17_s7_fig100942868.png",
+    "caption": "While/for loop correspondence.",
+    "category": "C949 - Chapter 17: Loops "
+  },
+  "100942932": {
+    "chapter": 18,
+    "section": 1,
+    "filename": "ch18_s1_fig100942932.png",
+    "caption": "Functions can reduce redundancy and keep the main program simple.",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100942936": {
+    "chapter": 18,
+    "section": 1,
+    "filename": "ch18_s1_fig100942936.png",
+    "caption": "Function example: Printing a pizza area.",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100942942": {
+    "chapter": 18,
+    "section": 1,
+    "filename": "ch18_s1_fig100942942.png",
+    "caption": "Function example: Returning a value",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100942963": {
+    "chapter": 18,
+    "section": 2,
+    "filename": "ch18_s2_fig100942963.png",
+    "caption": "Printing with a void function",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100942968": {
+    "chapter": 18,
+    "section": 2,
+    "filename": "ch18_s2_fig100942968.png",
+    "caption": "Calling a print function repeatedly",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100942991": {
+    "chapter": 18,
+    "section": 4,
+    "filename": "ch18_s4_fig100942991.png",
+    "caption": "Redundant code can be replaced by multiple calls to one function.",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100943002": {
+    "chapter": 18,
+    "section": 5,
+    "filename": "ch18_s5_fig100943002.png",
+    "caption": "Function called twice in an expression",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100943033": {
+    "chapter": 18,
+    "section": 8,
+    "filename": "ch18_s8_fig100943033.png",
+    "caption": "Functions are objects.",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100943061": {
+    "chapter": 18,
+    "section": 11,
+    "filename": "ch18_s11_fig100943061.png",
+    "caption": "Namespaces.",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100943080": {
+    "chapter": 18,
+    "section": 12,
+    "filename": "ch18_s12_fig100943080.png",
+    "caption": "Assignments to parameters have no effect outside the function.",
+    "category": "C949 - Chapter 18: Functions "
+  },
+  "100943244": {
+    "chapter": 19,
+    "section": 1,
+    "filename": "ch19_s1_fig100943244.png",
+    "caption": "Lists contain references to other objects.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943259": {
+    "chapter": 19,
+    "section": 1,
+    "filename": "ch19_s1_fig100943259.png",
+    "caption": "In-place modification of a list using indexing",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943268": {
+    "chapter": 19,
+    "section": 2,
+    "filename": "ch19_s2_fig100943268.png",
+    "caption": "In-place modification using list methods.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943278": {
+    "chapter": 19,
+    "section": 3,
+    "filename": "ch19_s3_fig100943278.png",
+    "caption": "Using a variable to keep track of a value while iterating over a list.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943300": {
+    "chapter": 19,
+    "section": 5,
+    "filename": "ch19_s5_fig100943300.png",
+    "caption": "List nesting.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943305": {
+    "chapter": 19,
+    "section": 5,
+    "filename": "ch19_s5_fig100943305.png",
+    "caption": "Two-dimensional list.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943312": {
+    "chapter": 19,
+    "section": 5,
+    "filename": "ch19_s5_fig100943312.png",
+    "caption": "Iterating over multi-dimensional lists.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943320": {
+    "chapter": 19,
+    "section": 6,
+    "filename": "ch19_s6_fig100943320.png",
+    "caption": "List slicing.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943344": {
+    "chapter": 19,
+    "section": 7,
+    "filename": "ch19_s7_fig100943344.png",
+    "caption": "List modification.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943353": {
+    "chapter": 19,
+    "section": 8,
+    "filename": "ch19_s8_fig100943353.png",
+    "caption": "List comprehension.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943367": {
+    "chapter": 19,
+    "section": 9,
+    "filename": "ch19_s9_fig100943367.png",
+    "caption": "Sorting a list using list.sort().",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943380": {
+    "chapter": 19,
+    "section": 10,
+    "filename": "ch19_s10_fig100943380.png",
+    "caption": "Command-line arguments.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943393": {
+    "chapter": 19,
+    "section": 12,
+    "filename": "ch19_s12_fig100943393.png",
+    "caption": "Dictionaries.",
+    "category": "C949 - Chapter 19: Lists and Dictionaries"
+  },
+  "100943426": {
+    "chapter": 20,
+    "section": 1,
+    "filename": "ch20_s1_fig100943426.png",
+    "caption": "The world is viewed not as materials, but rather as objects.",
+    "category": "C949 - Chapter 20: Classes "
+  },
+  "100943427": {
+    "chapter": 20,
+    "section": 1,
+    "filename": "ch20_s1_fig100943427.png",
+    "caption": "Programs are not viewed as variables and functions/methods but as objects.",
+    "category": "C949 - Chapter 20: Classes "
+  },
+  "100943432": {
+    "chapter": 20,
+    "section": 1,
+    "filename": "ch20_s1_fig100943432.png",
+    "caption": "Objects strongly support abstraction or information hiding.",
+    "category": "C949 - Chapter 20: Classes "
+  },
+  "100943436": {
+    "chapter": 20,
+    "section": 1,
+    "filename": "ch20_s1_fig100943436.png",
+    "caption": "Built in objects.",
+    "category": "C949 - Chapter 20: Classes "
+  },
+  "100943446": {
+    "chapter": 20,
+    "section": 2,
+    "filename": "ch20_s2_fig100943446.png",
+    "caption": "Using classes and attribute reference.",
+    "category": "C949 - Chapter 20: Classes "
+  },
+  "100943528": {
+    "chapter": 20,
+    "section": 10,
+    "filename": "ch20_s10_fig100943528.png",
+    "caption": "Memory allocation in Python",
+    "category": "C949 - Chapter 20: Classes "
+  },
+  "100943532": {
+    "chapter": 20,
+    "section": 10,
+    "filename": "ch20_s10_fig100943532.png",
+    "caption": "Python's garbage collection.",
+    "category": "C949 - Chapter 20: Classes "
+  },
+  "100943789": {
+    "chapter": 21,
+    "section": 1,
+    "filename": "ch21_s1_fig100943789.png",
+    "caption": "A recursive function example.",
+    "category": "C949 - Chapter 21: Recursion "
+  },
+  "100943796": {
+    "chapter": 21,
+    "section": 2,
+    "filename": "ch21_s2_fig100943796.png",
+    "caption": "Binary search: A well-known recursive algorithm.",
+    "category": "C949 - Chapter 21: Recursion "
+  },
+  "100943815": {
+    "chapter": 21,
+    "section": 4,
+    "filename": "ch21_s4_fig100943815.png",
+    "caption": "Writing a recursive function for factorial: First writing the base case, then adding the recursive case.",
+    "category": "C949 - Chapter 21: Recursion "
+  },
+  "100943832": {
+    "chapter": 21,
+    "section": 6,
+    "filename": "ch21_s6_fig100943832.png",
+    "caption": "Exploring all possibilities viewed as a tree of choices.",
+    "category": "C949 - Chapter 21: Recursion "
+  }
+}

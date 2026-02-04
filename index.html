@@ -9606,7 +9606,18 @@
                 // Format inline code references
                 formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-                contextEl.innerHTML = '<span class="context-label">📖 Reference</span>' + formatted;
+                // Add figure image if available
+                let imageHtml = '';
+                if (q.image) {
+                    imageHtml = `<img src="${q.image}" alt="Figure" style="max-width:100%; height:auto; border-radius:8px; margin:8px 0; display:block;">`;
+                }
+                contextEl.innerHTML = '<span class="context-label">📖 Reference</span>' + imageHtml + formatted;
+                contextEl.classList.remove('hidden');
+                contextEl.classList.add('collapsed');
+            } else if (q.image) {
+                // No text context but has a figure image
+                const imgHtml = `<img src="${q.image}" alt="Figure" style="max-width:100%; height:auto; border-radius:8px; margin:8px 0; display:block;">`;
+                contextEl.innerHTML = '<span class="context-label">📖 Reference</span>' + imgHtml;
                 contextEl.classList.remove('hidden');
                 contextEl.classList.add('collapsed');
             } else {
