@@ -10387,6 +10387,7 @@
                     document.getElementById('modal-body').innerHTML = `
                         <p style="margin-bottom: 15px;">📚 <strong>Chapter ${chNum}: ${chTitle}</strong></p>
                         <a href="${zyBooksUrl}" target="_blank" rel="noopener" 
+                           onclick="window.open('${zyBooksUrl}', '_blank'); return false;"
                            style="display: inline-block; padding: 12px 24px; background: #2563eb; color: white; 
                                   border-radius: 8px; text-decoration: none; font-weight: 600; margin-bottom: 15px;">
                             📖 Open in zyBooks
