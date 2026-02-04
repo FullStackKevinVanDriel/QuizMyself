@@ -259,6 +259,30 @@
         }
 
 
+        .acronym-link {
+            color: #6ab0f3;
+            text-decoration: underline dotted;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+        .acronym-popup {
+            position: absolute;
+            z-index: 9999;
+            background: #1e2a4a;
+            border: 1px solid #3a5080;
+            border-radius: 10px;
+            padding: 12px 16px;
+            max-width: 320px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #dde;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .acronym-popup strong {
+            color: #6ab0f3;
+            font-size: 0.95rem;
+        }
+
         .choices {
             display: flex;
             flex-direction: column;
@@ -9652,7 +9676,7 @@
                 contextEl.innerHTML = '';
             }
 
-            document.getElementById('question-text').textContent = displayQuestion;
+            document.getElementById('question-text').innerHTML = addAcronymLinks(displayQuestion);
 
             // Show answer count
             const count = state.answerCounts[q.id] || 0;
@@ -9754,6 +9778,79 @@
 
         // Skip question (no penalty, just move on)
         // Review mastered questions (user chose to keep going)
+        // Acronym glossary
+        const acronymGlossary = {
+            'BST': 'Binary Search Tree — a tree where left children are smaller, right children are larger',
+            'AVL': 'AVL Tree (Adelson-Velsky & Landis) — a self-balancing BST where heights of subtrees differ by at most 1',
+            'BFS': 'Breadth-First Search — explores all neighbors before going deeper (uses a queue)',
+            'DFS': 'Depth-First Search — explores as deep as possible before backtracking (uses a stack)',
+            'BSP': 'Binary Space Partitioning — divides space into two sets using hyperplanes',
+            'ADT': 'Abstract Data Type — a type defined by its behavior (operations) rather than implementation',
+            'NP': 'Nondeterministic Polynomial — problems verifiable in polynomial time but not necessarily solvable in polynomial time',
+            'DAG': 'Directed Acyclic Graph — a directed graph with no cycles',
+            'MST': 'Minimum Spanning Tree — a subset of edges connecting all vertices with minimum total weight',
+            'OOP': 'Object-Oriented Programming — paradigm based on objects containing data and methods',
+            'FIFO': 'First In, First Out — the order used by queues',
+            'LIFO': 'Last In, First Out — the order used by stacks',
+            'SLL': 'Singly-Linked List — each node points to the next node only',
+            'DLL': 'Doubly-Linked List — each node points to both next and previous nodes',
+            'Big-O': 'Big-O Notation — describes the upper bound (worst case) of an algorithm\'s time/space complexity',
+            'O(1)': 'Constant time — operation takes the same time regardless of input size',
+            'O(N)': 'Linear time — time grows proportionally with input size',
+            'O(N²)': 'Quadratic time — time grows with the square of input size (e.g., nested loops)',
+            'O(log N)': 'Logarithmic time — time grows logarithmically (e.g., binary search, balanced BST operations)',
+            'O(N log N)': 'Linearithmic time — typical for efficient sorting algorithms (mergesort, heapsort)',
+            'RBT': 'Red-Black Tree — a self-balancing BST using node coloring rules',
+            'ASCII': 'American Standard Code for Information Interchange — character encoding standard',
+            'API': 'Application Programming Interface — a set of rules for software communication',
+            'IDE': 'Integrated Development Environment — software for writing/debugging code',
+            'RAM': 'Random Access Memory — fast temporary storage, lost when powered off',
+            'CPU': 'Central Processing Unit — the "brain" of a computer that executes instructions',
+            'PSTN': 'Public Switched Telephone Network — traditional phone network',
+            'SBC': 'Session Border Controller — manages VoIP call sessions',
+        };
+
+        function addAcronymLinks(text) {
+            if (!text) return '';
+            // Escape HTML first
+            let safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // Match acronyms (2+ uppercase letters) and Big-O notations
+            const patterns = Object.keys(acronymGlossary).sort((a, b) => b.length - a.length);
+            for (const acronym of patterns) {
+                const escaped = acronym.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`\\b${escaped}\\b`, 'g');
+                safe = safe.replace(regex, `<span class="acronym-link" onclick="showAcronymPopup(event, '${acronym.replace(/'/g, "\\'")}')">${acronym}</span>`);
+            }
+            return safe;
+        }
+
+        function showAcronymPopup(event, acronym) {
+            event.stopPropagation();
+            // Remove any existing popup
+            const existing = document.querySelector('.acronym-popup');
+            if (existing) existing.remove();
+
+            const definition = acronymGlossary[acronym] || 'No definition available';
+            const popup = document.createElement('div');
+            popup.className = 'acronym-popup';
+            popup.innerHTML = `<strong>${acronym}</strong><br>${definition}`;
+
+            document.body.appendChild(popup);
+
+            // Position near the click
+            const rect = event.target.getBoundingClientRect();
+            popup.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+            popup.style.left = Math.min(rect.left, window.innerWidth - popup.offsetWidth - 16) + 'px';
+
+            // Dismiss on tap anywhere
+            setTimeout(() => {
+                document.addEventListener('click', function dismiss() {
+                    popup.remove();
+                    document.removeEventListener('click', dismiss);
+                }, { once: true });
+            }, 50);
+        }
+
         function reviewMastered() {
             const filteredQuestions = getFilteredQuestions();
             state.currentQuestion = filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
