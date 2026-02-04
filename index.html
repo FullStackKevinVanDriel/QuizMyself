@@ -9562,18 +9562,26 @@
             let displayQuestion = questionText;
             let contextContent = '';
 
-            // Check for [Figure: ...] or Context: ... prefix
-            const figureMatch = questionText.match(/^\[Figure:\s*([\s\S]*?)\]\s*\n*\s*([\s\S]*)$/);
-            const contextMatch = questionText.match(/^Context:\s*([\s\S]*?)\n\n\s*([\s\S]*)$/);
+            // Check for [Figure: ...] prefix
+            const figureMatch = questionText.match(/^\[Figure:\s*([\s\S]*?)\]\s*\n*\s*(?:Question:\s*)?([\s\S]*)$/);
+            // Check for Context: ... with Question: marker
+            const contextWithQ = questionText.match(/^Context:\s*([\s\S]*?)\s*Question:\s*([\s\S]*)$/);
+            // Fallback: Context: split on last \n\n
+            const contextFallback = questionText.match(/^Context:\s*([\s\S]+)\n\n([\s\S]+)$/);
 
-            if (figureMatch) {
+            if (figureMatch && figureMatch[2].trim()) {
                 contextContent = figureMatch[1].trim();
-                displayQuestion = figureMatch[2].trim() || contextContent;
-                if (!figureMatch[2].trim()) contextContent = ''; // Don't show context if question IS the context
-            } else if (contextMatch) {
-                contextContent = contextMatch[1].trim();
-                displayQuestion = contextMatch[2].trim() || contextContent;
-                if (!contextMatch[2].trim()) contextContent = '';
+                displayQuestion = figureMatch[2].trim();
+            } else if (contextWithQ && contextWithQ[2].trim()) {
+                contextContent = contextWithQ[1].trim();
+                displayQuestion = contextWithQ[2].trim();
+            } else if (contextFallback && contextFallback[2].trim()) {
+                // Use the last \n\n split — everything after last \n\n is the question
+                const lastSplit = questionText.replace(/^Context:\s*/, '').lastIndexOf('\n\n');
+                if (lastSplit > 0) {
+                    contextContent = questionText.replace(/^Context:\s*/, '').substring(0, lastSplit).trim();
+                    displayQuestion = questionText.replace(/^Context:\s*/, '').substring(lastSplit).trim();
+                }
             }
 
             if (contextContent) {
