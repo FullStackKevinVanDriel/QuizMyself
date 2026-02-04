@@ -9607,8 +9607,8 @@
             document.getElementById('question-counter').textContent = `${remaining} questions remaining`;
             document.getElementById('category-badge').textContent = q.category;
 
-            // Auto-skip [NEEDS FIGURE] questions
-            if (q.q && q.q.startsWith('[NEEDS FIGURE]')) {
+            // Auto-skip questions missing required context
+            if (q.q && (q.q.startsWith('[NEEDS FIGURE]') || q.q.startsWith('[NEEDS CONTEXT]'))) {
                 loadNextQuestion();
                 return;
             }
