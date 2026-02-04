@@ -9557,6 +9557,13 @@
 
             document.getElementById('question-counter').textContent = `${remaining} questions remaining`;
             document.getElementById('category-badge').textContent = q.category;
+
+            // Auto-skip [NEEDS FIGURE] questions
+            if (q.q && q.q.startsWith('[NEEDS FIGURE]')) {
+                loadNextQuestion();
+                return;
+            }
+
             // Parse and display context + question separately
             const contextEl = document.getElementById('question-context');
             const questionText = q.q || '';
