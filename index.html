@@ -190,6 +190,69 @@
             line-height: 1.7;
         }
 
+        .question-context {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #aab;
+            max-height: 200px;
+            overflow-y: auto;
+            cursor: pointer;
+            position: relative;
+        }
+        .question-context.collapsed {
+            max-height: 60px;
+            overflow: hidden;
+        }
+        .question-context.collapsed::after {
+            content: '▼ tap to expand';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background: linear-gradient(transparent, rgba(20, 25, 45, 0.95) 60%);
+            padding: 12px 0 4px;
+            font-size: 0.75rem;
+            color: #667;
+        }
+        .question-context:not(.collapsed)::before {
+            content: '▲ tap to collapse';
+            display: block;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #667;
+            margin-bottom: 8px;
+        }
+        .question-context .context-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6a9fd8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .question-context code, .question-context pre {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #7ec;
+        }
+        .question-context pre {
+            padding: 10px;
+            overflow-x: auto;
+            white-space: pre;
+            display: block;
+            margin: 8px 0;
+        }
+
 
         .choices {
             display: flex;
@@ -4419,6 +4482,7 @@
                     <button class="help-btn" onclick="openStudyMaterial()">?</button>
                     <span class="streak-indicator hidden" id="streak-indicator"></span>
                 </div>
+                <div class="question-context collapsed hidden" id="question-context" onclick="this.classList.toggle('collapsed')"></div>
                 <p class="question-text" id="question-text"></p>
 
                 <!-- Multiple Choice -->
@@ -4449,6 +4513,7 @@
                     <span class="category-badge" id="exam-category"></span>
                     <button class="help-btn" onclick="openStudyMaterial()">?</button>
                 </div>
+                <div class="question-context collapsed hidden" id="exam-question-context" onclick="this.classList.toggle('collapsed')"></div>
                 <p class="question-text" id="exam-question"></p>
                 <div class="choices" id="exam-choices"></div>
                 <div id="exam-next-btn" class="btn-group hidden" style="margin-top: 20px;">
@@ -9491,7 +9556,44 @@
 
             document.getElementById('question-counter').textContent = `${remaining} questions remaining`;
             document.getElementById('category-badge').textContent = q.category;
-            document.getElementById('question-text').textContent = q.q;
+            // Parse and display context + question separately
+            const contextEl = document.getElementById('question-context');
+            const questionText = q.q || '';
+            let displayQuestion = questionText;
+            let contextContent = '';
+
+            // Check for [Figure: ...] or Context: ... prefix
+            const figureMatch = questionText.match(/^\[Figure:\s*([\s\S]*?)\]\s*\n*\s*([\s\S]*)$/);
+            const contextMatch = questionText.match(/^Context:\s*([\s\S]*?)\n\n\s*([\s\S]*)$/);
+
+            if (figureMatch) {
+                contextContent = figureMatch[1].trim();
+                displayQuestion = figureMatch[2].trim() || contextContent;
+                if (!figureMatch[2].trim()) contextContent = ''; // Don't show context if question IS the context
+            } else if (contextMatch) {
+                contextContent = contextMatch[1].trim();
+                displayQuestion = contextMatch[2].trim() || contextContent;
+                if (!contextMatch[2].trim()) contextContent = '';
+            }
+
+            if (contextContent) {
+                // Format code blocks in context
+                let formatted = contextContent;
+                // Detect Python code patterns and wrap in <pre>
+                const codePatterns = /((?:def |class |import |from |print\(|for |while |if |elif |else:|return |    ).+(?:\n.+)*)/g;
+                formatted = formatted.replace(codePatterns, '<pre>$1</pre>');
+                // Format inline code references
+                formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+                contextEl.innerHTML = '<span class="context-label">📖 Reference</span>' + formatted;
+                contextEl.classList.remove('hidden');
+                contextEl.classList.add('collapsed');
+            } else {
+                contextEl.classList.add('hidden');
+                contextEl.innerHTML = '';
+            }
+
+            document.getElementById('question-text').textContent = displayQuestion;
 
             // Show answer count
             const count = state.answerCounts[q.id] || 0;
