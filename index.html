@@ -9600,12 +9600,16 @@
             if (contextContent) {
                 let formatted = contextContent;
                 
-                // If context contains code-like patterns, render ALL as a code block
-                const hasCode = /(?:def |class |import |from |print\(|for |while |if |elif |else:|return |self\.|node\.|\.get_|\.set_|\w+\.\w+\(|    \w)/.test(formatted);
-                if (hasCode) {
+                // Only render as code if it has real code structure (indentation + function calls/definitions)
+                const hasCode = /(?:def \w+\(|class \w+|import \w|from \w+ import|print\(|self\.\w+\(|node\.\w+\()/.test(formatted);
+                const hasIndentation = /\n {2,}\w/.test(formatted) || /\n\t\w/.test(formatted);
+                if (hasCode && hasIndentation) {
                     formatted = '<pre>' + formatted + '</pre>';
+                } else if (hasCode) {
+                    // Has code calls but no indentation — inline code the function calls
+                    formatted = formatted.replace(/(\w+\.\w+\([^)]*\))/g, '<code>$1</code>');
+                    formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
                 } else {
-                    // Format inline code references only
                     formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
                 }
 
