@@ -4494,6 +4494,7 @@
                     <span class="category-filter-title">Filter by Category</span>
                     <div class="category-filter-actions">
                         <button onclick="selectAllCategories()">All</button>
+                        <button onclick="selectUnmasteredCategories()">Unmastered</button>
                         <button onclick="clearAllCategories()">None</button>
                     </div>
                 </div>
@@ -9475,6 +9476,19 @@
         }
 
         // Clear all categories
+        function selectUnmasteredCategories() {
+            selectedCategories.clear();
+            allCategories.forEach(cat => {
+                const catQs = questions.filter(q => q.category === cat);
+                const masteredCount = catQs.filter(q => state.mastered.includes(q.id)).length;
+                if (masteredCount < catQs.length) {
+                    selectedCategories.add(cat);
+                }
+            });
+            renderCategoryChips();
+            updateStats();
+        }
+
         function clearAllCategories() {
             selectedCategories.clear();
             renderCategoryChips();
