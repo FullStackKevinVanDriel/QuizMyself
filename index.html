@@ -9546,8 +9546,28 @@
             state.currentQuestion = getRandomQuestion();
             state.claimedKnowledge = false;
 
-            // If all mastered in filtered set, practice from all filtered questions (review mode)
+            // If all mastered in filtered set, show completion
             if (!state.currentQuestion && filteredQuestions.length > 0) {
+                const masteredCount = filteredQuestions.filter(q => state.mastered.includes(q.id)).length;
+                if (masteredCount === filteredQuestions.length) {
+                    // All questions in this filter are mastered!
+                    document.getElementById('question-counter').textContent = '🎉 All mastered!';
+                    document.getElementById('category-badge').textContent = '';
+                    document.getElementById('question-context').classList.add('hidden');
+                    document.getElementById('question-text').innerHTML = `
+                        <div style="text-align:center; padding: 20px 0;">
+                            <div style="font-size: 3rem; margin-bottom: 16px;">🏆</div>
+                            <div style="font-size: 1.3rem; font-weight: 600; margin-bottom: 12px;">You've mastered all ${filteredQuestions.length} questions!</div>
+                            <div style="color: #aab; margin-bottom: 20px;">Great work. Try another category or review these again.</div>
+                            <button class="btn btn-primary" onclick="backToMenu()" style="margin-right: 10px;">← Back to Menu</button>
+                            <button class="btn btn-small" onclick="reviewMastered()" style="opacity: 0.7;">Review Anyway</button>
+                        </div>
+                    `;
+                    document.getElementById('choices-container').innerHTML = '';
+                    document.getElementById('practice-next-btn').classList.add('hidden');
+                    const skipArea = document.querySelector('#practice-screen .btn-group, #practice-screen [onclick*=markAlwaysKnow]');
+                    return;
+                }
                 state.currentQuestion = filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
             }
 
@@ -9733,6 +9753,19 @@
         }
 
         // Skip question (no penalty, just move on)
+        // Review mastered questions (user chose to keep going)
+        function reviewMastered() {
+            const filteredQuestions = getFilteredQuestions();
+            state.currentQuestion = filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
+            if (state.currentQuestion) {
+                const q = state.currentQuestion;
+                document.getElementById('category-badge').textContent = q.category;
+                document.getElementById('question-counter').textContent = 'Review mode';
+                document.getElementById('question-text').textContent = q.q;
+                renderChoices();
+            }
+        }
+
         function skipQuestion() {
             if (state.currentQuestion) {
                 loadNextQuestion();
