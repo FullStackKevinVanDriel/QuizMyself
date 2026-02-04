@@ -10369,11 +10369,29 @@
                 document.getElementById('modal-title').textContent = category + ' - Study Material';
                 document.getElementById('modal-body').innerHTML = studyMaterials[category];
             } else {
-                document.getElementById('modal-title').textContent = 'Study Material';
-                document.getElementById('modal-body').innerHTML = `
-                    <p>No study material available for this category: <strong>${category || 'Unknown'}</strong></p>
-                    <p style="margin-top: 15px;">For the full course content, return to the menu and click "View Course Content".</p>
-                `;
+                // Check for zyBooks chapter link (C949 - Chapter X: Title)
+                const chapterMatch = category ? category.match(/C949\s*-\s*Chapter\s+(\d+):\s*(.+)/) : null;
+                if (chapterMatch) {
+                    const chNum = chapterMatch[1];
+                    const chTitle = chapterMatch[2].trim();
+                    const zyBooksUrl = `https://learn.zybooks.com/zybook/WGUC949DataStructuresv4/chapter/${chNum}/section/1`;
+                    document.getElementById('modal-title').textContent = `Chapter ${chNum}: ${chTitle}`;
+                    document.getElementById('modal-body').innerHTML = `
+                        <p style="margin-bottom: 15px;">📚 <strong>Chapter ${chNum}: ${chTitle}</strong></p>
+                        <a href="${zyBooksUrl}" target="_blank" rel="noopener" 
+                           style="display: inline-block; padding: 12px 24px; background: #2563eb; color: white; 
+                                  border-radius: 8px; text-decoration: none; font-weight: 600; margin-bottom: 15px;">
+                            📖 Open in zyBooks
+                        </a>
+                        <p style="color: #aab; font-size: 0.9rem;">Opens the zyBooks textbook to this chapter. You'll need to be logged into WGU.</p>
+                    `;
+                } else {
+                    document.getElementById('modal-title').textContent = 'Study Material';
+                    document.getElementById('modal-body').innerHTML = `
+                        <p>No study material available for this category: <strong>${category || 'Unknown'}</strong></p>
+                        <p style="margin-top: 15px;">For the full course content, return to the menu and click "View Course Content".</p>
+                    `;
+                }
             }
             document.getElementById('study-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
