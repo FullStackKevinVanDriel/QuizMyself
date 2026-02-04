@@ -9598,13 +9598,16 @@
             }
 
             if (contextContent) {
-                // Format code blocks in context
                 let formatted = contextContent;
-                // Detect Python code patterns and wrap in <pre>
-                const codePatterns = /((?:def |class |import |from |print\(|for |while |if |elif |else:|return |    ).+(?:\n.+)*)/g;
-                formatted = formatted.replace(codePatterns, '<pre>$1</pre>');
-                // Format inline code references
-                formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
+                
+                // If context contains code-like patterns, render ALL as a code block
+                const hasCode = /(?:def |class |import |from |print\(|for |while |if |elif |else:|return |self\.|node\.|\.get_|\.set_|\w+\.\w+\(|    \w)/.test(formatted);
+                if (hasCode) {
+                    formatted = '<pre>' + formatted + '</pre>';
+                } else {
+                    // Format inline code references only
+                    formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
+                }
 
                 // Add figure image if available
                 let imageHtml = '';
