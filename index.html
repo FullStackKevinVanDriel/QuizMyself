@@ -6045,25 +6045,26 @@
             }
 
             try {
-                const response = await fetch(`${VANDROMEDA_API}/auth/password-reset.php`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, product: 'quizmyself' })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    document.getElementById('forgot-email').value = '';
-                    showAuthError('Password reset email sent! Check your inbox.');
-                    document.getElementById('auth-error').style.color = '#4caf50';
-                } else {
-                    document.getElementById('auth-error').style.color = '#ff5252';
-                    showAuthError(data.error || 'Failed to send reset email');
-                }
+                // Use Firebase's built-in password reset
+                await auth.sendPasswordResetEmail(email);
+                
+                document.getElementById('forgot-email').value = '';
+                showAuthError('Password reset email sent! Check your inbox.');
+                document.getElementById('auth-error').style.color = '#4caf50';
             } catch (error) {
                 document.getElementById('auth-error').style.color = '#ff5252';
-                showAuthError('Network error. Please try again.');
+                
+                // Handle Firebase-specific error codes
+                let errorMessage = 'Failed to send reset email';
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No account found with this email';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Invalid email address';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Too many attempts. Please try again later';
+                }
+                
+                showAuthError(errorMessage);
             }
         }
 
