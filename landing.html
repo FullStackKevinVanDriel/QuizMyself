@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMyself - Master Any Certification with Spaced Repetition</title>
+    <meta name="description" content="Pass your WGU classes and certification exams faster with proven spaced repetition. Free to start, Pro features unlock unlimited study power.">
+    
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="QuizMyself - Ace Your Certifications">
+    <meta property="og:description" content="Study smarter with spaced repetition. Built by a WGU student who needed it.">
+    <meta property="og:type" content="website">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 18px 48px;
+            font-size: 1.25rem;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .social-proof {
+            background: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .social-proof p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .section p {
+            font-size: 1.1rem;
+            text-align: center;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .feature h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .feature p {
+            color: #666;
+            margin: 0;
+        }
+        
+        .pricing {
+            background: white;
+            padding: 60px 20px;
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .pricing-card.featured {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .price-period {
+            font-size: 1rem;
+            color: #999;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 10px 0;
+            color: #666;
+        }
+        
+        .pricing-features li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .use-cases {
+            background: #f8f9fa;
+            padding: 60px 20px;
+        }
+        
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .use-case {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .use-case h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .testimonial {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 800px;
+            margin: 40px auto;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .testimonial p {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial .author {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .cta-section p {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Pass Your Certification Exams Faster</h1>
+        <p>Study smarter with proven spaced repetition. Built for WGU students and certification seekers.</p>
+        <a href="https://fullstackkevinvandriel.github.io/QuizMyself/" class="cta-button">Start Free →</a>
+    </div>
+    
+    <!-- Social Proof -->
+    <div class="social-proof">
+        <p>Built by a WGU student who passed classes faster with spaced repetition</p>
+    </div>
+    
+    <!-- Problem/Solution -->
+    <div class="container">
+        <div class="section">
+            <h2>Why Spaced Repetition Works</h2>
+            <p>Traditional studying = cramming before exams = forgetting after. Spaced repetition = reviewing at optimal intervals = permanent retention. Science-backed, exam-proven.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>🧠 Retain More</h3>
+                    <p>Review questions just before you'd forget them. Master content permanently, not temporarily.</p>
+                </div>
+                <div class="feature">
+                    <h3>⏱️ Study Less</h3>
+                    <p>Focus on what you don't know yet. Skip what you've already mastered. Efficient, not exhausting.</p>
+                </div>
+                <div class="feature">
+                    <h3>📈 Track Progress</h3>
+                    <p>See exactly what you've mastered and what needs work. No guessing, just data.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Use Cases -->
+        <div class="section">
+            <h2>Perfect For</h2>
+            <div class="use-case-grid">
+                <div class="use-case">
+                    <h4>WGU Students</h4>
+                    <p>Turn zyBooks content into flashcards. Pass classes faster with targeted review.</p>
+                </div>
+                <div class="use-case">
+                    <h4>CompTIA Certifications</h4>
+                    <p>A+, Network+, Security+. Import question banks and drill until perfect.</p>
+                </div>
+                <div class="use-case">
+                    <h4>AWS/Cloud Certs</h4>
+                    <p>Master concepts with custom quizzes. Track weak areas until exam-ready.</p>
+                </div>
+                <div class="use-case">
+                    <h4>Any Certification</h4>
+                    <p>Import your own study material. CSV, JSON, or plain text. Instant quiz creation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pricing -->
+    <div class="pricing">
+        <h2 style="text-align: center; margin-bottom: 50px; color: #2c3e50;">Simple, Fair Pricing</h2>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Free</h3>
+                <div class="price">$0<span class="price-period">/forever</span></div>
+                <ul class="pricing-features">
+                    <li>Up to 50 questions</li>
+                    <li>Basic spaced repetition</li>
+                    <li>Practice & exam modes</li>
+                    <li>Progress tracking</li>
+                </ul>
+                <a href="https://fullstackkevinvandriel.github.io/QuizMyself/" class="cta-button" style="background: #999;">Get Started</a>
+            </div>
+            
+            <div class="pricing-card featured">
+                <h3>Pro</h3>
+                <div class="price">$5<span class="price-period">/month</span></div>
+                <ul class="pricing-features">
+                    <li>Unlimited questions</li>
+                    <li>50MB cloud storage</li>
+                    <li>Import from any source</li>
+                    <li>Export your quizzes</li>
+                    <li>Advanced spaced repetition</li>
+                    <li>Priority support</li>
+                </ul>
+                <a href="https://fullstackkevinvandriel.github.io/QuizMyself/" class="cta-button">Upgrade Now</a>
+            </div>
+            
+            <div class="pricing-card">
+                <h3>Pro Annual</h3>
+                <div class="price">$49<span class="price-period">/year</span></div>
+                <p style="color: #4CAF50; font-weight: 600; margin: 10px 0;">Save $11/year</p>
+                <ul class="pricing-features">
+                    <li>Everything in Pro</li>
+                    <li>2 months free</li>
+                    <li>Best value</li>
+                </ul>
+                <a href="https://fullstackkevinvandriel.github.io/QuizMyself/" class="cta-button">Go Annual</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- How It Works -->
+    <div class="container">
+        <div class="section">
+            <h2>How It Works</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>1. Import</h3>
+                    <p>Paste questions, upload CSV/JSON, or use demo quizzes to get started instantly.</p>
+                </div>
+                <div class="feature">
+                    <h3>2. Study</h3>
+                    <p>Practice mode drills you on unmastered content. Answer correctly 3 times to master.</p>
+                </div>
+                <div class="feature">
+                    <h3>3. Pass</h3>
+                    <p>Take final exams when ready. 100% score required. Resume anytime, progress saved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Use Cases Section -->
+    <div class="use-cases">
+        <div class="container">
+            <h2>Built By a WGU Student, For Students</h2>
+            <div class="testimonial">
+                <p>"I built QuizMyself because I needed it. Traditional flashcard apps were too complex or too simple. I wanted spaced repetition that actually worked for certifications and college courses. So I built it."</p>
+                <p class="author">— Kevin VanDriel, WGU Student & Developer</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h2>Ready to Study Smarter?</h2>
+        <p>Start free. Upgrade when you need unlimited questions.</p>
+        <a href="https://fullstackkevinvandriel.github.io/QuizMyself/" class="cta-button" style="background: white; color: #667eea;">Try QuizMyself Free</a>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 QuizMyself by <a href="https://vandromeda.com">Vandromeda</a> | <a href="https://fullstackkevinvandriel.github.io/QuizMyself/">Demo</a> | <a href="mailto:kevin@vandromeda.com">Contact</a></p>
+    </footer>
+</body>
+</html>
