@@ -1,15 +1,15 @@
 {
-  "generated": "2026-02-17T02:42:21.504Z",
+  "generated": "2026-02-18T02:45:44.178Z",
   "repository": "FullStackKevinVanDriel/QuizMyself",
   "stats": {
-    "total": 48,
+    "total": 31,
     "open": 31,
-    "closed": 17,
+    "closed": 0,
     "byLabel": {
-      "bug": 13,
-      "enhancement": 20,
+      "bug": 4,
+      "enhancement": 14,
       "roadmap": 20,
-      "feedback": 5
+      "feedback": 3
     }
   },
   "milestones": [
@@ -63,32 +63,6 @@
     }
   ],
   "issues": [
-    {
-      "number": 210,
-      "title": "feat: API endpoint for lifecycle/history data",
-      "state": "closed",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:43Z",
-      "updatedAt": "2026-01-18T09:18:53Z",
-      "milestone": "M3: Product-Market Fit",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/210",
-      "feedback_id": null
-    },
-    {
-      "number": 208,
-      "title": "feat: Expandable lifecycle timeline for progress items",
-      "state": "closed",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:28Z",
-      "updatedAt": "2026-01-18T09:15:47Z",
-      "milestone": "M3: Product-Market Fit",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
-      "feedback_id": null
-    },
     {
       "number": 199,
       "title": "[ABANDON] Web-first / desktop-priority mindset",
@@ -227,19 +201,6 @@
       "updatedAt": "2026-01-18T09:04:29Z",
       "milestone": "🚫 Anti-Patterns (DO NOT DO)",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/188",
-      "feedback_id": null
-    },
-    {
-      "number": 212,
-      "title": "feat: Sort and search functionality for Progress modal",
-      "state": "closed",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:45Z",
-      "updatedAt": "2026-01-18T08:51:17Z",
-      "milestone": "M3: Product-Market Fit",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
       "feedback_id": null
     },
     {
@@ -541,268 +502,7 @@
       "milestone": "M1: Beta Launch",
       "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/157",
       "feedback_id": 11
-    },
-    {
-      "number": 213,
-      "title": "feat: Improved empty states and loading experience",
-      "state": "closed",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:46Z",
-      "updatedAt": "2026-01-18T08:04:57Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/213",
-      "feedback_id": null
-    },
-    {
-      "number": 207,
-      "title": "feat: Display accurate timestamps with relative time",
-      "state": "closed",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T07:08:27Z",
-      "updatedAt": "2026-01-18T07:44:13Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/207",
-      "feedback_id": null
-    },
-    {
-      "number": 205,
-      "title": "bug: Fix overlay click to close Progress modal",
-      "state": "closed",
-      "labels": [
-        "bug"
-      ],
-      "createdAt": "2026-01-18T07:08:08Z",
-      "updatedAt": "2026-01-18T07:36:59Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/205",
-      "feedback_id": null
-    },
-    {
-      "number": 161,
-      "title": "[bug] this is good; now, when i look at the source mater...",
-      "state": "closed",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:33Z",
-      "updatedAt": "2026-01-18T04:52:24Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
-      "feedback_id": 7
-    },
-    {
-      "number": 159,
-      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
-      "state": "closed",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:32Z",
-      "updatedAt": "2026-01-18T04:45:36Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
-      "feedback_id": 9
-    },
-    {
-      "number": 163,
-      "title": "[bug] after my quiz questions have been AI generated, i ...",
-      "state": "closed",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:34Z",
-      "updatedAt": "2026-01-18T04:40:54Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/163",
-      "feedback_id": 5
-    },
-    {
-      "number": 162,
-      "title": "[feedback] Test - verifying feedback ID is returned",
-      "state": "closed",
-      "labels": [
-        "user-feedback",
-        "feedback"
-      ],
-      "createdAt": "2026-01-18T04:05:34Z",
-      "updatedAt": "2026-01-18T04:38:54Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
-      "feedback_id": 6
-    },
-    {
-      "number": 140,
-      "title": "P1: Integrate Plausible analytics",
-      "state": "closed",
-      "labels": [
-        "enhancement"
-      ],
-      "createdAt": "2026-01-18T03:36:57Z",
-      "updatedAt": "2026-01-18T04:28:46Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/140",
-      "feedback_id": null
-    },
-    {
-      "number": 144,
-      "title": "P0: Fix XSS vulnerability in category onclick handlers",
-      "state": "closed",
-      "labels": [
-        "bug"
-      ],
-      "createdAt": "2026-01-18T03:37:32Z",
-      "updatedAt": "2026-01-18T03:44:03Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/144",
-      "feedback_id": null
-    },
-    {
-      "number": 143,
-      "title": "P0: Fix XSS vulnerability in keyword onclick handlers",
-      "state": "closed",
-      "labels": [
-        "bug"
-      ],
-      "createdAt": "2026-01-18T03:37:30Z",
-      "updatedAt": "2026-01-18T03:44:03Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/143",
-      "feedback_id": null
-    },
-    {
-      "number": 127,
-      "title": "[feedback] some stuff works; some stuff does not",
-      "state": "closed",
-      "labels": [
-        "user-feedback",
-        "feedback"
-      ],
-      "createdAt": "2026-01-18T02:58:40Z",
-      "updatedAt": "2026-01-18T03:09:00Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/127",
-      "feedback_id": 2
-    },
-    {
-      "number": 128,
-      "title": "[bug] Test feedback from CLI - verifying fix",
-      "state": "closed",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T02:58:41Z",
-      "updatedAt": "2026-01-18T03:08:54Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/128",
-      "feedback_id": 1
-    },
-    {
-      "number": 126,
-      "title": "[bug] when accepting ai imported questions, dev tools ch...",
-      "state": "closed",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T02:58:40Z",
-      "updatedAt": "2026-01-18T03:08:52Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/126",
-      "feedback_id": 3
-    },
-    {
-      "number": 125,
-      "title": "[bug] after AI generates the quiz to create questions an...",
-      "state": "closed",
-      "labels": [
-        "bug",
-        "user-feedback"
-      ],
-      "createdAt": "2026-01-18T02:58:39Z",
-      "updatedAt": "2026-01-18T03:08:51Z",
-      "milestone": null,
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/125",
-      "feedback_id": 4
     }
   ],
-  "recentlyCompleted": [
-    {
-      "number": 210,
-      "title": "feat: API endpoint for lifecycle/history data",
-      "closedAt": "2026-01-18T09:18:53Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/210",
-      "feedback_id": null
-    },
-    {
-      "number": 208,
-      "title": "feat: Expandable lifecycle timeline for progress items",
-      "closedAt": "2026-01-18T09:15:47Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/208",
-      "feedback_id": null
-    },
-    {
-      "number": 212,
-      "title": "feat: Sort and search functionality for Progress modal",
-      "closedAt": "2026-01-18T08:51:17Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/212",
-      "feedback_id": null
-    },
-    {
-      "number": 213,
-      "title": "feat: Improved empty states and loading experience",
-      "closedAt": "2026-01-18T08:04:57Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/213",
-      "feedback_id": null
-    },
-    {
-      "number": 207,
-      "title": "feat: Display accurate timestamps with relative time",
-      "closedAt": "2026-01-18T07:44:13Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/207",
-      "feedback_id": null
-    },
-    {
-      "number": 205,
-      "title": "bug: Fix overlay click to close Progress modal",
-      "closedAt": "2026-01-18T07:36:59Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/205",
-      "feedback_id": null
-    },
-    {
-      "number": 161,
-      "title": "[bug] this is good; now, when i look at the source mater...",
-      "closedAt": "2026-01-18T04:52:24Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/161",
-      "feedback_id": 7
-    },
-    {
-      "number": 159,
-      "title": "[bug] when generating a new quiz, when unlinked to sourc...",
-      "closedAt": "2026-01-18T04:45:36Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/159",
-      "feedback_id": 9
-    },
-    {
-      "number": 163,
-      "title": "[bug] after my quiz questions have been AI generated, i ...",
-      "closedAt": "2026-01-18T04:40:54Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/163",
-      "feedback_id": 5
-    },
-    {
-      "number": 162,
-      "title": "[feedback] Test - verifying feedback ID is returned",
-      "closedAt": "2026-01-18T04:38:54Z",
-      "url": "https://github.com/FullStackKevinVanDriel/QuizMyself/issues/162",
-      "feedback_id": 6
-    }
-  ]
+  "recentlyCompleted": []
 }
